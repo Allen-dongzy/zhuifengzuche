@@ -17,8 +17,8 @@ scroll-view {
 	padding: 0;
 	font-family: -apple-system-font, sans-serif;
 	box-sizing: border-box;
-	line-height: normal;
 	-webkit-text-size-adjust: none; //设置字体大小不会被系统改变
+	/* line-height: normal; */ //自适应lin-height
 }
 
 .show {
