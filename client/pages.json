@@ -54,7 +54,7 @@
 		"navigationBarBackgroundColor": "#FFFFFF", //默认导航栏背景颜色
 		"navigationBarTextStyle": "black", //默认导航栏字体颜色
 		"enablePullDownRefresh": false, //是否开启下拉刷新
-		"navigationStyle": "custom" //导航栏样式,custom为自定义导航栏
+		"navigationStyle": "default" //导航栏样式,custom为自定义导航栏
 	},
 	"tabBar": {
 		"color": "#666666", //字体默认颜色
