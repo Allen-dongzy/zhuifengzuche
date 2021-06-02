@@ -1,0 +1,20 @@
+{
+  "pages": [
+    "pages/home/businessCard",
+    "pages/home/business",
+    "pages/home/home",
+    "pages/home/forgetSet",
+    "pages/home/forgetPhone",
+    "pages/home/login",
+    "pages/home/regSelect"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "usingComponents": {},
+  "sitemapLocation": "sitemap94.json"
+}
