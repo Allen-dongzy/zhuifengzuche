@@ -48,8 +48,8 @@
 
 <style lang="scss">
 	/* 每个页面公共css */
-	@import 'common/css/main.css';
-	@import 'common/css/thorui.css';
 	@import "components/colorui/main.css";
 	@import "components/colorui/icon.css";
+	@import 'common/css/main.css';
+	@import 'common/css/thorui.css';
 </style>
