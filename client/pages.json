@@ -1,30 +1,30 @@
 {
 	"pages": [{
+		"path": "pages/home/home",
+		"style": {
+			"navigationBarTitleText": "首页"
+		}
+	}, {
 		"path": "pages/login/OwnerCard",
 		"style": {
 			"navigationBarTitleText": "车主注册-证件"
 		}
-	},{
+	}, {
 		"path": "pages/login/Owner",
 		"style": {
 			"navigationBarTitleText": "车主注册"
 		}
-	},{
+	}, {
 		"path": "pages/login/home",
 		"style": {
 			"navigationBarTitleText": "登陆注册"
-		}
-	},{
-		"path": "pages/home/home",
-		"style": {
-			"navigationBarTitleText": "首页"
 		}
 	}, {
 		"path": "pages/login/businessStore",
 		"style": {
 			"navigationBarTitleText": "登陆注册-门店信息"
 		}
-	},  {
+	}, {
 		"path": "pages/login/businessCard",
 		"style": {
 			"navigationBarTitleText": "商家注册-证件"
@@ -34,7 +34,7 @@
 		"style": {
 			"navigationBarTitleText": "商家注册"
 		}
-	},  {
+	}, {
 		"path": "pages/login/forgetPhone",
 		"style": {
 			"navigationBarTitleText": "忘记密码"
@@ -53,6 +53,11 @@
 		"path": "pages/user/user",
 		"style": {
 			"navigationBarTitleText": "个人中心"
+		}
+	}, {
+		"path": "pages/fleetManage/fleetManage",
+		"style": {
+			"navigationBarTitleText": "车辆管理"
 		}
 	}],
 	"globalStyle": {

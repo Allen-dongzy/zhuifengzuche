@@ -18,6 +18,72 @@
 				</swiper-item>
 			</swiper>
 		</view>
+		<view class="orderTitle">
+			<view class="flex title">
+				<i></i>
+				<p>订单管理</p>
+			</view>
+		</view>
+		<view class="orderTab">
+			<scroll-view class="content" scroll-x>
+				<view class="flex">
+					<view class="flex main">
+						<view v-for="(item, index) in tabList" :key="index" class="flex flex-direction tab" @click="tabClick(index)">
+							<p :style="{color: (item.check?'#5A7EFF':'#999999')}">{{ item.text }}</p>
+							<i v-show="item.check"></i>
+						</view>
+					</view>
+				</view>
+			</scroll-view>
+		</view>
+		<view class="flex-center flex-wrap panelList">
+			<view class="panel">
+				<view class="header">
+					<view class="flex titlePanel">
+						<p class="title">渝A·5231B</p>
+						<view class="flex-center status">
+							<image :src="$util.fileUrl('/paid_label@2x.png')"></image>
+							<p>已支付</p>
+						</view>
+					</view>
+					<p class="name">租客姓名</p>
+					<view class="flex price">
+						<p class="icon">¥</p>
+						<p class="text">188.00</p>
+					</view>
+				</view>
+				<view class="flex-center line">
+					<i></i>
+				</view>
+				<view class="content">
+					<view class="flex titlePanel">
+						<p class="name">大众迈腾</p>
+						<view class="flex">
+							<p>异地还车</p>
+							<switch @change="radioChange" :class="(radio?'checked':'')" :checked="(radio?true:false)" color="#5A7EFF"></switch>
+						</view>
+					</view>
+					<!-- <view class="flex">
+						<text class="cuIcon-countdown"></text>
+						<p>05-25 14:48至05-30 14:48</p>
+					</view>
+					<view class="flex">
+						<p>郑家院子东路8号</p>
+					</view>
+					<p class="timeText">距离送车1天6小时12分</p>
+					<view class="flex">
+						<view class="flex">
+							<image :src="$util.fileUrl('/phone@2x.png')"></image>
+							<p>联系客户</p>
+						</view>
+						<view class="flex">
+							<button type="default">出车检验</button>
+							<button type="default">交付车辆</button>
+						</view>
+					</view> -->
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -51,8 +117,43 @@
 				}, {
 					path: '/risk_control_query@2x.png',
 					text: '风控查询'
-				}]
+				}],
+				tabCheck: 0,
+				tabList: [{
+					text: '待发车(2)',
+					check: true
+				},{
+					text: '待收车(2)',
+					check: false
+				},{
+					text: '已完成',
+					check: false
+				},{
+					text: '待支付',
+					check: false
+				},{
+					text: '已取消',
+					check: false
+				}],
+				radio: false
 			};
+		},
+		methods: {
+			/**
+			 * 状态切换
+			 */
+			tabClick(index){
+				this.tabList[this.tabCheck].check = false;
+				this.tabList[index].check = true;
+				this.tabCheck = index;
+			},
+			/**
+			 * 开关选择
+			 * @param {Object} e
+			 */
+			radioChange(e) {
+				this.radio = e.detail.value
+			},
 		}
 	}
 </script>
@@ -73,8 +174,7 @@
 		}
 		
 		/deep/ .swiperIconPanel .wx-swiper-dots {
-			position: absolute;
-			bottom: -50rpx;
+			bottom: 0;
 		}
 		
 		.tabList {
@@ -87,7 +187,7 @@
 				height: 340rpx;
 			
 				.swiperItem {
-					padding-bottom: 20rpx;
+					padding-bottom: 50rpx;
 					box-sizing: border-box;
 			
 					.iconPanel {
@@ -112,6 +212,179 @@
 					}
 				}
 			}
+		}
+		
+		.orderTitle {
+			position: relative;
+			width: 100%;
+			height: 40rpx;
+			margin-top: 20rpx;
+			
+			.title {
+				padding-left: 40rpx;
+				padding-right: 40rpx;
+				
+				i {
+					width: 8rpx;
+					height: 24rpx;
+					background: #5a7eff;
+					border-radius: 20rpx;
+				}
+				
+				p {
+					height: 40rpx;
+					font-size: 28rpx;
+					font-weight: 500;
+					color: #000000;
+					letter-spacing: 0rpx;
+					padding-left: 20rpx;
+				}
+			}
+		}
+		
+		.orderTab {
+			position: relative;
+			width: 100%;
+			margin-top: 40rpx;
+			
+			.content {
+				position: relative;
+				width: 100%;
+				padding-left: 40rpx;
+				padding-right: 40rpx;
+				
+				.main {
+					overflow: visible;
+					
+					.tab {
+						position: relative;
+						padding-left: 60rpx;
+						height: 58rpx;
+						
+						p {
+							height: 40rpx;
+							font-size: 28rpx;
+							font-weight: 700;
+							color: #5a7eff;
+							letter-spacing: 0rpx;
+						}
+						
+						i {
+							position: absolute;
+							bottom: 0rpx;
+							width: 40rpx;
+							height: 8rpx;
+							background: #5a7eff;
+							border-radius: 20rpx;
+						}
+					}
+					
+					.tab:first-child {
+						padding-left: 0;
+					}
+				}
+			}
+		}
+		
+		.panelList {
+			position: relative;
+			margin-top: 40rpx;
+			
+			.panel {
+				position: relative;
+				width: 670rpx;
+				height: 668rpx;
+				background: #ffffff;
+				border-radius: 20rpx;
+				box-shadow: 0rpx 0rpx 8rpx 2rpx rgba(114,141,244,0.4);
+				margin-bottom: 40rpx;
+				
+				.header {
+					padding-top: 40rpx;
+					padding-left: 40rpx;
+					padding-right: 40rpx;
+					
+					.titlePanel {
+						height: 44rpx;
+						
+						.title {
+							height: 44rpx;
+							font-size: 32rpx;
+							font-weight: 700;
+							text-align: LEFT;
+							color: #000000;
+							letter-spacing: 0rpx;
+						}
+						
+						.status {
+							margin-left: 30rpx;
+							width: 80rpx;
+							height: 40rpx;
+							position: relative;
+							
+							image {
+								width: 100%;
+								height: 100%;
+							}
+							
+							p {
+								height: 22rpx;
+								font-size: 16rpx;
+								font-weight: 700;
+								color: #ffffff;
+								letter-spacing: 0rpx;
+								position: absolute;
+								bottom: 4rpx;
+								left: 14rpx;
+							}
+						}
+					}
+					
+					.name {
+						height: 40rpx;
+						font-size: 28rpx;
+						font-weight: 400;
+						color: #5a7eff;
+					}
+					
+					.price {
+						position: absolute;
+						right: 40rpx;
+						top: 60rpx;
+						
+						.icon {
+							font-size: 16rpx;
+							font-weight: 700;
+							color: #fc3736;
+							letter-spacing: 0rpx;
+							margin-top: 10rpx;
+						}
+						
+						.text {
+							font-size: 32rpx;
+							font-weight: 700;
+							color: #fc3736;
+							letter-spacing: 0rpx;
+							margin-left: 6rpx;
+						}
+					}
+					
+				}
+				
+				.line {
+					width: 100%;
+					margin-top: 40rpx;
+					
+					i {
+						width: 590rpx;
+						border-bottom: 1rpx dashed #999999;
+					}
+				}
+			}
+		}
+		
+		.panelList:first-child {
+			margin-top: 0;
 		}
 	}
 </style>
