@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "商家注册",
-  "usingComponents": {
-    "u-form": "/node-modules/uview-ui/components/u-form/u-form",
-    "u-form-item": "/node-modules/uview-ui/components/u-form-item/u-form-item"
-  }
-}
