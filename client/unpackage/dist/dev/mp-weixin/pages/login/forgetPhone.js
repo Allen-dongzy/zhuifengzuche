@@ -171,12 +171,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
     return {
       account: '请输入手机号！',
-      password: '验证码错误！',
+      codeText: '验证码错误！',
+      password: '两次账号密码不一样',
       selectType: false,
       customStyle: {
         marginTop: '20px', // 注意驼峰命名，并且值必须用引号包括，因为这是对象

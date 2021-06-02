@@ -13,16 +13,21 @@
 			<view style="display: flex;justify-content: center;align-items: center;">
 				<view style="height: 96rpx;line-height: 96rpx;width: 62%;">
 					<input class="codeInp" type="text" value="" />
-				</view>
+				</view> 
 				<view class="codeText">
-					获取验证码
+					获取验证码 
 				</view>
 			</view>
 
-			<view class="textTitle">{{password}}</view>
+			<view class="textTitle">{{codeText}}</view>
 			
+			<u-input type="password" password-icon="true" />
+			<view class="textTitle">{{password}}</view>
+			<u-input type="password" password-icon="true" />
+				
+				
 			<view style="width: 86%;margin: auto;height: 96rpx;" >
-				<u-button type="primary"  :custom-style="customStyle" @click="next">下一步</u-button>
+				<u-button type="primary"  :custom-style="customStyle" @click="next">完成</u-button>
 			</view>
 
 		</view>
@@ -36,7 +41,8 @@
 		data() {
 			return {
 				account: '请输入手机号！',
-				password: '验证码错误！',
+				codeText: '验证码错误！',
+				password: '两次账号密码不一样',
 				selectType: false,
 				customStyle: {
 						marginTop: '20px', // 注意驼峰命名，并且值必须用引号包括，因为这是对象
