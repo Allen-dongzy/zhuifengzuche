@@ -1,41 +1,41 @@
 {
 	"pages": [{
-		"path": "pages/home/businessStore",
+		"path": "pages/login/businessStore",
 		"style": {
 			"navigationBarTitleText": "登陆注册-门店信息"
 		}
 	}, {
-		"path": "pages/home/home",
+		"path": "pages/login/home",
 		"style": {
 			"navigationBarTitleText": "登陆注册"
 		}
 	}, {
-		"path": "pages/home/businessCard",
+		"path": "pages/login/businessCard",
 		"style": {
 			"navigationBarTitleText": "商家注册-证件"
 		}
 	}, {
-		"path": "pages/home/business",
+		"path": "pages/login/business",
 		"style": {
 			"navigationBarTitleText": "商家注册"
 		}
 	}, {
-		"path": "pages/home/forgetSet",
+		"path": "pages/login/forgetSet",
 		"style": {
 			"navigationBarTitleText": "更换密码"
 		}
 	}, {
-		"path": "pages/home/forgetPhone",
+		"path": "pages/login/forgetPhone",
 		"style": {
 			"navigationBarTitleText": "忘记密码"
 		}
 	}, {
-		"path": "pages/home/login",
+		"path": "pages/login/login",
 		"style": {
 			"navigationBarTitleText": "登陆"
 		}
 	}, {
-		"path": "pages/home/regSelect",
+		"path": "pages/login/regSelect",
 		"style": {
 			"navigationBarTitleText": "身份选择"
 		}
