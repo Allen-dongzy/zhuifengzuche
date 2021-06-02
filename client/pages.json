@@ -1,5 +1,10 @@
 {
 	"pages": [{
+		"path": "pages/home/home",
+		"style": {
+			"navigationBarTitleText": "首页"
+		}
+	}, {
 		"path": "pages/login/businessStore",
 		"style": {
 			"navigationBarTitleText": "登陆注册-门店信息"
@@ -39,25 +44,35 @@
 		"style": {
 			"navigationBarTitleText": "身份选择"
 		}
+	}, {
+		"path": "pages/user/user",
+		"style": {
+			"navigationBarTitleText": "个人中心"
+		}
 	}],
 	"globalStyle": {
 		"navigationBarBackgroundColor": "#FFFFFF", //默认导航栏背景颜色
 		"navigationBarTextStyle": "black", //默认导航栏字体颜色
 		"enablePullDownRefresh": false, //是否开启下拉刷新
-		"navigationStyle": "default" //导航栏样式,custom为自定义导航栏
+		"navigationStyle": "custom" //导航栏样式,custom为自定义导航栏
 	},
-	/* "tabBar": {
+	"tabBar": {
 		"color": "#666666", //字体默认颜色
 		"selectedColor": "#666666", //选中颜色
 		"borderStyle": "black", //边框样式
 		"backgroundColor": "#FFFFFF", //背景颜色
 		"list": [{
 			"pagePath": "pages/home/home",
-			"iconPath": "static/img/home.png",
-			"selectedIconPath": "static/img/home-check.png",
+			"iconPath": "static/img/home@2x.png",
+			"selectedIconPath": "static/img/home@2x.png",
 			"text": "首页"
+		}, {
+			"pagePath": "pages/user/user",
+			"iconPath": "static/img/Frame9@2x.png",
+			"selectedIconPath": "static/img/Frame9@2x.png",
+			"text": "我的"
 		}]
-	}, */
+	},
 	"easycom": {
 		"autoscan": true, //是否自动扫描组件
 		"custom": { //自定义扫描规则

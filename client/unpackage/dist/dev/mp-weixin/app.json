@@ -1,25 +1,49 @@
 {
   "pages": [
-    "pages/home/businessStore",
     "pages/home/home",
-    "pages/home/businessCard",
-    "pages/home/business",
-    "pages/home/forgetSet",
-    "pages/home/forgetPhone",
-    "pages/home/login",
-    "pages/home/regSelect"
+    "pages/login/businessStore",
+    "pages/login/home",
+    "pages/login/businessCard",
+    "pages/login/business",
+    "pages/login/forgetSet",
+    "pages/login/forgetPhone",
+    "pages/login/login",
+    "pages/login/regSelect",
+    "pages/user/user"
   ],
   "subPackages": [],
   "window": {
     "navigationBarBackgroundColor": "#FFFFFF",
     "navigationBarTextStyle": "black",
     "enablePullDownRefresh": false,
-    "navigationStyle": "default"
+    "navigationStyle": "custom"
+  },
+  "tabBar": {
+    "color": "#666666",
+    "selectedColor": "#666666",
+    "borderStyle": "black",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "iconPath": "static/img/home@2x.png",
+        "selectedIconPath": "static/img/home@2x.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "iconPath": "static/img/Frame9@2x.png",
+        "selectedIconPath": "static/img/Frame9@2x.png",
+        "text": "我的"
+      }
+    ]
   },
   "permission": {
     "scope.userLocation": {
       "desc": "获取定位"
     }
   },
-  "usingComponents": {}
+  "usingComponents": {
+    "cu-custom": "/components/colorui/components/cu-custom"
+  }
 }
