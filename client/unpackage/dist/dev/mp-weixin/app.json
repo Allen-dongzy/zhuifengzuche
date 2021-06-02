@@ -1,11 +1,11 @@
 {
   "pages": [
+    "pages/login/home",
     "pages/home/home",
     "pages/login/businessStore",
-    "pages/login/home",
+    
     "pages/login/businessCard",
     "pages/login/business",
-    "pages/login/forgetSet",
     "pages/login/forgetPhone",
     "pages/login/login",
     "pages/login/regSelect",

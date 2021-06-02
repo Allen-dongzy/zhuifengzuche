@@ -229,7 +229,6 @@ switch.checked::before {
 	-webkit-transform: scale(0, 0);
 	        transform: scale(0, 0);
 }
-
 radio::before,
 checkbox::before {
 	font-family: "cuIcon";
@@ -260,7 +259,6 @@ checkbox.round .wx-checkbox-input,
 checkbox.round .uni-checkbox-input {
 	border-radius: 100rpx;
 }
-
 switch[checked]::before {
 	-webkit-transform: scale(0, 0);
 	        transform: scale(0, 0);
@@ -337,11 +335,12 @@ radio.radio .uni-radio-input-checked::after {
 	bottom: 0;
 	margin: auto;
 	border-radius: 200rpx;
-	
 
-	
+
+
+
+
 	border: 8px solid #ffffff !important;
-	
 }
 .switch-sex::after {
 	content: "\e71c";
@@ -1887,17 +1886,18 @@ to {
 .cu-custom .cu-bar .content {
 	width: calc(100% - 440rpx);
 }
-
 .cu-custom .cu-bar .content image {
 	height: 60rpx;
 	width: 240rpx;
 }
 .cu-custom .cu-bar {
 	min-height: 0px;
-	
+
 	padding-right: 220rpx;
-	
-	
+
+
+
+
 	box-shadow: 0rpx 0rpx 0rpx;
 	z-index: 9999;
 }
@@ -4646,7 +4646,6 @@ scroll-view.cu-steps .cu-item {
 .u-abso {
   position: absolute;
 }
-
 image {
   display: inline-block;
 }
@@ -4654,7 +4653,6 @@ view,
 text {
   box-sizing: border-box;
 }
-
 .u-font-xs {
   font-size: 22rpx;
 }
@@ -7684,7 +7682,6 @@ text {
 .u-light-color {
   color: #c0c4cc;
 }
-
 page {
   color: #303133;
   font-size: 28rpx;
@@ -7815,6 +7812,13 @@ page {
 /* end--高斯模糊tabbar底部处理--end */
 /* start--提升H5端uni.toast()的层级，避免被uView的modal等遮盖--start */
 
+
+
+
+
+
+
+
 /* end--提升H5端uni.toast()的层级，避免被uView的modal等遮盖--end */
 /* start--去除button的所有默认样式--start */
 .u-reset-button {
@@ -7831,8 +7835,11 @@ page {
 
 
 
-/* start--微信小程序编译后页面有组件名的元素，特别处理--start */
 
+
+
+
+/* start--微信小程序编译后页面有组件名的元素，特别处理--start */
 u-td, u-th {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -7878,9 +7885,47 @@ u-dropdown {
 
 /* end-微信小程序编译后页面有组件名的元素，特别处理--end */
 
+
+
+
+
 /* start--头条小程序编译后页面有组件名的元素，特别处理--start */
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* end-头条小程序编译后页面有组件名的元素，特别处理--end */
+
+
+
+
+
+
+
+
+
 
 
 /* 颜色变量 */

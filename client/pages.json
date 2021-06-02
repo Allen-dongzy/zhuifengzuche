@@ -24,12 +24,7 @@
 		"style": {
 			"navigationBarTitleText": "商家注册"
 		}
-	}, {
-		"path": "pages/login/forgetSet",
-		"style": {
-			"navigationBarTitleText": "更换密码"
-		}
-	}, {
+	},  {
 		"path": "pages/login/forgetPhone",
 		"style": {
 			"navigationBarTitleText": "忘记密码"
