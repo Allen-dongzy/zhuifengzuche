@@ -5,6 +5,11 @@
 	
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+			"path": "pages/home/home",
+			"style": {
+				"navigationBarTitleText": "登陆注册"
+			}
+		},{
 			"path": "pages/home/businessCard",
 			"style": {
 				"navigationBarTitleText": "商家注册-证件"
@@ -13,11 +18,6 @@
 			"path": "pages/home/business",
 			"style": {
 				"navigationBarTitleText": "商家注册"
-			}
-		},{
-			"path": "pages/home/home",
-			"style": {
-				"navigationBarTitleText": "登陆注册"
 			}
 		},{
 			"path": "pages/home/forgetSet",

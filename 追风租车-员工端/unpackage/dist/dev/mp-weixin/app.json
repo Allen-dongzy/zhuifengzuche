@@ -1,8 +1,8 @@
 {
   "pages": [
+    "pages/home/home",
     "pages/home/businessCard",
     "pages/home/business",
-    "pages/home/home",
     "pages/home/forgetSet",
     "pages/home/forgetPhone",
     "pages/home/login",
@@ -15,6 +15,5 @@
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap94.json"
+  "usingComponents": {}
 }

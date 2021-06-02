@@ -14,7 +14,7 @@
 			<view class="textTitle">{{password}}</view>
 			<view class="textTitle" style="color: #007AFF;" @click="forget">忘记密码？</view>
 			<view style="width: 86%;margin: auto;height: 96rpx;">
-				<u-button style="color: #007AFF;">登陆</u-button>
+				<u-button style="color: #007AFF;">登陆1</u-button>
 			</view>
 			<view class="selectBox">
 				<view style="width: 32rpx;height: 32rpx;" @click="selectbox">
