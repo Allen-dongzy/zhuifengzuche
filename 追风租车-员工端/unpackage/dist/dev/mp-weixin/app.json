@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/home/businessStore",
     "pages/home/home",
     "pages/home/businessCard",
     "pages/home/business",

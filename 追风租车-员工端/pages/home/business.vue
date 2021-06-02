@@ -30,7 +30,7 @@
 
 					<u-form-item :border-bottom="show">
 						<view class="fromTitel">验证码</view>
-						<view style="display: flex;align-items: center;background-color: #EFF0F3;width: 90%;margin: auto;border-radius: 10rpx;">
+						<view class="moreInpbox">
 							<view style="width: 78%;"><input class="inpBox" style="width: 100%;" type="text" placeholder="请填写验证码" /></view>
 							<view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;">获取验证码</view>
 						</view>
@@ -43,7 +43,7 @@
 			
 					<u-form-item :border-bottom="show">
 						<view class="fromTitel">密码</view>
-						<view style="display: flex;align-items: center;background-color: #EFF0F3;width: 90%;margin: auto;border-radius: 10rpx;">
+						<view class="moreInpbox">
 							<view style="width: 90%;"><input :type="inpType" class="inpBox" style="width: 95%;" placeholder="请填写验证码" /></view>
 							<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
 								<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" src="../../static/guan.png" mode="" @click="look"></image>
@@ -102,5 +102,8 @@
 	}
 	.fromTitel{
 		width: 90%;margin: auto;
+	}
+	.moreInpbox{
+		display: flex;align-items: center;background-color: #EFF0F3;width: 90%;margin: auto;border-radius: 10rpx;
 	}
 </style>

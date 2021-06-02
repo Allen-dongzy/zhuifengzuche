@@ -24,5 +24,10 @@
 	margin: auto;
 	padding-top: 20rpx;
 }
-
+.imgBox{
+	height: 186rpx;width: 44%;margin: 0px 3%;
+}
+.nameBox{
+	background-color: #EFF0F3;height: 74rpx;border-radius: 10rpx;padding-left: 20rpx;font-size: 24rpx;color: #999999;
+}
 

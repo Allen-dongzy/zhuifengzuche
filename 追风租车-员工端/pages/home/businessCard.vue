@@ -13,17 +13,17 @@
 	
 			<view class="title">身份证照片</view>
 			<view class="idCard">
-				<image style="height: 186rpx;width: 44%;margin: 0px 3%;" src="../../static/logo2.png" mode=""></image>
-				<image style="height: 186rpx;width: 44%;margin: 0px 3%;" src="../../static/logo2.png" mode=""></image>
+				<image class="imgBox" src="../../static/logo2.png" mode=""></image>
+				<image class="imgBox" src="../../static/logo2.png" mode=""></image>
 			</view>
 			<view class="title">营业执照照片</view>
 			<view class="idCard">
-				<image style="height: 186rpx;width: 44%;margin: 0px 3%;" src="../../static/logo2.png" mode=""></image>
-				<image style="height: 186rpx;width: 44%;margin: 0px 3%;" src="../../static/logo2.png" mode=""></image>
+				<image class="imgBox" src="../../static/logo2.png" mode=""></image>
+				<image class="imgBox" src="../../static/logo2.png" mode=""></image>
 			</view>
 			<view class="title">公司名称</view>
 			<view class="idCard">
-				<input style="background-color: #EFF0F3;height: 74rpx;border-radius: 10rpx;padding-left: 20rpx;font-size: 24rpx;color: #999999;" placeholder="请输入公司名字" type="text" value="" />
+				<input class="nameBox" placeholder="请输入公司名字" type="text" value="" />
 			</view>
 			<u-button type="primary" :custom-style="customStyle" >下一步</u-button>
 
@@ -72,5 +72,10 @@
 		margin: auto;
 		padding-top: 20rpx;
 	}
-
+	.imgBox{
+		height: 186rpx;width: 44%;margin: 0px 3%;
+	}
+	.nameBox{
+		background-color: #EFF0F3;height: 74rpx;border-radius: 10rpx;padding-left: 20rpx;font-size: 24rpx;color: #999999;
+	}
 </style>

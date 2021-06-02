@@ -39,7 +39,7 @@
     "minifyWXSS": true
   },
   "compileType": "miniprogram",
-  "libVersion": "",
+  "libVersion": "2.14.4",
   "appid": "touristappid",
   "projectname": "%E8%BF%BD%E9%A3%8E%E7%A7%9F%E8%BD%A6",
   "simulatorType": "wechat",
