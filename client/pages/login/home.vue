@@ -30,7 +30,6 @@
 	export default {
 		data() {
 			return {
-				title: 'Hello',
 				imgList: [{
 					img: '../../static/img/icon1.png',
 					title: '免费加盟'

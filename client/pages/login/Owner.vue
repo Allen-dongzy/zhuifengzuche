@@ -12,13 +12,6 @@
 				<image style="width: 20rpx;height: 20rpx;" src="../../static/img/2.png" mode=""></image>
 			</view>
 			<view style="font-size: 32rpx;">证件信息</view>
-			<view style="width: 10%;text-align: center;line-height: 3px;">
-				<image style="width: 10rpx;height: 10rpx;" src="../../static/img/next2.png" mode=""></image>
-			</view>
-			<view style="width: 5%;text-align: center;">
-				<image style="width: 20rpx;height: 20rpx;" src="../../static/img/3.png" mode=""></image>
-			</view>
-			<view style="font-size: 32rpx;">门店信息</view>
 		</view>
 
 		<view class="">
@@ -64,6 +57,10 @@
 							src="../../static/img/kai.png" mode="" @click="look"></image>
 						<!-- </view> -->
 					</view>
+				</u-form-item>
+				<u-form-item :border-bottom="show">
+					<view class="fromTitel">推荐码 </view>
+					<input class="inpBox" type="text" placeholder="请填写推荐码" />
 				</u-form-item>
 			</u-form>
 

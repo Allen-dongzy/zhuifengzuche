@@ -35,9 +35,9 @@
 	export default {
 		data() {
 			return {
-				account: '手机号未注册！',
-				password: '密码错误！',
-				selectType: false
+				account: '手机号未注册！',//手机号码校验提示语句
+				password: '密码错误！',//密码校验提示语句
+				selectType: false//协议切换
 			}
 		},
 		methods: {

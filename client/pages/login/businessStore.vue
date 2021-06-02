@@ -25,53 +25,73 @@
 			<u-form :model="form" ref="uForm" :border-bottom="show">
 				<u-form-item :border-bottom="show">
 					<view class="fromTitel">城市</view>
-					<picker class="pickerBox" @change="bindPickerChange" :value="index" :range="selectorObj" range-key="cateName">
+					<picker class="pickerBox" @change="bindPickerChange" :value="index" :range="selectorObj"
+						range-key="cateName">
 						<view v-show="index==-1" class="uni-input">请选择城市</view>
 						<view v-show="index!=-1" class="uni-input">{{selectorObj[index].cateName}}</view>
 					</picker>
 				</u-form-item>
 				<u-form-item :border-bottom="show">
-					<view class="fromTitel">姓名</view>
-					<input class="inpBox" type="text" placeholder="请填写姓名" />
+					<view class="fromTitel">门店名称</view>
+					<input class="inpBox" type="text" placeholder="请填写门店名字" />
 				</u-form-item>
 
 				<u-form-item :border-bottom="show">
-					<view class="fromTitel">身份证号码 </view>
-					<input class="inpBox" type="text" placeholder="请填写身份证号码" />
+					<view class="fromTitel">门店地址</view>
+					<input class="inpBox" type="text" placeholder="请填写门店地址" />
 				</u-form-item>
 
 				<u-form-item :border-bottom="show">
-					<view class="fromTitel">手机号</view>
-					<input class="inpBox" type="text" placeholder="请填写手机号码" />
+					<view class="fromTitel">门店电话</view>
+					<input class="inpBox" type="text" placeholder="请填写门店电话" />
 				</u-form-item>
 
+
+
 				<u-form-item :border-bottom="show">
-					<view class="fromTitel">验证码</view>
-					<view class="moreInpbox">
-						<view style="width: 78%;"><input class="inpBox" style="width: 100%;" type="text"
-								placeholder="请填写验证码" /></view>
-						<view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;">获取验证码</view>
+					<view class="fromTitel">营业时间</view>
+					<view class="timeBox">
+						<picker mode="time" style="width: 40%;height: 74rpx;" class="pickerBox" @change="pickerStar"
+							:value="indexStar">
+							<view v-show="indexStar==-1" class="uni-input" style="height: 74rpx;">请选择开始时间</view>
+							<view v-show="indexStar!=-1" class="uni-input" style="height: 74rpx;">{{indexStar}}</view>
+						</picker>
+
+						<picker mode="time" style="width: 40%;height: 74rpx;" class="pickerBox" @change="pickerEnd"
+							:value="indexEnd">
+							<view v-show="indexEnd==-1" class="uni-input" style="height: 74rpx;">请选择结束时间</view>
+							<view v-show="indexEnd!=-1" class="uni-input" style="height: 74rpx;">{{indexEnd}}</view>
+						</picker>
 					</view>
 				</u-form-item>
 
 				<u-form-item :border-bottom="show">
-					<view class="fromTitel">邮箱</view>
-					<input class="inpBox" type="text" placeholder="请填写邮箱" />
+					<view class="fromTitel">地图经纬度</view>
+					<view class="local">
+						<input style="width: 43%;" class="inpBox" type="text" placeholder="请输入经度" />
+						<input style="width: 43%;margin-left: 4%;" class="inpBox" type="text" placeholder="请输入经度" />
+					</view>
 				</u-form-item>
 
 				<u-form-item :border-bottom="show">
-					<view class="fromTitel">密码</view>
-					<view class="moreInpbox">
-						<view style="width: 90%;"><input :type="inpType" class="inpBox" style="width: 95%;"
-								placeholder="请填写验证码" /></view>
-						<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
-						<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" src="../../static/img/guan.png"
-							mode="" @click="look"></image>
-						<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" src="../../static/img/kai.png"
-							mode="" @click="look"></image>
-						<!-- </view> -->
-					</view>
+					<view class="fromTitel">地图经纬度</view>
+					<image class="imgBox" src="../../static/img/logo2.png" mode=""></image>
 				</u-form-item>
+
+
+				<u-form-item :border-bottom="show">
+					<view class="fromTitel">负责人/法人</view>
+					<input class="inpBox" type="text" placeholder="请填写负责人或者法人名称" />
+				</u-form-item>
+
+				<u-form-item :border-bottom="show">
+					<view class="fromTitel">负责人/法人 电话</view>
+					<input class="inpBox" type="text" placeholder="请填写负责人或者法人名称电话" />
+				</u-form-item>
+
+
+				<u-button type="primary" :custom-style="customStyle" @click="next">完成</u-button>
+
 			</u-form>
 		</view>
 	</view>
@@ -85,38 +105,46 @@
 					name: '',
 					intro: '',
 					sex: ''
-				},
-				show: false,
-				showpass: true,
-				inpType: 'password',
-				selectorObj:[{
-						cateName: '1',
-						id: 1
-					},{
-						cateName: '2',
-						id: 2
-					}
-				],
-				index: -1,
+				}, //表单数据
+				show: false, //表单底部边框线
+				selectorObj: [{
+					cateName: '1',
+					id: 1
+				}, {
+					cateName: '2',
+					id: 2
+				}], //城市列表
+				index: -1, //选择城市角标
+				indexStar: -1, //开始时间角标
+				indexEnd: -1, //结束时间角标
+				customStyle: {
+					margin: 'auto',
+					marginTop: '60px', // 注意驼峰命名，并且值必须用引号包括，因为这是对象
+					marginBottom: '20px',
+					color: 'white',
+					width: '90%',
+					borderRadius: '50rpx',
+					backgroundColor: '#5A7EFF'
+				} //提交按钮样式
+
 			}
 		},
 		onLoad() {
 
 		},
 		methods: {
-			look() {
-				console.log('ppp')
-				if (this.showpass) {
-					this.showpass = false
-					this.inpType = 'password'
-				} else {
-					this.showpass = true
-					this.inpType = 'number'
-				}
-			},
+
 			bindPickerChange: function(e) {
 				console.log('picker发送选择改变，携带值为', e.target.value)
 				this.index = e.target.value
+			},
+			pickerStar: function(e) {
+				console.log('picker发送选择改变，携带值为', e.target.value)
+				this.indexStar = e.target.value
+			},
+			pickerEnd: function(e) {
+				console.log('picker发送选择改变，携带值为', e.target.value)
+				this.indexEnd = e.target.value
 			},
 		}
 	}
@@ -148,20 +176,31 @@
 		margin: auto;
 	}
 
-	.moreInpbox {
-		display: flex;
-		align-items: center;
-		background-color: #EFF0F3;
+
+	.pickerBox {
 		width: 90%;
 		margin: auto;
+		background: #EFF0F3;
 		border-radius: 10rpx;
+		padding-left: 20rpx;
+		color: #999999
 	}
-	.pickerBox{
-		    width: 90%;
-		    margin: auto;
-		    background: #EFF0F3;
-		    border-radius: 10rpx;
-		    padding-left: 20rpx;
-			color:#999999
+
+	.timeBox {
+		display: flex;
+		justify-items: center;
+		align-items: center;
+	}
+
+	.local {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.imgBox {
+		height: 186rpx;
+		width: 44%;
+		margin: 0px 3%;
 	}
 </style>

@@ -6,28 +6,28 @@
 		<view class="topimg2">
 			<image style="height:544rpx;width: 544rpx;" src="../../static/img/loginbg.png" mode=""></image>
 		</view>
-		<view class="setbox"> 
+		<view class="setbox">
 
 			<u-input type="number" password-icon="true" clearable />
 			<view class="textTitle">{{account}}</view>
 			<view style="display: flex;justify-content: center;align-items: center;">
 				<view style="height: 96rpx;line-height: 96rpx;width: 62%;">
 					<input class="codeInp" type="text" value="" />
-				</view> 
+				</view>
 				<view class="codeText">
-					获取验证码 
+					获取验证码
 				</view>
 			</view>
 
 			<view class="textTitle">{{codeText}}</view>
-			
+
 			<u-input type="password" password-icon="true" />
 			<view class="textTitle">{{password}}</view>
 			<u-input type="password" password-icon="true" />
-				
-				
-			<view style="width: 86%;margin: auto;height: 96rpx;" >
-				<u-button type="primary"  :custom-style="customStyle" @click="next">完成</u-button>
+
+
+			<view style="width: 86%;margin: auto;height: 96rpx;">
+				<u-button type="primary" :custom-style="customStyle" @click="next">完成</u-button>
 			</view>
 
 		</view>
@@ -40,22 +40,21 @@
 	export default {
 		data() {
 			return {
-				account: '请输入手机号！',
-				codeText: '验证码错误！',
-				password: '两次账号密码不一样',
-				selectType: false,
+				account: '请输入手机号！', //手机号校验提示语句
+				codeText: '验证码错误！', //验证码校验提示语句
+				password: '两次账号密码不一样', //密码校验提示语句
 				customStyle: {
-						marginTop: '20px', // 注意驼峰命名，并且值必须用引号包括，因为这是对象
-						color: 'white'
-					}
+					marginTop: '20px', // 注意驼峰命名，并且值必须用引号包括，因为这是对象
+					color: 'white'
+				}, //按钮样式
 			}
 		},
 		methods: {
-			next(){
+			next() {
 				uni.navigateTo({
-					url:'./forgetSet',
-					animationType:'pop-in',
-					animationDuration:200
+					url: './forgetSet',
+					animationType: 'pop-in',
+					animationDuration: 200
 				})
 			}
 		}
@@ -129,14 +128,26 @@
 		margin: 16rpx auto;
 	}
 
-	
-	.codeInp{
-		
-		height: 100%;width: 100%; background-color: #EFF0F3;font-size: 24rpx;border-bottom-left-radius : 10rpx;border-top-left-radius : 10rpx;padding-left: 20rpx;
+
+	.codeInp {
+
+		height: 100%;
+		width: 100%;
+		background-color: #EFF0F3;
+		font-size: 24rpx;
+		border-bottom-left-radius: 10rpx;
+		border-top-left-radius: 10rpx;
+		padding-left: 20rpx;
 	}
-	
-	.codeText{
-		height: 96rpx; line-height: 96rpx;color: #5A7EFF;font-size: 24rpx;background-color: #EFF0F3;padding: 0px 20rpx;border-bottom-right-radius : 10rpx;border-top-right-radius : 10rpx;
+
+	.codeText {
+		height: 96rpx;
+		line-height: 96rpx;
+		color: #5A7EFF;
+		font-size: 24rpx;
+		background-color: #EFF0F3;
+		padding: 0px 20rpx;
+		border-bottom-right-radius: 10rpx;
+		border-top-right-radius: 10rpx;
 	}
-	
 </style>
