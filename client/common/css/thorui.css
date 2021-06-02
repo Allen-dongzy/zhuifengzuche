@@ -1,0 +1,20 @@
+.tui-header-icon {
+	width: 100%;
+	position: fixed;
+	top: 0;
+	padding: 0 12rpx;
+	display: flex;
+	align-items: center;
+	height: 32px;
+	transform: translateZ(0);
+	z-index: 99999;
+	box-sizing: border-box;
+}
+
+.tui-navigation_bar-title {
+	box-sizing: content-box;
+}
+
+tui-nomore {
+	width: 100%;
+}

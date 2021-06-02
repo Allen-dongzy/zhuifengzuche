@@ -1,0 +1,66 @@
+page {
+	width: 100%;
+	min-height: 100%;
+	background-color: #FFFFFF;
+}
+
+view,
+input,
+textarea,
+text,
+p,
+button,
+image,
+swiper,
+scroll-view {
+	margin: 0;
+	padding: 0;
+	font-family: -apple-system-font, sans-serif;
+	box-sizing: border-box;
+	line-height: normal;
+	-webkit-text-size-adjust: none; //设置字体大小不会被系统改变
+}
+
+.show {
+	display: block !important;
+}
+
+.hide {
+	display: none !important;
+}
+
+.flex {
+	display: flex;
+	align-items: center;
+	flex-shrink: 0;
+}
+
+.flex-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.flex-wrap {
+	flex-wrap: wrap;
+}
+
+.flex-direction {
+	flex-direction: column;
+}
+
+.sticky {
+	position: sticky;
+	top: 0;
+	z-index: 99;
+}
+
+.fixed {
+	padding-bottom: constant(safe-area-inset-bottom);
+	padding-bottom: env(safe-area-inset-bottom)
+}
+
+.placeholderClass {
+	color: #CCCCCC;
+}

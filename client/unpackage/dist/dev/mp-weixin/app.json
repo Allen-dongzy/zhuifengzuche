@@ -1,0 +1,25 @@
+{
+  "pages": [
+    "pages/home/businessStore",
+    "pages/home/home",
+    "pages/home/businessCard",
+    "pages/home/business",
+    "pages/home/forgetSet",
+    "pages/home/forgetPhone",
+    "pages/home/login",
+    "pages/home/regSelect"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": false,
+    "navigationStyle": "default"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "获取定位"
+    }
+  },
+  "usingComponents": {}
+}

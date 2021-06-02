@@ -1,0 +1,68 @@
+{
+	"pages": [{
+		"path": "pages/home/businessStore",
+		"style": {
+			"navigationBarTitleText": "登陆注册-门店信息"
+		}
+	}, {
+		"path": "pages/home/home",
+		"style": {
+			"navigationBarTitleText": "登陆注册"
+		}
+	}, {
+		"path": "pages/home/businessCard",
+		"style": {
+			"navigationBarTitleText": "商家注册-证件"
+		}
+	}, {
+		"path": "pages/home/business",
+		"style": {
+			"navigationBarTitleText": "商家注册"
+		}
+	}, {
+		"path": "pages/home/forgetSet",
+		"style": {
+			"navigationBarTitleText": "更换密码"
+		}
+	}, {
+		"path": "pages/home/forgetPhone",
+		"style": {
+			"navigationBarTitleText": "忘记密码"
+		}
+	}, {
+		"path": "pages/home/login",
+		"style": {
+			"navigationBarTitleText": "登陆"
+		}
+	}, {
+		"path": "pages/home/regSelect",
+		"style": {
+			"navigationBarTitleText": "身份选择"
+		}
+	}],
+	"globalStyle": {
+		"navigationBarBackgroundColor": "#FFFFFF", //默认导航栏背景颜色
+		"navigationBarTextStyle": "black", //默认导航栏字体颜色
+		"enablePullDownRefresh": false, //是否开启下拉刷新
+		"navigationStyle": "default" //导航栏样式,custom为自定义导航栏
+	},
+	/* "tabBar": {
+		"color": "#666666", //字体默认颜色
+		"selectedColor": "#666666", //选中颜色
+		"borderStyle": "black", //边框样式
+		"backgroundColor": "#FFFFFF", //背景颜色
+		"list": [{
+			"pagePath": "pages/home/home",
+			"iconPath": "static/img/home.png",
+			"selectedIconPath": "static/img/home-check.png",
+			"text": "首页"
+		}]
+	}, */
+	"easycom": {
+		"autoscan": true, //是否自动扫描组件
+		"custom": { //自定义扫描规则
+			"tui-(.*)": "@/components/thorui/tui-$1/tui-$1.vue",
+			"^u-(.*)": "@/components/uview-ui/components/u-$1/u-$1.vue"
+		}
+	}
+}
