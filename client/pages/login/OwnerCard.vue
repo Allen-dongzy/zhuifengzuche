@@ -17,14 +17,14 @@
 
 		<view class="title">身份证照片</view>
 		<view class="idCard">
-			<image class="imgBox" src="../../static/img/logo2.png" mode=""></image>
-			<image class="imgBox" src="../../static/img/logo2.png" mode=""></image>
+			<image class="imgBox" :src="$util.fileUrl('/idCard1.png')" mode=""></image>
+			<image class="imgBox" :src="$util.fileUrl('/idCard2.png')" mode=""></image>
 		</view>
 		<view class="lineBox"></view>
 		<view class="title">营业执照照片</view>
 		<view class="idCard">
-			<image class="imgBox" src="../../static/img/logo2.png" mode=""></image>
-			<image class="imgBox" src="../../static/img/logo2.png" mode=""></image>
+			<image class="imgBox" :src="$util.fileUrl('/driver1.png')" mode=""></image>
+			<image class="imgBox" :src="$util.fileUrl('/driver2.png')" mode=""></image>
 		</view>
 		<view class="title">车牌号码</view>
 		<view class="idCard">

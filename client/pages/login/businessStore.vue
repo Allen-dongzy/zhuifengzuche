@@ -74,8 +74,8 @@
 				</u-form-item>
 
 				<u-form-item :border-bottom="show">
-					<view class="fromTitel">地图经纬度</view>
-					<image class="imgBox" src="../../static/img/logo2.png" mode=""></image>
+					<view class="fromTitel">门店图片</view>
+					<image class="imgBox" :src="$util.fileUrl('/upload_image@2x.png')" mode=""></image>
 				</u-form-item>
 
 

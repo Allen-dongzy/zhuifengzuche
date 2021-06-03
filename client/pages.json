@@ -10,6 +10,11 @@
 			"navigationBarTitleText": "车辆管理"
 		}
 	}, {
+		"path": "pages/fleetManage/hirePlan",
+		"style": {
+			"navigationBarTitleText": "租聘计划" 
+		} 
+	},{
 		"path": "pages/home/home",
 		"style": {
 			"navigationBarTitleText": "首页"

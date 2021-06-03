@@ -24,7 +24,7 @@
 			next(e){
 				if(e==1){
 			uni.navigateTo({
-				url:'./business',
+				url:'./Owner',
 				animationType: 'pop-in',
 				animationDuration: 200
 				
