@@ -110,7 +110,7 @@
 			},
 			next() {
 				uni.navigateTo({
-					url: './businessCard',
+					url: './OwnerCard',
 					animationType: 'pop-in',
 					animationDuration: 200
 				})

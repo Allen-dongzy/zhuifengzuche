@@ -21,15 +21,14 @@
 			<view style="font-size: 32rpx;">门店信息</view>
 		</view>
 
-		<view class="title">身份证照片</view>
+		<view class="title">身份证照片</view> 
 		<view class="idCard">
-			<image class="imgBox" src="../../static/img/logo2.png" mode=""></image>
-			<image class="imgBox" src="../../static/img/logo2.png" mode=""></image>
+			<image class="imgBox" :src="$util.fileUrl('/idCard1.png')" mode="" @click="getImg(1)"></image>
+			<image class="imgBox" :src="$util.fileUrl('/idCard2.png')" mode="" @click="getImg(2)"></image>
 		</view>
 		<view class="title">营业执照照片</view>
 		<view class="idCard">
-			<image class="imgBox" src="../../static/img/logo2.png" mode=""></image>
-			<image class="imgBox" src="../../static/img/logo2.png" mode=""></image>
+			<image class="imgBox" :src="$util.fileUrl('/yinye.png')" mode="" @click="getImg(3)"></image>	
 		</view>
 		<view class="title">公司名称</view>
 		<view class="idCard">
@@ -65,6 +64,29 @@
 					animationType: 'pop-in',
 					animationDuration: 200
 				})
+			},
+			getImg(e){
+				uni.chooseImage({
+									count:1,
+									sizeType:['original','compressed'],
+									sourceType:['camera','album'],//camera 拍照 album 相册
+									success:(res)=> {
+										console.log(res)
+										uni.showToast({
+											title:"成功拍照或引用相册",
+											duration:2000
+										})
+									},
+									fail() {
+										uni.showToast({
+											title:"拍照或引用相册失败",
+											duration:2000
+										})
+									}
+								})
+			},
+			getYinye(){
+				
 			}
 		}
 	}
