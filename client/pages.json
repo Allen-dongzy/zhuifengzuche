@@ -1,5 +1,15 @@
 {
 	"pages": [{
+		"path": "pages/fleetManage/fleetManageSearch",
+		"style": {
+			"navigationBarTitleText": "车辆管理"
+		}
+	}, {
+		"path": "pages/fleetManage/fleetManage",
+		"style": {
+			"navigationBarTitleText": "车辆管理"
+		}
+	}, {
 		"path": "pages/home/home",
 		"style": {
 			"navigationBarTitleText": "首页"
@@ -53,11 +63,6 @@
 		"path": "pages/user/user",
 		"style": {
 			"navigationBarTitleText": "个人中心"
-		}
-	}, {
-		"path": "pages/fleetManage/fleetManage",
-		"style": {
-			"navigationBarTitleText": "车辆管理"
 		}
 	}],
 	"globalStyle": {

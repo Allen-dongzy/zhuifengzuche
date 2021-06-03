@@ -58,30 +58,42 @@
 				<view class="content">
 					<view class="flex titlePanel">
 						<p class="name">大众迈腾</p>
-						<view class="flex">
+						<view class="flex radioCheck">
 							<p>异地还车</p>
-							<switch @change="radioChange" :class="(radio?'checked':'')" :checked="(radio?true:false)" color="#5A7EFF"></switch>
+							<switch @change="radioChange" class="switch" :class="(radio?'checked':'')" :checked="(radio?true:false)"></switch>
 						</view>
 					</view>
-					<!-- <view class="flex">
+					<view class="flex timeText">
 						<text class="cuIcon-countdown"></text>
-						<p>05-25 14:48至05-30 14:48</p>
+						<p>05-25 14:48 至 05-30 14:48</p>
 					</view>
-					<view class="flex">
-						<p>郑家院子东路8号</p>
+					<view class="flex location">
+						<i></i>
+						<p class="type">取</p>
+						<p class="text">郑家院子东路8号</p>
 					</view>
-					<p class="timeText">距离送车1天6小时12分</p>
-					<view class="flex">
-						<view class="flex">
+					<view class="flex location">
+						<i></i>
+						<p class="type">还</p>
+						<p class="text">郑家院子东路8号</p>
+					</view>
+					<p class="dateText">距离送车1天6小时12分</p>
+					<view class="flex submit">
+						<view class="flex phone">
 							<image :src="$util.fileUrl('/phone@2x.png')"></image>
 							<p>联系客户</p>
 						</view>
 						<view class="flex">
-							<button type="default">出车检验</button>
-							<button type="default">交付车辆</button>
+							<button type="default" class="flex-center btn">出车检验</button>
+							<button type="default" class="flex-center btn">交付车辆</button>
+							<button v-if="false" type="default" class="flex-center btn bg-btn">退还押金</button>
 						</view>
-					</view> -->
+					</view>
 				</view>
+			</view>
+			<view class="loadmore">
+				<tui-loadmore v-if="orderSize" :index="2"></tui-loadmore>
+				<tui-nomore v-else text="没有更多了"></tui-nomore>
 			</view>
 		</view>
 	</view>
@@ -135,7 +147,8 @@
 					text: '已取消',
 					check: false
 				}],
-				radio: false
+				radio: false,
+				orderSize: false
 			};
 		},
 		methods: {
@@ -162,19 +175,65 @@
 	.home {
 		position: relative;
 		
+		/**
+		 * 更改swiper提示点样式
+		 */
 		/deep/ .wx-swiper-dot {
 			width: 8rpx;
 			height: 8rpx;
 		}
 		
+		/**
+		 * 更改swiper提示点选中样式
+		 */
 		/deep/ .wx-swiper-dot-active {
 			width: 22rpx;
 			height: 8rpx;
 			border-radius: 6rpx;
 		}
 		
+		/**
+		 * 更改swiper提示点位置,通过swiper-item的padding-bottom指定位置
+		 */
 		/deep/ .swiperIconPanel .wx-swiper-dots {
 			bottom: 0;
+		}
+		
+		/**
+		 * 去掉开关选择器图标
+		 */
+		/deep/ switch::after, switch::before  {
+			content: ''
+		}
+		
+		/**
+		 * 开关选择器高度
+		 */
+		/deep/ switch .wx-switch-input, switch .uni-switch-input {
+			height: 36rpx !important;
+		}
+		
+		/**
+		 * 开关选择器未选中按钮样式
+		 */
+		/deep/ switch .wx-switch-input::after, switch .uni-switch-input::after {
+			left: -4rpx;
+			box-shadow: 0rpx 0rpx 10rpx rgba(0,0,0,.6);
+		}
+		
+		/**
+		 * 开关选择器选中按钮样式
+		 */
+		/deep/ switch .wx-switch-input.wx-switch-input-checked::after, switch .uni-switch-input.uni-switch-input-checked::after {
+			left: 48rpx;
+			box-shadow: 0rpx 0rpx 10rpx rgba(0,0,0,.6);
+		}
+		
+		/**
+		 * 开关选择器选中颜色
+		 */
+		/deep/ switch[checked] .wx-switch-input {
+			background-color: #5A7EFF !important;
 		}
 		
 		.tabList {
@@ -202,8 +261,6 @@
 			
 						p {
 							width: 100%;
-							height: 34rpx;
-							line-height: 34rpx;
 							font-size: 24rpx;
 							font-weight: 400;
 							text-align: center;
@@ -232,7 +289,6 @@
 				}
 				
 				p {
-					height: 40rpx;
 					font-size: 28rpx;
 					font-weight: 500;
 					color: #000000;
@@ -262,7 +318,6 @@
 						height: 58rpx;
 						
 						p {
-							height: 40rpx;
 							font-size: 28rpx;
 							font-weight: 700;
 							color: #5a7eff;
@@ -293,11 +348,12 @@
 			.panel {
 				position: relative;
 				width: 670rpx;
-				height: 668rpx;
+				min-height: 500rpx;
 				background: #ffffff;
 				border-radius: 20rpx;
 				box-shadow: 0rpx 0rpx 8rpx 2rpx rgba(114,141,244,0.4);
 				margin-bottom: 40rpx;
+				padding-bottom: 40rpx;
 				
 				.header {
 					padding-top: 40rpx;
@@ -308,7 +364,6 @@
 						height: 44rpx;
 						
 						.title {
-							height: 44rpx;
 							font-size: 32rpx;
 							font-weight: 700;
 							text-align: LEFT;
@@ -328,20 +383,18 @@
 							}
 							
 							p {
-								height: 22rpx;
 								font-size: 16rpx;
 								font-weight: 700;
 								color: #ffffff;
 								letter-spacing: 0rpx;
 								position: absolute;
-								bottom: 4rpx;
+								bottom: 6rpx;
 								left: 14rpx;
 							}
 						}
 					}
 					
 					.name {
-						height: 40rpx;
 						font-size: 28rpx;
 						font-weight: 400;
 						color: #5a7eff;
@@ -353,7 +406,7 @@
 						top: 60rpx;
 						
 						.icon {
-							font-size: 16rpx;
+							font-size: 18rpx;
 							font-weight: 700;
 							color: #fc3736;
 							letter-spacing: 0rpx;
@@ -378,6 +431,136 @@
 					i {
 						width: 590rpx;
 						border-bottom: 1rpx dashed #999999;
+					}
+				}
+				
+				.content {
+					padding-top: 40rpx;
+					padding-left: 40rpx;
+					padding-right: 40rpx;
+					
+					.titlePanel {
+						position: relative;
+						justify-content: space-between;
+						
+						.name {
+							font-size: 28rpx;
+							font-weight: 400;
+							color: #000000;
+						}
+						
+						.radioCheck {
+							
+							p {
+								font-size: 24rpx;
+								font-weight: 500;
+								color: #999999;
+							}
+							
+							.switch {
+								margin-left: 16rpx;
+							}
+						}
+					}
+					
+					.timeText {
+						margin-top: 40rpx;
+						
+						.cuIcon-countdown {
+							font-size: 28rpx;
+							padding-top: 2rpx;
+						}
+						
+						p {
+							margin-left: 10rpx;
+							font-size: 24rpx;
+							font-weight: 400;
+							color: #000000;
+							letter-spacing: 0rpx;
+						}
+					}
+					
+					.location {
+						margin-top: 30rpx;
+						position: relative;
+						left: -22rpx;
+
+						
+						i {
+							width: 8rpx;
+							height: 24rpx;
+							background: #5a7eff;
+							border-radius: 20rpx;
+							margin-top: 4rpx;
+						}
+						
+						.type {
+							margin-left: 16rpx;
+							font-size: 28rpx;
+							font-weight: 700;
+							color: #5a7eff;
+							letter-spacing: 0rpx;
+						}
+						
+						.text {
+							margin-left: 10rpx;
+							font-size: 28rpx;
+							font-weight: 700;
+							color: #000000;
+							letter-spacing: 0rpx;
+						}
+					}
+					
+					.location:last-child {
+						margin-top: 20rpx;
+					}
+					
+					.dateText {
+						margin-top: 40rpx;
+						font-size: 28rpx;
+						font-weight: 400;
+						color: #5a7eff;
+					}
+					
+					.submit {
+						margin-top: 40rpx;
+						justify-content: space-between;
+						
+						.phone {
+							
+							image {
+								width: 28rpx;
+								height: 28rpx;
+							}
+							
+							p {
+								font-size: 24rpx;
+								font-weight: 500;
+								color: #ffa05b;
+								margin-left: 10rpx;
+							}
+						}
+						
+						.btn {
+							width: 136rpx;
+							height: 60rpx;
+							border: 2rpx solid #5a7eff;
+							border-radius: 12rpx;
+							font-size: 24rpx;
+							font-weight: 500;
+							color: #5a7eff;
+							background: none;
+						}
+						
+						.btn:last-child {
+							margin-left: 30rpx;
+						}
+						
+						.bg-btn {
+							border: 0;
+							background: #5a7eff;
+							color: #FFFFFF;
+						}
 					}
 				}
 			}

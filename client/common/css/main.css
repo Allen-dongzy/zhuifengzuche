@@ -63,3 +63,7 @@ scroll-view {
 .placeholderClass {
 	color: #CCCCCC;
 }
+
+.loadmore {
+	width: 100%;
+}

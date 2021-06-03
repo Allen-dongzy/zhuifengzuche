@@ -18,3 +18,7 @@
 tui-nomore {
 	width: 100%;
 }
+
+.tui-nomore-text {
+	background-color: #FFFFFF !important;
+}
