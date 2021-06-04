@@ -1,11 +1,21 @@
 {
 	"pages": [{
-		"path": "pages/fleetManage/fleetManageSearch",
+		"path": "pages/fleetManage/rentDetail",
+		"style": {
+			"navigationBarTitleText": "租赁计划-列表"
+		}
+	}, {
+		"path": "pages/fleetManage/fleetDetail",
+		"style": {
+			"navigationBarTitleText": "车辆详情"
+		}
+	}, {
+		"path": "pages/fleetManage/fleetManage",
 		"style": {
 			"navigationBarTitleText": "车辆管理"
 		}
 	}, {
-		"path": "pages/fleetManage/fleetManage",
+		"path": "pages/fleetManage/fleetManageSearch",
 		"style": {
 			"navigationBarTitleText": "车辆管理"
 		}

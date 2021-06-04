@@ -10,7 +10,7 @@
 					<p>筛选</p>
 					<text class="cuIcon-unfold"></text>
 				</view>
-				<view class="flex search">
+				<view class="flex search" @click="toSearch">
 					<p>搜索</p>
 					<text class="cuIcon-search"></text>
 				</view>
@@ -41,7 +41,7 @@
 				<tui-nomore v-else text="没有更多了"></tui-nomore>
 			</view>
 		</view>
-		
+		<!-- 筛选框 -->
 		<view class="cu-modal drawer-modal justify-end" catchtouchmove='true' :class="(modalName=='DrawerModalR'?'show':'')" @click="hideModal">
 			<view class="cu-dialog basis-lg" @click.stop="">
 				<view class="flex status">
@@ -103,6 +103,14 @@
 			 */
 			hideModal(e) {
 				this.modalName = ''
+			},
+			/**
+			 * 跳转搜索页
+			 */
+			toSearch(){
+				uni.navigateTo({
+					url: '/pages/fleetManage/fleetManageSearch'
+				})
 			}
 		}
 	}
