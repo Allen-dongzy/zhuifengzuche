@@ -8,13 +8,31 @@
 		</view>
 		<view class="setbox">
 
-			<u-input type="number" password-icon="true" clearable />
+			<input style="    background-color: #EFF0F3;
+			width: 86%;
+			margin: auto;
+			height: 96rpx;
+			padding-left: 20rpx;
+			border-radius: 10rpx;" type="text" value="" />
+			
+			
 			<view class="textTitle">{{account}}</view>
-			<u-input type="password" password-icon="true" />
+			
+			<view class="moreInpbox">
+				<view style="width: 90%;"><input :type="inpType" class="inpBox" style="width: 95%;"
+						placeholder="请填写密码" /></view>
+				<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
+				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;"
+					src="../../static/img/guan.png" mode="" @click="look"></image>
+				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;"
+					src="../../static/img/kai.png" mode="" @click="look"></image>
+				<!-- </view> -->
+			</view> 
+			
 			<view class="textTitle">{{password}}</view>
 			<view class="textTitle" style="color: #007AFF;" @click="forget">忘记密码？</view>
 			<view style="width: 86%;margin: auto;height: 96rpx;">
-				<u-button style="color: #007AFF;">登陆1</u-button>
+				<button style="color: #007AFF;"  @click="goindex()">登陆</button>
 			</view>
 			<view class="selectBox">
 				<view style="width: 32rpx;height: 32rpx;" @click="selectbox">
@@ -37,7 +55,8 @@
 			return {
 				account: '手机号未注册！',//手机号码校验提示语句
 				password: '密码错误！',//密码校验提示语句
-				selectType: false//协议切换
+				selectType: false,//协议切换
+				showpass: true, //密码眼睛切换 false 关闭  true开启
 			}
 		},
 		methods: {
@@ -48,9 +67,27 @@
 					this.selectType = true
 				}
 			},
+			look() {
+				console.log('ppp')
+				if (this.showpass) {
+					this.showpass = false
+					this.inpType = 'password'
+				} else {
+					this.showpass = true
+					this.inpType = 'number'
+				}
+			},
 			forget(){
 				uni.navigateTo({
 					url:'./forgetPhone', 
+					animationType:'pop-in',
+					animationDuration:200,
+				})
+			},
+			goindex(){
+				console.log('pp')
+				uni.reLaunch({
+					url:'../home/home', 
 					animationType:'pop-in',
 					animationDuration:200,
 				})
@@ -93,32 +130,6 @@
 
 	}
 
-	.u-input {
-		height: 96rpx;
-		line-height: 96rpx;
-		width: 86%;
-		margin: auto;
-		background-color: #EFF0F3;
-		border-radius: 10rpx;
-		padding-left: 20rpx;
-		font-size: 24rpx;
-	}
-
-	.u-input__input {
-		height: 96rpx;
-		line-height: 96rpx;
-		width: 86%;
-		margin: auto;
-		background-color: #EFF0F3;
-		border-radius: 10rpx;
-		padding-left: 20rpx;
-		font-size: 24rpx;
-	}
-
-	.u-input__right-icon {
-		padding-right: 20rpx;
-	}
-
 	.textTitle {
 		color: #FE3636;
 		height: 40rpx;
@@ -133,5 +144,24 @@
 
 		margin: auto;
 		margin-top: 42rpx;
+	}
+	
+	.moreInpbox {
+		display: flex;
+		align-items: center;
+		background-color: #EFF0F3;
+		width: 86%;
+		margin: auto;
+		border-radius: 10rpx;
+	}
+	.inpBox {
+		background-color: #EFF0F3;
+		border-radius: 10rpx;
+		height: 96rpx;
+		width: 90%;
+		margin: auto;
+		font-size: 24rpx;
+		color: #999999;
+		padding-left: 20rpx;
 	}
 </style>

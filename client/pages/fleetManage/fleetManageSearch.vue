@@ -1,12 +1,16 @@
 <template>
-	<view class="fleetManageSearch">
-		<view class="flex searchPanel">
-			<view class="flex searchInput">
-				<input type="text" class="search" placeholder="请输入关键字" placeholder-class="placeholderClass"/>
-				<i class="cuIcon-search"></i>
-				<i class="cuIcon-roundclosefill"></i>
+	<view class="">
+		<view class="topNav">
+			<view class="fleetManageSearch">
+				<view class="flex searchPanel">
+					<view class="flex searchInput">
+						<input type="text" class="search" />
+						<i class="cuIcon-search"></i>
+						<i class="cuIcon-roundclosefill"></i>
+					</view>
+				</view>
 			</view>
-			<p class="cancel">取消</p>
+			<view class="searchText">搜索</view>
 		</view>
 		<view class="flex-center flex-wrap content">
 			<view v-for="(item, index) in 10" :key="index" class="panel">
@@ -33,161 +37,173 @@
 				<tui-nomore v-else text="没有更多了"></tui-nomore>
 			</view>
 		</view>
+
 	</view>
+
+
+
+
+
 </template>
 
 <script>
 	export default {
 		data() {
 			return {
-				
+
 			}
 		},
 		methods: {
-			
+
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
+	.topNav {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-top: 20rpx;
+	}
+
 	.fleetManageSearch {
 		position: relative;
-		
+		width: 70%;
+
+
 		.searchPanel {
-			margin-top: 20rpx;
-			padding-left: 32rpx;
-			padding-right: 32rpx;
-			justify-content: space-between;
-			
+			width: 100%;
+
 			.searchInput {
 				position: relative;
-				width: 602rpx;
+				width: 100%;
 				height: 64rpx;
-				
-				.search {
-					width: 100%;
-					height: 100%;
-					background: #eff0f3;
-					border-radius: 126rpx;
-					opacity: 0.5;
-					font-size: 28rpx;
-					font-weight: 400;
-					color: #000000;
-					padding-left: 60rpx;
-				}
-				
-				.cuIcon-search {
-					position: absolute;
-					left: 16rpx;
-					color: #999999;
-				}
-				
-				.cuIcon-roundclosefill {
-					position: absolute;
-					right: 16rpx;
-					color: #999999;
-				}
 			}
-			
-			.cancel {
-				font-size: 30rpx;
-				font-weight: 500;
-				color: #8e8e93;
+
+			.search {
+
+				background: #eff0f3;
+				border-radius: 126rpx;
+				padding-left: 50rpx;
+				padding-right: 50rpx;
+				width: 100%;
+				height: 100%;
+
+			}
+
+			.cuIcon-search {
+				position: absolute;
+				left: 16rpx;
+			}
+
+			.cuIcon-roundclosefill {
+				position: absolute;
+				left: 93%;
+
+
 			}
 		}
-		
-		.content {
-			margin-top: 40rpx;
-			
-			.panel {
-				width: 670rpx;
-				min-height: 220rpx;
-				border-radius: 20rpx;
-				box-shadow: 0rpx 0rpx 8rpx 0rpx rgba(114,141,244,0.25);
-				padding: 40rpx;
-				margin-bottom: 30rpx;
-				
-				.titlePanel {
-					justify-content: space-between;
-					
-					.title {
-						font-size: 28rpx;
-						font-weight: 700;
-						color: #000000;
-					}
-					
-					.type {
-						font-size: 28rpx;
-						font-weight: 700;
-						color: #5a7eff;
-						letter-spacing: 0rpx;
-					}
+	}
+
+	.searchText {
+		width: 15%;
+		text-align: center;
+		color: #8E8E93;
+		font-size: 30rpx;
+	}
+
+	.content {
+		margin-top: 20rpx;
+
+		.panel {
+			width: 670rpx;
+			min-height: 220rpx;
+			border-radius: 20rpx;
+			box-shadow: 0rpx 0rpx 8rpx 0rpx rgba(114, 141, 244, 0.25);
+			padding: 40rpx;
+			margin-bottom: 30rpx;
+
+			.titlePanel {
+				justify-content: space-between;
+
+				.title {
+					font-size: 28rpx;
+					font-weight: 700;
+					color: #000000;
 				}
-				
-				.text {
-					margin-top: 12rpx;
-					font-size: 24rpx;
-					font-weight: 400;
-					color: #999999;
+
+				.type {
+					font-size: 28rpx;
+					font-weight: 700;
+					color: #5a7eff;
+					letter-spacing: 0rpx;
 				}
-				
-				.detail {
-					margin-top: 20rpx;
-					
-					.oil {
-						font-size: 24rpx;
-						font-weight: 400;
-						color: #000000;
-						letter-spacing: 0rpx;
-					}
-					
-					.car {
-						font-size: 24rpx;
-						font-weight: 400;
-						color: #000000;
-						letter-spacing: 0rpx;
-						margin-left: 60rpx;
-					}
-				}
-				
-				.line {
-					width: 100%;
-					margin-top: 30rpx;
-					
-					i {
-						width: 590rpx;
-						border-bottom: 2rpx dashed #999999;
-					}
-				}
-				
-				.name {
-					margin-top: 30rpx;
+			}
+
+			.text {
+				margin-top: 12rpx;
+				font-size: 24rpx;
+				font-weight: 400;
+				color: #999999;
+			}
+
+			.detail {
+				margin-top: 20rpx;
+
+				.oil {
 					font-size: 24rpx;
 					font-weight: 400;
 					color: #000000;
 					letter-spacing: 0rpx;
 				}
-				
-				.timeText {
-					margin-top: 10rpx;
-					
-					.cuIcon-countdown {
-						font-size: 30rpx;
-					}
-					
-					p {
-						margin-left: 10rpx;
-						font-size: 24rpx;
-						font-weight: 400;
-						color: #000000;
-						letter-spacing: 0rpx;
-					}
+
+				.car {
+					font-size: 24rpx;
+					font-weight: 400;
+					color: #000000;
+					letter-spacing: 0rpx;
+					margin-left: 60rpx;
 				}
 			}
-			
-			.panel:first-child {
-				margin-top: 10rpx;
+
+			.line {
+				width: 100%;
+				margin-top: 30rpx;
+
+				i {
+					width: 590rpx;
+					border-bottom: 1rpx dashed #999999;
+				}
 			}
+
+			.name {
+				margin-top: 30rpx;
+				font-size: 24rpx;
+				font-weight: 400;
+				color: #000000;
+				letter-spacing: 0rpx;
+			}
+
+			.timeText {
+				margin-top: 10rpx;
+
+				.cuIcon-countdown {
+					font-size: 30rpx;
+				}
+
+				p {
+					margin-left: 10rpx;
+					font-size: 24rpx;
+					font-weight: 400;
+					color: #000000;
+					letter-spacing: 0rpx;
+				}
+			}
+		}
+
+		.panel:first-child {
+			margin-top: 10rpx;
 		}
 	}
 </style>

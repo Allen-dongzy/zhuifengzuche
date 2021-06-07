@@ -1,13 +1,28 @@
 {
 	"pages": [{
-		"path": "pages/fleetManage/rentDetail",
+		"path": "pages/fleetManage/fleetManageSearch",
 		"style": {
-			"navigationBarTitleText": "租赁计划-列表"
+			"navigationBarTitleText": "车辆管理"
 		}
-	}, {
-		"path": "pages/fleetManage/fleetDetail",
+	},{
+		"path": "pages/login/login",
 		"style": {
-			"navigationBarTitleText": "车辆详情"
+			"navigationBarTitleText": "登陆"
+		}
+	},{ 
+		"path": "pages/fleetManage/addCar",
+		"style": {
+			"navigationBarTitleText": "添加车辆"
+		}
+	},{
+		"path": "pages/fleetManage/hirePlan",
+		"style": {
+			"navigationBarTitleText": "租聘计划" 
+		} 
+	},{
+		"path": "pages/login/home",
+		"style": {
+			"navigationBarTitleText": "登陆注册"
 		}
 	}, {
 		"path": "pages/fleetManage/fleetManage",
@@ -15,16 +30,6 @@
 			"navigationBarTitleText": "车辆管理"
 		}
 	}, {
-		"path": "pages/fleetManage/fleetManageSearch",
-		"style": {
-			"navigationBarTitleText": "车辆管理"
-		}
-	}, {
-		"path": "pages/fleetManage/hirePlan",
-		"style": {
-			"navigationBarTitleText": "租聘计划" 
-		} 
-	},{
 		"path": "pages/home/home",
 		"style": {
 			"navigationBarTitleText": "首页"
@@ -38,11 +43,6 @@
 		"path": "pages/login/Owner",
 		"style": {
 			"navigationBarTitleText": "车主注册"
-		}
-	}, {
-		"path": "pages/login/home",
-		"style": {
-			"navigationBarTitleText": "登陆注册"
 		}
 	}, {
 		"path": "pages/login/businessStore",
@@ -65,11 +65,6 @@
 			"navigationBarTitleText": "忘记密码"
 		}
 	}, {
-		"path": "pages/login/login",
-		"style": {
-			"navigationBarTitleText": "登陆"
-		}
-	}, {
 		"path": "pages/login/regSelect",
 		"style": {
 			"navigationBarTitleText": "身份选择"
@@ -79,7 +74,8 @@
 		"style": {
 			"navigationBarTitleText": "个人中心"
 		}
-	}],
+	}   
+    ],
 	"globalStyle": {
 		"navigationBarBackgroundColor": "#FFFFFF", //默认导航栏背景颜色
 		"navigationBarTextStyle": "black", //默认导航栏字体颜色
@@ -94,7 +90,7 @@
 		"list": [{
 			"pagePath": "pages/home/home",
 			"iconPath": "static/img/home@2x.png",
-			"selectedIconPath": "static/img/home@2x.png",
+			"selectedIconPath": "static/img/home@2x.png", 
 			"text": "首页"
 		}, {
 			"pagePath": "pages/user/user",
@@ -106,8 +102,8 @@
 	"easycom": {
 		"autoscan": true, //是否自动扫描组件
 		"custom": { //自定义扫描规则
-			"tui-(.*)": "@/components/thorui/tui-$1/tui-$1.vue",
-			"^u-(.*)": "@/components/uview-ui/components/u-$1/u-$1.vue"
+			"tui-(.*)": "@/components/thorui/tui-$1/tui-$1.vue" 
+			// "^u-(.*)": "@/components/uview-ui/components/u-$1/u-$1.vue"
 		}
 	}
 }

@@ -22,33 +22,23 @@
 		</view>
 
 		<view class="">
-			<u-form :model="form" ref="uForm" :border-bottom="show">
-				<u-form-item :border-bottom="show">
+		
 					<view class="fromTitel">城市</view>
 					<picker class="pickerBox" @change="bindPickerChange" :value="index" :range="selectorObj"
 						range-key="cateName">
 						<view v-show="index==-1" class="uni-input">请选择城市</view>
 						<view v-show="index!=-1" class="uni-input">{{selectorObj[index].cateName}}</view>
 					</picker>
-				</u-form-item>
-				<u-form-item :border-bottom="show">
+		
 					<view class="fromTitel">门店名称</view>
 					<input class="inpBox" type="text" placeholder="请填写门店名字" />
-				</u-form-item>
-
-				<u-form-item :border-bottom="show">
+			
 					<view class="fromTitel">门店地址</view>
 					<input class="inpBox" type="text" placeholder="请填写门店地址" />
-				</u-form-item>
-
-				<u-form-item :border-bottom="show">
+			
 					<view class="fromTitel">门店电话</view>
 					<input class="inpBox" type="text" placeholder="请填写门店电话" />
-				</u-form-item>
-
-
-
-				<u-form-item :border-bottom="show">
+		
 					<view class="fromTitel">营业时间</view>
 					<view class="timeBox">
 						<picker mode="time" style="width: 40%;height: 74rpx;" class="pickerBox" @change="pickerStar"
@@ -63,36 +53,32 @@
 							<view v-show="indexEnd!=-1" class="uni-input" style="height: 74rpx;">{{indexEnd}}</view>
 						</picker>
 					</view>
-				</u-form-item>
-
-				<u-form-item :border-bottom="show">
+		
 					<view class="fromTitel">地图经纬度</view>
 					<view class="local">
 						<input style="width: 43%;" class="inpBox" type="text" placeholder="请输入经度" />
 						<input style="width: 43%;margin-left: 4%;" class="inpBox" type="text" placeholder="请输入经度" />
 					</view>
-				</u-form-item>
-
-				<u-form-item :border-bottom="show">
+	
 					<view class="fromTitel">门店图片</view>
 					<image class="imgBox" :src="$util.fileUrl('/upload_image@2x.png')" mode=""></image>
-				</u-form-item>
-
-
-				<u-form-item :border-bottom="show">
+			
 					<view class="fromTitel">负责人/法人</view>
 					<input class="inpBox" type="text" placeholder="请填写负责人或者法人名称" />
-				</u-form-item>
-
-				<u-form-item :border-bottom="show">
+	
 					<view class="fromTitel">负责人/法人 电话</view>
 					<input class="inpBox" type="text" placeholder="请填写负责人或者法人名称电话" />
-				</u-form-item>
+			
 
+		<button  style=" color: white;
+			width: 80%;
+					margin: auto;
+				    background-color: #5A7EFF;
+				    border-radius: 50px;
+				    font-size: 32rpx;
+				    height: 96rpx;" type="default" @click="next">完成</button>
 
-				<u-button type="primary" :custom-style="customStyle" @click="next">完成</u-button>
-
-			</u-form>
+			
 		</view>
 	</view>
 </template>
@@ -174,6 +160,7 @@
 	.fromTitel {
 		width: 90%;
 		margin: auto;
+		margin-top: 40rpx;
 	}
 
 

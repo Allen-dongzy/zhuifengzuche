@@ -21,7 +21,7 @@
 			<image class="imgBox" :src="$util.fileUrl('/idCard2.png')" mode=""></image>
 		</view>
 		<view class="lineBox"></view>
-		<view class="title">营业执照照片</view>
+		<view class="title">行驶证照片</view>
 		<view class="idCard">
 			<image class="imgBox" :src="$util.fileUrl('/driver1.png')" mode=""></image>
 			<image class="imgBox" :src="$util.fileUrl('/driver2.png')" mode=""></image>
@@ -55,8 +55,14 @@
 
 
 
+<button  style=" color: white;
+	width: 80%;
+			margin: auto;
+		    background-color: #5A7EFF;
+		    border-radius: 50px;
+		    font-size: 32rpx;
+		    height: 96rpx;" type="default" @click="next">完成</button>
 
-		<u-button type="primary" :custom-style="customStyle" @click="next">完成</u-button>
 
 	</view>
 </template>

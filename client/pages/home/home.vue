@@ -5,17 +5,17 @@
 				:indicator-active-color="indicatorActiveColor">
 				<swiper-item class="flex flex-wrap swiperItem">
 					<view v-for="(item,index) in swiperIcon" :key="index" class="flex-center flex-direction iconPanel"
-						@click="toHomeLevel">
+						@click="toHomeLevel(item.url)">
 						<image :src="$util.fileUrl(item.path)" lazy-load></image>
 						<p>{{ item.text }}</p>
 					</view>
 				</swiper-item>
-				<swiper-item class="flex flex-wrap swiperItem">
+<!-- 				<swiper-item class="flex flex-wrap swiperItem">
 					<view v-for="(item,index) in swiperIcon" :key="index" class="flex-center flex-direction iconPanel">
 						<image :src="$util.fileUrl(item.path)" lazy-load></image>
 						<p>{{ item.text }}</p>
 					</view>
-				</swiper-item>
+				</swiper-item> -->
 			</swiper>
 		</view>
 		<view class="orderTitle">
@@ -107,7 +107,9 @@
 				indicatorActiveColor: '#5A7EFF',
 				swiperIcon: [{
 					path: '/vehicle_management@2x.png',
-					text: '车辆管理'
+					text: '车辆管理',
+					url:'../fleetManage/fleetManage'
+					
 				}, {
 					path: '/model_set@2x.png',
 					text: '车型设置'
@@ -167,6 +169,14 @@
 			radioChange(e) {
 				this.radio = e.detail.value
 			},
+			toHomeLevel(e){
+				console.log(e)
+				uni.navigateTo({
+					url:e,
+					animationType: 'pop-in',
+					animationDuration: 200
+				})
+			}
 		}
 	}
 </script>

@@ -26,7 +26,7 @@
 		</view>
 		
 		<view class="topNav" style="color: #8E8E93;font-size: 30rpx" v-if="seatch==true">
-			<u-input v-model="value"  :custom-style="customStyle" type="text" border="true" clearable />
+			<input type="text" style="background-color:#EFF0F3;height: 70rpx;width: 500rpx;border-radius: 50rpx;padding-left: 20rpx;" value="" />
 			<view style="margin-left: 20rpx;" @click="showSearch">取消</view>
 		</view>
 		
@@ -142,11 +142,7 @@
 
 			return {
 	
-				customStyle:{
-				borderRadius:'30rpx',
-				width:'500rpx',
-				backgroundColor:'#EFF0F3'
-				},
+		
 				index: 0,
 				carList: [1, 1, 1, 1],
 				list: [{
@@ -431,11 +427,5 @@
 		margin: 0px 20rpx;
 		border-radius: 50rpx;
 	}
-	.u-input{
-		
-		background-color: #EFF0F3;
-	}
-	.u-input--border.data-v-0b0f3b4e{
-		border-radius: 50rpx !important
-	}
+
 </style>

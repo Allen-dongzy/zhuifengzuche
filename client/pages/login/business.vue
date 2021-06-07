@@ -22,37 +22,36 @@
 		</view>
 
 		<view class="">
-			<u-form :model="form" ref="uForm" :border-bottom="show">
-				<u-form-item :border-bottom="show">
+			
+		
 					<view class="fromTitel">姓名</view>
 					<input class="inpBox" type="text" placeholder="请填写姓名" />
-				</u-form-item>
+		
 
-				<u-form-item :border-bottom="show">
+			
 					<view class="fromTitel">身份证号码 </view>
 					<input class="inpBox" type="text" placeholder="请填写身份证号码" />
-				</u-form-item>
+		
 
-				<u-form-item :border-bottom="show">
 					<view class="fromTitel">手机号</view>
 					<input class="inpBox" type="text" placeholder="请填写手机号码" />
-				</u-form-item>
+			
 
-				<u-form-item :border-bottom="show">
+				
 					<view class="fromTitel">验证码</view>
 					<view class="moreInpbox">
 						<view style="width: 78%;"><input class="inpBox" style="width: 100%;" type="text"
 								placeholder="请填写验证码" /></view>
 						<view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;">获取验证码</view>
 					</view>
-				</u-form-item>
+		
 
-				<u-form-item :border-bottom="show">
+			
 					<view class="fromTitel">邮箱</view>
 					<input class="inpBox" type="text" placeholder="请填写邮箱" />
-				</u-form-item>
+			
 
-				<u-form-item :border-bottom="show">
+			
 					<view class="fromTitel">密码</view>
 					<view class="moreInpbox">
 						<view style="width: 90%;"><input :type="inpType" class="inpBox" style="width: 95%;"
@@ -64,10 +63,16 @@
 							src="../../static/img/kai.png" mode="" @click="look"></image>
 						<!-- </view> -->
 					</view>
-				</u-form-item>
-			</u-form>
+		
+		
 
-			<u-button type="primary" :custom-style="customStyle" @click="next">下一步</u-button>
+		<button  style=" color: white;
+			width: 80%;
+					margin: auto;
+				    background-color: #5A7EFF;
+				    border-radius: 50px;
+				    font-size: 32rpx;
+				    height: 96rpx;" type="default" @click="next">下一步</button>
 
 
 		</view>
@@ -146,6 +151,7 @@
 	.fromTitel {
 		width: 90%;
 		margin: auto;
+		margin-top: 40rpx;
 	}
 
 	.moreInpbox {

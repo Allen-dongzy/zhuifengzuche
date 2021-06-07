@@ -6,7 +6,7 @@
 				<view class="typeBox" @click="next(1)">我是车主</view>
 				<view class="typeBox" @click="next(2)">我是商家</view>
 			</view>
-		</view>
+		</view> 
 	</view>
 </template>
 

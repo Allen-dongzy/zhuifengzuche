@@ -8,10 +8,16 @@
 		</view>
 		<view class="setbox">
 
-			<u-input type="number" password-icon="true" clearable />
+		<input style="    background-color: #EFF0F3;
+    width: 90%;
+    margin: auto;
+    height: 96rpx;
+    border-radius: 10rpx;" type="text" value="" />
+	
+	
 			<view class="textTitle">{{account}}</view>
 			<view style="display: flex;justify-content: center;align-items: center;">
-				<view style="height: 96rpx;line-height: 96rpx;width: 62%;">
+				<view style="height: 96rpx;line-height: 96rpx;width: 66%;">
 					<input class="codeInp" type="text" value="" />
 				</view>
 				<view class="codeText">
@@ -21,14 +27,41 @@
 
 			<view class="textTitle">{{codeText}}</view>
 
-			<u-input type="password" password-icon="true" />
+			<view class="moreInpbox">
+				<view style="width: 90%;"><input :type="inpType" class="inpBox" style="width: 95%;"
+						placeholder="请填写密码" /></view>
+				<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
+				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;"
+					src="../../static/img/guan.png" mode="" @click="look"></image>
+				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;"
+					src="../../static/img/kai.png" mode="" @click="look"></image>
+				<!-- </view> -->
+			</view> 
+			
 			<view class="textTitle">{{password}}</view>
-			<u-input type="password" password-icon="true" />
+			
+			<view class="moreInpbox">
+				<view style="width: 90%;"><input :type="inpType" class="inpBox" style="width: 95%;"
+						placeholder="请填写密码" /></view>
+				<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
+				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;"
+					src="../../static/img/guan.png" mode="" @click="look"></image>
+				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;"
+					src="../../static/img/kai.png" mode="" @click="look"></image>
+				<!-- </view> -->
+			</view> 
+			
 
 
-			<view style="width: 86%;margin: auto;height: 96rpx;">
-				<u-button type="primary" :custom-style="customStyle" @click="next">完成</u-button>
-			</view>
+		
+		<button  style=" color: white;
+			width: 80%;
+					margin: auto;
+					margin-top: 20rpx;
+				    background-color: #5A7EFF;
+				    border-radius: 50px;
+				    font-size: 32rpx;
+				    height: 96rpx;" type="default" >完成</button>
 
 		</view>
 
@@ -43,20 +76,21 @@
 				account: '请输入手机号！', //手机号校验提示语句
 				codeText: '验证码错误！', //验证码校验提示语句
 				password: '两次账号密码不一样', //密码校验提示语句
-				customStyle: {
-					marginTop: '20px', // 注意驼峰命名，并且值必须用引号包括，因为这是对象
-					color: 'white'
-				}, //按钮样式
+					showpass: true, //密码眼睛切换 false 关闭  true开启
 			}
 		},
 		methods: {
-			next() {
-				uni.navigateTo({
-					url: './forgetSet',
-					animationType: 'pop-in',
-					animationDuration: 200
-				})
-			}
+	
+			look() {
+				console.log('ppp')
+				if (this.showpass) {
+					this.showpass = false
+					this.inpType = 'password'
+				} else {
+					this.showpass = true
+					this.inpType = 'number'
+				}
+			},
 		}
 	}
 </script>
@@ -95,31 +129,6 @@
 
 	}
 
-	.u-input {
-		height: 96rpx;
-		line-height: 96rpx;
-		width: 86%;
-		margin: auto;
-		background-color: #EFF0F3;
-		border-radius: 10rpx;
-		padding-left: 20rpx;
-		font-size: 24rpx;
-	}
-
-	.u-input__input {
-		height: 96rpx;
-		line-height: 96rpx;
-		width: 86%;
-		margin: auto;
-		background-color: #EFF0F3;
-		border-radius: 10rpx;
-		padding-left: 20rpx;
-		font-size: 24rpx;
-	}
-
-	.u-input__right-icon {
-		padding-right: 20rpx;
-	}
 
 	.textTitle {
 		color: #FE3636;
@@ -150,4 +159,25 @@
 		border-bottom-right-radius: 10rpx;
 		border-top-right-radius: 10rpx;
 	}
+	
+	
+	.moreInpbox {
+		display: flex;
+		align-items: center;
+		background-color: #EFF0F3;
+		width: 90%;
+		margin: auto;
+		border-radius: 10rpx;
+	}
+	.inpBox {
+		background-color: #EFF0F3;
+		border-radius: 10rpx;
+		height: 96rpx;
+		width: 90%;
+		margin: auto;
+		font-size: 24rpx;
+		color: #999999;
+		padding-left: 20rpx;
+	}
+	
 </style>
