@@ -2,8 +2,8 @@
 	<view class="fleetManage">
 		<view class="flex sticky header">
 			<view class="flex">
-				<button type="default" class="flex-center btn">新增+</button>
-				<button type="default" class="flex-center btn rentBtn">租赁计划</button>
+				<button type="default" class="flex-center btn" @click="add">新增+</button>
+				<button type="default" class="flex-center btn rentBtn" @click="plan">租赁计划</button>
 			</view>
 			<view class="flex">
 				<view class="flex screen" @click="showModal" data-target="DrawerModalR">
@@ -17,7 +17,7 @@
 			</view>
 		</view>
 		<view class="flex-center flex-wrap content">
-			<view v-for="(item, index) in 10" :key="index" class="panel">
+			<view v-for="(item, index) in 10" :key="index" class="panel" @click="carInfo()">
 				<view class="flex titlePanel">
 					<p class="title">渝A·5231B</p>
 					<p class="type">租赁中</p>
@@ -107,6 +107,27 @@
 			search(){
 				uni.navigateTo({
 					url:'./fleetManageSearch',
+					animationDuration:200,
+					animationType:'pop-in'
+				})
+			},
+			add(){
+				uni.navigateTo({
+					url:'./addCar',
+					animationDuration:200,
+					animationType:'pop-in'
+				})
+			},
+			plan(){
+				uni.navigateTo({
+					url:'./hirePlan',
+					animationDuration:200,
+					animationType:'pop-in'
+				})
+			},
+			carInfo(){
+				uni.navigateTo({
+					url:'./fleetDetail',
 					animationDuration:200,
 					animationType:'pop-in'
 				})

@@ -1,25 +1,64 @@
 {
-	"pages": [{
+	"pages": [
+		
+		{
+			"path": "pages/Store/store", 
+			"style": {
+				"navigationBarTitleText": "添加送车点"
+			}
+		},{ 
+			"path": "pages/Delivery/addPoint", 
+			"style": {
+				"navigationBarTitleText": "添加送车点"
+			}
+		},{
+			"path": "pages/Delivery/pointInfo", 
+			"style": {
+				"navigationBarTitleText": "送车点管理"
+			}
+		},{
+			"path": "pages/Delivery/carPoint", 
+			"style": {
+				"navigationBarTitleText": "送车点管理"
+			}
+		},{
+			"path": "pages/user/user",
+			"style": {
+				"navigationBarTitleText": "个人中心",
+				"navigationStyle": "custom"
+			}
+		},{
+		"path": "pages/user/addCard",
+		"style": {
+			"navigationBarTitleText": "添加银行卡"
+
+		}
+	}, {
+		"path": "pages/fleetManage/fleetDetail",
+		"style": {
+			"navigationBarTitleText": "车辆详情"
+		}
+	}, {
 		"path": "pages/fleetManage/fleetManageSearch",
 		"style": {
 			"navigationBarTitleText": "车辆管理"
 		}
-	},{
+	}, {
 		"path": "pages/login/login",
 		"style": {
 			"navigationBarTitleText": "登陆"
 		}
-	},{ 
+	}, {
 		"path": "pages/fleetManage/addCar",
 		"style": {
 			"navigationBarTitleText": "添加车辆"
 		}
-	},{
+	}, {
 		"path": "pages/fleetManage/hirePlan",
 		"style": {
-			"navigationBarTitleText": "租聘计划" 
-		} 
-	},{
+			"navigationBarTitleText": "租聘计划"
+		}
+	}, {
 		"path": "pages/login/home",
 		"style": {
 			"navigationBarTitleText": "登陆注册"
@@ -70,11 +109,28 @@
 			"navigationBarTitleText": "身份选择"
 		}
 	}, {
-		"path": "pages/user/user",
+		"path": "pages/user/news",
 		"style": {
-			"navigationBarTitleText": "个人中心"
+			"navigationBarTitleText": "消息记录",
+			"enablePullDownRefresh": false
 		}
-	}   
+
+	}, {
+		"path": "pages/user/wallet",
+		"style": {
+			"navigationBarTitleText": "我的钱包",
+			"enablePullDownRefresh": false
+		}
+
+	}    ,{
+            "path" : "pages/user/bill",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "账单",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarBackgroundColor": "#FFFFFF", //默认导航栏背景颜色
@@ -90,7 +146,7 @@
 		"list": [{
 			"pagePath": "pages/home/home",
 			"iconPath": "static/img/home@2x.png",
-			"selectedIconPath": "static/img/home@2x.png", 
+			"selectedIconPath": "static/img/home@2x.png",
 			"text": "首页"
 		}, {
 			"pagePath": "pages/user/user",
@@ -102,7 +158,7 @@
 	"easycom": {
 		"autoscan": true, //是否自动扫描组件
 		"custom": { //自定义扫描规则
-			"tui-(.*)": "@/components/thorui/tui-$1/tui-$1.vue" 
+			"tui-(.*)": "@/components/thorui/tui-$1/tui-$1.vue"
 			// "^u-(.*)": "@/components/uview-ui/components/u-$1/u-$1.vue"
 		}
 	}
