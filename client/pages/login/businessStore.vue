@@ -76,7 +76,7 @@
 				    background-color: #5A7EFF;
 				    border-radius: 50px;
 				    font-size: 32rpx;
-				    height: 96rpx;" type="default" @click="next">完成</button>
+				    height: 96rpx;line-height: 96rpx;" type="default" @click="next">完成</button>
 
 			
 		</view>

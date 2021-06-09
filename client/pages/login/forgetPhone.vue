@@ -43,12 +43,11 @@
 			<view class="moreInpbox">
 				<view style="width: 90%;"><input :type="inpType" class="inpBox" style="width: 95%;"
 						placeholder="请填写密码" /></view>
-				<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
 				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;"
 					src="../../static/img/guan.png" mode="" @click="look"></image>
 				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;"
 					src="../../static/img/kai.png" mode="" @click="look"></image>
-				<!-- </view> -->
+		
 			</view> 
 			
 
@@ -61,7 +60,7 @@
 				    background-color: #5A7EFF;
 				    border-radius: 50px;
 				    font-size: 32rpx;
-				    height: 96rpx;" type="default" >完成</button>
+				    height: 96rpx;line-height: 96rpx;" type="default" >完成</button>
 
 		</view>
 

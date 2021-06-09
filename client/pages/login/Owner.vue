@@ -15,61 +15,61 @@
 		</view>
 
 		<view class="">
-			
-			
-					<view class="fromTitel">姓名</view>
-					<input class="inpBox" type="text" placeholder="请填写姓名" />
-			
 
-	
-					<view class="fromTitel">身份证号码 </view>
-					<input class="inpBox" type="text" placeholder="请填写身份证号码" />
-			
 
-				
-					<view class="fromTitel">手机号</view>
-					<input class="inpBox" type="text" placeholder="请填写手机号码" />
-			
+			<view class="fromTitel">姓名</view>
+			<input class="inpBox" type="text" placeholder="请填写姓名" />
 
-			
-					<view class="fromTitel">验证码</view>
-					<view class="moreInpbox">
-						<view style="width: 78%;"><input class="inpBox" style="width: 100%;" type="text"
-								placeholder="请填写验证码" /></view>
-						<view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;">获取验证码</view>
-					</view>
-				
 
-			
-					<view class="fromTitel">邮箱</view>
-					<input class="inpBox" type="text" placeholder="请填写邮箱" />
-		
 
-			
-					<view class="fromTitel">密码</view>
-					<view class="moreInpbox">
-						<view style="width: 90%;"><input :type="inpType" class="inpBox" style="width: 95%;"
-								placeholder="请填写密码" /></view>
-						<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
-						<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;"
-							src="../../static/img/guan.png" mode="" @click="look"></image>
-						<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;"
-							src="../../static/img/kai.png" mode="" @click="look"></image>
-						<!-- </view> -->
-					</view> 
-				
-				
-					<view class="fromTitel">推荐码 </view>
-					<input class="inpBox" type="text" placeholder="请填写推荐码" />
-	
+			<view class="fromTitel">身份证号码 </view>
+			<input class="inpBox" type="text" placeholder="请填写身份证号码" />
 
-			<button  style=" color: white;
+
+
+			<view class="fromTitel">手机号</view>
+			<input class="inpBox" type="text" placeholder="请填写手机号码" />
+
+
+
+			<view class="fromTitel">验证码</view>
+			<view class="moreInpbox">
+				<view style="width: 78%;"><input class="inpBox" style="width: 100%;" type="text" placeholder="请填写验证码" />
+				</view>
+				<view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;">获取验证码</view>
+			</view>
+
+
+
+			<view class="fromTitel">邮箱</view>
+			<input class="inpBox" type="text" placeholder="请填写邮箱" />
+
+
+
+			<view class="fromTitel">密码</view>
+			<view class="moreInpbox">
+				<view style="width: 90%;"><input :type="inpType" class="inpBox" style="width: 95%;"
+						placeholder="请填写密码" /></view>
+				<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
+				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" src="../../static/img/guan.png"
+					mode="" @click="look"></image>
+				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" src="../../static/img/kai.png"
+					mode="" @click="look"></image>
+				<!-- </view> -->
+			</view>
+
+
+			<view class="fromTitel">推荐码 </view>
+			<input class="inpBox" type="text" placeholder="请填写推荐码" />
+
+
+			<button style=" color: white;
 			width: 80%;
 			margin: auto;
 		    background-color: #5A7EFF;
 		    border-radius: 50px;
 		    font-size: 32rpx; 
-		    height: 96rpx;" type="default" @click="next">下一步</button>
+		    height: 96rpx;line-height: 96rpx;" type="default" @click="next">下一步</button>
 
 
 		</view>
@@ -80,8 +80,8 @@
 	export default {
 		data() {
 			return {
-	
-		
+
+
 				showpass: true, //密码眼睛切换 false 关闭  true开启
 				inpType: 'password', //切换密码框type
 
@@ -146,5 +146,4 @@
 		margin: auto;
 		border-radius: 10rpx;
 	}
-
 </style>

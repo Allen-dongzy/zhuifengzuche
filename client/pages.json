@@ -1,10 +1,43 @@
 {
 	"pages": [
 		
+		
+		
+		
 		{
+			"path": "pages/Store/addstaffInfo", 
+			"style": {
+				"navigationBarTitleText": "员工信息"
+			} 
+		},{
+			"path": "pages/Store/addstaff2", 
+			"style": {
+				"navigationBarTitleText": "员工管理2"
+			} 
+		},{
+			"path": "pages/Store/addstaff1", 
+			"style": {
+				"navigationBarTitleText": "员工管理1"
+			} 
+		},{
+			"path": "pages/Store/staff", 
+			"style": {
+				"navigationBarTitleText": "员工管理"
+			} 
+		},{
+			"path": "pages/Store/storePoint", 
+			"style": {
+				"navigationBarTitleText": "门店送车点"
+			} 
+		},{
 			"path": "pages/Store/store", 
 			"style": {
-				"navigationBarTitleText": "添加送车点"
+				"navigationBarTitleText": "门店"
+			} 
+		},{
+			"path": "pages/Store/storeInfo", 
+			"style": {
+				"navigationBarTitleText": "门店详情"
 			}
 		},{ 
 			"path": "pages/Delivery/addPoint", 

@@ -40,7 +40,8 @@
 				    background-color: #5A7EFF;
 				    border-radius: 50px;
 				    font-size: 32rpx;
-				    height: 96rpx;" type="default" @click="next">下一步</button>
+					line-height: 96rpx;
+				    height: 96rpx;line-height: 96rpx;" type="default" @click="next">下一步</button>
 
 	</view>
 </template>
