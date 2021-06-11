@@ -34,14 +34,14 @@
 		<view class="idCard">
 			<input class="nameBox" placeholder="请输入公司名字" type="text" value="" />
 		</view>
-		<button  style=" color: white;
-			width: 80%;
-					margin: auto;
-				    background-color: #5A7EFF;
-				    border-radius: 50px;
-				    font-size: 32rpx;
-					line-height: 96rpx;
-				    height: 96rpx;line-height: 96rpx;" type="default" @click="next">下一步</button>
+		
+	<button  style=" color: white;
+		width: 80%;
+				margin: 20rpx auto;
+			    background-color: #5A7EFF;
+			    border-radius: 50px;
+			    font-size: 32rpx;
+			    height: 96rpx;line-height: 96rpx;" type="default" @click="next()">下一步</button>
 
 	</view>
 </template>

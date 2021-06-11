@@ -1,9 +1,44 @@
 {
 	"pages": [
+	
 		
-
 		
 		{
+		    "path" : "pages/home/payEd",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "收款结果"
+		    }
+		    
+		},{
+		    "path" : "pages/home/payCode",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "发起收款"
+		    }
+		    
+		},{
+		    "path" : "pages/home/otherPay",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "其他收款"
+		    }
+		    
+		},{
+		    "path" : "pages/home/deliverCar",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "交付车辆"
+		    }
+		    
+		},{
+		    "path" : "pages/home/goInspect",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "出车检验"
+		    }
+		    
+		},{
 			"path": "pages/home/changeCar",
 			"style": {
 				"navigationBarTitleText": "换车"
@@ -223,15 +258,7 @@
 
 		}
 	   
-        ,{
-            "path" : "pages/home/goInspect",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
+        
     ],
 	"globalStyle": {
 		"navigationBarBackgroundColor": "#FFFFFF", //默认导航栏背景颜色

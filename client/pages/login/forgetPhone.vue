@@ -53,10 +53,9 @@
 
 
 		
-		<button  style=" color: white;
+	<button  style=" color: white;
 			width: 80%;
-					margin: auto;
-					margin-top: 20rpx;
+					margin: 20rpx auto;
 				    background-color: #5A7EFF;
 				    border-radius: 50px;
 				    font-size: 32rpx;

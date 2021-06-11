@@ -70,13 +70,13 @@
 					<input class="inpBox" type="text" placeholder="请填写负责人或者法人名称电话" />
 			
 
-		<button  style=" color: white;
+	<button  style=" color: white;
 			width: 80%;
-					margin: auto;
+					margin: 20rpx auto;
 				    background-color: #5A7EFF;
 				    border-radius: 50px;
 				    font-size: 32rpx;
-				    height: 96rpx;line-height: 96rpx;" type="default" @click="next">完成</button>
+				    height: 96rpx;line-height: 96rpx;" type="default" @click="next()">完成</button>
 
 			
 		</view>
