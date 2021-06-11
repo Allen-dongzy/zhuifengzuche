@@ -1,7 +1,7 @@
 <template>
 	<view>
 
-		<view class="topBox" v-if="seatch==false">
+		<view class="topBox" v-if="search==false">
 	
 			<image style="width: 48rpx;height: 48rpx;" :src="$util.fileUrl('/time.png')" mode=""></image>
 			<view style="margin-left: 2%;">
@@ -20,7 +20,7 @@
 			</view>
 		</view>
 		
-		<view class="topNav" style="color: #8E8E93;font-size: 30rpx" v-if="seatch==true">
+		<view class="topNav" style="color: #8E8E93;font-size: 30rpx" v-if="search==true">
 			<input type="text" style="background-color:#EFF0F3;height: 70rpx;width: 500rpx;border-radius: 50rpx;padding-left: 20rpx;" value="" />
 			<view style="margin-left: 20rpx;" @click="showSearch">取消</view>
 		</view>
@@ -104,7 +104,7 @@
 				stardate: '开始时间',
 				enddate: '结束时间',
 				showStuse: false,
-				seatch:false
+				search:false
 			}
 		},
 		onLoad() {
@@ -157,11 +157,11 @@
 				this.stuseList[e].stuse=2
 			},
 			showSearch(){
-				if(this.seatch){
-					this.seatch=false
+				if(this.search){
+					this.search=false
 					
 				}else{
-					this.seatch=true
+					this.search=true
 					this.showStuse=false
 				}
 			}

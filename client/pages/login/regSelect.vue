@@ -1,7 +1,7 @@
 <template> 
 	<view class="content">
 		<view class="box">
-			<view class="regBox"><image style="height:92rpx;width: 316rpx;" src="../../static/img/reglogo.png" mode=""></image> </view>
+			<view class="regBox"><image style="height:92rpx;width: 316rpx;" :src="$util.fileUrl('/reglogo.png')" mode=""></image> </view>
 			<view class="">
 				<view class="typeBox" @click="next(1)">我是车主</view>
 				<view class="typeBox" @click="next(2)">我是商家</view>

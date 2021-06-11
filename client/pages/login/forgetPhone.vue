@@ -1,10 +1,10 @@
 <template>
 	<view class="content">
 		<view class="topimg">
-			<image class="loginBox" src="../../static/img/logo.png"></image>
+			<image class="loginBox" :src="$util.fileUrl('/logo.png')"></image>
 		</view>
 		<view class="topimg2">
-			<image style="height:544rpx;width: 544rpx;" src="../../static/img/loginbg.png" mode=""></image>
+			<image style="height:544rpx;width: 544rpx;" :src="$util.fileUrl('/loginbg.png')" mode=""></image>
 		</view>
 		<view class="setbox">
 
@@ -32,9 +32,9 @@
 						placeholder="请填写密码" /></view>
 				<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
 				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;"
-					src="../../static/img/guan.png" mode="" @click="look"></image>
+					:src="$util.fileUrl('/guan.png')" mode="" @click="look"></image>
 				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;"
-					src="../../static/img/kai.png" mode="" @click="look"></image>
+					:src="$util.fileUrl('/kai.png')" mode="" @click="look"></image>
 				<!-- </view> -->
 			</view> 
 			

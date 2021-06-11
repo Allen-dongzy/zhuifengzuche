@@ -36,12 +36,12 @@
 				</view>
 			</scroll-view>
 		</view>
-		<view class="flex-center flex-wrap panelList">
+		<view class="flex-center flex-wrap panelList" @click="lookinfo">
 			<view class="panel">
 				<view class="header">
 					<view class="flex titlePanel">
 						<p class="title">渝A·5231B</p>
-						<view class="flex-center status">
+						<view class="flex-center status" v-show="tabCheck==0 || tabCheck==3">
 							<image :src="$util.fileUrl('/paid_label@2x.png')"></image>
 							<p>已支付</p>
 						</view>
@@ -60,7 +60,7 @@
 						<p class="name">大众迈腾</p>
 						<view class="flex radioCheck">
 							<p>异地还车</p>
-							<switch @change="radioChange" class="switch" :class="(radio?'checked':'')" :checked="(radio?true:false)"></switch>
+							<switch @change="radioChange" class="switch" :class="(radio?'checked':'')" :checked="(radio?true:false)"></switch> 
 						</view>
 					</view>
 					<view class="flex timeText">
@@ -77,16 +77,25 @@
 						<p class="type">还</p>
 						<p class="text">郑家院子东路8号</p>
 					</view>
-					<p class="dateText">距离送车1天6小时12分</p>
+					<view class="flex location">
+						<i></i>
+						<p class="type">取还</p>
+						<p class="text">郑家院子东路8号</p>
+					</view>
+					<p class="dateText" v-show="tabCheck<2">距离送车1天6小时12分</p>
+					<p class="dateText" v-show="tabCheck==2">待处理违章3条</p>
 					<view class="flex submit">
 						<view class="flex phone">
 							<image :src="$util.fileUrl('/phone@2x.png')"></image>
 							<p>联系客户</p>
 						</view>
 						<view class="flex">
-							<button type="default" class="flex-center btn">出车检验</button>
-							<button type="default" class="flex-center btn">交付车辆</button>
-							<button v-if="false" type="default" class="flex-center btn bg-btn">退还押金</button>
+							<button type="default" v-show="tabCheck==0" class="flex-center btn">出车检验</button>
+							<button type="default" v-show="tabCheck==0" class="flex-center btn" style="margin-left: 20rpx;">交付车辆</button>
+							<button type="default" v-show="tabCheck==1" class="flex-center btn">交车情况</button>
+							<button type="default" v-show="tabCheck==1" class="flex-center btn" style="margin-left: 20rpx;">检验收车</button>
+							<button type="default" v-show="tabCheck==2" class="flex-center btn">收车详情</button>
+							<button type="default" v-show="tabCheck==2" class="flex-center btn bg-btn">退还押金</button>
 						</view>
 					</view>
 				</view>
@@ -115,16 +124,20 @@
 					text: '车型设置'
 				}, {
 					path: '/delivery_point_management@2x.png',
-					text: '送车点管理'
+					text: '送车点管理',
+					url:'../Delivery/carPoint'
 				}, {
 					path: '/store_management@2x.png',
-					text: '门店管理'
+					text: '门店管理', 
+					url:'../Store/store'
 				}, {
 					path: '/collection_payment_management@2x.png',
-					text: '收付款管理'
+					text: '收付款管理',
+					url:'../collectPay/collectPay'
 				}, {
 					path: '/marketing_management@2x.png',
-					text: '营销管理'
+					text: '营销管理',
+					url:'../Marketing/Marketing'
 				}, {
 					path: '/customer_records@2x.png',
 					text: '客户记录'
@@ -175,6 +188,13 @@
 					url:e,
 					animationType: 'pop-in',
 					animationDuration: 200
+				})
+			},
+			lookinfo(){
+				uni.navigateTo({
+					url:'./orderInfo',
+					animationDuration:200,
+					animationType:'pop-in'
 				})
 			}
 		}

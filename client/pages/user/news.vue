@@ -53,7 +53,7 @@
 	text-align: center;
 }
 .content{
-	color: #999999;
+	color: #999999; 
 	font-size: 24rpx;
 	margin-top: 20rpx;
 }

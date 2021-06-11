@@ -1,7 +1,7 @@
 <template>
 	<view class="">
 		<view class="topNav" v-if="search==false">
-			<view class="add">新增+</view>
+			<view class="add" @click="add">新增+</view>
 			<view class="title" @click="select">筛选</view>
 			<image style="height:25rpx;width: 35rpx;margin-right: 30rpx;" :src="$util.fileUrl('/xiangxia.png')" mode="">
 			</image>
@@ -45,9 +45,9 @@
 				<view class="sure">确定</view>
 			</view>
 		</view>
-
-
-		<view v-for="(item,index) in 5" class="listBox">
+		
+		<!-- 列表 -->
+		<view v-for="(item,index) in 5" class="listBox" @click="lookinfo">
 			<view class="place">
 				<view class="title">江北区</view>
 				<view class="bankLine"></view>
@@ -86,6 +86,20 @@
 					this.search=true
 					this.showStuse=false
 				}
+			},
+			add(){
+				uni.navigateTo({
+					url:'./addPoint', 
+					animationType:'pop-in',
+					animationDuration:200,
+				})
+			},
+			lookinfo(){
+				uni.navigateTo({
+					url:'./pointInfo', 
+					animationType:'pop-in',
+					animationDuration:200,
+				})
 			}
 		}
 	}

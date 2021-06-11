@@ -3,7 +3,7 @@
 		<view style="width: 100%;padding:30rpx 0rpx;border-bottom: 20rpx #EFF0F3 solid;">
 			<view style="width: 90%;margin: auto;">
 				<view  class="allFlex">
-					<image style="height:120rpx;width:120rpx" src="../../static/img/logo2.png" mode=""></image>
+					<image style="height:120rpx;width:120rpx" :src="$util.fileUrl('/logo2.png')" mode=""></image>
 					<view style="margin-left: 30rpx;">
 						<view class="name">门店名称</view>
 						<view class="addres">这是门店地址</view>

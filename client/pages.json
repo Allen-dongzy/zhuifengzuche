@@ -1,165 +1,233 @@
 {
 	"pages": [
 		
-		
-		
+
 		
 		{
-			"path": "pages/Store/addstaffInfo", 
+			"path": "pages/home/changeCar",
+			"style": {
+				"navigationBarTitleText": "换车"
+			}
+		},{
+			"path": "pages/home/home",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},{
+			"path": "pages/home/orderInfo",
+			"style": {
+				"navigationBarTitleText": "订单详情"
+			}
+		},{
+			"path": "pages/risk/risk",
+			"style": {
+				"navigationBarTitleText": "风控查询"
+			}
+		},{ 
+			"path": "pages/risk/finded",
+			"style": {
+				"navigationBarTitleText": "风控查询"
+			}
+		},{
+			"path": "pages/risk/find",
+			"style": {
+				"navigationBarTitleText": "风控查询"
+			}
+		},{
+			"path": "pages/Marketing/otaInfo", 
+			"style": {
+				"navigationBarTitleText": "OTA管理"
+			}
+		},{
+			"path": "pages/Marketing/carList", 
+			"style": {
+				"navigationBarTitleText": "OTA管理"
+			}
+		},{
+			"path": "pages/Marketing/Marketing", 
+			"style": {
+				"navigationBarTitleText": "营销管理"
+			}
+		},{
+			"path": "pages/login/home",
+			"style": {
+				"navigationBarTitleText": "登陆注册"
+			}
+		},{
+			"path": "pages/collectPay/collectPayBack",
+			"style": { 
+				"navigationBarTitleText": "收付款审核"
+			}
+		},{
+			"path": "pages/collectPay/collectPayGoed",
+			"style": {
+				"navigationBarTitleText": "收付款审核"
+			}
+		},{
+			"path": "pages/collectPay/collectPayBacked",
+			"style": { 
+				"navigationBarTitleText": "收付款审核"
+			}
+		},{
+			"path": "pages/collectPay/collectPay",
+			"style": {
+				"navigationBarTitleText": "收付款管理"
+			}
+		},{
+			"path": "pages/collectPay/collectPayGo",
+			"style": {
+				"navigationBarTitleText": "收付款审核"
+			}
+		},{
+			"path": "pages/Store/addstaffInfo",
 			"style": {
 				"navigationBarTitleText": "员工信息"
-			} 
-		},{
-			"path": "pages/Store/addstaff2", 
-			"style": {
-				"navigationBarTitleText": "员工管理2"
-			} 
-		},{
-			"path": "pages/Store/addstaff1", 
+			}
+		}, {
+			"path": "pages/Store/addstaff",
 			"style": {
 				"navigationBarTitleText": "员工管理1"
-			} 
-		},{
-			"path": "pages/Store/staff", 
+			}
+		}, {
+			"path": "pages/Store/staff",
 			"style": {
 				"navigationBarTitleText": "员工管理"
-			} 
-		},{
-			"path": "pages/Store/storePoint", 
+			}
+		}, {
+			"path": "pages/Store/storePoint",
 			"style": {
 				"navigationBarTitleText": "门店送车点"
-			} 
-		},{
-			"path": "pages/Store/store", 
+			}
+		}, {
+			"path": "pages/Store/store",
 			"style": {
 				"navigationBarTitleText": "门店"
-			} 
-		},{
-			"path": "pages/Store/storeInfo", 
+			}
+		}, {
+			"path": "pages/Store/storeInfo",
 			"style": {
 				"navigationBarTitleText": "门店详情"
 			}
-		},{ 
-			"path": "pages/Delivery/addPoint", 
+		}, {
+			"path": "pages/Delivery/addPoint",
 			"style": {
 				"navigationBarTitleText": "添加送车点"
 			}
-		},{
-			"path": "pages/Delivery/pointInfo", 
+		}, {
+			"path": "pages/Delivery/pointInfo",
 			"style": {
 				"navigationBarTitleText": "送车点管理"
 			}
-		},{
-			"path": "pages/Delivery/carPoint", 
+		}, {
+			"path": "pages/Delivery/carPoint",
 			"style": {
 				"navigationBarTitleText": "送车点管理"
 			}
-		},{
+		}, {
 			"path": "pages/user/user",
 			"style": {
 				"navigationBarTitleText": "个人中心",
 				"navigationStyle": "custom"
 			}
-		},{
-		"path": "pages/user/addCard",
-		"style": {
-			"navigationBarTitleText": "添加银行卡"
+		}, {
+			"path": "pages/user/addCard",
+			"style": {
+				"navigationBarTitleText": "添加银行卡"
+
+			}
+		}, {
+			"path": "pages/fleetManage/fleetDetail",
+			"style": {
+				"navigationBarTitleText": "车辆详情"
+			}
+		}, {
+			"path": "pages/fleetManage/fleetManageSearch",
+			"style": {
+				"navigationBarTitleText": "车辆管理"
+			}
+		}, {
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登陆"
+			}
+		}, {
+			"path": "pages/fleetManage/addCar",
+			"style": {
+				"navigationBarTitleText": "添加车辆"
+			}
+		}, {
+			"path": "pages/fleetManage/hirePlan",
+			"style": {
+				"navigationBarTitleText": "租聘计划"
+			}
+		}, {
+			"path": "pages/fleetManage/fleetManage",
+			"style": {
+				"navigationBarTitleText": "车辆管理"
+			}
+		},  {
+			"path": "pages/login/OwnerCard",
+			"style": {
+				"navigationBarTitleText": "车主注册-证件"
+			}
+		}, {
+			"path": "pages/login/Owner",
+			"style": {
+				"navigationBarTitleText": "车主注册"
+			}
+		}, {
+			"path": "pages/login/businessStore",
+			"style": {
+				"navigationBarTitleText": "登陆注册-门店信息"
+			}
+		}, {
+			"path": "pages/login/businessCard",
+			"style": {
+				"navigationBarTitleText": "商家注册-证件"
+			}
+		}, {
+			"path": "pages/login/business",
+			"style": {
+				"navigationBarTitleText": "商家注册"
+			}
+		}, {
+			"path": "pages/login/forgetPhone",
+			"style": {
+				"navigationBarTitleText": "忘记密码"
+			}
+		}, {
+			"path": "pages/login/regSelect",
+			"style": {
+				"navigationBarTitleText": "身份选择"
+			}
+		}, {
+			"path": "pages/user/news",
+			"style": {
+				"navigationBarTitleText": "消息记录"
+
+			}
+
+		}, {
+			"path": "pages/user/wallet",
+			"style": {
+				"navigationBarTitleText": "我的钱包"
+
+			}
+
+		}, {
+			"path": "pages/user/bill",
+			"style": {
+				"navigationBarTitleText": "账单"
+
+			}
 
 		}
-	}, {
-		"path": "pages/fleetManage/fleetDetail",
-		"style": {
-			"navigationBarTitleText": "车辆详情"
-		}
-	}, {
-		"path": "pages/fleetManage/fleetManageSearch",
-		"style": {
-			"navigationBarTitleText": "车辆管理"
-		}
-	}, {
-		"path": "pages/login/login",
-		"style": {
-			"navigationBarTitleText": "登陆"
-		}
-	}, {
-		"path": "pages/fleetManage/addCar",
-		"style": {
-			"navigationBarTitleText": "添加车辆"
-		}
-	}, {
-		"path": "pages/fleetManage/hirePlan",
-		"style": {
-			"navigationBarTitleText": "租聘计划"
-		}
-	}, {
-		"path": "pages/login/home",
-		"style": {
-			"navigationBarTitleText": "登陆注册"
-		}
-	}, {
-		"path": "pages/fleetManage/fleetManage",
-		"style": {
-			"navigationBarTitleText": "车辆管理"
-		}
-	}, {
-		"path": "pages/home/home",
-		"style": {
-			"navigationBarTitleText": "首页"
-		}
-	}, {
-		"path": "pages/login/OwnerCard",
-		"style": {
-			"navigationBarTitleText": "车主注册-证件"
-		}
-	}, {
-		"path": "pages/login/Owner",
-		"style": {
-			"navigationBarTitleText": "车主注册"
-		}
-	}, {
-		"path": "pages/login/businessStore",
-		"style": {
-			"navigationBarTitleText": "登陆注册-门店信息"
-		}
-	}, {
-		"path": "pages/login/businessCard",
-		"style": {
-			"navigationBarTitleText": "商家注册-证件"
-		}
-	}, {
-		"path": "pages/login/business",
-		"style": {
-			"navigationBarTitleText": "商家注册"
-		}
-	}, {
-		"path": "pages/login/forgetPhone",
-		"style": {
-			"navigationBarTitleText": "忘记密码"
-		}
-	}, {
-		"path": "pages/login/regSelect",
-		"style": {
-			"navigationBarTitleText": "身份选择"
-		}
-	}, {
-		"path": "pages/user/news",
-		"style": {
-			"navigationBarTitleText": "消息记录",
-			"enablePullDownRefresh": false
-		}
-
-	}, {
-		"path": "pages/user/wallet",
-		"style": {
-			"navigationBarTitleText": "我的钱包",
-			"enablePullDownRefresh": false
-		}
-
-	}    ,{
-            "path" : "pages/user/bill",
+	   
+        ,{
+            "path" : "pages/home/goInspect",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "账单",
+                "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
             

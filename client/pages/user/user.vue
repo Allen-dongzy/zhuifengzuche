@@ -1,7 +1,7 @@
 <template>
 	<view class="box" :style="{backgroundImage: 'url('+$util.fileUrl('/userimg.png')+')'}">
 		<view class="nameBox">
-			<view class=""><image style="height: 100rpx;width: 100rpx;border-radius: 50%;" src="../../static/img/icon1.png" mode=""></image> </view>
+			<view class=""><image style="height: 100rpx;width: 100rpx;border-radius: 50%;" :src="$util.fileUrl('/icon1.png')" mode=""></image> </view>
 			<view style="font-size: 40rpx;color: white;margin-left: 20rpx;">用户姓名</view>
 		</view>
 		<view class="allBox" >

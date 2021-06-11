@@ -159,7 +159,7 @@
 		<view style="margin-top: 40rpx;">
 			<view v-for="(item,index) in list" :key="index" style="display: inline-block;width: 20%;margin: 0px 2%;">
 				<view style="position: relative;">
-					<image style="height:160rpx;width: 160rpx;" src="../../static/img/icon3.png" mode=""></image>
+					<image style="height:160rpx;width: 160rpx;" :src="$util.fileUrl('/icon3.png')" mode=""></image>
 					<image style="position: absolute;height: 36rpx;width: 36rpx;top: -20rpx;left:140rpx;" :src="$util.fileUrl('/lancha.png')" mode=""></image>
 				</view>
 			</view>
@@ -195,7 +195,7 @@
 		<view style="margin-top: 40rpx;">
 			<view v-for="(item,index) in list" :key="index" style="display: inline-block;width: 20%;margin: 0px 2%;">
 				<view style="position: relative;">
-					<image style="height:160rpx;width: 160rpx;" src="../../static/img/icon3.png" mode=""></image>
+					<image style="height:160rpx;width: 160rpx;" :src="$util.fileUrl('/icon3.png')" mode=""></image>
 					<image style="position: absolute;height: 36rpx;width: 36rpx;top: -20rpx;left:140rpx;" :src="$util.fileUrl('/lancha.png')" mode=""></image>
 				</view>
 			</view>
@@ -211,7 +211,7 @@
 			<view style="margin-top: 40rpx;">
 				<view v-for="(item,index) in list" :key="index" style="display: inline-block;width: 20%;margin: 0px 2%;">
 					<view style="position: relative;">
-						<image style="height:160rpx;width: 160rpx;" src="../../static/img/icon3.png" mode=""></image>
+						<image style="height:160rpx;width: 160rpx;" :src="$util.fileUrl('/icon3.png')" mode=""></image>
 						<image style="position: absolute;height: 36rpx;width: 36rpx;top: -20rpx;left:140rpx;" :src="$util.fileUrl('/lancha.png')" mode=""></image>
 					</view>
 				</view>

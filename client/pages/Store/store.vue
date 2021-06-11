@@ -12,7 +12,7 @@
 
 		<view v-for="(item,index) in list" :key="index" class="allFlex"
 			style="border-bottom: 2rpx solid #EFF0F3;width: 90%;margin: auto;padding:20rpx 0rpx;" @click="lookinfo">
-			<image style="height:120rpx;width:120rpx" src="../../static/img/logo2.png" mode=""></image>
+			<image style="height:120rpx;width:120rpx" :src="$util.fileUrl('/logo2.png')" mode=""></image>
 			<view style="margin-left: 30rpx;">
 				<view class="name">门店名称</view>
 				<view class="addres">这是门店地址</view>

@@ -2,14 +2,14 @@
 	<view class="">
 		<view class="topNav">
 			<view style="width: 5%;text-align: center;">
-				<image style="width: 20rpx;height: 20rpx;" src="../../static/img/1-1.png" mode=""></image>
+				<image style="width: 20rpx;height: 20rpx;" :src="$util.fileUrl('/1-1.png')" mode=""></image>
 			</view>
 			<view style="font-size: 32rpx;color: #5A7EFF;">基本信息</view>
 			<view style="width: 10%;text-align: center;line-height: 3px;">
-				<image style="width: 10rpx;height: 10rpx;" src="../../static/img/next2.png" mode=""></image>
+				<image style="width: 10rpx;height: 10rpx;" :src="$util.fileUrl('/next2.png')" mode=""></image>
 			</view>
 			<view style="width: 5%;text-align: center;">
-				<image style="width: 20rpx;height: 20rpx;" src="../../static/img/2.png" mode=""></image>
+				<image style="width: 20rpx;height: 20rpx;" :src="$util.fileUrl('/2.png')" mode=""></image>
 			</view>
 			<view style="font-size: 32rpx;">证件信息</view>
 		</view>
@@ -51,9 +51,9 @@
 				<view style="width: 90%;"><input :type="inpType" class="inpBox" style="width: 95%;"
 						placeholder="请填写密码" /></view>
 				<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
-				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" src="../../static/img/guan.png"
+				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
 					mode="" @click="look"></image>
-				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" src="../../static/img/kai.png"
+				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
 					mode="" @click="look"></image>
 				<!-- </view> -->
 			</view>

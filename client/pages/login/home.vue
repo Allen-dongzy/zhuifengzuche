@@ -1,9 +1,9 @@
 <template>
 	<view class="content">
-		<image class="loginBox" src="../../static/img/logo.png"></image>
+		<image class="loginBox" :src="$util.fileUrl('/logo.png')"></image>
 		<view class="contentBox">
 			<view class="">
-				<image style="width: 204rpx;height: 204rpx;" src="../../static/img/logo2.png" mode=""></image>
+				<image style="width: 204rpx;height: 204rpx;" :src="$util.fileUrl('/logo2.png')" mode=""></image>
 			</view>
 			<view style="width: 70%;">
 				<view class="title">欢迎入驻追风租车</view>
@@ -13,9 +13,9 @@
 		<view class="iconBox">
 			<view v-for="(item,index) in imgList" :key="inex" class="listBox">
 				<view class="">
-					<image style="width:80rpx;height: 80rpx;" :src="item.img" mode=""></image>
+					<image style="width:80rpx;height: 80rpx;" :src="$util.fileUrl(item.img)" mode=""></image>
 				</view>
-				<view class="">{{item.title}}</view>
+				<view class="">{{item.title}}</view> 
 			</view>
 		</view>
 	
@@ -31,19 +31,19 @@
 		data() {
 			return {
 				imgList: [{
-					img: '../../static/img/icon1.png',
+					img: '/icon1.png',
 					title: '免费加盟'
 				}, {
-					img: '../../static/img/icon2.png',
+					img: '/icon2.png',
 					title: '便捷操作'
 				}, {
-					img: '../../static/img/icon3.png',
+					img: '/icon3.png',
 					title: '车辆管理'
 				}, {
-					img: '../../static/img/icon4.png',
+					img: '/icon4.png',
 					title: '订单管理'
 				}, {
-					img: '../../static/img/icon5.png',
+					img: '/icon5.png',
 					title: '风控管理'
 				}, ]
 			}
