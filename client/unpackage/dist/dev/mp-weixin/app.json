@@ -1,6 +1,11 @@
 {
   "pages": [
     "pages/home/home",
+    "pages/home/addAccident",
+    "pages/home/addOther",
+    "pages/home/violationAdd",
+    "pages/home/violationInfo",
+    "pages/home/violation",
     "pages/home/payEd",
     "pages/home/payCode",
     "pages/home/otherPay",

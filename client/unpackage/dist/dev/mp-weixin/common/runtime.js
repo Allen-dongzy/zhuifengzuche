@@ -105,11 +105,11 @@
 /******/
 /******/
 /******/ 		// mini-css-extract-plugin CSS loading
-/******/ 		var cssChunks = {"components/thorui/tui-loadmore/tui-loadmore":1,"components/thorui/tui-nomore/tui-nomore":1,"components/uni-calendar/uni-calendar":1,"components/thorui/tui-dropdown-list/tui-dropdown-list":1,"components/uni-popup/uni-popup":1,"components/uni-calendar/uni-calendar-item":1};
+/******/ 		var cssChunks = {"components/thorui/tui-loadmore/tui-loadmore":1,"components/thorui/tui-nomore/tui-nomore":1,"components/xp-picker/xp-picker":1,"components/uni-calendar/uni-calendar":1,"components/thorui/tui-dropdown-list/tui-dropdown-list":1,"components/uni-popup/uni-popup":1,"components/uni-calendar/uni-calendar-item":1};
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
-/******/ 				var href = "" + ({"components/colorui/components/cu-custom":"components/colorui/components/cu-custom","components/thorui/tui-loadmore/tui-loadmore":"components/thorui/tui-loadmore/tui-loadmore","components/thorui/tui-nomore/tui-nomore":"components/thorui/tui-nomore/tui-nomore","components/uni-calendar/uni-calendar":"components/uni-calendar/uni-calendar","components/thorui/tui-dropdown-list/tui-dropdown-list":"components/thorui/tui-dropdown-list/tui-dropdown-list","components/uni-popup/uni-popup":"components/uni-popup/uni-popup","components/uni-calendar/uni-calendar-item":"components/uni-calendar/uni-calendar-item","components/uni-transition/uni-transition":"components/uni-transition/uni-transition"}[chunkId]||chunkId) + ".wxss";
+/******/ 				var href = "" + ({"components/colorui/components/cu-custom":"components/colorui/components/cu-custom","components/thorui/tui-loadmore/tui-loadmore":"components/thorui/tui-loadmore/tui-loadmore","components/thorui/tui-nomore/tui-nomore":"components/thorui/tui-nomore/tui-nomore","components/xp-picker/xp-picker":"components/xp-picker/xp-picker","components/uni-calendar/uni-calendar":"components/uni-calendar/uni-calendar","components/thorui/tui-dropdown-list/tui-dropdown-list":"components/thorui/tui-dropdown-list/tui-dropdown-list","components/uni-popup/uni-popup":"components/uni-popup/uni-popup","components/uni-calendar/uni-calendar-item":"components/uni-calendar/uni-calendar-item","components/uni-transition/uni-transition":"components/uni-transition/uni-transition"}[chunkId]||chunkId) + ".wxss";
 /******/ 				var fullhref = __webpack_require__.p + href;
 /******/ 				var existingLinkTags = document.getElementsByTagName("link");
 /******/ 				for(var i = 0; i < existingLinkTags.length; i++) {

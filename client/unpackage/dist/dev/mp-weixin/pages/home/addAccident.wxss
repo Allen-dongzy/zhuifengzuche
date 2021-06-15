@@ -1,0 +1,45 @@
+
+.flexBox {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	padding: 20rpx 0rpx;
+}
+.selectBox {
+	background-color: #EFF0F3;
+	width: 100%;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	border-radius: 10rpx;
+	color: #999999;
+	font-size: 24rpx;
+}
+.pickerText {
+	height: 74rpx;
+	line-height: 74rpx;
+	padding-left: 20rpx;
+}
+.box {
+	width: 90%;
+	margin: auto;
+}
+.title {
+	font-size: 28rpx;
+	font-weight: bold;
+	padding: 30rpx 0rpx;
+}
+.blackText {
+	width: 30%;
+	font-size: 28rpx;
+	color: #000000;
+	font-weight: bold;
+	text-align: left;
+}
+

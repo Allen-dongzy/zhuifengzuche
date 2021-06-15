@@ -1,0 +1,9 @@
+{
+    "id": "rattenking-dtpicker",
+    "name": "DatePicker 多时间粒度选择器组件",
+    "version": "v1.0.3",
+    "description": "该组件实现的功能是将原生picker组件的mode值为date和time结合。时间粒度有年、月、日等",
+    "keywords": [
+        "picker组件，时间选择器、JavaScript，微信小程序，vue"
+    ]
+}
