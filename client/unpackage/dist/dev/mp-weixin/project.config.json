@@ -27,8 +27,14 @@
       "list": []
     },
     "miniprogram": {
-      "current": -1,
-      "list": []
+      "current": 0,
+      "list": [
+        {
+          "name": "default",
+          "id": 0,
+          "pathName": "pages/home/inspectionCollect"
+        }
+      ]
     }
   }
 }

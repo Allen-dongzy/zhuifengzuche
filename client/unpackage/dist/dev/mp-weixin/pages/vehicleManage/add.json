@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "添加车型",
+  "usingComponents": {
+    "tui-dropdown-list": "/components/thorui/tui-dropdown-list/tui-dropdown-list"
+  }
+}

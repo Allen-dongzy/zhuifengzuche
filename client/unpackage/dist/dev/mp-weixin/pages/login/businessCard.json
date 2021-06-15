@@ -1,6 +1,4 @@
 {
   "navigationBarTitleText": "商家注册-证件",
-  "usingComponents": {
-    "u-button": "/components/uview-ui/components/u-button/u-button"
-  }
+  "usingComponents": {}
 }

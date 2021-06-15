@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "车辆管理",
+  "usingComponents": {
+    "tui-loadmore": "/components/thorui/tui-loadmore/tui-loadmore",
+    "tui-nomore": "/components/thorui/tui-nomore/tui-nomore"
+  }
+}

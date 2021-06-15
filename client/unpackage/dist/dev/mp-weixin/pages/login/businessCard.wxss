@@ -1,5 +1,5 @@
 
-.topNav{
+.topNav {
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -13,21 +13,28 @@
 	width: 100%;
 	border-bottom: 20rpx solid #EFF0F3;
 }
-.title{
+.title {
 	color: black;
 	font-size: 28rpx;
 	margin-top: 40rpx;
 	margin-left: 32rpx;
 }
-.idCard{
-	width:90%;
+.idCard {
+	width: 90%;
 	margin: auto;
 	padding-top: 20rpx;
 }
-.imgBox{
-	height: 186rpx;width: 44%;margin: 0px 3%;
+.imgBox {
+	height: 186rpx;
+	width: 44%;
+	margin: 0px 3%;
 }
-.nameBox{
-	background-color: #EFF0F3;height: 74rpx;border-radius: 10rpx;padding-left: 20rpx;font-size: 24rpx;color: #999999;
+.nameBox {
+	background-color: #EFF0F3;
+	height: 74rpx;
+	border-radius: 10rpx;
+	padding-left: 20rpx;
+	font-size: 24rpx;
+	color: #999999;
 }
 

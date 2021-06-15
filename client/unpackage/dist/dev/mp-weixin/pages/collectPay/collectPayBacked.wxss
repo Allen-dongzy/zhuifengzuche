@@ -1,0 +1,31 @@
+
+.flexbox {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	width: 90%;
+	height: 120rpx;
+	margin: auto;
+	border-bottom: 2rpx solid #EFF0F3;
+}
+.titleLeft {
+	width: 50%;
+	text-align: left;
+	font-size: 28rpx;
+	color: #000000;
+}
+.titleRight {
+	width: 50%;
+	text-align: right;
+	font-size: 28rpx;
+	color: #999999;
+}
+.garyLine{
+	height: 20rpx;
+	width: 100%;
+	background-color: #EFF0F3;
+}
+

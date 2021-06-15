@@ -52,4 +52,5 @@
 	@import "components/colorui/icon.css";
 	@import 'common/css/main.css';
 	@import 'common/css/thorui.css';
+	@import '@/static/scss/_reset.scss';
 </style>

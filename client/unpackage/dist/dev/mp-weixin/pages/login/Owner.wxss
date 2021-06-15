@@ -1,0 +1,42 @@
+
+.topNav {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	height: 122rpx;
+	width: 100%;
+	border-bottom: 20rpx solid #EFF0F3;
+}
+.inpBox {
+	background-color: #EFF0F3;
+	border-radius: 10rpx;
+	height: 74rpx;
+	width: 90%;
+	margin: auto;
+	font-size: 24rpx;
+	color: #999999;
+	padding-left: 20rpx;
+}
+.fromTitel {
+	width: 90%;
+	margin: auto;
+}
+.moreInpbox {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	background-color: #EFF0F3;
+	width: 90%;
+	margin: auto;
+	border-radius: 10rpx;
+}
+

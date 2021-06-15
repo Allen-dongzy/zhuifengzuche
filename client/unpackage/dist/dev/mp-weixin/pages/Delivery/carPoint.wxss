@@ -1,0 +1,133 @@
+
+.topNav {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	width: 90%;
+	margin-left: 5%;
+	margin-bottom: 30rpx;
+}
+.place {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+}
+.add {
+	color: #5A7EFF;
+	border: 2rpx solid #5A7EFF;
+	height: 48rpx;
+	width: 172rpx;
+	border-radius: 10rpx;
+	text-align: center;
+	line-height: 48rpx;
+	font-size: 24rpx;
+	margin-right: 40%;
+}
+.title {
+	color: #000000;
+	font-size: 28rpx;
+	margin-right: 10rpx;
+}
+.bankLine {
+	margin: 0rpx 15rpx;
+	height: 25rpx;
+	width: 2rpx;
+	background-color: #000000;
+}
+.listBox {
+	width: 90%;
+	margin: auto;
+	padding: 30rpx 0rpx;
+	border-bottom: 2rpx solid #EFF0F3;
+}
+.Mask {
+	position: fixed;
+	background-color: #000000;
+	opacity: 0.6;
+	height: 100vh;
+	width: 100%;
+	top: 0px;
+}
+.empty {
+	color: #B2B2B2;
+	border: 2rpx solid #B2B2B2;
+	padding: 26rpx 118rpx;
+	font-size: 32rpx;
+	border-radius: 50rpx;
+	margin-right: 20rpx;
+}
+.sure {
+	color: white;
+	padding: 26rpx 118rpx;
+	font-size: 32rpx;
+	background-color: #5A7EFF;
+	border-radius: 50rpx;
+	margin-left: 20rpx;
+}
+.buttonBox {
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+	border-top: 2rpx solid #EFF0F3;
+	padding: 20rpx 0rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+}
+.popBox {
+	position: fixed;
+	top: 0rpx;
+	width: 100%;
+	background-color: white;
+}
+.popTitle {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	border-bottom: 2rpx solid #EFF0F3;
+	height: 140rpx;
+}
+.leftBox {
+	width: 20%;
+	text-align: center;
+	height: 540rpx;
+	overflow-y: scroll;
+	border-right: 2rpx solid #EFF0F3;
+}
+.leftItem {
+	height: 90rpx;
+	width: 100%;
+	line-height: 90rpx;
+	color: #000000;
+	font-size: 26rpx;
+	border-right: 2rpx solid #5A7EFF;
+}
+.rightBox {
+	width: 79%;
+	text-align: center;
+	height: 600rpx;
+	overflow-y: scroll;
+}
+.rightItem {
+	height: 90rpx;
+	width: 100%;
+	line-height: 90rpx;
+	color: #000000;
+	font-size: 26rpx;
+	border-bottom: 2rpx solid #EFF0F3;
+}
+
+
+

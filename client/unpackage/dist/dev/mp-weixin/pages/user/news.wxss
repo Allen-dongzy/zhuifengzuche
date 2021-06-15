@@ -1,0 +1,37 @@
+
+page{
+		background-color: #EFF0F3;
+}
+.box{
+		width: 90%;
+		margin: auto;
+		background-color: white;
+		padding: 30rpx;
+		border-radius: 20rpx;	
+		margin-top: 30rpx;
+}
+.flexBox{
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: flex;
+		-webkit-box-align: center;
+		-webkit-align-items: center;
+		        align-items: center;
+}
+.title{
+	color: #000000;
+	font-size: 28rpx;
+	width: 70%;
+}
+.time{
+	color: #999999;
+	font-size: 24rpx;
+	width: 30%;
+	text-align: center;
+}
+.content{
+	color: #999999; 
+	font-size: 24rpx;
+	margin-top: 20rpx;
+}
+

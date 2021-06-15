@@ -1,7 +1,4 @@
 {
   "navigationBarTitleText": "登陆",
-  "usingComponents": {
-    "u-input": "/components/uview-ui/components/u-input/u-input",
-    "u-button": "/components/uview-ui/components/u-button/u-button"
-  }
+  "usingComponents": {}
 }

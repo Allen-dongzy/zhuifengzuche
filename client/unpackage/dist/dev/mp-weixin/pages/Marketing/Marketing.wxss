@@ -1,0 +1,14 @@
+
+.box{
+	border:2rpx solid rgba(114,141,244,0.25);
+	height: 230rpx;
+	width: 90%;
+	margin: auto;
+	border-radius: 30rpx;
+	text-align: center;
+	line-height: 230rpx;
+	font-size: 40rpx;
+	color: #000000;
+	margin-top: 40rpx;
+}
+

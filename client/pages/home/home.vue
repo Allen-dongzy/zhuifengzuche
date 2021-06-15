@@ -10,7 +10,7 @@
 						<p>{{ item.text }}</p>
 					</view>
 				</swiper-item>
-<!-- 				<swiper-item class="flex flex-wrap swiperItem">
+				<!-- 				<swiper-item class="flex flex-wrap swiperItem">
 					<view v-for="(item,index) in swiperIcon" :key="index" class="flex-center flex-direction iconPanel">
 						<image :src="$util.fileUrl(item.path)" lazy-load></image>
 						<p>{{ item.text }}</p>
@@ -28,7 +28,8 @@
 			<scroll-view class="content" scroll-x>
 				<view class="flex">
 					<view class="flex main">
-						<view v-for="(item, index) in tabList" :key="index" class="flex flex-direction tab" @click="tabClick(index)">
+						<view v-for="(item, index) in tabList" :key="index" class="flex flex-direction tab"
+							@click="tabClick(index)">
 							<p :style="{color: (item.check?'#5A7EFF':'#999999')}">{{ item.text }}</p>
 							<i v-show="item.check"></i>
 						</view>
@@ -60,7 +61,8 @@
 						<p class="name">大众迈腾</p>
 						<view class="flex radioCheck">
 							<p>异地还车</p>
-							<switch @change="radioChange" class="switch" :class="(radio?'checked':'')" :checked="(radio?true:false)"></switch> 
+							<switch @change="radioChange" class="switch" :class="(radio?'checked':'')"
+								:checked="(radio?true:false)"></switch>
 						</view>
 					</view>
 					<view class="flex timeText">
@@ -91,9 +93,12 @@
 						</view>
 						<view class="flex">
 							<button type="default" v-show="tabCheck==0" class="flex-center btn">出车检验</button>
-							<button type="default" v-show="tabCheck==0" class="flex-center btn" style="margin-left: 20rpx;">交付车辆</button>
+							<button type="default" v-show="tabCheck==0" class="flex-center btn"
+								style="margin-left: 20rpx;">交付车辆</button>
 							<button type="default" v-show="tabCheck==1" class="flex-center btn">交车情况</button>
-							<button type="default" v-show="tabCheck==1" class="flex-center btn" style="margin-left: 20rpx;">检验收车</button>
+							<button type="default" v-show="tabCheck==1" class="flex-center btn"
+								style="margin-left: 20rpx;"
+								@tap.stop="toHomeLevel('/pages/home/inspectionCollect')">检验收车</button>
 							<button type="default" v-show="tabCheck==2" class="flex-center btn">收车详情</button>
 							<button type="default" v-show="tabCheck==2" class="flex-center btn bg-btn">退还押金</button>
 						</view>
@@ -117,27 +122,28 @@
 				swiperIcon: [{
 					path: '/vehicle_management@2x.png',
 					text: '车辆管理',
-					url:'../fleetManage/fleetManage'
-					
+					url: '../fleetManage/fleetManage'
+
 				}, {
 					path: '/model_set@2x.png',
-					text: '车型设置'
+					text: '车型设置',
+					url: '../vehicleManage/manage'
 				}, {
 					path: '/delivery_point_management@2x.png',
 					text: '送车点管理',
-					url:'../Delivery/carPoint'
+					url: '../Delivery/carPoint'
 				}, {
 					path: '/store_management@2x.png',
-					text: '门店管理', 
-					url:'../Store/store'
+					text: '门店管理',
+					url: '../Store/store'
 				}, {
 					path: '/collection_payment_management@2x.png',
 					text: '收付款管理',
-					url:'../collectPay/collectPay'
+					url: '../collectPay/collectPay'
 				}, {
 					path: '/marketing_management@2x.png',
 					text: '营销管理',
-					url:'../Marketing/Marketing'
+					url: '../Marketing/Marketing'
 				}, {
 					path: '/customer_records@2x.png',
 					text: '客户记录'
@@ -149,16 +155,16 @@
 				tabList: [{
 					text: '待发车(2)',
 					check: true
-				},{
+				}, {
 					text: '待收车(2)',
 					check: false
-				},{
+				}, {
 					text: '已完成',
 					check: false
-				},{
+				}, {
 					text: '待支付',
 					check: false
-				},{
+				}, {
 					text: '已取消',
 					check: false
 				}],
@@ -170,7 +176,7 @@
 			/**
 			 * 状态切换
 			 */
-			tabClick(index){
+			tabClick(index) {
 				this.tabList[this.tabCheck].check = false;
 				this.tabList[index].check = true;
 				this.tabCheck = index;
@@ -182,19 +188,19 @@
 			radioChange(e) {
 				this.radio = e.detail.value
 			},
-			toHomeLevel(e){
+			toHomeLevel(e) {
 				console.log(e)
 				uni.navigateTo({
-					url:e,
+					url: e,
 					animationType: 'pop-in',
 					animationDuration: 200
 				})
 			},
-			lookinfo(){
+			lookinfo() {
 				uni.navigateTo({
-					url:'./orderInfo',
-					animationDuration:200,
-					animationType:'pop-in'
+					url: './orderInfo',
+					animationDuration: 200,
+					animationType: 'pop-in'
 				})
 			}
 		}
@@ -204,7 +210,7 @@
 <style lang="scss" scoped>
 	.home {
 		position: relative;
-		
+
 		/**
 		 * 更改swiper提示点样式
 		 */
@@ -212,7 +218,7 @@
 			width: 8rpx;
 			height: 8rpx;
 		}
-		
+
 		/**
 		 * 更改swiper提示点选中样式
 		 */
@@ -221,74 +227,78 @@
 			height: 8rpx;
 			border-radius: 6rpx;
 		}
-		
+
 		/**
 		 * 更改swiper提示点位置,通过swiper-item的padding-bottom指定位置
 		 */
 		/deep/ .swiperIconPanel .wx-swiper-dots {
 			bottom: 0;
 		}
-		
+
 		/**
 		 * 去掉开关选择器图标
 		 */
-		/deep/ switch::after, switch::before  {
+		/deep/ switch::after,
+		switch::before {
 			content: ''
 		}
-		
+
 		/**
 		 * 开关选择器高度
 		 */
-		/deep/ switch .wx-switch-input, switch .uni-switch-input {
+		/deep/ switch .wx-switch-input,
+		switch .uni-switch-input {
 			height: 36rpx !important;
 		}
-		
+
 		/**
 		 * 开关选择器未选中按钮样式
 		 */
-		/deep/ switch .wx-switch-input::after, switch .uni-switch-input::after {
+		/deep/ switch .wx-switch-input::after,
+		switch .uni-switch-input::after {
 			left: -4rpx;
-			box-shadow: 0rpx 0rpx 10rpx rgba(0,0,0,.6);
+			box-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, .6);
 		}
-		
+
 		/**
 		 * 开关选择器选中按钮样式
 		 */
-		/deep/ switch .wx-switch-input.wx-switch-input-checked::after, switch .uni-switch-input.uni-switch-input-checked::after {
+		/deep/ switch .wx-switch-input.wx-switch-input-checked::after,
+		switch .uni-switch-input.uni-switch-input-checked::after {
 			left: 48rpx;
-			box-shadow: 0rpx 0rpx 10rpx rgba(0,0,0,.6);
+			box-shadow: 0rpx 0rpx 10rpx rgba(0, 0, 0, .6);
 		}
-		
+
 		/**
 		 * 开关选择器选中颜色
 		 */
 		/deep/ switch[checked] .wx-switch-input {
 			background-color: #5A7EFF !important;
 		}
-		
+
 		.tabList {
 			position: relative;
 			width: 100%;
 			margin-top: 20rpx;
-			
+
 			.swiperIcon {
 				width: 100%;
 				height: 340rpx;
-			
+
 				.swiperItem {
 					padding-bottom: 50rpx;
 					box-sizing: border-box;
-			
+
 					.iconPanel {
 						width: calc(100% / 4);
 						height: 50%;
 						overflow: hidden;
-			
+
 						image {
 							width: 100rpx;
 							height: 100rpx;
 						}
-			
+
 						p {
 							width: 100%;
 							font-size: 24rpx;
@@ -300,24 +310,24 @@
 				}
 			}
 		}
-		
+
 		.orderTitle {
 			position: relative;
 			width: 100%;
 			height: 40rpx;
 			margin-top: 20rpx;
-			
+
 			.title {
 				padding-left: 40rpx;
 				padding-right: 40rpx;
-				
+
 				i {
 					width: 8rpx;
 					height: 24rpx;
 					background: #5a7eff;
 					border-radius: 20rpx;
 				}
-				
+
 				p {
 					font-size: 28rpx;
 					font-weight: 500;
@@ -327,33 +337,33 @@
 				}
 			}
 		}
-		
+
 		.orderTab {
 			position: relative;
 			width: 100%;
 			margin-top: 40rpx;
-			
+
 			.content {
 				position: relative;
 				width: 100%;
 				padding-left: 40rpx;
 				padding-right: 40rpx;
-				
+
 				.main {
 					overflow: visible;
-					
+
 					.tab {
 						position: relative;
 						padding-left: 60rpx;
 						height: 58rpx;
-						
+
 						p {
 							font-size: 28rpx;
 							font-weight: 700;
 							color: #5a7eff;
 							letter-spacing: 0rpx;
 						}
-						
+
 						i {
 							position: absolute;
 							bottom: 0rpx;
@@ -363,36 +373,36 @@
 							border-radius: 20rpx;
 						}
 					}
-					
+
 					.tab:first-child {
 						padding-left: 0;
 					}
 				}
 			}
 		}
-		
+
 		.panelList {
 			position: relative;
 			margin-top: 40rpx;
-			
+
 			.panel {
 				position: relative;
 				width: 670rpx;
 				min-height: 500rpx;
 				background: #ffffff;
 				border-radius: 20rpx;
-				box-shadow: 0rpx 0rpx 8rpx 2rpx rgba(114,141,244,0.4);
+				box-shadow: 0rpx 0rpx 8rpx 2rpx rgba(114, 141, 244, 0.4);
 				margin-bottom: 40rpx;
 				padding-bottom: 40rpx;
-				
+
 				.header {
 					padding-top: 40rpx;
 					padding-left: 40rpx;
 					padding-right: 40rpx;
-					
+
 					.titlePanel {
 						height: 44rpx;
-						
+
 						.title {
 							font-size: 32rpx;
 							font-weight: 700;
@@ -400,18 +410,18 @@
 							color: #000000;
 							letter-spacing: 0rpx;
 						}
-						
+
 						.status {
 							margin-left: 30rpx;
 							width: 80rpx;
 							height: 40rpx;
 							position: relative;
-							
+
 							image {
 								width: 100%;
 								height: 100%;
 							}
-							
+
 							p {
 								font-size: 16rpx;
 								font-weight: 700;
@@ -423,18 +433,18 @@
 							}
 						}
 					}
-					
+
 					.name {
 						font-size: 28rpx;
 						font-weight: 400;
 						color: #5a7eff;
 					}
-					
+
 					.price {
 						position: absolute;
 						right: 40rpx;
 						top: 60rpx;
-						
+
 						.icon {
 							font-size: 18rpx;
 							font-weight: 700;
@@ -442,7 +452,7 @@
 							letter-spacing: 0rpx;
 							margin-top: 10rpx;
 						}
-						
+
 						.text {
 							font-size: 32rpx;
 							font-weight: 700;
@@ -451,56 +461,56 @@
 							margin-left: 6rpx;
 						}
 					}
-					
+
 				}
-				
+
 				.line {
 					width: 100%;
 					margin-top: 40rpx;
-					
+
 					i {
 						width: 590rpx;
 						border-bottom: 1rpx dashed #999999;
 					}
 				}
-				
+
 				.content {
 					padding-top: 40rpx;
 					padding-left: 40rpx;
 					padding-right: 40rpx;
-					
+
 					.titlePanel {
 						position: relative;
 						justify-content: space-between;
-						
+
 						.name {
 							font-size: 28rpx;
 							font-weight: 400;
 							color: #000000;
 						}
-						
+
 						.radioCheck {
-							
+
 							p {
 								font-size: 24rpx;
 								font-weight: 500;
 								color: #999999;
 							}
-							
+
 							.switch {
 								margin-left: 16rpx;
 							}
 						}
 					}
-					
+
 					.timeText {
 						margin-top: 40rpx;
-						
+
 						.cuIcon-countdown {
 							font-size: 28rpx;
 							padding-top: 2rpx;
 						}
-						
+
 						p {
 							margin-left: 10rpx;
 							font-size: 24rpx;
@@ -509,13 +519,13 @@
 							letter-spacing: 0rpx;
 						}
 					}
-					
+
 					.location {
 						margin-top: 30rpx;
 						position: relative;
 						left: -22rpx;
 
-						
+
 						i {
 							width: 8rpx;
 							height: 24rpx;
@@ -523,7 +533,7 @@
 							border-radius: 20rpx;
 							margin-top: 4rpx;
 						}
-						
+
 						.type {
 							margin-left: 16rpx;
 							font-size: 28rpx;
@@ -531,7 +541,7 @@
 							color: #5a7eff;
 							letter-spacing: 0rpx;
 						}
-						
+
 						.text {
 							margin-left: 10rpx;
 							font-size: 28rpx;
@@ -540,29 +550,29 @@
 							letter-spacing: 0rpx;
 						}
 					}
-					
+
 					.location:last-child {
 						margin-top: 20rpx;
 					}
-					
+
 					.dateText {
 						margin-top: 40rpx;
 						font-size: 28rpx;
 						font-weight: 400;
 						color: #5a7eff;
 					}
-					
+
 					.submit {
 						margin-top: 40rpx;
 						justify-content: space-between;
-						
+
 						.phone {
-							
+
 							image {
 								width: 28rpx;
 								height: 28rpx;
 							}
-							
+
 							p {
 								font-size: 24rpx;
 								font-weight: 500;
@@ -570,7 +580,7 @@
 								margin-left: 10rpx;
 							}
 						}
-						
+
 						.btn {
 							width: 136rpx;
 							height: 60rpx;
@@ -581,11 +591,11 @@
 							color: #5a7eff;
 							background: none;
 						}
-						
+
 						.btn:last-child {
 							margin-left: 30rpx;
 						}
-						
+
 						.bg-btn {
 							border: 0;
 							background: #5a7eff;
@@ -595,7 +605,7 @@
 				}
 			}
 		}
-		
+
 		.panelList:first-child {
 			margin-top: 0;
 		}

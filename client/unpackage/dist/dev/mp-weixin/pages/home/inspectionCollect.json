@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "检验收车",
+  "usingComponents": {
+    "uni-popup": "/components/uni-popup/uni-popup"
+  }
+}
