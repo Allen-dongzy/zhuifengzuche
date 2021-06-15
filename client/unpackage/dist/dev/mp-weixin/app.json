@@ -56,7 +56,8 @@
     "pages/vehicleManage/detail",
     "pages/vehicleManage/add",
     "pages/advanceFreeze/advanceFreeze",
-    "pages/home/inspectionCollect"
+    "pages/home/inspectionCollect",
+    "pages/home/contract"
   ],
   "subPackages": [],
   "window": {
