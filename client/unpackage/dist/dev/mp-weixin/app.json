@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/customerRecords/customerRecords",
     "pages/home/home",
     "pages/home/addAccident",
     "pages/home/addOther",
@@ -92,5 +93,6 @@
   },
   "usingComponents": {
     "cu-custom": "/components/colorui/components/cu-custom"
-  }
+  },
+  "sitemapLocation": "sitemap65.json"
 }
