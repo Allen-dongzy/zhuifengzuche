@@ -1,7 +1,15 @@
 {
-	"pages": [{
-			"path": "pages/home/home",
+	"pages": [
+		
+		
+		{
+			"path": "pages/customerRecords/customerRecords",
 			"style": {
+				"navigationBarTitleText": "客户记录"
+			}
+		},{
+			"path": "pages/home/home",
+			"style": { 
 				"navigationBarTitleText": "首页"
 			}
 		}, {
