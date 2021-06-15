@@ -3,6 +3,11 @@
 		
 		
 		{
+			"path": "pages/customerRecords/addCustomer",
+			"style": {
+				"navigationBarTitleText": "客户记录"
+			}
+		},{
 			"path": "pages/customerRecords/customerRecords",
 			"style": {
 				"navigationBarTitleText": "客户记录"
