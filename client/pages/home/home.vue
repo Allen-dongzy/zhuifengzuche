@@ -15,7 +15,7 @@
 						<image :src="$util.fileUrl(item.path)" lazy-load></image>
 						<p>{{ item.text }}</p>
 					</view>
-				</swiper-item> -->
+				</swiper-item> --> 
 			</swiper>
 		</view>
 		<view class="orderTitle">

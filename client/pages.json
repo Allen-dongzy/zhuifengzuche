@@ -3,7 +3,43 @@
 	
 		
 		
+		 
 		{
+		    "path" : "pages/home/addAccident",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "添加记录"				
+		    }
+		    
+		},{
+		    "path" : "pages/home/addOther",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "添加记录"				
+		    }
+		    
+		},{
+		    "path" : "pages/home/violationAdd",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "添加违章"				
+		    }
+		    
+		},{
+		    "path" : "pages/home/violationInfo",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "违章详情"				
+		    }
+		    
+		},{
+		    "path" : "pages/home/violation",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "违章列表"				
+		    }
+		    
+		},{
 		    "path" : "pages/home/payEd",
 		    "style" :                                                                                    
 		    {
