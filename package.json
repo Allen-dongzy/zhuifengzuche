@@ -7,6 +7,9 @@
     "type": "git",
     "url": "http://192.168.1.47:9980/wen/zhuifengzuche.git"
   },
+  "scripts": {
+    "prepare": "husky install"
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -14,7 +17,5 @@
     "@commitlint/config-conventional": "^12.1.4",
     "husky": "^6.0.0"
   },
-  "scripts": {
-    "prepare": "husky install"
-  }
+  "dependencies": {}
 }
