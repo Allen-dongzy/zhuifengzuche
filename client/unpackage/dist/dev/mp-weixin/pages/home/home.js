@@ -178,211 +178,251 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
-{
-  data: function data() {
-    return {
-      indicatorColor: '#cccccc',
-      indicatorActiveColor: '#5A7EFF',
-      swiperIcon: [{
-        path: '/vehicle_management@2x.png',
-        text: '车辆管理',
-        url: '../fleetManage/fleetManage' },
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
-      {
-        path: '/model_set@2x.png',
-        text: '车型设置',
-        url: '../vehicleManage/manage' },
-      {
-        path: '/delivery_point_management@2x.png',
-        text: '送车点管理',
-        url: '../Delivery/carPoint' },
-      {
-        path: '/store_management@2x.png',
-        text: '门店管理',
-        url: '../Store/store' },
-      {
-        path: '/collection_payment_management@2x.png',
-        text: '收付款管理',
-        url: '../collectPay/collectPay' },
-      {
-        path: '/marketing_management@2x.png',
-        text: '营销管理',
-        url: '../Marketing/Marketing' },
-      {
-        path: '/customer_records@2x.png',
-        text: '客户记录' },
-      {
-        path: '/risk_control_query@2x.png',
-        text: '风控查询' }],
 
-      tabCheck: 0,
-      tabList: [{
-        text: '待发车(2)',
-        check: true },
-      {
-        text: '待收车(2)',
-        check: false },
-      {
-        text: '已完成',
-        check: false },
-      {
-        text: '待支付',
-        check: false },
-      {
-        text: '已取消',
-        check: false }],
 
-      radio: false,
-      orderSize: false };
 
-  },
-  methods: {
-    /**
-              * 状态切换
-              */
-    tabClick: function tabClick(index) {
-      this.tabList[this.tabCheck].check = false;
-      this.tabList[index].check = true;
-      this.tabCheck = index;
-    },
-    /**
-        * 开关选择
-        * @param {Object} e
-        */
-    radioChange: function radioChange(e) {
-      this.radio = e.detail.value;
-    },
-    toHomeLevel: function toHomeLevel(e) {
-      console.log(e);
-      uni.navigateTo({
-        url: e,
-        animationType: 'pop-in',
-        animationDuration: 200 });
 
-    },
-    lookinfo: function lookinfo() {
-      uni.navigateTo({
-        url: './orderInfo',
-        animationDuration: 200,
-        animationType: 'pop-in' });
 
-    } } };exports.default = _default;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _uniTools = __webpack_require__(/*! @/utils/uni-tools */ 450); //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = { data: function data() {return { indicatorColor: '#cccccc', indicatorActiveColor: '#5A7EFF', swiperIcon: [{ path: '/vehicle_management@2x.png', text: '车辆管理', url: '../fleetManage/fleetManage' }, { path: '/model_set@2x.png', text: '车型设置', url: '../vehicleManage/manage' }, { path: '/delivery_point_management@2x.png', text: '送车点管理', url: '../Delivery/carPoint' }, { path: '/store_management@2x.png', text: '门店管理', url: '../Store/store' }, { path: '/collection_payment_management@2x.png', text: '收付款管理', url: '../collectPay/collectPay' }, { path: '/marketing_management@2x.png', text: '营销管理', url: '../Marketing/Marketing' }, { path: '/customer_records@2x.png', text: '客户记录', url: '../customerRecords/customerRecords' }, { path: '/risk_control_query@2x.png', text: '风控查询', url: '../risk/risk' }], tabCheck: 0, tabList: [{ text: '待发车(2)', check: true }, { text: '待收车(2)', check: false }, { text: '已完成', check: false }, { text: '待支付', check: false }, { text: '已取消', check: false }], radio: false, orderSize: false };}, methods: { /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   * 状态切换
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   */tabClick: function tabClick(index) {this.tabList[this.tabCheck].check = false;this.tabList[index].check = true;this.tabCheck = index;}, /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              * 开关选择
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              * @param {Object} e
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              */radioChange: function radioChange(e) {this.radio = e.detail.value;}, toHomeLevel: function toHomeLevel(e) {console.log(e);uni.navigateTo({ url: e, animationType: 'pop-in', animationDuration: 200 });}, lookinfo: function lookinfo() {uni.navigateTo({ url: './orderInfo', animationDuration: 200, animationType: 'pop-in' });} } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

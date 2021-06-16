@@ -1,5 +1,5 @@
 
-.flexBox{
+.flexBox {
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -8,36 +8,36 @@
 	        align-items: center;
 	margin-top: 10rpx;
 }
-.add{
+.add {
 	border-radius: 10rpx;
 	color: #5A7EFF;
-	border:2rpx solid #5A7EFF;
-	height:48rpx;
+	border: 2rpx solid #5A7EFF;
+	height: 48rpx;
 	line-height: 48rpx;
 	text-align: center;
 	width: 172rpx;
 }
-.box{
+.box {
 	width: 90%;
 	margin: auto;
 }
-.listBox{
+.listBox {
 	border-radius: 20rpx;
-	border: 2rpx solid rgba(114,141,244,0.25);
-	padding: 30rpx;	
+	border: 2rpx solid rgba(114, 141, 244, 0.25);
+	padding: 30rpx;
 	margin-top: 30rpx;
 }
-.blackText{
+.blackText {
 	color: #000000;
 	font-weight: bold;
 	font-size: 28rpx;
 }
-.redText{
+.redText {
 	color: #FC3736;
 	font-weight: bold;
 	font-size: 28rpx;
 }
-.grayText{
+.grayText {
 	color: #999999;
 	font-size: 24rpx;
 	margin-right: 20rpx;

@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/home/home",
+    "pages/customerRecords/addCustomer",
     "pages/customerRecords/customerRecords",
     "pages/home/addAccident",
     "pages/home/addOther",

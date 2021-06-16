@@ -15,7 +15,7 @@
 						<image :src="$util.fileUrl(item.path)" lazy-load></image>
 						<p>{{ item.text }}</p>
 					</view>
-				</swiper-item> --> 
+				</swiper-item> -->
 			</swiper>
 		</view>
 		<view class="orderTitle">
@@ -92,14 +92,18 @@
 							<p>联系客户</p>
 						</view>
 						<view class="flex">
-							<button type="default" v-show="tabCheck==0" class="flex-center btn">出车检验</button>
 							<button type="default" v-show="tabCheck==0" class="flex-center btn"
-								style="margin-left: 20rpx;">交付车辆</button>
-							<button type="default" v-show="tabCheck==1" class="flex-center btn">交车情况</button>
+								@tap.stop="toHomeLevel('/pages/home/goInspect')">出车检验</button>
+							<button type="default" v-show="tabCheck==0" class="flex-center btn"
+								style="margin-left: 20rpx;"
+								@tap.stop="toHomeLevel('/pages/home/deliverCar')">交付车辆</button>
+							<button type="default" v-show="tabCheck==1" class="flex-center btn"
+								@tap.stop="toHomeLevel('/pages/home/deliverCar')">交车情况</button>
 							<button type="default" v-show="tabCheck==1" class="flex-center btn"
 								style="margin-left: 20rpx;"
 								@tap.stop="toHomeLevel('/pages/home/inspectionCollect')">检验收车</button>
-							<button type="default" v-show="tabCheck==2" class="flex-center btn">收车详情</button>
+							<button type="default" v-show="tabCheck==2" class="flex-center btn"
+								@tap.stop="toHomeLevel('/pages/home/inspectionCollect')">收车详情</button>
 							<button type="default" v-show="tabCheck==2" class="flex-center btn bg-btn">退还押金</button>
 						</view>
 					</view>
@@ -114,6 +118,9 @@
 </template>
 
 <script>
+	import {
+		open
+	} from '@/utils/uni-tools'
 	export default {
 		data() {
 			return {
@@ -123,7 +130,6 @@
 					path: '/vehicle_management@2x.png',
 					text: '车辆管理',
 					url: '../fleetManage/fleetManage'
-
 				}, {
 					path: '/model_set@2x.png',
 					text: '车型设置',
@@ -146,10 +152,12 @@
 					url: '../Marketing/Marketing'
 				}, {
 					path: '/customer_records@2x.png',
-					text: '客户记录'
+					text: '客户记录',
+					url: '../customerRecords/customerRecords'
 				}, {
 					path: '/risk_control_query@2x.png',
-					text: '风控查询'
+					text: '风控查询',
+					url: '../risk/risk'
 				}],
 				tabCheck: 0,
 				tabList: [{

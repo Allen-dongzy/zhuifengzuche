@@ -2,9 +2,10 @@
 	<view class="">
 		<view class="box">
 			<view class="flexBox">
-				<view class="add">新增+</view>
+				<view class="add" @tap="goAdd">新增+</view>
 				<view style="font-size: 28rpx;margin-left: 60%;">搜索</view>
-				<image style="height: 28rpx;width: 28rpx;margin-left: 10rpx;" :src="$util.fileUrl('/fangdajing.png')" mode=""></image>
+				<image style="height: 28rpx;width: 28rpx;margin-left: 10rpx;" :src="$util.fileUrl('/fangdajing.png')"
+					mode=""></image>
 			</view>
 			<view class="listBox">
 				<view class="flexBox">
@@ -14,7 +15,7 @@
 				<view class="flexBox">
 					<view class="grayText">大众</view>
 					<view class="grayText">捷达</view>
-				</view> 
+				</view>
 				<view class="flexBox">
 					<view style="margin-right: 20rpx;font-size: 24rpx;">张全蛋</view>
 					<view style="font-size: 24rpx;">2021-06-02 18:54 - 2021-06-03 18:54</view>
@@ -25,54 +26,66 @@
 </template>
 
 <script>
+	import {
+		open
+	} from '@/utils/uni-tools'
+
 	export default {
 		data() {
 			return {
-				
+
 			}
 		},
 		methods: {
-			
+			goAdd() {
+				open('/pages/customerRecords/addCustomer')
+			}
 		}
 	}
 </script>
 
 <style>
-	.flexBox{
+	.flexBox {
 		display: flex;
 		align-items: center;
 		margin-top: 10rpx;
 	}
-	.add{
+
+	.add {
 		border-radius: 10rpx;
 		color: #5A7EFF;
-		border:2rpx solid #5A7EFF;
-		height:48rpx;
+		border: 2rpx solid #5A7EFF;
+		height: 48rpx;
 		line-height: 48rpx;
 		text-align: center;
 		width: 172rpx;
 	}
-	.box{
+
+	.box {
 		width: 90%;
 		margin: auto;
 	}
-	.listBox{
+
+	.listBox {
 		border-radius: 20rpx;
-		border: 2rpx solid rgba(114,141,244,0.25);
-		padding: 30rpx;	
+		border: 2rpx solid rgba(114, 141, 244, 0.25);
+		padding: 30rpx;
 		margin-top: 30rpx;
 	}
-	.blackText{
+
+	.blackText {
 		color: #000000;
 		font-weight: bold;
 		font-size: 28rpx;
 	}
-	.redText{
+
+	.redText {
 		color: #FC3736;
 		font-weight: bold;
 		font-size: 28rpx;
 	}
-	.grayText{
+
+	.grayText {
 		color: #999999;
 		font-size: 24rpx;
 		margin-right: 20rpx;
