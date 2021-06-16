@@ -872,7 +872,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"client","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"client","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -2051,9 +2051,9 @@ function normalizeComponent (
 /***/ }),
 
 /***/ 11:
-/*!*******************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车/client/store/index.js ***!
-  \*******************************************************/
+/*!*****************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/store/index.js ***!
+  \*****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3205,9 +3205,9 @@ var index = {
 /***/ }),
 
 /***/ 13:
-/*!**********************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车/client/common/js/util.js ***!
-  \**********************************************************/
+/*!********************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/common/js/util.js ***!
+  \********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3215,11 +3215,11 @@ var index = {
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 14));var _config = _interopRequireDefault(__webpack_require__(/*! ./config.js */ 17));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
 
 /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  * 防抖
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  * fn是事件触发执行的函数
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  * wait是指等待时长，在wait时间内多次触发函数只会被执行一次
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  * immediate是否立即执行，true表示wait秒内触发只会执行第一次触发；false表示wait秒内触发只会执行最后一次触发
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * 防抖
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * fn是事件触发执行的函数
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * wait是指等待时长，在wait时间内多次触发函数只会被执行一次
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * immediate是否立即执行，true表示wait秒内触发只会执行第一次触发；false表示wait秒内触发只会执行最后一次触发
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 function debounce(fn) {var wait = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1000;var immediate = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
   var timeout;
   return function () {
@@ -4286,9 +4286,9 @@ if (hadRuntime) {
 /***/ }),
 
 /***/ 17:
-/*!************************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车/client/common/js/config.js ***!
-  \************************************************************/
+/*!**********************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/common/js/config.js ***!
+  \**********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4303,9 +4303,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /***/ }),
 
 /***/ 18:
-/*!*********************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车/client/common/js/api.js ***!
-  \*********************************************************/
+/*!*******************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/common/js/api.js ***!
+  \*******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4324,9 +4324,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /***/ }),
 
 /***/ 19:
-/*!*************************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车/client/common/js/request.js ***!
-  \*************************************************************/
+/*!***********************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/common/js/request.js ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9919,7 +9919,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"client","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_NAME":"client","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -9940,14 +9940,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"client","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"client","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"client","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"client","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -10033,7 +10033,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"client","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"client","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -10473,9 +10473,9 @@ module.exports = g;
 /***/ }),
 
 /***/ 4:
-/*!***************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车/client/pages.json ***!
-  \***************************************************/
+/*!*************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/pages.json ***!
+  \*************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -10483,10 +10483,10 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 448:
-/*!***********************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车/client/utils/uni-tools.js ***!
-  \***********************************************************/
+/***/ 450:
+/*!*********************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/utils/uni-tools.js ***!
+  \*********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10780,10 +10780,10 @@ _vue.default.prototype.$showModal = showModal;
 
 /***/ }),
 
-/***/ 507:
-/*!*********************************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车/client/components/xp-picker/util.js ***!
-  \*********************************************************************/
+/***/ 525:
+/*!*******************************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/components/xp-picker/util.js ***!
+  \*******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10896,15 +10896,15 @@ function time2Timestamp(timer) {
 
 /***/ }),
 
-/***/ 515:
-/*!************************************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车/client/components/uni-calendar/util.js ***!
-  \************************************************************************/
+/***/ 533:
+/*!**********************************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/components/uni-calendar/util.js ***!
+  \**********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _calendar = _interopRequireDefault(__webpack_require__(/*! ./calendar.js */ 516));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}var
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _calendar = _interopRequireDefault(__webpack_require__(/*! ./calendar.js */ 534));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}var
 
 Calendar = /*#__PURE__*/function () {
   function Calendar()
@@ -11259,10 +11259,10 @@ Calendar;exports.default = _default;
 
 /***/ }),
 
-/***/ 516:
-/*!****************************************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车/client/components/uni-calendar/calendar.js ***!
-  \****************************************************************************/
+/***/ 534:
+/*!**************************************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/components/uni-calendar/calendar.js ***!
+  \**************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11816,10 +11816,10 @@ calendar;exports.default = _default;
 
 /***/ }),
 
-/***/ 545:
-/*!*************************************************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车/client/components/uni-transition/createAnimation.js ***!
-  \*************************************************************************************/
+/***/ 563:
+/*!***********************************************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/components/uni-transition/createAnimation.js ***!
+  \***********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

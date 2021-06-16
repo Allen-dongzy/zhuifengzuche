@@ -22,55 +22,55 @@
 		</view>
 
 		<view class="">
-		
-					<view class="fromTitel">城市</view>
-					<picker class="pickerBox" @change="bindPickerChange" :value="index" :range="selectorObj"
-						range-key="cateName">
-						<view v-show="index==-1" class="uni-input">请选择城市</view>
-						<view v-show="index!=-1" class="uni-input">{{selectorObj[index].cateName}}</view>
-					</picker>
-		
-					<view class="fromTitel">门店名称</view>
-					<input class="inpBox" type="text" placeholder="请填写门店名字" />
-			
-					<view class="fromTitel">门店地址</view>
-					<input class="inpBox" type="text" placeholder="请填写门店地址" />
-			
-					<view class="fromTitel">门店电话</view>
-					<input class="inpBox" type="text" placeholder="请填写门店电话" />
-		
-					<view class="fromTitel">营业时间</view>
-					<view class="timeBox">
-						<picker mode="time" style="width: 40%;height: 74rpx;" class="pickerBox" @change="pickerStar"
-							:value="indexStar">
-							<view v-show="indexStar==-1" class="uni-input" style="height: 74rpx;">请选择开始时间</view>
-							<view v-show="indexStar!=-1" class="uni-input" style="height: 74rpx;">{{indexStar}}</view>
-						</picker>
 
-						<picker mode="time" style="width: 40%;height: 74rpx;" class="pickerBox" @change="pickerEnd"
-							:value="indexEnd">
-							<view v-show="indexEnd==-1" class="uni-input" style="height: 74rpx;">请选择结束时间</view>
-							<view v-show="indexEnd!=-1" class="uni-input" style="height: 74rpx;">{{indexEnd}}</view>
-						</picker>
-					</view>
-		
-					<view class="fromTitel">地图经纬度</view>
-					<view class="local">
-						<input style="width: 43%;" class="inpBox" type="text" placeholder="请输入经度" />
-						<input style="width: 43%;margin-left: 4%;" class="inpBox" type="text" placeholder="请输入经度" />
-					</view>
-	
-					<view class="fromTitel">门店图片</view>
-					<image class="imgBox" :src="$util.fileUrl('/upload_image@2x.png')" mode=""></image>
-			
-					<view class="fromTitel">负责人/法人</view>
-					<input class="inpBox" type="text" placeholder="请填写负责人或者法人名称" />
-	
-					<view class="fromTitel">负责人/法人 电话</view>
-					<input class="inpBox" type="text" placeholder="请填写负责人或者法人名称电话" />
-			
+			<view class="fromTitel">城市</view>
+			<picker class="pickerBox" @change="bindPickerChange" :value="index" :range="selectorObj"
+				range-key="cateName">
+				<view v-show="index==-1" class="uni-input">请选择城市</view>
+				<view v-show="index!=-1" class="uni-input">{{selectorObj[index].cateName}}</view>
+			</picker>
 
-	<button  style=" color: white;
+			<view class="fromTitel">门店名称</view>
+			<input class="inpBox" type="text" placeholder="请填写门店名字" />
+
+			<view class="fromTitel">门店地址</view>
+			<input class="inpBox" type="text" placeholder="请填写门店地址" />
+
+			<view class="fromTitel">门店电话</view>
+			<input class="inpBox" type="text" placeholder="请填写门店电话" />
+
+			<view class="fromTitel">营业时间</view>
+			<view class="timeBox">
+				<picker mode="time" style="width: 40%;height: 74rpx;" class="pickerBox" @change="pickerStar"
+					:value="indexStar">
+					<view v-show="indexStar==-1" class="uni-input" style="height: 74rpx;">请选择开始时间</view>
+					<view v-show="indexStar!=-1" class="uni-input" style="height: 74rpx;">{{indexStar}}</view>
+				</picker>
+
+				<picker mode="time" style="width: 40%;height: 74rpx;" class="pickerBox" @change="pickerEnd"
+					:value="indexEnd">
+					<view v-show="indexEnd==-1" class="uni-input" style="height: 74rpx;">请选择结束时间</view>
+					<view v-show="indexEnd!=-1" class="uni-input" style="height: 74rpx;">{{indexEnd}}</view>
+				</picker>
+			</view>
+
+			<view class="fromTitel">地图经纬度</view>
+			<view class="local">
+				<input style="width: 43%;" class="inpBox" type="text" placeholder="请输入经度" />
+				<input style="width: 43%;margin-left: 4%;" class="inpBox" type="text" placeholder="请输入经度" />
+			</view>
+
+			<view class="fromTitel">门店图片</view>
+			<image class="imgBox" :src="$util.fileUrl('/upload_image@2x.png')" mode=""></image>
+
+			<view class="fromTitel">负责人/法人</view>
+			<input class="inpBox" type="text" placeholder="请填写负责人或者法人名称" />
+
+			<view class="fromTitel">负责人/法人 电话</view>
+			<input class="inpBox" type="text" placeholder="请填写负责人或者法人名称电话" />
+
+
+			<button style=" color: white;
 			width: 80%;
 					margin: 20rpx auto;
 				    background-color: #5A7EFF;
@@ -78,12 +78,16 @@
 				    font-size: 32rpx;
 				    height: 96rpx;line-height: 96rpx;" type="default" @click="next()">完成</button>
 
-			
+
 		</view>
 	</view>
 </template>
 
 <script>
+	import {
+		open
+	} from '@/utils/uni-tools'
+
 	export default {
 		data() {
 			return {
@@ -119,7 +123,9 @@
 
 		},
 		methods: {
-
+			next() {
+				open('/pages/home/home', 3)
+			},
 			bindPickerChange: function(e) {
 				console.log('picker发送选择改变，携带值为', e.target.value)
 				this.index = e.target.value

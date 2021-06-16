@@ -45,7 +45,7 @@
 			<view v-show="indexStar!=-1" class="uni-input" style="height: 74rpx;line-height: 73rpx;">{{indexStar}}
 			</view>
 		</picker>
-		
+
 		<view class="title">注册日期</view>
 		<picker mode="date" style="height: 74rpx;" class="pickerBox" @change="pickerCreat" :value="indexCreat">
 			<view v-show="indexCreat==-1" class="uni-input" style="height: 74rpx;line-height: 73rpx;">请选择开始时间</view>
@@ -55,19 +55,23 @@
 
 
 
-	<button  style=" color: white;
+		<button style=" color: white;
 			width: 80%;
 					margin: 20rpx auto;
 				    background-color: #5A7EFF;
 				    border-radius: 50px;
 				    font-size: 32rpx;
-				    height: 96rpx;line-height: 96rpx;" type="default"  @click="next()">完成</button>
+				    height: 96rpx;line-height: 96rpx;" type="default" @click="next()">完成</button>
 
 
 	</view>
 </template>
 
 <script>
+	import {
+		open
+	} from '@/utils/uni-tools'
+
 	export default {
 		data() {
 			return {
@@ -98,11 +102,7 @@
 		},
 		methods: {
 			next() {
-				uni.navigateTo({
-					url: './businessStore',
-					animationType: 'pop-in',
-					animationDuration: 200
-				})
+				open('/pages/home/home', 3)
 			},
 			pickerStar: function(e) {
 				console.log('picker发送选择改变，携带值为', e.target.value)

@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/customerRecords/customerRecords",
     "pages/home/home",
+    "pages/customerRecords/customerRecords",
     "pages/home/addAccident",
     "pages/home/addOther",
     "pages/home/violationAdd",
@@ -58,7 +58,8 @@
     "pages/vehicleManage/add",
     "pages/advanceFreeze/advanceFreeze",
     "pages/home/inspectionCollect",
-    "pages/home/contract"
+    "pages/home/contract",
+    "pages/customerRecords/leaseTimeSelection"
   ],
   "subPackages": [],
   "window": {
@@ -94,6 +95,5 @@
   },
   "usingComponents": {
     "cu-custom": "/components/colorui/components/cu-custom"
-  },
-  "sitemapLocation": "sitemap65.json"
+  }
 }

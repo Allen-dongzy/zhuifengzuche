@@ -21,15 +21,15 @@
     "checkSiteMap": true,
     "uploadWithSourceMap": true,
     "compileHotReLoad": false,
-    "useMultiFrameRuntime": false,
+    "useMultiFrameRuntime": true,
     "useApiHook": true,
+    "useApiHostProcess": false,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
     },
     "enableEngineNative": false,
-    "bundle": false,
     "useIsolateContext": true,
     "useCompilerModule": true,
     "userConfirmedUseCompilerModuleSwitch": false,
@@ -39,11 +39,9 @@
     "minifyWXSS": true
   },
   "compileType": "miniprogram",
-  "libVersion": "2.14.4",
-  "appid": "touristappid",
+  "libVersion": "",
+  "appid": "wx5748b49f9808ca41",
   "projectname": "client",
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
   "condition": {
     "search": {
       "list": []
@@ -59,7 +57,7 @@
         {
           "name": "default",
           "id": 0,
-          "pathName": "pages/home/contract"
+          "pathName": "pages/customerRecords/leaseTimeSelection"
         }
       ]
     }

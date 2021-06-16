@@ -8,13 +8,13 @@
 		</view>
 		<view class="setbox">
 
-		<input style="    background-color: #EFF0F3;
+			<input style="    background-color: #EFF0F3;
     width: 90%;
     margin: auto;
     height: 96rpx;
     border-radius: 10rpx;" type="text" value="" />
-	
-	
+
+
 			<view class="textTitle">{{account}}</view>
 			<view style="display: flex;justify-content: center;align-items: center;">
 				<view style="height: 96rpx;line-height: 96rpx;width: 66%;">
@@ -31,35 +31,35 @@
 				<view style="width: 90%;"><input :type="inpType" class="inpBox" style="width: 95%;"
 						placeholder="请填写密码" /></view>
 				<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
-				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;"
-					:src="$util.fileUrl('/guan.png')" mode="" @click="look"></image>
-				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;"
-					:src="$util.fileUrl('/kai.png')" mode="" @click="look"></image>
+				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
+					mode="" @click="look"></image>
+				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
+					mode="" @click="look"></image>
 				<!-- </view> -->
-			</view> 
-			
+			</view>
+
 			<view class="textTitle">{{password}}</view>
-			
+
 			<view class="moreInpbox">
 				<view style="width: 90%;"><input :type="inpType" class="inpBox" style="width: 95%;"
 						placeholder="请填写密码" /></view>
-				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;"
-					src="../../static/img/guan.png" mode="" @click="look"></image>
-				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;"
-					src="../../static/img/kai.png" mode="" @click="look"></image>
-		
-			</view> 
-			
+				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" src="../../static/img/guan.png"
+					mode="" @click="look"></image>
+				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" src="../../static/img/kai.png"
+					mode="" @click="look"></image>
+
+			</view>
 
 
-		
-	<button  style=" color: white;
+
+
+			<button style=" color: white;
 			width: 80%;
 					margin: 20rpx auto;
 				    background-color: #5A7EFF;
 				    border-radius: 50px;
 				    font-size: 32rpx;
-				    height: 96rpx;line-height: 96rpx;" type="default" >完成</button>
+				    height: 96rpx;line-height: 96rpx;" type="default" @tap="goBack">完成</button>
 
 		</view>
 
@@ -68,17 +68,23 @@
 </template>
 
 <script>
+	import {
+		close
+	} from '@/utils/uni-tools'
+
 	export default {
 		data() {
 			return {
 				account: '请输入手机号！', //手机号校验提示语句
 				codeText: '验证码错误！', //验证码校验提示语句
 				password: '两次账号密码不一样', //密码校验提示语句
-					showpass: true, //密码眼睛切换 false 关闭  true开启
+				showpass: true, //密码眼睛切换 false 关闭  true开启
 			}
 		},
 		methods: {
-	
+			goBack() {
+				close()
+			},
 			look() {
 				console.log('ppp')
 				if (this.showpass) {
@@ -157,8 +163,8 @@
 		border-bottom-right-radius: 10rpx;
 		border-top-right-radius: 10rpx;
 	}
-	
-	
+
+
 	.moreInpbox {
 		display: flex;
 		align-items: center;
@@ -167,6 +173,7 @@
 		margin: auto;
 		border-radius: 10rpx;
 	}
+
 	.inpBox {
 		background-color: #EFF0F3;
 		border-radius: 10rpx;
@@ -177,5 +184,4 @@
 		color: #999999;
 		padding-left: 20rpx;
 	}
-	
 </style>

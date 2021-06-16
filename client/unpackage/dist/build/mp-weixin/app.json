@@ -1,0 +1,100 @@
+{
+  "pages": [
+    "pages/customerRecords/customerRecords",
+    "pages/home/home",
+    "pages/home/addAccident",
+    "pages/home/addOther",
+    "pages/home/violationAdd",
+    "pages/home/violationInfo",
+    "pages/home/violation",
+    "pages/home/payEd",
+    "pages/home/payCode",
+    "pages/home/otherPay",
+    "pages/home/deliverCar",
+    "pages/home/goInspect",
+    "pages/home/changeCar",
+    "pages/home/orderInfo",
+    "pages/risk/risk",
+    "pages/risk/finded",
+    "pages/risk/find",
+    "pages/Marketing/otaInfo",
+    "pages/Marketing/carList",
+    "pages/Marketing/Marketing",
+    "pages/login/home",
+    "pages/collectPay/collectPayBack",
+    "pages/collectPay/collectPayGoed",
+    "pages/collectPay/collectPayBacked",
+    "pages/collectPay/collectPay",
+    "pages/collectPay/collectPayGo",
+    "pages/Store/addstaffInfo",
+    "pages/Store/addstaff",
+    "pages/Store/staff",
+    "pages/Store/storePoint",
+    "pages/Store/store",
+    "pages/Store/storeInfo",
+    "pages/Delivery/addPoint",
+    "pages/Delivery/pointInfo",
+    "pages/Delivery/carPoint",
+    "pages/user/user",
+    "pages/user/addCard",
+    "pages/fleetManage/fleetDetail",
+    "pages/fleetManage/fleetManageSearch",
+    "pages/login/login",
+    "pages/fleetManage/addCar",
+    "pages/fleetManage/hirePlan",
+    "pages/fleetManage/fleetManage",
+    "pages/login/OwnerCard",
+    "pages/login/Owner",
+    "pages/login/businessStore",
+    "pages/login/businessCard",
+    "pages/login/business",
+    "pages/login/forgetPhone",
+    "pages/login/regSelect",
+    "pages/user/news",
+    "pages/user/wallet",
+    "pages/user/bill",
+    "pages/vehicleManage/manage",
+    "pages/vehicleManage/detail",
+    "pages/vehicleManage/add",
+    "pages/advanceFreeze/advanceFreeze",
+    "pages/home/inspectionCollect",
+    "pages/home/contract",
+    "pages/customerRecords/leaseTimeSelection"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": false,
+    "navigationStyle": "default"
+  },
+  "tabBar": {
+    "color": "#000000",
+    "selectedColor": "#5A7EFF",
+    "borderStyle": "black",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "iconPath": "static/img/home@2x.png",
+        "selectedIconPath": "static/img/home@2x.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "iconPath": "static/img/Frame9@2x.png",
+        "selectedIconPath": "static/img/Frame9@2x.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "获取定位"
+    }
+  },
+  "usingComponents": {
+    "cu-custom": "/components/colorui/components/cu-custom"
+  },
+  "sitemapLocation": "sitemap.json"
+}
