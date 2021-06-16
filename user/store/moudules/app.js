@@ -1,4 +1,4 @@
-const app = {
+const app = { 
 	namespaced: true,
 	state: {
 		statusBarHeight: 0, // 状态栏高度

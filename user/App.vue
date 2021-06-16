@@ -1,7 +1,7 @@
 <script>
 	import {
 		mapActions
-	} from 'vuex'
+	} from 'vuex' 
 	import {
 		showModal
 	} from '@/utils/uni-tools'

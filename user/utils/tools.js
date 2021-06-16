@@ -1,6 +1,6 @@
 import {
 	toast
-} from './uni-tools'
+} from './uni-tools' 
 
 // 时间戳转成日期
 const toDate = timestamp => {

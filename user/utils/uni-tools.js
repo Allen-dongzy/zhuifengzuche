@@ -1,5 +1,3 @@
-import Vue from 'vue'
-
 // 页面跳转
 const open = (path, object = {}, closeSelf = 0) => {
 	if (!path) return false
@@ -160,7 +158,7 @@ const previewImgs = (urls, current = 0) => {
 			current, // 当前要显示图片的链接/索引值
 			urls,
 			indicator: 'number',
-			loop: false
+			loop: false,
 			success(res) {
 				resolve(res)
 			},

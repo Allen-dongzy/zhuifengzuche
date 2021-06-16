@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'setting'
+const STORAGE_KEY = 'setting' 
 
 // 根缓存为STORAGE_KEY,moduleName子模块，key和val为根缓存的键值或子模块中键值
 export default {
