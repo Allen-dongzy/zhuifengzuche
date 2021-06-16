@@ -1,6 +1,6 @@
 import {
 	toast
-} from './uni-tools' 
+} from './uni-tools'
 
 // 时间戳转成日期
 const toDate = timestamp => {
@@ -68,7 +68,7 @@ const getType = obj => {
 
 // 隐藏手机号
 const hideMobile = mobile => {
-	return `${mobile.slice(0,3)}****${mobile.slice(7,11)}`
+	return `${mobile.slice(0, 3)}****${mobile.slice(7, 11)}`
 }
 
 // 写入文本到粘贴板
@@ -101,7 +101,7 @@ const setClipboard = text => {
 
 		// input自带的select()方法在苹果端无法进行选择，所以需要自己去写一个类似的方法
 		// 选择文本。createTextRange(setSelectionRange)是input方法
-		function selectText(textbox, startIndex, stopIndex) {
+		function selectText (textbox, startIndex, stopIndex) {
 			if (textbox.createTextRange) { //ie
 				const range = textbox.createTextRange()
 				range.collapse(true)
@@ -119,7 +119,7 @@ const setClipboard = text => {
 // 防抖
 const debounce = (callback, delay = 500) => {
 	let timer // 闭包存定时器状态
-	return function() {
+	return function () {
 		let args = arguments // 携带的参数
 		if (timer) clearTimeout(timer) // 清除定时器
 		timer = setTimeout(() => { // 回调
@@ -132,7 +132,7 @@ const debounce = (callback, delay = 500) => {
 const throttle = (callback, delay = 2000) => {
 	let isFirst = true
 	let start = Date.now() // 闭包存起始时间
-	return function() {
+	return function () {
 		let args = arguments // 携带的参数
 		if (isFirst) { // 第一次触发
 			callback.apply(this, args)

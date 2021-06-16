@@ -1,4 +1,4 @@
-const app = { 
+const app = {
 	namespaced: true,
 	state: {
 		statusBarHeight: 0, // 状态栏高度
@@ -8,7 +8,7 @@ const app = {
 	},
 	mutations: {
 		// 设置系统信息
-		setSystemInfo(state, {
+		setSystemInfo (state, {
 			statusBarHeight,
 			windowWidth,
 			windowHeight,
@@ -22,7 +22,7 @@ const app = {
 	},
 	actions: {
 		// 获取并设置系统信息
-		setSystemInfo({
+		setSystemInfo ({
 			commit
 		}) {
 			const res = uni.getSystemInfoSync()

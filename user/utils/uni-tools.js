@@ -90,11 +90,11 @@ const showModal = ({
 			showCancel,
 			confirmText,
 			cancelText,
-			success(res) {
+			success (res) {
 				if (res.confirm) resolve(0)
 				else if (res.cancel) resolve(1)
 			},
-			fail(err) {
+			fail (err) {
 				reject(err)
 			}
 		});
@@ -111,10 +111,10 @@ const chooseImgs = (count = 1, type = 'all', origin = false) => {
 			count: count, // 相册下的可选图片个数
 			sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
 			sourceType, // 从相册选择或相机拍摄
-			success(res) {
+			success (res) {
 				resolve(res)
 			},
-			fail(err) {
+			fail (err) {
 				reject(err)
 			}
 		})
@@ -159,10 +159,10 @@ const previewImgs = (urls, current = 0) => {
 			urls,
 			indicator: 'number',
 			loop: false,
-			success(res) {
+			success (res) {
 				resolve(res)
 			},
-			fail(err) {
+			fail (err) {
 				reject(err)
 			}
 		})
@@ -237,9 +237,9 @@ const clearCache = () => {
 		}
 		for (let i = 0; i < len; i++) {
 			let filePath = '' + files[i]; // 没有找到合适的方法获取路径，这样写可以转成文件路径  
-			plus.io.resolveLocalFileSystemURL(filePath, function(entry) {
+			plus.io.resolveLocalFileSystemURL(filePath, function (entry) {
 				if (entry.isDirectory) {
-					entry.removeRecursively(function(entry) { //递归删除其下的所有文件及子目录  
+					entry.removeRecursively(function (entry) { //递归删除其下的所有文件及子目录  
 						uni.hideLoading()
 						uni.showToast({
 							title: '缓存清理完成',
@@ -247,7 +247,7 @@ const clearCache = () => {
 							icon: 'none'
 						});
 						that.formatSize(); // 重新计算缓存  
-					}, function(e) {
+					}, function (e) {
 						uni.hideLoading()
 						console.log(e.message)
 					});
@@ -255,13 +255,13 @@ const clearCache = () => {
 					uni.hideLoading()
 					entry.remove();
 				}
-			}, function(e) {
+			}, function (e) {
 				uni.hideLoading()
 				console.log('文件路径读取失败')
 			});
 		}
 	} else { // ios暂时未找到清理缓存的方法，以下是官方提供的方法，但是无效，会报错  
-		plus.cache.clear(function() {
+		plus.cache.clear(function () {
 			uni.showToast({
 				title: '缓存清理完成',
 				duration: 2000,

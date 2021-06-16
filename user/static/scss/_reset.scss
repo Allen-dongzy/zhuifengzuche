@@ -1,4 +1,4 @@
-body, 
+body,
 header,
 section,
 footer,
@@ -36,12 +36,12 @@ p {
 
 html,
 body,
-page{
-  font-family     : PingFangSC-Medium;
+page {
+  font-family: PingFangSC-Medium;
 }
 
-body{
-	height:auto;
+body {
+  height: auto;
 }
 
 a {
@@ -54,9 +54,16 @@ a:hover {
   text-decoration: none;
 }
 
-html,body{-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}
+html,
+body {
+  -webkit-text-size-adjust   : 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
 
-input, textarea{-webkit-appearance: none;}
+input,
+textarea {
+  -webkit-appearance: none;
+}
 
 span {
   -webkit-tap-highlight-color: transparent;

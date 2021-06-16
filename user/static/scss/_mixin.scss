@@ -2,7 +2,8 @@
 @mixin box-w($w:100%, $background:null) {
   width     : $w;
   box-sizing: border-box;
-  @if ($background != null) {
+
+  @if ($background !=null) {
     background: $background;
   }
 }
@@ -11,29 +12,34 @@
 @mixin box-h($h:100%, $background:null) {
   height    : $h;
   box-sizing: border-box;
-  @if ($background != null) {
+
+  @if ($background !=null) {
     background: $background;
   }
 }
 
 // 自定义容器
 @mixin box($w:100%, $h:100%, $background:null) {
-  width     : $w;
-  height    : $h;
-  @if ($background != null) {
+  width : $w;
+  height: $h;
+
+  @if ($background !=null) {
     background: $background;
   }
+
   box-sizing: border-box;
 }
 
 // 块级自定义容器
 @mixin box-b($w:100%, $h:100%, $background:null) {
-  display   : block;
-  width     : $w;
-  height    : $h;
-  @if ($background != null) {
+  display: block;
+  width  : $w;
+  height : $h;
+
+  @if ($background !=null) {
     background: $background;
   }
+
   box-sizing: border-box;
 }
 
@@ -42,10 +48,12 @@
   width     : $w;
   height    : $h;
   box-sizing: border-box;
-  @if ($background != null) {
+
+  @if ($background !=null) {
     background: $background;
   }
-  display   : inline-block;
+
+  display : inline-block;
 }
 
 // 弹性盒子容器-居中
@@ -102,17 +110,19 @@
 
 // 文本两端对齐
 @mixin text-both {
-  text-align:justify;
-  text-justify:inter-ideograph;
+  text-align  : justify;
+  text-justify: inter-ideograph;
 }
 
 // 文字属性设置
-@mixin font-set($size:inherit, $color:rgba(0,0,0,0), $weight:normal) {
+@mixin font-set($size:inherit, $color:rgba(0, 0, 0, 0), $weight:normal) {
   font-size: $size;
-  @if ($color != rgba(0,0,0,0)) {
+
+  @if ($color !=rgba(0, 0, 0, 0)) {
     color: $color;
   }
-  @if ($weight != normal) {
+
+  @if ($weight !=normal) {
     font-weight: $weight;
   }
 }
@@ -162,9 +172,11 @@
   input::-webkit-input-placeholder {
     color: $c;
   }
+
   input::-moz-input-placeholder {
     color: $c;
   }
+
   input::-ms-input-placeholder {
     color: $c;
   }
@@ -195,9 +207,11 @@
   top     : $offset;
   left    : 50%;
   z-index : $index;
+
   @if ($position==absolute) {
     transform: translateX(-50%);
   }
+
   @if ($position==fixed) {
     transform: translateX(-50%);
   }
@@ -209,9 +223,11 @@
   bottom  : $offset;
   left    : 50%;
   z-index : $index;
+
   @if ($position==absolute) {
     transform: translateX(-50%);
   }
+
   @if ($position==fixed) {
     transform: translateX(-50%);
   }
@@ -223,9 +239,11 @@
   top     : 50%;
   left    : $offset;
   z-index : $index;
+
   @if ($position==absolute) {
     transform: translateY(-50%);
   }
+
   @if ($position==fixed) {
     transform: translateY(-50%);
   }
@@ -233,13 +251,15 @@
 
 //右侧-定位(absolute优先)
 @mixin right($offset:0, $position:absolute, $index:9) {
-  position : $position;
-  top      : 50%;
-  right    : $offset;
-  z-index  : $index;
+  position: $position;
+  top     : 50%;
+  right   : $offset;
+  z-index : $index;
+
   @if ($position==absolute) {
     transform: translateY(-50%);
   }
+
   @if ($position==fixed) {
     transform: translateY(-50%);
   }

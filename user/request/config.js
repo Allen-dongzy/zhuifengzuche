@@ -1,4 +1,4 @@
-let config = { 
+let config = {
 	mode: 'develop', // 项目模式 production release develop
 	secretKey: '', // md5通信秘钥
 	productionHost: '', // 正式域名
