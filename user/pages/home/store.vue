@@ -14,7 +14,7 @@
 			<view class="store-card" v-for="(item, index) in 5" :key="index">
 				<view class="head">
 					<view class="base-info">
-						<image class="logo" :src="`${ossUrl}/home/cache-logo.png`"></image>
+						<image class="logo" :src="`${ossUrl}/common/cache-logo.png`"></image>
 						<view class="title-box">
 							<view class="store-caption">郑家院子1号店</view>
 							<view class="star-box">
@@ -25,7 +25,7 @@
 					</view>
 					<view class="btn-group">
 						<image class="btn" :src="`${ossUrl}/home/location-big.png`"></image>
-						<image class="btn" :src="`${ossUrl}/home/phone-big.png`"></image>
+						<image class="btn" :src="`${ossUrl}/common/phone-big.png`"></image>
 					</view>
 				</view>
 				<view class="info">
