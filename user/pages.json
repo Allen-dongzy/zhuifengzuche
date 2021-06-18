@@ -39,6 +39,16 @@
 		"style": {
 			"navigationBarTitleText": "选择送车点"
 		}
+	}, {
+		"path": "pages/home/selectCar",
+		"style": {
+			"navigationBarTitleText": "选择车型"
+		}
+	}, {
+		"path": "pages/home/store",
+		"style": {
+			"navigationBarTitleText": "查看门店"
+		}
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -69,7 +79,7 @@
 		"current": 0,
 		"list": [{
 			"name": "default",
-			"path": "pages/home/selectAddress"
+			"path": "pages/home/selectCar"
 		}]
 	}
 }

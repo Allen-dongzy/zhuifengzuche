@@ -132,7 +132,7 @@
 	</view>
 </template>
 
-<script>
+<script>	
 	import EvanSwitch from '@/components/evan-switch/evan-switch'
 
 	export default {

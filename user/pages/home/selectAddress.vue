@@ -138,7 +138,7 @@
 
 		.classify {
 			@include box-w();
-			@include flex-row(space-between);
+			@include flex-row(space-between, flex-start);
 			margin-top: 10rpx;
 			padding: 0 32rpx;
 
@@ -148,6 +148,7 @@
 
 				.item {
 					@include font-set(28rpx, #000, 700);
+					@include text-one;
 					line-height: 40rpx;
 					margin-bottom: 50rpx;
 
