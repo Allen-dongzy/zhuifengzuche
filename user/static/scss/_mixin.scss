@@ -114,6 +114,13 @@
   text-justify: inter-ideograph;
 }
 
+// 文本颜色渐变
+@mixin font-gradient($deg, $color1, $color2) {
+  background 			 : linear-gradient($deg, $color1, $color2);
+  -webkit-background-clip: text;
+  color					 : transparent;
+}
+
 // 文字属性设置
 @mixin font-set($size:inherit, $color:rgba(0, 0, 0, 0), $weight:normal) {
   font-size: $size;

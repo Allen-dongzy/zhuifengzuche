@@ -6,6 +6,7 @@ let config = {
 	developHost: '', // 开发域名
 	apiKeyword: '', // 接口代理关键字
 	uploadImgUrl: '', // 上传文件的统一路径
+	ossUrl: 'https://zdkj-oss-bucket.oss-cn-hangzhou.aliyuncs.com/car-rental-user', // oss通用路径
 }
 
 // 设置域名

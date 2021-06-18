@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 import store from '@/store'
+import config from '@/request/config'
 import {
 	open,
 	close,
@@ -10,6 +11,8 @@ import {
 
 // 挂载vuex
 Vue.prototype.$store = store
+// 挂载oss
+Vue.prototype.$ossUrl = config.ossUrl
 // 挂载uni小工具
 Vue.prototype.$open = open
 Vue.prototype.$close = close

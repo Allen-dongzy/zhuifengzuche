@@ -37,7 +37,7 @@ p {
 html,
 body,
 page {
-  font-family: PingFangSC-Medium;
+  font-family: PingFang SC, PingFang SC-Bold;
 }
 
 body {
@@ -91,4 +91,8 @@ a:focus {
 
 i {
   font-style: normal;
+}
+
+[hidden] {
+	display: none !important;
 }

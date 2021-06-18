@@ -1,0 +1,603 @@
+<template>
+	<view class="home">
+		<uni-swiper-dot :info="swiperInfo" :current="current" field="content" mode="round" :dotsStyles="dotsStyles">
+			<swiper class="swiper" :autoplay="true" :interval="3000" :circular="true" @change="swiperChange">
+				<swiper-item v-for="(item ,index) in swiperInfo" :key="index">
+					<image class="banner" :src="`${ossUrl}/home/cache-banner.png`" mode="aspectFill"></image>
+				</swiper-item>
+			</swiper>
+		</uni-swiper-dot>
+		<view class="card">
+			<view class="title-bar">
+				<view class="caption">
+					<view class="circle blue"></view>
+					<text>取还地点</text>
+				</view>
+				<text>异地还车</text>
+			</view>
+			<view class="block">
+				<view class="city" @click="$open('/pages/home/selectCity')">乐东黎大 族自治县</view>
+				<image class="dot" :src="`${ossUrl}/home/dot.png`"></image>
+				<view class="address" @click="$open('/pages/home/selectAddress')">乐东黎大族自治县 乐东黎大族自治县</view>
+				<evan-switch v-model="remoteSwitch" active-color="#5A7EFF"></evan-switch>
+			</view>
+			<view class="title-bar">
+				<view class="caption">
+					<view class="circle orange"></view>
+					<text>还车地点</text>
+				</view>
+			</view>
+			<view class="block">
+				<view class="city text-1" @click="$open('/pages/home/selectCity')">乐东黎大 族自治县</view>
+				<image class="dot" :src="`${ossUrl}/home/dot.png`"></image>
+				<view class="address text-1" @click="$open('/pages/home/selectAddress')">乐东黎大族自治县 乐东黎大族自治县</view>
+			</view>
+			<view class="time-bar" @click="$open('/pages/home/selectTime')">
+				<view class="time start-time">
+					<view class="date">5月13日</view>
+					<view class="time">周四&nbsp;&nbsp;&nbsp;14:00</view>
+				</view>
+				<view class="line-bar">
+					<view class="date">2天</view>
+					<image class="interval" :src="`${ossUrl}/home/interval.png`"></image>
+				</view>
+				<view class="time end-time">
+					<view class="date">5月13日</view>
+					<view class="time">周四&nbsp;&nbsp;&nbsp;14:00</view>
+				</view>
+			</view>
+			<view class="info">*异地还车调度费3元/公里；22:00-07:00取还车，将收取￥40/次夜间服务费</view>
+			<view class="toast">
+				<image class="sesame" :src="`${ossUrl}/home/sesame.png`"></image>芝麻分达<text>550</text>即可享受押金双免租车 >
+			</view>
+			<view class="btn" @click="openProcessPopup">立即租车</view>
+		</view>
+		<!-- go.png -->
+		<view class="notice-box" @click="openCouponPopup">
+			<image class="notice-bg" :src="`${ossUrl}/home/notice.png`" mode="aspectFill"></image>
+			<view class="mask">
+				<view class="info">你有2张优惠券可领取 租车立省20元！</view>
+				<image class="go" :src="`${ossUrl}/home/go.png`"></image>
+			</view>
+		</view>
+		<view class="bottom">
+			<view class="item" @click="$open('/pages/common/article')">
+				<image class="icon" :src="`${ossUrl}/home/join.png`" mode="heightFix"></image>
+				<text>招商加盟</text>
+			</view>
+			<view class="line"></view>
+			<view class="item">
+				<image class="icon" :src="`${ossUrl}/home/shop.png`" mode="heightFix"></image>
+				<text>追风门店</text>
+			</view>
+		</view>
+		<!-- 弹窗-流程 -->
+		<uni-popup ref="processPopup" type="center">
+			<view class="process-modal">
+				<scroll-view class="process-content" :scroll-y="true">
+					<view class="title">免押金</view>
+					<view class="info">下单预付租金后，取车时间向门店工作人员<text>申请芝麻信用免押金</text>，信用综合评估通过后有机会见面25000元。</view>
+					<image class="process" :src="`${ossUrl}/home/process.png`"></image>
+					<view class="section">
+						<view class="caption">使用芝麻信用免押金</view>
+						<view class="text">使用芝麻信用免押金的订单，车辆押金取车前冻结，还车时解冻；违章押金还车冻结。还车后30天若无违章则解冻。</view>
+					</view>
+					<view class="section">
+						<view class="caption">使用在线支付的押金</view>
+						<view class="text">车辆押金取车前支付，还车时退还；违章押金还车时支付，还车后30天若无违章退还。</view>
+					</view>
+					<view class="section">
+						<view class="caption">使用信用卡预授权免押金</view>
+						<view class="text">使用信用卡免押金的订单，车辆押金取车前冻结，还车时解冻；违章押金还车时冻结，还车后30天若无违章则解冻。</view>
+					</view>
+				</scroll-view>
+				<view class="btn-box">
+					<view class="btn">知道了</view>
+				</view>
+			</view>
+		</uni-popup>
+		<!-- 弹窗-领券 -->
+		<uni-popup ref="couponPopup" type="center" :maskClick="false">
+			<view class="coupon-modal">
+				<image class="bg" :src="`${ossUrl}/home/coupon-bg.png`"></image>
+				<view class="mask">
+					<image class="caption" :src="`${ossUrl}/home/coupon-title.png`"></image>
+					<view class="title">恭喜您，获得4张优惠券</view>
+					<scroll-view class="coupon-content" :scroll-y="true">
+						<view class="coupon-box" v-for="(item, index) in 6" :key="index">
+							<view class="coupon">
+								<image class="bg" :src="`${ossUrl}/home/is-get-bg.png`"></image>
+								<view class="mask">
+									<view class="info is-get">
+										<view class="price">￥<text>50</text></view>
+										<view class="description">
+											<view class="text">新用户专享</view>
+											<view class="time">到期时间：2021/05/27</view>
+										</view>
+									</view>
+									<view class="btn">
+										<image class="btn-bg" :src="`${ossUrl}/home/is-get-btn.png`"></image>
+										<view class="text">领取</view>
+									</view>
+								</view>
+							</view>
+						</view>
+					</scroll-view>
+					<view class="coupon-btn">一键领取</view>
+					<image class="coupon-close" :src="`${ossUrl}/home/coupon-close.png`" @click="closeCouponPopup">
+					</image>
+				</view>
+			</view>
+		</uni-popup>
+	</view>
+</template>
+
+<script>
+	import EvanSwitch from '@/components/evan-switch/evan-switch'
+
+	export default {
+		data() {
+			return {
+				ossUrl: this.$ossUrl, // oss
+				swiperInfo: [{
+					src: ''
+				}, {
+					src: ''
+				}, {
+					src: ''
+				}], // 轮播数据
+				dotsStyles: {
+					bottom: 40,
+					backgroundColor: '#dadada',
+					border: 0,
+					selectedBackgroundColor: 'rgba(218,218,218,0.40)',
+					selectedBorder: 'rgba(218,218,218,0.40)',
+				}, // 轮播样式
+				current: 0, // 轮播当前索引
+				remoteSwitch: false, // 是否开启异地还车
+			}
+		},
+		components: {
+			EvanSwitch
+		},
+		methods: {
+			// 轮播改变
+			swiperChange(e) {
+				this.current = e.detail.current;
+			},
+			// 立即租车
+			carRental() {
+
+			},
+			// 打开流程弹窗
+			openProcessPopup() {
+				this.$refs.processPopup.open()
+			},
+			// 关闭流程弹窗
+			closeProcessPopup() {
+				this.$refs.processPopup.close()
+			},
+			// 打开领券弹窗
+			openCouponPopup() {
+				this.$refs.couponPopup.open()
+			},
+			// 关闭领券弹窗
+			closeCouponPopup() {
+				this.$refs.couponPopup.close()
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	@import '@/static/scss/_mixin.scss';
+
+	.home {
+		.uni-swiper__dots-box {
+			padding-right: 40rpx;
+			justify-content: flex-end !important;
+		}
+
+		.swiper,
+		.banner {
+			@include box(100%, 320rpx);
+		}
+
+		.card {
+			position: relative;
+			top: -35rpx;
+			z-index: 9;
+			@include box-w(670rpx, #fff);
+			border-radius: 20rpx;
+			box-shadow: 0 0 8rpx 0 rgba(114, 141, 244, 0.25);
+			margin: 0 auto;
+			padding: 30rpx;
+
+			.title-bar {
+				@include flex-row(space-between);
+
+				text {
+					@include font-set(24rpx, #999, 700);
+				}
+
+				.caption {
+					@include flex-row();
+
+					.circle {
+						@include circle(16rpx);
+						margin-right: 10rpx;
+
+						&.blue {
+							background-color: #5A7EFF;
+						}
+
+						&.orange {
+							background-color: #FFA05B;
+						}
+					}
+				}
+			}
+
+			.block {
+				@include flex-row(flex-start, flex-start);
+				margin-top: 40rpx;
+				margin-bottom: 40rpx;
+
+				.city,
+				.address {
+					@include text-hide();
+					@include font-set(32rpx, #000, 700);
+
+					&.text-1 {
+						@include text-one;
+					}
+				}
+
+				.city {
+					@include box-w(128rpx);
+				}
+
+				.dot {
+					@include square(24rpx);
+					margin: 10rpx 25rpx 0;
+				}
+
+				.address {
+					@include box-w(286rpx);
+
+					&.text-1 {
+						width: 395rpx;
+					}
+				}
+
+				.evan-switch {
+					transform: scaleX(0.8) scaleY(0.8) translateX(10rpx);
+				}
+			}
+
+			.time-bar {
+				@include flex-row(space-between);
+
+				.time {
+					@include flex-col();
+
+					.date {
+						@include font-set(36rpx, #000, 700);
+						line-height: 48rpx;
+					}
+
+					.time {
+						@include font-set(24rpx, #999);
+						line-height: 34rpx;
+						margin-top: 6rpx;
+					}
+				}
+
+				.line-bar {
+					@include flex-col();
+
+					.date {
+						@include font-set(36rpx, #5A7EFF, 500);
+						line-height: 52rpx;
+					}
+
+					.interval {
+						@include box-b(200rpx, 16rpx);
+					}
+				}
+			}
+
+			.info {
+				@include font-set(24rpx, #999);
+				line-height: 34rpx;
+				margin-top: 40rpx;
+			}
+
+			.toast {
+				.sesame {
+					@include box(36rpx, 40rpx);
+					margin-right: 10rpx;
+				}
+
+				@include flex-center;
+				@include font-set(24rpx, #999);
+				margin-top: 64rpx;
+
+				&>text {
+					color: #5A7EFF;
+				}
+			}
+
+			.btn {
+				@include box(560rpx, 100rpx, #5A7EFF);
+				@include flex-center;
+				@include font-set(28rpx, #fff, 700);
+				border-radius: 52rpx;
+				box-shadow: 0 2rpx 8rpx 0 rgba(36, 44, 74, 0.25);
+				margin: 22rpx auto 10rpx;
+			}
+		}
+
+		.notice-box {
+			position: relative;
+			@include box-b(670rpx, 160rpx);
+			margin: 5rpx auto 40rpx;
+
+			.notice-bg {
+				@include square();
+			}
+
+			.mask {
+				@include cross();
+				@include square();
+				@include flex-center;
+				padding: 6rpx 190rpx 0 200rpx;
+
+				.info {
+					@include font-set(28rpx, #fff, 500);
+					line-height: 38rpx;
+					letter-spacing: 1rpx;
+				}
+
+				.go {
+					@include right(28rpx);
+					@include square(70rpx);
+				}
+			}
+		}
+
+		.bottom {
+			@include flex-center;
+			margin-bottom: 60rpx;
+
+			.item {
+				@include flex-center;
+				padding: 0 72rpx;
+
+				.icon {
+					height: 26rpx;
+				}
+
+				text {
+					@include font-set(28rpx, #5A7EFF);
+					margin-left: 10rpx;
+				}
+			}
+
+			.line {
+				@include box(4rpx, 24rpx, #5A7EFF);
+			}
+		}
+
+		.process-modal {
+			position: relative;
+			@include box-w(608rpx, #fff);
+			@include flex-col(flex-start);
+			height: 820rpx;
+			padding: 40rpx;
+			border-radius: 20rpx;
+
+			.process-content {
+				max-height: 664rpx;
+			}
+
+			.title {
+				@include font-set(36rpx, #000, 700);
+				line-height: 50rpx;
+			}
+
+			.info {
+				@include font-set(24rpx, #000);
+				@include text-both;
+				margin-top: 40rpx;
+
+				text {
+					color: #5A7EFF;
+				}
+			}
+
+			.process {
+				@include box(474rpx, 132rpx);
+				margin-top: 40rpx;
+				margin-bottom: 40rpx;
+			}
+
+			.section {
+
+				@include text-both;
+
+				&~.section {
+					margin-top: 30rpx;
+				}
+
+				.caption {
+					@include font-set(24rpx, #000, 700);
+					line-height: 34rpx;
+				}
+
+				.text {
+					@include font-set(24rpx, #000);
+					line-height: 34rpx;
+					margin-top: 10rpx;
+				}
+			}
+
+			.btn-box {
+				@include bottom();
+				@include box-w(100%, #fff);
+				padding: 20rpx 0 40rpx;
+
+				.btn {
+					@include box(300rpx, 96rpx, #5A7EFF);
+					@include flex-center;
+					@include font-set(32rpx, #fff, 700);
+					border-radius: 52rpx;
+					margin: 0 auto;
+				}
+			}
+		}
+
+		.coupon-modal {
+			position: relative;
+			@include box(556rpx, 750rpx);
+			border-radius: 30rpx;
+			transform: translateY(50rpx);
+
+			.bg {
+				@include square();
+				display: block;
+			}
+
+			.mask {
+				position: absolute;
+				left: 0;
+				top: 0;
+				z-index: 1;
+				@include square();
+				padding: 33rpx 55rpx;
+				@include flex-col(flex-start);
+
+				.caption {
+					@include top(-214rpx);
+					@include box-b(316rpx, 216rpx);
+				}
+
+				.title {
+					font-size: 40rpx;
+					font-weight: 500;
+					@include font-gradient(180deg, #FFEE38, #FFFFFF);
+				}
+
+				.coupon-content {
+					@include box(100%, 430rpx);
+					@include flex-col(flex-start);
+					margin-top: 64rpx;
+
+					.coupon-box {
+						@include box(442rpx, 130rpx);
+
+						&~.coupon-box {
+							margin-top: 20rpx;
+						}
+
+						.coupon {
+							position: relative;
+							@include box(668rpx, 196rpx);
+							transform: scale(0.67);
+							transform-origin: top left;
+
+							.bg {
+								@include square();
+							}
+
+							.mask {
+								position: absolute;
+								left: 0;
+								top: 0;
+								z-index: 1;
+								@include square();
+								@include flex-row();
+								padding-left: 50rpx;
+
+								.info {
+									@include box(537rpx, 100%);
+									@include flex-row();
+
+									&.is-get {
+										@include font-gradient(180deg, #FFD26E, #FFF1C0);
+									}
+
+									&.no-get {
+										color: #DEDEDE;
+									}
+
+									.price {
+										font-size: 32rpx;
+										font-weight: 500;
+
+										text {
+											font-size: 92rpx;
+											line-height: 128rpx;
+										}
+									}
+								}
+
+								.description {
+									margin-left: 30rpx;
+
+									.text {
+										font-size: 44rpx;
+										line-height: 62rpx;
+										font-weight: 700;
+									}
+
+									.time {
+										font-size: 20rpx;
+										font-weight: 700;
+										line-height: 28rpx;
+										margin-top: 6rpx;
+									}
+								}
+
+								.btn {
+									position: absolute;
+									right: 32rpx;
+									top: 50%;
+									transform: translateY(-50%);
+									@include box(72rpx, 132rpx);
+
+									.btn-bg {
+										@include square();
+									}
+
+									.text {
+										position: absolute;
+										left: 50%;
+										top: 50%;
+										transform: translateX(-50%) translateY(-50%) scaleY(0.9);
+										z-index: 1;
+										@include box-w(24rpx);
+										@include font-set(24rpx, #fff, 500);
+									}
+								}
+							}
+						}
+					}
+				}
+
+				.coupon-btn {
+					@include bottom(40rpx);
+					@include box(420rpx, 88rpx, linear-gradient(180deg, #fdf083 0%, #febc02 100%));
+					border-radius: 10rpx;
+					@include flex-center;
+					@include font-set(28rpx, #FD1F30, 700);
+				}
+
+				.coupon-close {
+					@include bottom(-100rpx);
+					@include circle(65rpx);
+				}
+			}
+		}
+	}
+</style>
