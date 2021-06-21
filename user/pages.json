@@ -59,6 +59,11 @@
 		"style": {
 			"navigationBarTitleText": "价格日历"
 		}
+	}, {
+		"path": "pages/order/orderDetail",
+		"style": {
+			"navigationBarTitleText": "订单详情"
+		}
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -89,7 +94,7 @@
 		"current": 0,
 		"list": [{
 			"name": "default",
-			"path": "pages/home/selectCar"
+			"path": "pages/order/order"
 		}]
 	}
 }
