@@ -34,12 +34,114 @@
 		"style": {
 			"navigationBarTitleText": "领券中心"
 		}
-	}, {
+	}, { 
 		"path": "pages/home/selectAddress",
 		"style": {
 			"navigationBarTitleText": "选择送车点"
 		}
-	}],
+	}, {
+		"path": "pages/mine/balance",
+		"style": {
+			"navigationBarTitleText": "余额"
+		}
+	}, { 
+		"path": "pages/mine/bill", 
+		"style": {
+			"navigationBarTitleText": "账单"
+		}
+	}, {
+		"path": "pages/mine/addCard",
+		"style": {
+			"navigationBarTitleText": "添加银行卡"
+		}
+	}, {
+		"path": "pages/mine/coupon",
+		"style": {
+			"navigationBarTitleText": "优惠券"
+		}
+	}, {
+		"path": "pages/mine/personalInformation",
+		"style": {
+			"navigationBarTitleText": "个人信息"
+		}
+	}, {
+		"path": "pages/mine/news",
+		"style": {
+			"navigationBarTitleText": "消息通知"
+		}
+	}, {
+		"path": "pages/mine/contactUs",
+		"style": {
+			"navigationBarTitleText": "联系我们"
+		}
+	},{
+		"path": "pages/mine/bankCard",
+		"style": {
+			"navigationBarTitleText": "银行卡"
+		}
+	},{ 
+		"path": "pages/mine/violationRecord",
+		"style": {
+			"navigationBarTitleText": "违章记录"
+		}
+	},{ 
+		"path": "pages/mine/violationInfo",
+		"style": {
+			"navigationBarTitleText": "违章详情"
+		}
+	},{
+		"path": "pages/mine/goPay",
+		"style": {
+			"navigationBarTitleText": "发起付款"
+		}
+	},{
+		"path": "pages/mine/pay",
+		"style": {
+			"navigationBarTitleText": "付款"
+		}
+	},{
+		"path": "pages/mine/paySuccess",
+		"style": {
+			"navigationBarTitleText": "付款成功"
+		}
+	},{
+		"path": "pages/mine/payInfo",
+		"style": {
+			"navigationBarTitleText": "付款详情"
+		}
+	},{
+		"path": "pages/mine/risk", 
+		"style": {
+			"navigationBarTitleText": "风控查询"
+		}
+	},{
+		"path": "pages/mine/finded",
+		"style": {
+			"navigationBarTitleText": "查询结果"
+		}
+	},{
+		"path": "pages/mine/find",
+		"style": {
+			"navigationBarTitleText": "查询"
+		}
+	},{
+		"path": "pages/mine/invoice",
+		"style": {
+			"navigationBarTitleText": "发票"
+		}
+	},{
+		"path": "pages/mine/invoiceInfo",
+		"style": {
+			"navigationBarTitleText": "发票详情"
+		}
+	},{
+		"path": "pages/common/login",
+		"style": {
+			"navigationBarTitleText": "登录"
+		}
+	}
+	],
+	
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarBackgroundColor": "#FFFFFF",
@@ -69,7 +171,7 @@
 		"current": 0,
 		"list": [{
 			"name": "default",
-			"path": "pages/home/selectAddress"
+			"path": "pages/common/login"
 		}]
 	}
 }
