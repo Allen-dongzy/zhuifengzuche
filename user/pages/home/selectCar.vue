@@ -40,7 +40,7 @@
 						</view>
 					</view>
 					<view class="price-bar">
-						<view class="calendar">
+						<view class="calendar" @click="$open('/pages/home/priceCalendar')">
 							<image class="icon-calendar" :src="`${ossUrl}/home/icon-calendar.png`"></image>
 							<text>价格日历</text>
 							<view class="arrow"></view>

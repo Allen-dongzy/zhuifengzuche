@@ -47,10 +47,10 @@
 				</view>
 			</view>
 			<view class="info">*异地还车调度费3元/公里；22:00-07:00取还车，将收取￥40/次夜间服务费</view>
-			<view class="toast">
+			<view class="toast" @click="openProcessPopup">
 				<image class="sesame" :src="`${ossUrl}/home/sesame.png`"></image>芝麻分达<text>550</text>即可享受押金双免租车 >
 			</view>
-			<view class="btn" @click="openProcessPopup">立即租车</view>
+			<view class="btn" @click="$open('/pages/home/selectCar')">立即租车</view>
 		</view>
 		<!-- go.png -->
 		<view class="notice-box" @click="openCouponPopup">
@@ -92,7 +92,7 @@
 					</view>
 				</scroll-view>
 				<view class="btn-box">
-					<view class="btn">知道了</view>
+					<view class="btn" @click="closeProcessPopup">知道了</view>
 				</view>
 			</view>
 		</uni-popup>

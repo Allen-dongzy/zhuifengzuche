@@ -24,27 +24,27 @@
 						</view>
 					</view>
 					<view class="btn-group">
-						<image class="btn" :src="`${ossUrl}/home/location-big.png`"></image>
-						<image class="btn" :src="`${ossUrl}/common/phone-big.png`"></image>
+						<image class="btn" :src="`${ossUrl}/home/location-big.png`" @click="openMap"></image>
+						<image class="btn" :src="`${ossUrl}/common/phone-big.png`" @click="phoneCall"></image>
 					</view>
 				</view>
 				<view class="info">
 					<view class="bar">
 						<image class="icon" :src="`${ossUrl}/home/icon-time.png`"></image>
-						<text class="description">营业时间：8:00-21:00</text>
+						<view class="description">营业时间：8:00-21:00</view>
 					</view>
 					<view class="bar">
 						<image class="icon" :src="`${ossUrl}/home/icon-phone.png`"></image>
-						<text class="description">电话号码：<text>18888888888</text></text>
+						<view class="description">电话号码：<text @click="phoneCall">18888888888</text></view>
 					</view>
 					<view class="bar">
 						<image class="icon" :src="`${ossUrl}/home/icon-message.png`"></image>
-						<text class="description">评论：123条</text>
-						<view class="arrow"></view>
+						<view class="description" @click="$open('/pages/home/storeComment')">评论：123条</view>
+						<view class="arrow" @click="$open('/pages/home/storeComment')"></view>
 					</view>
 					<view class="bar">
 						<image class="icon" :src="`${ossUrl}/home/icon-home-black.png`"></image>
-						<text class="description">门店地址：<text>郑家院子东路8号</text></text>
+						<view class="description">门店地址：<text @click="openMap">郑家院子东路8号</text></view>
 					</view>
 				</view>
 			</view>
@@ -61,6 +61,28 @@
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
+			}
+		},
+		methods: {
+			// 打电话
+			phoneCall() {
+				uni.makePhoneCall({
+					phoneNumber: '17623178041'
+				})
+			},
+			// 打开地图
+			async openMap() {
+				// 获取位置
+				const [err, res] = await await uni.getLocation({
+					type: 'gcj02'
+				})
+				const latitude = res.latitude
+				const longitude = res.longitude
+				// 打开位置
+				uni.openLocation({
+					latitude,
+					longitude
+				})
 			}
 		}
 	}

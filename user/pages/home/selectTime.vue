@@ -123,18 +123,6 @@
 			}
 		}
 
-		// .uni-calendar__weeks-item:first-of-type {
-		// 	border-top-left-radius: 66rpx;
-		// 	border-bottom-left-radius: 66rpx;
-		// 	overflow: hidden;
-		// }
-
-		// .uni-calendar__weeks-item:last-of-type {
-		// 	border-top-right-radius: 66rpx;
-		// 	border-bottom-right-radius: 66rpx;
-		// 	overflow: hidden;
-		// }
-
 		.uni-calendar-item--before-checked {
 			background-color: rgba(90, 126, 255, 0.50) !important;
 			// border-radius: 66rpx;
@@ -147,11 +135,9 @@
 
 		.uni-calendar-item--after-checked {
 			background-color: rgba(90, 126, 255, 0.50) !important;
-			// border-radius: 66rpx;
 
 			.uni-calendar-item__weeks-box-item {
 				background-color: #5A7EFF !important;
-				// border-radius: 66rpx;
 			}
 		}
 

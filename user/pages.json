@@ -49,6 +49,16 @@
 		"style": {
 			"navigationBarTitleText": "查看门店"
 		}
+	}, {
+		"path": "pages/home/storeComment",
+		"style": {
+			"navigationBarTitleText": "查看评论"
+		}
+	}, {
+		"path": "pages/home/priceCalendar",
+		"style": {
+			"navigationBarTitleText": "价格日历"
+		}
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
