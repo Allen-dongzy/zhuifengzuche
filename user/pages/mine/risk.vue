@@ -1,0 +1,144 @@
+<template>
+	<view class="">
+		<view class="text">
+			追风租车通过3年的数据沉淀，协全行业最全SaaS智能风控管理系统，为汽车服务先行者保驾护航。 <br/>
+			（请确认客户已经授权同意查询个人信用信息，本公司不对查询结果和数据内容提供任何要素担保）
+		</view>
+		<view class="find" @click="findOne">查询</view>
+		<view class="find" @click="buyNum">购买次数</view>
+		<view class="num">剩余查询次数：99</view>
+		
+		<view v-show="puy==true" class="Mask"></view>
+		<view v-show="puy==true" class="box1">
+			<view class="flexBox">
+				<view style="width: 90%;font-size: 30rpx;">购买次数</view>
+				<view style="width: 10%;font-size: 30rpx;color: #999999;" @click="buyNum">取消</view>
+			</view>
+			<view style="margin-top: 30rpx;">
+				<view v-for="(item,index) in list" :key="index" class="selectBox">
+					<view v-if="item.status==true" class="noselectBox">
+						<view class="">{{item.num}}次</view>
+						<view class="">￥{{item.price}}</view>
+					</view>
+					<view v-if="item.status==false" class="acselectBox">
+						<view class="">{{item.num}}次</view>
+						<view class="">￥{{item.price}}</view>
+					</view>
+				</view>
+			</view>
+			
+			<button  style=" color: white;
+				width: 90%;
+						margin: auto;
+					    background-color: #5A7EFF;
+					    border-radius: 50px;
+					    font-size: 32rpx;
+						margin-top: 20rpx;
+					    height: 96rpx;line-height: 96rpx;" type="default" @click="next">完成</button>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				list:[{num:'10次',price:'￥100',status:true},{num:'20次',price:'￥200',status:false},{num:'30次',price:'￥300',status:false},{num:'40次',price:'￥400',status:false},{num:'50次',price:'￥500',status:false},{num:'60次',price:'￥600',status:false},],
+				puy:false
+			}
+		},
+		methods: {
+			findOne(){
+				console.log('pp')
+				uni.navigateTo({
+					url:'./find',
+					animationDuration:200,
+					animationType:'pop-in'
+				})
+			},
+			buyNum(){
+				if(this.puy){
+					this.puy=false
+				}else{
+					this.puy=true
+				}
+				
+			}
+		}
+	}
+</script>
+
+<style>
+	.text{
+	   font-size: 28rpx;
+	   color: #999999;
+	   width: 90%;
+	   margin: auto;
+	   padding-top: 10vh;
+	}
+	.find{
+		border: 2rpx solid #5A7EFF;
+		color: #5A7EFF;
+		letter-spacing: 10rpx;
+		font-size: 32rpx;
+		width: 90%;
+		margin: auto;
+		text-align: center;
+		height: 96rpx;
+		line-height: 96rpx;
+		border-radius: 20rpx;
+		margin-top: 80rpx;
+	}
+	.num{
+		color: #999999;
+		font-size: 24rpx;
+		width: 40%;
+		margin: auto;
+		text-align: center;
+		margin-top: 20rpx;
+	}
+	.Mask {
+		position: fixed;
+		background-color: #000000;
+		opacity: 0.6;
+		height: 100vh;
+		width: 100%;
+		top: 0px;
+	}
+	.box1{
+		width: 90%;
+		position: absolute;
+		padding: 20rpx 5%; 
+		background-color: white;
+		bottom:0rpx;
+		border-top-left-radius:20rpx;
+		border-top-right-radius:20rpx;
+	}
+	.flexBox{
+		display: flex;
+		align-items: center;
+	}
+	.selectBox{
+		display: inline-block;width: 23%;margin: 20rpx 5%;height: 120rpx;line-height: 60rpx;
+	}
+	.acselectBox{
+		
+	
+	
+		color: #5A7EFF;
+		border:2rpx solid #5A7EFF;
+		text-align: center;
+		
+		border-radius:20rpx;
+	}
+	.noselectBox{
+		
+		
+		
+		color: #999999;
+		border:2rpx solid  #999999;
+		text-align: center;
+		
+		border-radius:20rpx;
+	}
+</style>
