@@ -66,7 +66,7 @@
 				<text>招商加盟</text>
 			</view>
 			<view class="line"></view>
-			<view class="item">
+			<view class="item" @click="$open('/pages/home/windStore')">
 				<image class="icon" :src="`${ossUrl}/home/shop.png`" mode="heightFix"></image>
 				<text>追风门店</text>
 			</view>
@@ -132,7 +132,7 @@
 	</view>
 </template>
 
-<script>	
+<script>
 	import EvanSwitch from '@/components/evan-switch/evan-switch'
 
 	export default {

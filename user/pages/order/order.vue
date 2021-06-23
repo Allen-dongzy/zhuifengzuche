@@ -56,6 +56,10 @@
 				</view>
 			</view>
 		</view>
+		<view class="empty">
+			<image class="bg" :src="`${ossUrl}/common/res-empty.png`"></image>
+			<view class="text">暂无订单</view>
+		</view>
 	</view>
 </template>
 
@@ -272,6 +276,21 @@
 						}
 					}
 				}
+			}
+		}
+
+		.empty {
+			@include flex-col();
+			margin-top: 200rpx;
+
+			.bg {
+				@include box(400rpx, 252rpx);
+			}
+
+			.text {
+				@include font-set(28rpx, #999);
+				line-height: 40rpx;
+				margin-top: 20rpx;
 			}
 		}
 	}

@@ -60,9 +60,39 @@
 			"navigationBarTitleText": "价格日历"
 		}
 	}, {
+		"path": "pages/home/windStore",
+		"style": {
+			"navigationBarTitleText": "追风门店"
+		}
+	}, {
 		"path": "pages/order/orderDetail",
 		"style": {
 			"navigationBarTitleText": "订单详情"
+		}
+	}, {
+		"path": "pages/order/costDetail",
+		"style": {
+			"navigationBarTitleText": "费用明细"
+		}
+	}, {
+		"path": "pages/order/reservationSuccess",
+		"style": {
+			"navigationBarTitleText": "预定成功"
+		}
+	}, {
+		"path": "pages/order/perfectInformation",
+		"style": {
+			"navigationBarTitleText": "完善信息"
+		}
+	}, {
+		"path": "pages/order/orderPay",
+		"style": {
+			"navigationBarTitleText": "订单支付"
+		}
+	}, {
+		"path": "pages/order/confirmOrder",
+		"style": {
+			"navigationBarTitleText": "确认订单"
 		}
 	}, {
 		"path": "pages/mine/balance",
@@ -164,6 +194,31 @@
 		"style": {
 			"navigationBarTitleText": "登录"
 		}
+	}, {
+		"path": "pages/order/depositReceived",
+		"style": {
+			"navigationBarTitleText": "预收详情"
+		}
+	}, {
+		"path": "pages/order/changeCarDetail",
+		"style": {
+			"navigationBarTitleText": "换车详情"
+		}
+	}, {
+		"path": "pages/order/differenceDetails",
+		"style": {
+			"navigationBarTitleText": "差价明细"
+		}
+	}, {
+		"path": "pages/order/settlementSuccess",
+		"style": {
+			"navigationBarTitleText": "结算成功"
+		}
+	}, {
+		"path": "pages/order/advanceDetail",
+		"style": {
+			"navigationBarTitleText": "预收冻结"
+		}
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -194,7 +249,7 @@
 		"current": 0,
 		"list": [{
 			"name": "default",
-			"path": "pages/order/order"
+			"path": "pages/order/advanceDetail"
 		}]
 	}
 }

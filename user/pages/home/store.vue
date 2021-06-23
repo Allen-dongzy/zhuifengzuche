@@ -3,7 +3,7 @@
 		<view class="address-title">
 			<view class="caption">滨江路皇冠大道送车点</view>
 			<view class="address">
-				<image class="icon-location" :src="`${ossUrl}/home/location-big.png`"></image>
+				<image class="icon-location" :src="`${ossUrl}/common/location-big.png`"></image>
 				<text>滨江路皇冠大道送车点</text>
 				<view class="arrow"></view>
 			</view>
@@ -24,13 +24,13 @@
 						</view>
 					</view>
 					<view class="btn-group">
-						<image class="btn" :src="`${ossUrl}/home/location-big.png`" @click="openMap"></image>
+						<image class="btn" :src="`${ossUrl}/common/location-big.png`" @click="openMap"></image>
 						<image class="btn" :src="`${ossUrl}/common/phone-big.png`" @click="phoneCall"></image>
 					</view>
 				</view>
 				<view class="info">
 					<view class="bar">
-						<image class="icon" :src="`${ossUrl}/home/icon-time.png`"></image>
+						<image class="icon" :src="`${ossUrl}/common/icon-time.png`"></image>
 						<view class="description">营业时间：8:00-21:00</view>
 					</view>
 					<view class="bar">
@@ -43,7 +43,7 @@
 						<view class="arrow" @click="$open('/pages/home/storeComment')"></view>
 					</view>
 					<view class="bar">
-						<image class="icon" :src="`${ossUrl}/home/icon-home-black.png`"></image>
+						<image class="icon" :src="`${ossUrl}/common/icon-home-black.png`"></image>
 						<view class="description">门店地址：<text @click="openMap">郑家院子东路8号</text></view>
 					</view>
 				</view>
