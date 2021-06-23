@@ -96,5 +96,6 @@
   },
   "usingComponents": {
     "cu-custom": "/components/colorui/components/cu-custom"
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }
