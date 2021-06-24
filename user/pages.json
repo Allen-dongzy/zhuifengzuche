@@ -254,6 +254,11 @@
 		"style": {
 			"navigationBarTitleText": "前往还车"
 		}
+	}, {
+		"path": "pages/mine/aboutMe",
+		"style": {
+			"navigationBarTitleText": "关于我们"
+		}
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -284,7 +289,7 @@
 		"current": 0,
 		"list": [{
 			"name": "default",
-			"path": "pages/order/advanceDetail"
+			"path": "pages/mine/aboutMe"
 		}]
 	}
 }
