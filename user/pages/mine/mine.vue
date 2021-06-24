@@ -1,11 +1,11 @@
 <template>
-	<view class="box" :style="{backgroundImage: 'url('+`${ossUrl}/mine/userbg.png`+')'}">
+	<view class="box"  :style="{backgroundImage: 'url('+`${ossUrl}/mine/userbg.png`+')'}"> 
 		<view class="nameBox">
 			<view class="">
 				<image style="height: 100rpx;width: 100rpx;border-radius: 50%;" :src="`${ossUrl}/mine/touxiang.png`"
 					mode=""></image>
 			</view>
-			<view style="font-size: 40rpx;color: white;margin-left: 20rpx;" @click="$open('/pages/common/login')">点击登陆</view>
+			<view style="font-size: 40rpx;color: white;margin-left: 20rpx;">点击登陆</view>
 		</view>
 		<view class="allBox">
 			<view class="">
@@ -13,7 +13,7 @@
 					<image style="height: 36rpx;width: 36rpx;" :src="`${ossUrl}/mine/yue.png`" mode=""></image>
 					<view style="margin-left: 15rpx;">余额</view>
 				</view>
-				<view style="font-size: 60rpx;">0.00<label style="font-size:24rpx;">元</label></view>
+				<view style="font-size: 60rpx;">0.00<label style="font-size:24rpx;">元</label></view> 
 			</view>
 
 			<view class="line"></view>
@@ -21,8 +21,8 @@
 				<view class="flexBox" style="width: 100%;height:48rpx;border-radius: 10rpx;" @click="coupon">
 					<image style="height: 36rpx;width: 36rpx;" :src="`${ossUrl}/mine/youhui.png`" mode=""></image>
 					<view style="margin-left: 15rpx;">优惠券</view>
-				</view>
-				<view style="font-size: 60rpx;">0.00<label style="font-size:24rpx;">张</label></view>
+				</view> 
+				<view style="font-size: 60rpx;">0.00<label style="font-size:24rpx;">张</label></view> 
 			</view>
 		</view>
 		<view class="flexBox">
@@ -34,11 +34,11 @@
 				<image style="height: 80rpx;width: 80rpx;" :src="`${ossUrl}/mine/weizhang.png`" mode=""></image>
 				<view class="grayTetx">违章记录</view>
 			</view>
-			<view class="flexBoxOne" @click="$open('/pages/mine/pay')">
+			<view class="flexBoxOne">
 				<image style="height: 80rpx;width: 80rpx;" :src="`${ossUrl}/mine/fukuan.png`" mode=""></image>
 				<view class="grayTetx">付款</view>
 			</view>
-			<view class="flexBoxOne" @click="$open('/pages/mine/pay')">
+			<view class="flexBoxOne">
 				<image style="height: 80rpx;width: 80rpx;" :src="`${ossUrl}/mine/shoukuan.png`" mode=""></image>
 				<view class="grayTetx">收款</view>
 			</view>
@@ -56,36 +56,12 @@
 	import {
 		open
 	} from '@/utils/uni-tools'
-
+	
 	export default {
 		data() {
-			return {
+			return { 
 				ossUrl: this.$ossUrl, // oss
-				list: [{
-					name: '发票抬头',
-					img: '/mine/fapiao.png',
-					path: '/pages/mine/invoice'
-				}, {
-					name: '银行卡',
-					img: '/mine/yhk.png',
-					path: './bankCard'
-				}, {
-					name: '风控查询',
-					img: '/mine/fengkong.png',
-					path: './risk'
-				}, {
-					name: '联系我们',
-					img: '/mine/lianxi.png',
-					path: '/pages/mine/contactUs'
-				}, {
-					name: '关于追风',
-					img: '/mine/about.png',
-					path: ''
-				}, {
-					name: '退出登录',
-					img: '/mine/out.png',
-					path: ''
-				}]
+				list:[{name:'发票抬头',img:'/mine/fapiao.png',path:''},{name:'银行卡',img:'/mine/yhk.png',path:'./bankCard'},{name:'风控查询',img:'/mine/fengkong.png',path:'./risk'},{name:'联系我们',img:'/mine/lianxi.png',path:''},{name:'关于追风',img:'/mine/about.png',path:'./aboutMe'},{name:'退出登录',img:'/mine/out.png',path:''}]
 			};
 		},
 		methods: {
@@ -96,7 +72,7 @@
 					animationType: 'pop-in'
 				})
 			},
-			wallet() {
+			wallet() { 
 				uni.navigateTo({
 					url: './balance',
 					animationDuration: 200,
@@ -110,21 +86,21 @@
 					animationType: 'pop-in'
 				})
 			},
-			selectOne(e) {
+			selectOne(e){
 				console.log(e)
 				uni.navigateTo({
-					url: e,
+					url:e,
 					animationDuration: 200,
 					animationType: 'pop-in'
 				})
 			},
-			violation() {
+			violation(){
 				uni.navigateTo({
 					url: './violationRecord',
 					animationDuration: 200,
 					animationType: 'pop-in'
 				})
-			},
+			}, 
 			quit() {
 				// todo
 				open('/pages/home/home')
@@ -203,20 +179,17 @@
 		border-radius: 50rpx;
 		margin-top: 48vh;
 	}
-
-	.grayTetx {
+	.grayTetx{
 		font-size: 24rpx;
 		color: #999999;
 		text-align: center;
 	}
-
-	.grayLine {
-		height: 20rpx;
+	.grayLine{
+		height:20rpx;
 		width: 100%;
 		background-color: #EFF0F3;
 	}
-
-	.flexBoxOne {
+	.flexBoxOne{
 		margin: 40rpx 40rpx;
 	}
 </style>
