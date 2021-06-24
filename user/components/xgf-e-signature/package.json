@@ -1,0 +1,11 @@
+{
+    "id": "xgf-e-signature",
+    "name": "电子签名（兼容竖屏和横屏）",
+    "version": "1.0.0",
+    "description": "适用于小程序和app且兼容竖屏和横屏模式的电子签名插件",
+    "keywords": [
+        "电子签名",
+        "canvas",
+        "插件"
+    ]
+}

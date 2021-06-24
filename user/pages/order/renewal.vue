@@ -24,7 +24,10 @@
 			<view style="font-size: 36rpx;color: #FC3736;width: 55%;margin-left: 10rpx;"><text style="font-size: 16rpx;">¥</text>188.00</view>
 			<view class="pay">立即支付</view>
 		</view>
+<<<<<<< HEAD
 		
+=======
+>>>>>>> feature-wcy
 		<uni-popup ref="popup" type="bottom">
 			<view class="popbox">
 				<view class="flexBox" >
