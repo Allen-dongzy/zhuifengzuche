@@ -1,6 +1,6 @@
 <template>
 	<view class="">
-	<view class="box">
+	<view class="box" @click="$open('/pages/mine/invoiceInfo')">
 		
 		<view class="flex">
 			<view class="flex" style="width: 96%;">
@@ -18,7 +18,7 @@
 			    background-color: #5A7EFF;
 			    border-radius: 50px;
 			    font-size: 32rpx;
-			    height: 96rpx;line-height: 96rpx; " type="default" @click="pay">添加新抬头</button>		
+			    height: 96rpx;line-height: 96rpx; " type="default" @click="$open('/pages/mine/invoiceInfo')">添加新抬头</button>		
 	</view>
 
 </template>

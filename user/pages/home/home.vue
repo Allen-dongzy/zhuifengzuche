@@ -21,13 +21,13 @@
 				<view class="address" @click="$open('/pages/home/selectAddress')">乐东黎大族自治县 乐东黎大族自治县</view>
 				<evan-switch v-model="remoteSwitch" active-color="#5A7EFF"></evan-switch>
 			</view>
-			<view class="title-bar">
+			<view v-show="remoteSwitch" class="title-bar">
 				<view class="caption">
 					<view class="circle orange"></view>
 					<text>还车地点</text>
 				</view>
 			</view>
-			<view class="block">
+			<view v-show="remoteSwitch" class="block">
 				<view class="city text-1" @click="$open('/pages/home/selectCity')">乐东黎大 族自治县</view>
 				<image class="dot" :src="`${ossUrl}/home/dot.png`"></image>
 				<view class="address text-1" @click="$open('/pages/home/selectAddress')">乐东黎大族自治县 乐东黎大族自治县</view>
@@ -53,7 +53,7 @@
 			<view class="btn" @click="$open('/pages/home/selectCar')">立即租车</view>
 		</view>
 		<!-- go.png -->
-		<view class="notice-box" @click="openCouponPopup">
+		<view class="notice-box" @click="$open('/pages/mine/coupon')">
 			<image class="notice-bg" :src="`${ossUrl}/home/notice.png`" mode="aspectFill"></image>
 			<view class="mask">
 				<view class="info">你有2张优惠券可领取 租车立省20元！</view>
@@ -159,6 +159,9 @@
 		},
 		components: {
 			EvanSwitch
+		},
+		onLoad() {
+			this.openCouponPopup()
 		},
 		methods: {
 			// 轮播改变

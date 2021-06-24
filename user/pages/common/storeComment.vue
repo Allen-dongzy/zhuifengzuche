@@ -10,7 +10,7 @@
 					<view class="description">
 						<view class="caption">隔壁老*</view>
 						<view class="star-box">
-							<image class="star" :src="`${ossUrl}/home/icon-star.png`" v-for="(inner, sub) in 3"
+							<image class="star" :src="`${ossUrl}/common/icon-star.png`" v-for="(inner, sub) in 3"
 								:key="sub"></image>
 						</view>
 					</view>

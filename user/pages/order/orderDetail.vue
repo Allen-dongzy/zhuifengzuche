@@ -1,24 +1,18 @@
 <template>
 	<view class="order-detail">
-		<view v-show="false" class="top-panel-1">
-			<view class="statu-bar">
+		<view v-show="status===0 || status===1 || status===2" class="top-panel-1">
+			<view v-show="status===1 || status===2" class="statu-bar">
 				<view class="status">等待送车</view>
-				<view v-show="false" class="refresh">
+				<view v-show="status===1" class="refresh">
 					<image :src="`${ossUrl}/order/refresh.png`"></image>刷新
 				</view>
 			</view>
-			<view v-show="true" class="text-box">
-				<view class="text">感谢您对追风租车的信任，期待再次光临</view>
-				<view class="text">违章押金未退还</view>
-			</view>
-			<view v-show="false" class="info">30分29秒 后订单将自动取消</view>
+			<view v-show="status===0 || status===1" class="info">30分29秒 后订单将自动取消</view>
 			<view class="bottom">
 				<view class="btn-box">
-					<view v-if="false" class="btn white">取消订单</view>
-					<view v-if="false" class="btn blue">立即支付</view>
-					<view v-if="false" class="btn white">查看车况</view>
-					<view v-if="false" class="btn white">换车详情</view>
-					<view v-if="false" class="btn white">评&#32;价</view>
+					<view v-if="status===0 || status===1 || status===2" class="btn white">取消订单</view>
+					<view v-if="status===0" class="btn blue">立即支付</view>
+					<view v-if="status===2" class="btn white" @click="$open('/pages/common/goInspect')">查看车况</view>
 				</view>
 				<view class="contact">
 					<image class="phone" :src="`${ossUrl}/common/phone-big.png`"></image>
@@ -26,7 +20,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="top-panel-2">
+		<view v-show="status===3 || status===4 || status===5 || status===6" class="top-panel-2">
 			<view class="top">
 				<image class="bg" :src="`${ossUrl}/order/order-bg.png`"></image>
 				<view class="mask">
@@ -34,7 +28,7 @@
 					<view class="toast">剩余用车时间<text>6小时14分</text>请在约定时间内归还</view>
 				</view>
 			</view>
-			<view v-show="false" class="menu">
+			<view v-show="status===3" class="menu">
 				<view class="menu-box">
 					<view class="header">
 						<image class="icon" :src="`${ossUrl}/order/exclamation.png`"></image>
@@ -42,13 +36,13 @@
 					</view>
 					<view class="btn-box">
 						<view class="btn white">联系门店</view>
-						<view class="btn white">续租用车</view>
-						<view class="btn blue">前往还车</view>
+						<view class="btn white" @click="$open('/pages/order/renewal')">续租用车</view>
+						<view class="btn blue" @click="$open('/pages/order/returnCar')">前往还车</view>
 					</view>
 				</view>
 			</view>
 		</view>
-		<view class="order-card" :class="{'radius': true}">
+		<view class="order-card" :class="{'radius': status===4 || status===5 || status===6}">
 			<view class="info">
 				<image class="picture"
 					src="https://youjia-image.cdn.bcebos.com/seriesImage/158738183449412be5bb.png@!w_600_fp"
@@ -91,7 +85,7 @@
 		</view>
 
 		<view class="info-card-1">
-			<view v-show="false" class="order-item">
+			<view v-show="status===0" class="order-item">
 				<view class="left">
 					<view class="top">
 						驾无忧保障<image class="question" :src="`${ossUrl}/order/question.png`"></image>
@@ -101,13 +95,13 @@
 				</view>
 				<view class="right">￥60</view>
 			</view>
-			<view v-show="false" class="order-item">
+			<view v-show="status===0" class="order-item">
 				<view class="left">优惠券</view>
 				<view class="right">-￥60</view>
 			</view>
 			<view class="order-item">
 				<view class="left">
-					<view class="cost">
+					<view class="cost" @click="$open('/pages/order/costDetail')">
 						总计
 						<text>费用明细</text>
 						<view class="arrow"></view>
@@ -139,7 +133,7 @@
 				<view class="left">支付方式</view>
 				<view class="right">取车时支付</view>
 			</view>
-			<view v-show="false" class="order-item">
+			<view v-show="status===3" class="order-item" @click="$open('/pages/order/depositReceived')">
 				<view class="left">支付凭证</view>
 				<view class="right">预收冻结￥500<view class="arrow"></view>
 				</view>
@@ -153,21 +147,21 @@
 			</view>
 		</view>
 
-		<view v-show="true" class="bottom-bar">
+		<view v-show="status===4 || status===5 || status===6" class="bottom-bar">
 			<view class="left">
-				<image v-show="false" class="icon" :src="`${ossUrl}/order/smile.png`"></image>
-				<image v-show="true" class="icon" :src="`${ossUrl}/order/price.png`"></image>
+				<image v-show="status===4" class="icon" :src="`${ossUrl}/order/smile.png`"></image>
+				<image v-show="status!==4" class="icon" :src="`${ossUrl}/order/price.png`"></image>
 				追风租车祝您生活愉快
 			</view>
 			<view class="right">
-				<view class="contact">
+				<view v-show="status===5 || status===6" class="contact">
 					<image class="phone" :src="`${ossUrl}/common/phone-big.png`"></image>
 					联系门店
 				</view>
-				<view v-show="false" class="btn-box">
-					<view v-show="false" class="btn white">联系送车员</view>
-					<view v-show="false" class="btn blue">换车详情</view>
-					<view v-show="true" class="btn blue">评价订单</view>
+				<view v-show="status===4 || status===5" class="btn-box">
+					<view v-show="status===4" class="btn white">联系送车员</view>
+					<view v-show="status===4" class="btn blue" @click="$open('/pages/order/changeCarDetail')">换车详情</view>
+					<view v-show="status===5" class="btn blue" @click="$open('/pages/order/evaluate')">评价订单</view>
 				</view>
 			</view>
 		</view>
@@ -195,6 +189,7 @@
 	export default {
 		data() {
 			return {
+				status: 6, // 0
 				ossUrl: this.$ossUrl, // oss
 			}
 		},
