@@ -3,7 +3,6 @@
 		<view class="price-bar">
 			<view class="title">
 				租金(￥188/日均)
-				<view class="arrow"></view>
 			</view>
 			<view class="price">
 				￥<text>188</text>
@@ -88,15 +87,6 @@
 				@include flex-row();
 				@include font-set(28rpx, #000, 700);
 				line-height: 40rpx;
-
-				.arrow {
-					@include square(16rpx);
-					border: 1px solid #999;
-					border-left: 0;
-					border-bottom: 0;
-					transform: rotate(-45deg) translateY(6rpx);
-					margin-left: 10rpx;
-				}
 			}
 
 			.price {

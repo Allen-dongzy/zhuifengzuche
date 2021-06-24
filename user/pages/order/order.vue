@@ -20,7 +20,7 @@
 				<view class="item-header">
 					<view class="name-box">
 						<view class="name">大众 捷达郑家院子1号店</view>
-						<view :class="['label-card', {'orange': status === 0}]">
+						<view v-show="status === 0" :class="['label-card', {'orange': status === 0}]">
 							<view class="top"></view>
 							<view class="line"></view>
 							<view class="box">未支付</view>
@@ -31,7 +31,9 @@
 				<view class="content">
 					<view class="status-box">
 						<view class="time">05-25至05-30</view>
-						<view class="status blue">等待送车</view>
+						<view
+							v-show="status === 1 || status === 2 || status === 3 || status === 4 || status === 5 || status === 6"
+							:class="['status', {'blue': status!==6}, {'red':status===6}] ">等待送车</view>
 					</view>
 					<view class="address"><text v-show="false">取</text>恒大中渝广场送车点</view>
 					<view v-show="false" class="address"><text>还</text>恒大中渝广场送车点</view>
@@ -39,19 +41,20 @@
 					<view v-show="false" class="parameter">大众 捷达丨自动 5座 2.0L</view>
 				</view>
 				<view class="bottom">
-					<view class="contact">
+					<view v-show="status < 5" class="contact">
 						<image class="phone" :src="`${ossUrl}/common/phone-big.png`"></image>
 						联系送车员
 					</view>
+					<view v-show="status >= 5" class="contact"></view>
 					<view class="btn-box">
-						<view class="btn white">续租用车</view>
-						<view v-show="false" class="btn blue">立即支付</view>
-						<view v-show="false" class="btn blue">查看车况</view>
-						<view v-show="false" class="btn blue">前往还车</view>
-						<view v-show="false" class="btn blue">换车详情</view>
-						<view v-show="false" class="btn blue">评价</view>
-						<view v-show="false" class="btn blue">查看评价</view>
-						<view v-show="false" class="btn blue">再次预订</view>
+						<view v-show="status === 3" class="btn white" @click.stop="$open('/pages/order/renewal')">续租用车</view>
+						<view v-show="status === 0" class="btn blue">立即支付</view>
+						<view v-show="status === 2" class="btn blue" @click.stop="$open('/pages/common/goInspect')">查看车况</view>
+						<view v-show="status === 3" class="btn blue" @click.stop="$open('/pages/order/returnCar')">前往还车</view>
+						<view v-show="status === 4" class="btn blue" @click.stop="$open('/pages/order/changeCarDetail')">换车详情</view>
+						<view v-show="status === 5" class="btn blue" @click.stop="$open('/pages/order/evaluate')">评价</view>
+						<view v-show="status === 5 && false" class="btn blue" @click.stop="$open('/pages/common/storeComment')">查看评价</view>
+						<view v-show="status === 6" class="btn blue">再次预订</view>
 					</view>
 				</view>
 			</view>
@@ -72,6 +75,7 @@
 				status: 0
 			}
 		},
+		computed: {},
 		methods: {
 			// 切换tab
 			taptab(index) {

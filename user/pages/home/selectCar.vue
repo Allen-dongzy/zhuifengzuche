@@ -21,7 +21,7 @@
 				</view>
 			</scroll-view>
 			<scroll-view class="list" :scroll-y="true">
-				<view class="item" v-for="(item, index) in 10" :key="index">
+				<view class="item" v-for="(item, index) in 10" :key="index" @click="$open('/pages/order/confirmOrder')">
 					<view class="card">
 						<image class="pic"
 							src="https://youjia-image.cdn.bcebos.com/seriesImage/158738183449412be5bb.png@!w_600_fp"
@@ -40,7 +40,7 @@
 						</view>
 					</view>
 					<view class="price-bar">
-						<view class="calendar" @click="$open('/pages/home/priceCalendar')">
+						<view class="calendar" @click.stop="$open('/pages/home/priceCalendar')">
 							<image class="icon-calendar" :src="`${ossUrl}/home/icon-calendar.png`"></image>
 							<text>价格日历</text>
 							<view class="arrow"></view>
@@ -49,7 +49,7 @@
 					</view>
 					<view class="address-bar">
 						<image class="icon-home" :src="`${ossUrl}/home/icon-home.png`"></image>
-						<view class="address" @click="$open('/pages/home/store')">门店地址：<text>郑家院子东路8号</text></view>
+						<view class="address" @click.stop="$open('/pages/home/store')">门店地址：<text>郑家院子东路8号</text></view>
 					</view>
 				</view>
 			</scroll-view>
@@ -88,7 +88,6 @@
 						<view class="label-box">
 							<view :class="['label', {'ac': acGear === 0}]" @click="tapGear(0)">自动挡</view>
 							<view :class="['label', {'ac': acGear === 1}]" @click="tapGear(1)">手动挡</view>
-							<view :class="['label', {'ac': acGear === 2}]" @click="tapGear(2)">智能</view>
 						</view>
 					</view>
 					<view class="bottom-mat"></view>

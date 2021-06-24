@@ -3,7 +3,7 @@
 		<view class="box">
 			<view class="flex">
 				<view style="width: 90%;">中国银行</view>  
-				<image style="height: 44rpx;width: 44rpx;" :src="`${ossUrl}/mine/edit.png`" mode=""></image>
+				<image style="height: 44rpx;width: 44rpx;" :src="`${ossUrl}/mine/edit.png`"  @click="$open('/pages/mine/addCard')"></image>
 			</view>
 			<view class="flex" style="margin: 30rpx 0px;">
 				<view class="num">****</view>

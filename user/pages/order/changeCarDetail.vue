@@ -21,7 +21,7 @@
 		<view class="bottom">
 			<view class="header">驾无忧、基本保障等服务按原有进行</view>
 			<view class="content">
-				<view class="item">
+				<view class="item" @click="$open('/pages/order/differenceDetails')">
 					<view class="caption">补收差价</view>
 					<view class="value">
 						￥60<view class="arrow"></view>

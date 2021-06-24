@@ -15,8 +15,8 @@
 				<view class="value">王小明</view>
 			</view>
 		</view>
-		<view class="bar"></view>
-		<view class="group">
+		<view v-show="false" class="bar"></view>
+		<view v-show="false" class="group">
 			<view class="item ">
 				<view class="caption">退款</view>
 				<view class="value">￥3000</view>

@@ -7,7 +7,7 @@
 					<view class="title-box">
 						<view class="store-caption">郑家院子1号店</view>
 						<view class="star-box">
-							<image class="star" :src="`${ossUrl}/home/icon-star.png`" v-for="(item, index) in 4"
+							<image class="star" :src="`${ossUrl}/common/icon-star.png`" v-for="(item, index) in 4"
 								:key="index"></image>
 						</view>
 					</view>
@@ -28,8 +28,8 @@
 				</view>
 				<view class="bar">
 					<image class="icon" :src="`${ossUrl}/home/icon-message.png`"></image>
-					<view class="description" @click="$open('/pages/home/storeComment')">评论：123条</view>
-					<view class="arrow" @click="$open('/pages/home/storeComment')"></view>
+					<view class="description" @click="$open('/pages/common/storeComment')">评论：123条</view>
+					<view class="arrow" @click="$open('/pages/common/storeComment')"></view>
 				</view>
 				<view class="bar">
 					<image class="icon" :src="`${ossUrl}/common/icon-home-black.png`"></image>

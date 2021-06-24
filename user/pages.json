@@ -50,7 +50,7 @@
 			"navigationBarTitleText": "查看门店"
 		}
 	}, {
-		"path": "pages/home/storeComment",
+		"path": "pages/common/storeComment",
 		"style": {
 			"navigationBarTitleText": "查看评论"
 		}
