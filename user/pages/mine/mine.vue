@@ -13,16 +13,16 @@
 					<image style="height: 36rpx;width: 36rpx;" :src="`${ossUrl}/mine/yue.png`" mode=""></image>
 					<view style="margin-left: 15rpx;">余额</view>
 				</view>
-				<view style="font-size: 60rpx;">0.00元</view> 
+				<view style="font-size: 60rpx;">0.00<label style="font-size:24rpx;">元</label></view> 
 			</view>
 
 			<view class="line"></view>
 			<view class="">
 				<view class="flexBox" style="width: 100%;height:48rpx;border-radius: 10rpx;" @click="coupon">
 					<image style="height: 36rpx;width: 36rpx;" :src="`${ossUrl}/mine/youhui.png`" mode=""></image>
-					<view style="margin-left: 15rpx;">优惠</view>
+					<view style="margin-left: 15rpx;">优惠券</view>
 				</view> 
-				<view style="font-size: 60rpx;">0.00元</view> 
+				<view style="font-size: 60rpx;">0.00<label style="font-size:24rpx;">张</label></view> 
 			</view>
 		</view>
 		<view class="flexBox">
@@ -46,8 +46,8 @@
 		<view class="grayLine"></view>
 		<view class="flexBoxLeft" @click="selectOne(item.path)" v-for="(item,index) in list " :key="index">
 			<image :src="`${ossUrl}`+item.img+``" style="height: 42rpx;width: 46rpx;" mode=""></image>
-			<view style="font-size: 28rpx;color: black;width: 70%;margin-left: 20rpx;">{{item.name}}</view>
-			<view style="color: #999999;font-size: 35rpx;margin-left: 20rpx;"> > </view>
+			<view style="font-size: 28rpx;color: black;width: 90%;margin-left: 20rpx;">{{item.name}}</view>
+			<image :src="`${ossUrl}/mine/huiyou.png`" style="height: 40rpx;width: 26rpx;" mode=""></image>
 		</view>
 	</view>
 </template>

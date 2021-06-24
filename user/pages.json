@@ -164,7 +164,43 @@
 		"style": {
 			"navigationBarTitleText": "登录"
 		}
-	}],
+	}, {
+		"path": "pages/order/renewal",
+		"style": {
+			"navigationBarTitleText": "续租用车"
+		}
+	},{
+		"path": "pages/order/evaluate",
+		"style": {
+			"navigationBarTitleText": "评价"
+		}
+	},{
+		"path": "pages/order/evaluateEd",
+		"style": {
+			"navigationBarTitleText": "评价成功"
+		}
+	},{
+		"path": "pages/common/contract",
+		"style": {
+			"navigationBarTitleText": "合同"
+		}
+	},{
+		"path": "pages/common/signIng",
+		"style": {
+			"navigationBarTitleText": "签名"
+		}
+	},{
+		"path": "pages/common/goInspect",
+		"style": {
+			"navigationBarTitleText": "车况概览"
+		}
+	},{
+		"path": "pages/order/returnCar",
+		"style": {
+			"navigationBarTitleText": "前往还车"
+		}
+	}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarBackgroundColor": "#FFFFFF",
@@ -194,7 +230,7 @@
 		"current": 0,
 		"list": [{
 			"name": "default",
-			"path": "pages/order/order"
+			"path": "pages/order/returnCar"
 		}]
 	}
 }
