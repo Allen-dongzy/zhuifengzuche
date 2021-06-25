@@ -11,7 +11,7 @@
   },
   "compileType": "miniprogram",
   "libVersion": "",
-  "appid": "wx5748b49f9808ca41",
+  "appid": "touristappid",
   "projectname": "client",
   "condition": {
     "search": {
@@ -32,7 +32,7 @@
         {
           "name": "default",
           "id": 0,
-          "pathName": "pages/customerRecords/leaseTimeSelection"
+          "pathName": "pages/login/login"
         }
       ]
     }
