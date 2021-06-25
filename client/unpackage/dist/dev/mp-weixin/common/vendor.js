@@ -872,7 +872,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"client","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"client","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -2051,43 +2051,22 @@ function normalizeComponent (
 /***/ }),
 
 /***/ 11:
-/*!************************************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车小程序/zhuifengzuche/client/store/index.js ***!
-  \************************************************************************/
+/*!*****************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/store/index.js ***!
+  \*****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 12));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 12));
+var _app = _interopRequireDefault(__webpack_require__(/*! ./moudules/app */ 13));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
-_vue.default.use(_vuex.default);
+_vue.default.use(_vuex.default);var _default =
 
-var store = new _vuex.default.Store({
-  state: {
-    userInfo: '' },
-
-  /**
-                     * 同步更新值
-                     */
-  mutations: {},
-
-
-  /**
-                  * 异步更新值
-                  */
-  actions: {},
-
-
-  /**
-                * 计算属性
-                */
-  getters: {} });var _default =
-
-
-
-
-store;exports.default = _default;
+new _vuex.default.Store({
+  modules: {
+    app: _app.default } });exports.default = _default;
 
 /***/ }),
 
@@ -3205,21 +3184,73 @@ var index = {
 /***/ }),
 
 /***/ 13:
-/*!***************************************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车小程序/zhuifengzuche/client/common/js/util.js ***!
-  \***************************************************************************/
+/*!************************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/store/moudules/app.js ***!
+  \************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 14));var _config = _interopRequireDefault(__webpack_require__(/*! ./config.js */ 17));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var app = {
+  namespaced: true,
+  state: {
+    statusBarHeight: 0, // 状态栏高度
+    windowWidth: 0, // 窗口宽度
+    windowHeight: 0, // 窗口高度
+    screenHeight: 0 // 屏幕高度
+  },
+  mutations: {
+    // 设置系统信息
+    setSystemInfo: function setSystemInfo(state, _ref)
+
+
+
+
+    {var statusBarHeight = _ref.statusBarHeight,windowWidth = _ref.windowWidth,windowHeight = _ref.windowHeight,screenHeight = _ref.screenHeight;
+      if (statusBarHeight) state.statusBarHeight = statusBarHeight;
+      if (windowWidth) state.windowWidth = windowWidth;
+      if (windowHeight) state.windowHeight = windowHeight;
+      if (screenHeight) state.screenHeight = screenHeight;
+    } },
+
+  actions: {
+    // 获取并设置系统信息
+    setSystemInfo: function setSystemInfo(_ref2)
+
+    {var commit = _ref2.commit;
+      var res = uni.getSystemInfoSync();
+      if (!res) return;
+      commit('setSystemInfo', {
+        statusBarHeight: res.statusBarHeight,
+        windowWidth: res.windowWidth,
+        windowHeight: res.windowHeight,
+        screenHeight: res.screenHeight });
+
+    } } };var _default =
+
+
+
+app;exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 14:
+/*!********************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/common/js/util.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 15));var _config = _interopRequireDefault(__webpack_require__(/*! ./config.js */ 18));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
 
 /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  * 防抖
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  * fn是事件触发执行的函数
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  * wait是指等待时长，在wait时间内多次触发函数只会被执行一次
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  * immediate是否立即执行，true表示wait秒内触发只会执行第一次触发；false表示wait秒内触发只会执行最后一次触发
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * 防抖
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * fn是事件触发执行的函数
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * wait是指等待时长，在wait时间内多次触发函数只会被执行一次
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * immediate是否立即执行，true表示wait秒内触发只会执行第一次触发；false表示wait秒内触发只会执行最后一次触发
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 function debounce(fn) {var wait = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1000;var immediate = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
   var timeout;
   return function () {
@@ -3494,18 +3525,18 @@ function toBack() {
 
 /***/ }),
 
-/***/ 14:
+/***/ 15:
 /*!**********************************************************!*\
   !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
   \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! regenerator-runtime */ 15);
+module.exports = __webpack_require__(/*! regenerator-runtime */ 16);
 
 /***/ }),
 
-/***/ 15:
+/***/ 16:
 /*!************************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
   \************************************************************/
@@ -3536,7 +3567,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(/*! ./runtime */ 16);
+module.exports = __webpack_require__(/*! ./runtime */ 17);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -3553,7 +3584,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 16:
+/***/ 17:
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
   \*****************************************************/
@@ -4285,10 +4316,10 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 17:
-/*!*****************************************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车小程序/zhuifengzuche/client/common/js/config.js ***!
-  \*****************************************************************************/
+/***/ 18:
+/*!**********************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/common/js/config.js ***!
+  \**********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4299,97 +4330,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   qrPath: 'http://192.168.0.233:5001', //后端生成二维码地址
   uploadPath: 'http://192.168.0.233:5010/api/v1/oss/image-aliyun-oss' //上传接口
 };exports.default = _default;
-
-/***/ }),
-
-/***/ 18:
-/*!**************************************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车小程序/zhuifengzuche/client/common/js/api.js ***!
-  \**************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! ./request.js */ 19));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var _default =
-
-{
-  /**
-   * 登录
-   * @param {Object} params
-   */
-  passwordLogin: function passwordLogin(params) {
-    return (0, _request.default)("/v1/partner/registerpartner", "POST", params);
-  } };exports.default = _default;
-
-/***/ }),
-
-/***/ 19:
-/*!******************************************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车小程序/zhuifengzuche/client/common/js/request.js ***!
-  \******************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _config = _interopRequireDefault(__webpack_require__(/*! ./config.js */ 17));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
-
-/**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           * 全局请求封装
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           */var _default =
-function _default(url, method, params) {
-  uni.showLoading({
-    title: "加载中...",
-    mask: true });
-
-
-  if (url.indexOf('http') == -1) {
-    url += _config.default.path;
-  }
-
-  var token = uni.getStorageSync('token');
-  return new Promise(function (resolve, reject) {
-    uni.request({
-      url: url,
-      method: method,
-      header: {
-        'Authorization': 'Bearer ' + token },
-
-      data: _objectSpread({},
-      params),
-
-      success: function success(res) {
-        var accessToken = res.header['access-token'];
-        if (accessToken) {
-          uni.setStorageSync('token', accessToken);
-        }
-
-        if (res.data.statusCode != 200) {
-          if (res.data.statusCode === 401) {
-            uni.reLaunch({
-              url: '/pages/login/login' });
-
-          }
-          uni.showToast({
-            title: res.data.error,
-            icon: 'none' });
-
-        }
-        resolve(res.data);
-      },
-      fail: function fail(err) {
-        uni.showToast({
-          title: '服务器错误或请求超时',
-          icon: 'none' });
-
-        reject(err);
-      },
-      complete: function complete() {
-        uni.hideLoading();
-      } });
-
-  });
-};exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 
@@ -9919,7 +9859,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"client","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_NAME":"client","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -9940,14 +9880,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"client","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"client","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"client","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"client","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -10033,7 +9973,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"client","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"client","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -10441,15 +10381,15 @@ internalMixin(Vue);
 
 /***/ }),
 
-/***/ 26:
-/*!****************************************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车小程序/zhuifengzuche/client/utils/uni-tools.js ***!
-  \****************************************************************************/
+/***/ 25:
+/*!*********************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/utils/uni-tools.js ***!
+  \*********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.clearCache = exports.getVersion = exports.listManager = exports.previewImgs = exports.uploadFiles = exports.chooseImgs = exports.showModal = exports.showLoading = exports.showToast = exports.toast = exports.close = exports.open = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 14));var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));var _this = void 0;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.clearCache = exports.getVersion = exports.listManager = exports.previewImgs = exports.chooseImgs = exports.showModal = exports.showLoading = exports.showToast = exports.toast = exports.close = exports.open = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));var _this = void 0;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 // 页面跳转
 var open = function open(path) {var object = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};var closeSelf = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
@@ -10579,32 +10519,8 @@ exports.showModal = showModal;var chooseImgs = function chooseImgs() {var count 
   });
 };
 
-// 上传文件(配合config使用)
-exports.chooseImgs = chooseImgs;var uploadFiles = /*#__PURE__*/function () {var _ref2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(tempFilePaths) {return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:return _context.abrupt("return",
-
-            new Promise(function (resolve, reject) {
-              var imgArr = [];
-              for (var i = 0; i < tempFilePaths.length; i++) {
-                uni.uploadFile({
-                  header: {
-                    'Content-Type': 'multipart/form-data' },
-
-                  url: "".concat(config.host, "/").concat(config.apiKeyword, "/").concat(config.uploadImgUrl), //上传接口
-                  filePath: tempFilePaths[i],
-                  name: 'file',
-                  success: function success(res) {
-                    var url = JSON.parse(res.data).data;
-                    imgArr.push(url);
-                    if (imgArr.length === tempFilePaths.length) resolve(imgArr);
-                  },
-                  fail: function fail(err) {return reject(err);} });
-
-              }
-            }).then(function (res) {return [null, res];}).catch(function (err) {return [err];}));case 1:case "end":return _context.stop();}}}, _callee);}));return function uploadFiles(_x) {return _ref2.apply(this, arguments);};}();
-
-
 // 预览图片
-exports.uploadFiles = uploadFiles;var previewImgs = function previewImgs(urls) {var current = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+exports.chooseImgs = chooseImgs;var previewImgs = function previewImgs(urls) {var current = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
   if (!urls) return false;
   return new Promise(function (resolve, reject) {
     uni.previewImage({
@@ -10770,9 +10686,9 @@ module.exports = g;
 /***/ }),
 
 /***/ 4:
-/*!********************************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车小程序/zhuifengzuche/client/pages.json ***!
-  \********************************************************************/
+/*!*************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/pages.json ***!
+  \*************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -10780,10 +10696,10 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 533:
-/*!**************************************************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车小程序/zhuifengzuche/client/components/xp-picker/util.js ***!
-  \**************************************************************************************/
+/***/ 532:
+/*!*******************************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/components/xp-picker/util.js ***!
+  \*******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10896,15 +10812,15 @@ function time2Timestamp(timer) {
 
 /***/ }),
 
-/***/ 541:
-/*!*****************************************************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车小程序/zhuifengzuche/client/components/uni-calendar/util.js ***!
-  \*****************************************************************************************/
+/***/ 540:
+/*!**********************************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/components/uni-calendar/util.js ***!
+  \**********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _calendar = _interopRequireDefault(__webpack_require__(/*! ./calendar.js */ 542));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}var
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _calendar = _interopRequireDefault(__webpack_require__(/*! ./calendar.js */ 541));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}var
 
 Calendar = /*#__PURE__*/function () {
   function Calendar()
@@ -11259,10 +11175,10 @@ Calendar;exports.default = _default;
 
 /***/ }),
 
-/***/ 542:
-/*!*********************************************************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车小程序/zhuifengzuche/client/components/uni-calendar/calendar.js ***!
-  \*********************************************************************************************/
+/***/ 541:
+/*!**************************************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/components/uni-calendar/calendar.js ***!
+  \**************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11816,10 +11732,10 @@ calendar;exports.default = _default;
 
 /***/ }),
 
-/***/ 571:
-/*!******************************************************************************************************!*\
-  !*** /Users/Ricardo/Desktop/租车小程序/zhuifengzuche/client/components/uni-transition/createAnimation.js ***!
-  \******************************************************************************************************/
+/***/ 570:
+/*!***********************************************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/components/uni-transition/createAnimation.js ***!
+  \***********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

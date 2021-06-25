@@ -128,30 +128,6 @@ const chooseImgs = (count = 1, type = 'all', origin = false) => {
 	})
 }
 
-// 上传文件(配合config使用)
-const uploadFiles = async tempFilePaths => {
-	// const config = await import('@/request/config').then((res) => res.default)
-	return new Promise((resolve, reject) => {
-		let imgArr = []
-		for (let i = 0; i < tempFilePaths.length; i++) {
-			uni.uploadFile({
-				header: {
-					'Content-Type': 'multipart/form-data'
-				},
-				url: `${config.host}/${config.apiKeyword}/${config.uploadImgUrl}`, //上传接口
-				filePath: tempFilePaths[i],
-				name: 'file',
-				success: (res) => {
-					const url = JSON.parse(res.data).data
-					imgArr.push(url);
-					if (imgArr.length === tempFilePaths.length) resolve(imgArr)
-				},
-				fail: (err => reject(err))
-			});
-		}
-	}).then(res => [null, res]).catch(err => [err])
-}
-
 // 预览图片
 const previewImgs = (urls, current = 0) => {
 	if (!urls) return false
@@ -291,7 +267,6 @@ export {
 	showLoading, // 弹一个loading
 	showModal, // 弹一个模态框
 	chooseImgs, // 选择图片
-	uploadFiles, // 上传文件
 	previewImgs, // 预览图片
 	listManager, // 列表公共处理
 	getVersion, // 获取app版本号
