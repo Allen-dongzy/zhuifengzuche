@@ -259,6 +259,11 @@
 		"style": {
 			"navigationBarTitleText": "关于我们"
 		}
+	}, {
+		"path": "pages/common/userAgreement",
+		"style": {
+			"navigationBarTitleText": "用户协议"
+		}
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -289,7 +294,7 @@
 		"current": 0,
 		"list": [{
 			"name": "default",
-			"path": "pages/mine/aboutMe"
+			"path": "pages/common/userAgreement"
 		}]
 	}
 }

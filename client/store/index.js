@@ -1,30 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import app from './moudules/app'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
-const store = new Vuex.Store({
-	state: {
-		userInfo: ''
-	},
-	/**
-	 * 同步更新值
-	 */
-	mutations: {
-		
-	},
-	/**
-	 * 异步更新值
-	 */
-	actions: {
-		
-	},
-	/**
-	 * 计算属性
-	 */
-	getters: {
-		
+export default new Vuex.Store({
+	modules: {
+		app
 	}
-});
-
-export default store;
+})

@@ -2,7 +2,6 @@ import Vue from 'vue'
 import App from './App'
 import store from './store'
 import util from './common/js/util.js'
-import api from './common/js/api.js'
 import cuCustom from './components/colorui/components/cu-custom.vue'
 // import uView from "./components/uview-ui"
 
@@ -11,7 +10,6 @@ import cuCustom from './components/colorui/components/cu-custom.vue'
  */
 Vue.prototype.$store = store;
 Vue.prototype.$util = util;
-Vue.prototype.$http = api;
 
 /**
  * 全局头部导航引入

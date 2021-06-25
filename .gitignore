@@ -1,7 +1,13 @@
 .DS_Store
 node_modules
-unpackage
-dist
+dist/**
+.project
+unpackage/
+wxcomponents/**/*.vue
+wxcomponents/**/*.css
+.hbuilderx/
+client/unpackage
+user/unpackage
 
 # local env files
 .env.local
@@ -16,7 +22,6 @@ pnpm-debug.log*
 # Editor directories and files
 .idea
 .vscode
-.hubilderx
 *.suo
 *.ntvs*
 *.njsproj
