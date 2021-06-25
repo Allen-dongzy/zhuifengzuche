@@ -6,6 +6,8 @@ unpackage/
 wxcomponents/**/*.vue
 wxcomponents/**/*.css
 .hbuilderx/
+client/unpackage
+user/unpackage
 
 # local env files
 .env.local
