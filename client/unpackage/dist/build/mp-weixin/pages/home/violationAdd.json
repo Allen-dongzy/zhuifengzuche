@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "添加违章",
-  "usingComponents": {
-    "xp-picker": "/components/xp-picker/xp-picker"
-  }
-}

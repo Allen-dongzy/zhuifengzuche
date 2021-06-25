@@ -1,1 +1,0 @@
-<view><block wx:for="{{5}}" wx:for-item="item" wx:for-index="index"><view class="box"><view class="flexBox"><view class="title">报销审核通过</view><view class="time">2021-06-003</view></view><view class="content">您提交的订单 5896231545 的报销已通过审核</view></view></block></view>
