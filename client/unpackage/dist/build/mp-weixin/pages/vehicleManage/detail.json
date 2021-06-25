@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "车型详情",
-  "usingComponents": {
-    "uni-calendar": "/components/uni-calendar/uni-calendar"
-  }
-}
