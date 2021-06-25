@@ -4,7 +4,7 @@
 			<image class="loginBox" :src="`${ossUrl}/common/logo.png`"></image>
 		</view>
 		<view class="topimg2">
-			<image style="height:544rpx;width: 544rpx;"  :src="`${ossUrl}/common/loginbg.png`"  mode=""></image>
+			<image style="height:544rpx;width: 544rpx;" :src="`${ossUrl}/common/loginbg.png`" mode=""></image>
 		</view>
 		<view class="setbox">
 			<input style="    background-color: #EFF0F3;
@@ -13,32 +13,35 @@
 			height: 96rpx;
 			padding-left: 20rpx;
 			border-radius: 10rpx;" type="text" value="" />
-			
-			
+
+
 			<view class="textTitle">{{account}}</view>
-			
+
 			<view class="moreInpbox">
 				<view style="width: 90%;"><input :type="inpType" class="inpBox" style="width: 95%;"
 						placeholder="请填写密码" /></view>
 				<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
-				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;"
-					:src="$util.fileUrl('/guan.png')" mode="" @click="look"></image>
-				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;"
-					:src="$util.fileUrl('/kai.png')" mode="" @click="look"></image>
+				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" :src="`${ossUrl}/common/guan.png`"
+					mode="" @click="look"></image>
+				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" :src="`${ossUrl}/common/kai.png`"
+					mode="" @click="look"></image>
 				<!-- </view> -->
-			</view> 
-			
+			</view>
+
 			<view class="textTitle">{{password}}</view>
 			<!-- <view class="textTitle" style="color: #007AFF;" @click="forget">忘记密码？</view> -->
 			<view style="width: 86%;margin: auto;height: 96rpx;">
-				<button style="color: #007AFF;"  @click="goindex()">登陆</button>
+				<button style="color: #007AFF;" @click="goindex()">登陆</button>
 			</view>
 			<view class="selectBox">
 				<view style="width: 32rpx;height: 32rpx;" @click="selectbox">
-					<image v-show="selectType==false" style="height: 100%;width: 100%;" :src="`${ossUrl}/mine/quanxian2.png`" mode=""></image>
-					<image v-show="selectType==true" style="height: 100%;width: 100%;" :src="`${ossUrl}/mine/quanxian1.png`" mode=""></image>
+					<image v-show="selectType==false" style="height: 100%;width: 100%;"
+						:src="`${ossUrl}/mine/quanxian2.png`" mode=""></image>
+					<image v-show="selectType==true" style="height: 100%;width: 100%;"
+						:src="`${ossUrl}/mine/quanxian1.png`" mode=""></image>
 				</view>
-				<view style="color: #262743;">已阅读并同意追风租车的<text style="color: #5A7EFF;">《用户协议》</text> </view>
+				<view style="color: #262743;">已阅读并同意追风租车的<text style="color: #5A7EFF;"
+						@click="$open('/pages/common/userAgreement')">《用户协议》</text> </view>
 			</view>
 		</view>
 
@@ -50,9 +53,9 @@
 	export default {
 		data() {
 			return {
-				account: '手机号未注册！',//手机号码校验提示语句
-				password: '密码错误！',//密码校验提示语句
-				selectType: false,//协议切换
+				account: '手机号未注册！', //手机号码校验提示语句
+				password: '密码错误！', //密码校验提示语句
+				selectType: false, //协议切换
 				showpass: true, //密码眼睛切换 false 关闭  true开启
 				ossUrl: this.$ossUrl, // oss
 			}
@@ -75,19 +78,19 @@
 					this.inpType = 'number'
 				}
 			},
-			forget(){
+			forget() {
 				uni.navigateTo({
-					url:'./forgetPhone', 
-					animationType:'pop-in',
-					animationDuration:200,
+					url: './forgetPhone',
+					animationType: 'pop-in',
+					animationDuration: 200,
 				})
 			},
-			goindex(){
+			goindex() {
 				console.log('pp')
 				uni.reLaunch({
-					url:'../home/home', 
-					animationType:'pop-in',
-					animationDuration:200,
+					url: '../home/home',
+					animationType: 'pop-in',
+					animationDuration: 200,
 				})
 			}
 		}
@@ -143,7 +146,7 @@
 		margin: auto;
 		margin-top: 42rpx;
 	}
-	
+
 	.moreInpbox {
 		display: flex;
 		align-items: center;
@@ -152,6 +155,7 @@
 		margin: auto;
 		border-radius: 10rpx;
 	}
+
 	.inpBox {
 		background-color: #EFF0F3;
 		border-radius: 10rpx;
