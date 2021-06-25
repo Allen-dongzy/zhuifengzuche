@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack:///E:/追电科技/追风租车/client/main.js"],"names":["createPage","Page"],"mappings":";;;;;;;;;;kDAAA;;AAEA;AACA,oG;AACAA,UAAU,CAACC,kBAAD,CAAV,C","file":"pages/login/forgetSet.js","sourcesContent":["import 'uni-pages';\n\nimport Vue from 'vue'\nimport Page from './pages/login/forgetSet.vue'\ncreatePage(Page)"],"sourceRoot":""}
