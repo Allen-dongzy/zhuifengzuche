@@ -40,6 +40,28 @@ const findProvincesList = (data, loading = '') => {
 		contentType: 'application/x-www-form-urlencoded',
 		method: 'POST',
 		data,
+		loading 
+	})
+}
+
+// 权限-查询城市
+const findCityList = (data, loading = '') => {
+	return request({
+		url: "regionProvince/findCityList",
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'POST',
+		data,
+		loading
+	})
+}
+
+// 权限-查询省份
+const findCityList = (data, loading = '') => {
+	return request({
+		url: "regionProvince/findProvincesList",
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'POST',
+		data,
 		loading
 	})
 }

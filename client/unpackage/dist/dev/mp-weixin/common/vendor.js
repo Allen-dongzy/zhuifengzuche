@@ -2060,7 +2060,7 @@ function normalizeComponent (
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
 var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 12));
-var _app = _interopRequireDefault(__webpack_require__(/*! ./moudules/app */ 571));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _app = _interopRequireDefault(__webpack_require__(/*! ./moudules/app */ 13));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 _vue.default.use(_vuex.default);var _default =
 
@@ -3180,6 +3180,58 @@ var index = {
 
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ 3)))
+
+/***/ }),
+
+/***/ 13:
+/*!************************************************************************!*\
+  !*** F:/hbuilder-workspace/zhuifengzuche/client/store/moudules/app.js ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var app = {
+  namespaced: true,
+  state: {
+    statusBarHeight: 0, // 状态栏高度
+    windowWidth: 0, // 窗口宽度
+    windowHeight: 0, // 窗口高度
+    screenHeight: 0 // 屏幕高度
+  },
+  mutations: {
+    // 设置系统信息
+    setSystemInfo: function setSystemInfo(state, _ref)
+
+
+
+
+    {var statusBarHeight = _ref.statusBarHeight,windowWidth = _ref.windowWidth,windowHeight = _ref.windowHeight,screenHeight = _ref.screenHeight;
+      if (statusBarHeight) state.statusBarHeight = statusBarHeight;
+      if (windowWidth) state.windowWidth = windowWidth;
+      if (windowHeight) state.windowHeight = windowHeight;
+      if (screenHeight) state.screenHeight = screenHeight;
+    } },
+
+  actions: {
+    // 获取并设置系统信息
+    setSystemInfo: function setSystemInfo(_ref2)
+
+    {var commit = _ref2.commit;
+      var res = uni.getSystemInfoSync();
+      if (!res) return;
+      commit('setSystemInfo', {
+        statusBarHeight: res.statusBarHeight,
+        windowWidth: res.windowWidth,
+        windowHeight: res.windowHeight,
+        screenHeight: res.screenHeight });
+
+    } } };var _default =
+
+
+
+app;exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 
@@ -11816,58 +11868,6 @@ function createAnimation(option, _this) {
   clearTimeout(_this.timer);
   return new MPAnimation(option, _this);
 }
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-
-/***/ 571:
-/*!************************************************************************!*\
-  !*** F:/hbuilder-workspace/zhuifengzuche/client/store/moudules/app.js ***!
-  \************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var app = {
-  namespaced: true,
-  state: {
-    statusBarHeight: 0, // 状态栏高度
-    windowWidth: 0, // 窗口宽度
-    windowHeight: 0, // 窗口高度
-    screenHeight: 0 // 屏幕高度
-  },
-  mutations: {
-    // 设置系统信息
-    setSystemInfo: function setSystemInfo(state, _ref)
-
-
-
-
-    {var statusBarHeight = _ref.statusBarHeight,windowWidth = _ref.windowWidth,windowHeight = _ref.windowHeight,screenHeight = _ref.screenHeight;
-      if (statusBarHeight) state.statusBarHeight = statusBarHeight;
-      if (windowWidth) state.windowWidth = windowWidth;
-      if (windowHeight) state.windowHeight = windowHeight;
-      if (screenHeight) state.screenHeight = screenHeight;
-    } },
-
-  actions: {
-    // 获取并设置系统信息
-    setSystemInfo: function setSystemInfo(_ref2)
-
-    {var commit = _ref2.commit;
-      var res = uni.getSystemInfoSync();
-      if (!res) return;
-      commit('setSystemInfo', {
-        statusBarHeight: res.statusBarHeight,
-        windowWidth: res.windowWidth,
-        windowHeight: res.windowHeight,
-        screenHeight: res.screenHeight });
-
-    } } };var _default =
-
-
-
-app;exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ })
