@@ -1,5 +1,6 @@
 import md5 from 'js-md5'
 import config from '@/request/config'
+import storage from '@/utils/storage'
 import {
 	open,
 	toast,
@@ -67,26 +68,25 @@ const setRquestMethod = params => {
 
 // 设置请求头信息
 const setRquestHeader = params => {
-	// 设置header-content-type
-	let contentType = ''
+	params.header = {}
+	// 设置content-type
 	if (params.contentType) {
-		contentType = params.contentType
+		params.header['Content-Type'] = params.contentType
 		delete params.contentType
 	} else if (params.method === "GET") {
-		contentType = "application/x-www-form-urlencoded;charset=UTF-8"
+		params.header['Content-Type'] = "application/x-www-form-urlencoded"
 	} else {
-		contentType = "application/json;charset=UTF-8"
+		params.header['Content-Type'] = "application/json"
 	}
-	params.header = {
-		'Content-Type': contentType
-	}
+	// 设置token
+	if (storage.get('token')) params.header.token = storage.get('token')
 	return params
 }
 
 // 设置请求体信息
 const setRquestData = params => {
 	// 空参数处理
-	if (params.data === '' || params.data === null) params.data = {}
+	if (params.data === '' || params.data === null || params.data === undefined) params.data = {}
 	return params
 }
 
