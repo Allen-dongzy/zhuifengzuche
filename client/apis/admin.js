@@ -11,7 +11,7 @@ const adminLogout = (data, loading = '等待中') => {
 	})
 }
 // 添加员工
-const adminLogout = (data, loading = '添加中') => {
+const addEmployee = (data, loading = '添加中') => {
 	return request({
 		url: "admin/addEmployee",
 		contentType: 'application/json',
@@ -31,7 +31,7 @@ const adminCarOwnersRegister = (data, loading = '等待中') => {
 	})
 }
 // 校验注册参数
-const adminCheckRegister = (data, loading = '等待中') => {
+export const adminCheckRegister = (data, loading = '等待中') => {
 	return request({
 		url: "admin/checkRegister",
 		contentType: 'application/json',
@@ -63,7 +63,7 @@ const editEmployee = (data, loading = '更新中') => {
 }
 
 // 微信或支付宝登录根据code授权
-const editEmployee = (data, loading = '等待中') => {
+const getCodeByWxCode = (data, loading = '等待中') => {
 	return request({
 		url: "admin/getCodeByWxCode",
 		contentType: 'application/json',
@@ -114,18 +114,9 @@ const login = (data, loading = '') => {
 		loading
 	})
 }
-// 登出功能
-const logout = (data, loading = '') => {
-	return request({
-		url: "admin/logout",
-		contentType: 'application/x-www-form-urlencoded',
-		method: 'POST',
-		data,
-		loading
-	})
-}
+
 // 给用户分配角色
-const logout = (data, loading = '等待中') => {
+const update = (data, loading = '等待中') => {
 	return request({
 		url: "admin/role/update",
 		contentType: 'application/x-www-form-urlencoded',
@@ -146,7 +137,7 @@ const setspecialUserId = (userId, loading = '等待中') => {
 	})
 }
 // 商家注册
-const shopOwnerRegister = (data, loading = '等待中') => {
+export const shopOwnerRegister = (data, loading = '等待中') => {
 	return request({
 		url: "admin/shopOwnerRegister",
 		contentType: 'application/json',
@@ -174,11 +165,11 @@ const editUserid = (userid, loading = '等待中') => {
 		contentType: 'application/json',
 		method: 'POST',
 		data:{},
-		loading
+		loading  
 	})
-}
+} 
 // 忘记密码
-const editUserid = (data, loading = '等待中') => {
+const updatePassword = (data, loading = '等待中') => {
 	return request({
 		url: `admin/updatePassword`,
 		contentType: 'application/json',
