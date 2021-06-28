@@ -25,22 +25,22 @@
 
 
 			<view class="fromTitel">姓名</view>
-			<input class="inpBox" type="text" placeholder="请填写姓名" />
+			<input class="inpBox" v-model="name" type="text" placeholder="请填写姓名" />
 
 
 
 			<view class="fromTitel">身份证号码 </view>
-			<input class="inpBox" type="text" placeholder="请填写身份证号码" />
+			<input class="inpBox" v-model="idCard" type="text" placeholder="请填写身份证号码" />
 
 
 			<view class="fromTitel">手机号</view>
-			<input class="inpBox" type="text" placeholder="请填写手机号码" />
+			<input class="inpBox" v-model="phone" type="text" placeholder="请填写手机号码" />
 
 
 
 			<view class="fromTitel">验证码</view>
-			<view class="moreInpbox">
-				<view style="width: 78%;"><input class="inpBox" style="width: 100%;" type="text" placeholder="请填写验证码" />
+			<view class="moreInpbox" style="margin-top: 20rpx;">
+				<view style="width: 78%;"><input class="inpBox" v-model="code" style="width: 100%;margin-top: 0rpx;" type="text" placeholder="请填写验证码" />
 				</view>
 				<view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;">获取验证码</view>
 			</view>
@@ -48,13 +48,13 @@
 
 
 			<view class="fromTitel">邮箱</view>
-			<input class="inpBox" type="text" placeholder="请填写邮箱" />
+			<input class="inpBox" v-model="email" type="text" placeholder="请填写邮箱" />
 
 
 
 			<view class="fromTitel">密码</view>
-			<view class="moreInpbox">
-				<view style="width: 90%;"><input :type="inpType" class="inpBox" style="width: 95%;"
+			<view class="moreInpbox" style="margin-top: 20rpx;">
+				<view style="width: 90%;"><input v-model="password" :type="inpType" class="inpBox" style="width: 95%;margin-top: 0rpx;"
 						placeholder="请填写密码" /></view>
 				<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
 				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
@@ -165,6 +165,7 @@
 		font-size: 24rpx;
 		color: #999999;
 		padding-left: 20rpx;
+		margin-top: 20rpx;
 	}
 
 	.fromTitel {
