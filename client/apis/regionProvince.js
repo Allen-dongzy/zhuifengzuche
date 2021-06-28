@@ -34,13 +34,13 @@ const allFindProvincesList = (data, loading = '') => {
 }
 
 // 权限-查询区域
-const findProvincesList = (data, loading = '') => {
+const findAreasList = (data, loading = '') => {
 	return request({
-		url: "regionProvince/findProvincesList",
+		url: "regionProvince/findAreasList",
 		contentType: 'application/x-www-form-urlencoded',
 		method: 'POST',
 		data,
-		loading 
+		loading
 	})
 }
 
@@ -56,7 +56,7 @@ const findCityList = (data, loading = '') => {
 }
 
 // 权限-查询省份
-const findCityList = (data, loading = '') => {
+const findProvincesList = (data, loading = '') => {
 	return request({
 		url: "regionProvince/findProvincesList",
 		contentType: 'application/x-www-form-urlencoded',
