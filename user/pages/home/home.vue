@@ -21,13 +21,13 @@
 				<view class="address" @click="$open('/pages/home/selectAddress')">乐东黎大族自治县 乐东黎大族自治县</view>
 				<evan-switch v-model="remoteSwitch" active-color="#5A7EFF"></evan-switch>
 			</view>
-			<view class="title-bar">
+			<view v-show="remoteSwitch" class="title-bar">
 				<view class="caption">
 					<view class="circle orange"></view>
 					<text>还车地点</text>
 				</view>
 			</view>
-			<view class="block">
+			<view v-show="remoteSwitch" class="block">
 				<view class="city text-1" @click="$open('/pages/home/selectCity')">乐东黎大 族自治县</view>
 				<image class="dot" :src="`${ossUrl}/home/dot.png`"></image>
 				<view class="address text-1" @click="$open('/pages/home/selectAddress')">乐东黎大族自治县 乐东黎大族自治县</view>
@@ -47,13 +47,13 @@
 				</view>
 			</view>
 			<view class="info">*异地还车调度费3元/公里；22:00-07:00取还车，将收取￥40/次夜间服务费</view>
-			<view class="toast">
+			<view class="toast" @click="openProcessPopup">
 				<image class="sesame" :src="`${ossUrl}/home/sesame.png`"></image>芝麻分达<text>550</text>即可享受押金双免租车 >
 			</view>
-			<view class="btn" @click="openProcessPopup">立即租车</view>
+			<view class="btn" @click="$open('/pages/home/selectCar')">立即租车</view>
 		</view>
 		<!-- go.png -->
-		<view class="notice-box" @click="openCouponPopup">
+		<view class="notice-box" @click="$open('/pages/mine/coupon')">
 			<image class="notice-bg" :src="`${ossUrl}/home/notice.png`" mode="aspectFill"></image>
 			<view class="mask">
 				<view class="info">你有2张优惠券可领取 租车立省20元！</view>
@@ -66,7 +66,7 @@
 				<text>招商加盟</text>
 			</view>
 			<view class="line"></view>
-			<view class="item">
+			<view class="item" @click="$open('/pages/home/windStore')">
 				<image class="icon" :src="`${ossUrl}/home/shop.png`" mode="heightFix"></image>
 				<text>追风门店</text>
 			</view>
@@ -92,7 +92,7 @@
 					</view>
 				</scroll-view>
 				<view class="btn-box">
-					<view class="btn">知道了</view>
+					<view class="btn" @click="closeProcessPopup">知道了</view>
 				</view>
 			</view>
 		</uni-popup>
@@ -159,6 +159,9 @@
 		},
 		components: {
 			EvanSwitch
+		},
+		onLoad() {
+			this.openCouponPopup()
 		},
 		methods: {
 			// 轮播改变

@@ -34,18 +34,73 @@
 		"style": {
 			"navigationBarTitleText": "领券中心"
 		}
-	}, { 
+	}, {
 		"path": "pages/home/selectAddress",
 		"style": {
 			"navigationBarTitleText": "选择送车点"
+		}
+	}, {
+		"path": "pages/home/selectCar",
+		"style": {
+			"navigationBarTitleText": "选择车型"
+		}
+	}, {
+		"path": "pages/home/store",
+		"style": {
+			"navigationBarTitleText": "查看门店"
+		}
+	}, {
+		"path": "pages/common/storeComment",
+		"style": {
+			"navigationBarTitleText": "查看评论"
+		}
+	}, {
+		"path": "pages/home/priceCalendar",
+		"style": {
+			"navigationBarTitleText": "价格日历"
+		}
+	}, {
+		"path": "pages/home/windStore",
+		"style": {
+			"navigationBarTitleText": "追风门店"
+		}
+	}, {
+		"path": "pages/order/orderDetail",
+		"style": {
+			"navigationBarTitleText": "订单详情"
+		}
+	}, {
+		"path": "pages/order/costDetail",
+		"style": {
+			"navigationBarTitleText": "费用明细"
+		}
+	}, {
+		"path": "pages/order/reservationSuccess",
+		"style": {
+			"navigationBarTitleText": "预定成功"
+		}
+	}, {
+		"path": "pages/order/perfectInformation",
+		"style": {
+			"navigationBarTitleText": "完善信息"
+		}
+	}, {
+		"path": "pages/order/orderPay",
+		"style": {
+			"navigationBarTitleText": "订单支付"
+		}
+	}, {
+		"path": "pages/order/confirmOrder",
+		"style": {
+			"navigationBarTitleText": "确认订单"
 		}
 	}, {
 		"path": "pages/mine/balance",
 		"style": {
 			"navigationBarTitleText": "余额"
 		}
-	}, { 
-		"path": "pages/mine/bill", 
+	}, {
+		"path": "pages/mine/bill",
 		"style": {
 			"navigationBarTitleText": "账单"
 		}
@@ -74,74 +129,142 @@
 		"style": {
 			"navigationBarTitleText": "联系我们"
 		}
-	},{
+	}, {
 		"path": "pages/mine/bankCard",
 		"style": {
 			"navigationBarTitleText": "银行卡"
 		}
-	},{ 
+	}, {
 		"path": "pages/mine/violationRecord",
 		"style": {
 			"navigationBarTitleText": "违章记录"
 		}
-	},{ 
+	}, {
 		"path": "pages/mine/violationInfo",
 		"style": {
 			"navigationBarTitleText": "违章详情"
 		}
-	},{
+	}, {
 		"path": "pages/mine/goPay",
 		"style": {
 			"navigationBarTitleText": "发起付款"
 		}
-	},{
+	}, {
 		"path": "pages/mine/pay",
 		"style": {
 			"navigationBarTitleText": "付款"
 		}
-	},{
+	}, {
 		"path": "pages/mine/paySuccess",
 		"style": {
 			"navigationBarTitleText": "付款成功"
 		}
-	},{
+	}, {
 		"path": "pages/mine/payInfo",
 		"style": {
 			"navigationBarTitleText": "付款详情"
 		}
-	},{
-		"path": "pages/mine/risk", 
+	}, {
+		"path": "pages/mine/risk",
 		"style": {
 			"navigationBarTitleText": "风控查询"
 		}
-	},{
+	}, {
 		"path": "pages/mine/finded",
 		"style": {
 			"navigationBarTitleText": "查询结果"
 		}
-	},{
+	}, {
 		"path": "pages/mine/find",
 		"style": {
 			"navigationBarTitleText": "查询"
 		}
-	},{
+	}, {
 		"path": "pages/mine/invoice",
 		"style": {
 			"navigationBarTitleText": "发票"
 		}
-	},{
+	}, {
 		"path": "pages/mine/invoiceInfo",
 		"style": {
 			"navigationBarTitleText": "发票详情"
 		}
-	},{
+	}, {
 		"path": "pages/common/login",
 		"style": {
 			"navigationBarTitleText": "登录"
 		}
-	}
-	],
-	
+	}, {
+		"path": "pages/order/depositReceived",
+		"style": {
+			"navigationBarTitleText": "预收详情"
+		}
+	}, {
+		"path": "pages/order/changeCarDetail",
+		"style": {
+			"navigationBarTitleText": "换车详情"
+		}
+	}, {
+		"path": "pages/order/differenceDetails",
+		"style": {
+			"navigationBarTitleText": "差价明细"
+		}
+	}, {
+		"path": "pages/order/settlementSuccess",
+		"style": {
+			"navigationBarTitleText": "结算成功"
+		}
+	}, {
+		"path": "pages/order/advanceDetail",
+		"style": {
+			"navigationBarTitleText": "预收冻结"
+		}
+	}, {
+		"path": "pages/order/renewal",
+		"style": {
+			"navigationBarTitleText": "续租用车"
+		}
+	}, {
+		"path": "pages/order/evaluate",
+		"style": {
+			"navigationBarTitleText": "评价"
+		}
+	}, {
+		"path": "pages/order/evaluateEd",
+		"style": {
+			"navigationBarTitleText": "评价成功"
+		}
+	}, {
+		"path": "pages/common/contract",
+		"style": {
+			"navigationBarTitleText": "合同"
+		}
+	}, {
+		"path": "pages/common/signIng",
+		"style": {
+			"navigationBarTitleText": "签名"
+		}
+	}, {
+		"path": "pages/common/goInspect",
+		"style": {
+			"navigationBarTitleText": "车况概览"
+		}
+	}, {
+		"path": "pages/order/returnCar",
+		"style": {
+			"navigationBarTitleText": "前往还车"
+		}
+	}, {
+		"path": "pages/mine/aboutMe",
+		"style": {
+			"navigationBarTitleText": "关于我们"
+		}
+	}, {
+		"path": "pages/common/userAgreement",
+		"style": {
+			"navigationBarTitleText": "用户协议"
+		}
+	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarBackgroundColor": "#FFFFFF",
@@ -171,7 +294,7 @@
 		"current": 0,
 		"list": [{
 			"name": "default",
-			"path": "pages/common/login"
+			"path": "pages/common/userAgreement"
 		}]
 	}
 }

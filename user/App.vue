@@ -50,5 +50,5 @@
 </script>
 
 <style lang="scss">
-	@import '@/static/scss/_reset';
+	@import '@/static/scss/_reset.scss';
 </style>
