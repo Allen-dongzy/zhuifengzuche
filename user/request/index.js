@@ -1,5 +1,6 @@
 import md5 from 'js-md5'
 import config from '@/request/config'
+import storage from '@/utils/storage'
 import {
 	open,
 	toast,
@@ -13,11 +14,10 @@ const Methods = ['GET', 'POST', 'PUT', 'DELETE']
 const Status = {
 	200: '',
 	201: '该操作已创建！',
-	401: '请重新登录！',
-	402: '账号或密码错误！',
-	403: '禁止访问！',
+	401: '该操作未经授权！',
+	403: '该操作被禁止！',
 	404: '未找到资源！',
-	500: '',
+	500: '操作异常',
 	999: '未知的状态'
 }
 
@@ -61,28 +61,32 @@ const setUrl = params => {
 // 设置请求动词
 const setRquestMethod = params => {
 	let method = params.method.toUpperCase()
-	if (~Methods.indexOf(method)) method = 'GET'
+	if (!~Methods.indexOf(method)) method = 'GET'
 	params.method = method
 	return params
 }
 
 // 设置请求头信息
 const setRquestHeader = params => {
-	// 设置header-content-type
-	let contentType = ''
-	if (params.method === "GET") {
-		contentType = "application/x-www-form-urlencoded;charset=UTF-8"
+	params.header = {}
+	// 设置content-type
+	if (params.contentType) {
+		params.header['Content-Type'] = params.contentType
+		delete params.contentType
+	} else if (params.method === "GET") {
+		params.header['Content-Type'] = "application/x-www-form-urlencoded"
 	} else {
-		contentType = "application/json;charset=UTF-8"
+		params.header['Content-Type'] = "application/json"
 	}
-	params.header['Content-Type'] = contentType
+	// 设置token
+	if (storage.get('token')) params.header.token = storage.get('token')
 	return params
 }
 
 // 设置请求体信息
 const setRquestData = params => {
 	// 空参数处理
-	if (params.data === '' || params.data === null) params.data = {}
+	if (params.data === '' || params.data === null || params.data === undefined) params.data = {}
 	return params
 }
 
@@ -92,7 +96,7 @@ const calculateMD5 = (params) => {
 	return new Promise(resolve => {
 		const key = config.secretKey
 		let sign = ''
-		if (Object.prototype.toString.call(obj) != '[object Object]' || Object.kes(obj).length === 0) {
+		if (Object.prototype.toString.call(obj) != '[object Object]' || Object.keys(obj).length === 0) {
 			// 如果不是对象,也就是说使用的GET和DELETE请求,那么不用加密,直接返回空,如果是空对象也返回空
 			sign = key + '--' + key
 		} else {
@@ -110,12 +114,9 @@ const calculateMD5 = (params) => {
 
 // 通信之前
 const commBefore = params => {
-	// 防止表单重复提交
-	let info = ''
-	if (!params.isLoading) return
-	if (params.method === 'GET') info = '请求中...'
-	else if (params.method === 'POST') info = '提交中...'
-	showLoading(info)
+	// loading提示
+	if (!params.loading) return
+	showLoading(params.loading)
 	return params
 }
 
@@ -138,7 +139,7 @@ const comm = async params => {
 // 通讯之后
 const commAfter = params => {
 	// 若在loading状态则隐藏loading
-	if (params.isLoading) uni.hideLoading()
+	if (params.loading) uni.hideLoading()
 	// 通信合集
 	let returnResult = []
 	// 通信结果
@@ -157,29 +158,16 @@ const commAfter = params => {
 
 // 状态管理
 const codeManager = (res) => {
-	let code = parseInt(res.data.code)
+	const code = parseInt(res.data.code)
 	// 通信合集
 	let returnResult = []
-	//返回状态：200返回成功，401重新登录，422后端返回报错，500请求异常
-	switch (code) {
-		case 200:
-			returnResult = [null, res.data]
-			break
-		case 201:
-		case 401:
-		case 402:
-		case 403:
-		case 404:
-			returnResult = [res.data]
-			break
-		case 500:
-			const message = res.data.message
-			if (Object.prototype.toString.call(message) === '[object String]') Status[code] = message
-			returnResult = [res.data]
-			break
-		default:
-			code = 999
-			returnResult = [res.data]
+	//返回状态
+	if (code === 200) {
+		returnResult = [null, res.data]
+	} else {
+		const message = res.data.message
+		if (Object.prototype.toString.call(message) === '[object String]') Status[code] = message
+		returnResult = [res.data]
 	}
 	if (Status[code]) toast(Status[code])
 	return returnResult
