@@ -115,7 +115,7 @@ const calculateMD5 = (params) => {
 // 通信之前
 const commBefore = params => {
 	// loading提示
-	if (!params.loading) return
+	if (!params.loading) return params
 	showLoading(params.loading)
 	return params
 }
