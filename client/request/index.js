@@ -71,12 +71,15 @@ const setRquestHeader = params => {
 	let contentType = ''
 	if (params.contentType) {
 		contentType = params.contentType
+		delete params.contentType
 	} else if (params.method === "GET") {
 		contentType = "application/x-www-form-urlencoded;charset=UTF-8"
 	} else {
 		contentType = "application/json;charset=UTF-8"
 	}
-	params.header['Content-Type'] = contentType
+	params.header = {
+		'Content-Type': contentType
+	}
 	return params
 }
 
@@ -93,7 +96,7 @@ const calculateMD5 = (params) => {
 	return new Promise(resolve => {
 		const key = config.secretKey
 		let sign = ''
-		if (Object.prototype.toString.call(obj) != '[object Object]' || Object.kes(obj).length === 0) {
+		if (Object.prototype.toString.call(obj) != '[object Object]' || Object.keys(obj).length === 0) {
 			// 如果不是对象,也就是说使用的GET和DELETE请求,那么不用加密,直接返回空,如果是空对象也返回空
 			sign = key + '--' + key
 		} else {

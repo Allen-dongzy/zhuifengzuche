@@ -63,7 +63,7 @@
 			},
 			quit() {
 				// todo
-				open('/pages/login/home')
+				open('/pages/login/home', 2)
 			}
 		}
 	}

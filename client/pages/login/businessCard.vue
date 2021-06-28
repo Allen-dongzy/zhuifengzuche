@@ -66,10 +66,9 @@
 		},
 		methods: {
 			next() {
+				console.log('ppp')
 				uni.navigateTo({
-					url: './businessStore',
-					animationType: 'pop-in',
-					animationDuration: 200
+					url:'./businessStore'
 				})
 			},
 			getImg(e){
