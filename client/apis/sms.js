@@ -16,8 +16,8 @@ export const sendRegisterCode = (data, loading = '发送中') => {
 	return request({
 		url: "sms/sendRegisterCode",
 		contentType: 'application/x-www-form-urlencoded',
-		method: 'POST',
-		data,
+		method: 'POST', 
+		 data:data,
 		loading
 	})
 }
