@@ -25,37 +25,38 @@
 
 
 			<view class="fromTitel">姓名</view>
-			<input class="inpBox" type="text" placeholder="请填写姓名" />
+			<input class="inpBox" v-model="name" type="text" placeholder="请填写姓名" />
 
 
 
 			<view class="fromTitel">身份证号码 </view>
-			<input class="inpBox" type="text" placeholder="请填写身份证号码" />
+			<input class="inpBox" v-model="idCard" type="text" placeholder="请填写身份证号码" />
 
 
 			<view class="fromTitel">手机号</view>
-			<input class="inpBox" type="text" placeholder="请填写手机号码" />
+			<input class="inpBox" v-model="phone" type="text" placeholder="请填写手机号码" />
 
 
 
 			<view class="fromTitel">验证码</view>
-			<view class="moreInpbox">
-				<view style="width: 78%;"><input class="inpBox" style="width: 100%;" type="text" placeholder="请填写验证码" />
+			<view class="moreInpbox" style="margin-top: 20rpx;">
+				<view style="width: 78%;"><input class="inpBox" v-model="code" style="width: 100%;margin-top: 0rpx;"
+						type="text" placeholder="请填写验证码" />
 				</view>
-				<view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;">获取验证码</view>
+				<view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;" @click="sendRegisterCode">获取验证码</view>
 			</view>
 
 
 
 			<view class="fromTitel">邮箱</view>
-			<input class="inpBox" type="text" placeholder="请填写邮箱" />
+			<input class="inpBox" v-model="email" type="text" placeholder="请填写邮箱" />
 
 
 
 			<view class="fromTitel">密码</view>
-			<view class="moreInpbox">
-				<view style="width: 90%;"><input :type="inpType" class="inpBox" style="width: 95%;"
-						placeholder="请填写密码" /></view>
+			<view class="moreInpbox" style="margin-top: 20rpx;">
+				<view style="width: 90%;"><input v-model="password" :type="inpType" class="inpBox"
+						style="width: 95%;margin-top: 0rpx;" placeholder="请填写密码" /></view>
 				<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
 				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
 					mode="" @click="look"></image>
@@ -80,7 +81,12 @@
 </template>
 
 <script>
-	import {adminCheckRegister} from '@/apis/admin';
+	import {
+		adminCheckRegister
+	} from '@/apis/admin';
+	import {
+		sendRegisterCode
+	} from '@/apis/sms';
 	export default {
 		data() {
 			return {
@@ -92,15 +98,12 @@
 				show: false, //底部边框线
 				showpass: true, //密码眼睛切换 false 关闭  true开启
 				inpType: 'password', //切换密码框type
-				customStyle: {
-					margin: 'auto',
-					marginTop: '60px', // 注意驼峰命名，并且值必须用引号包括，因为这是对象
-					marginBottom: '20px',
-					color: 'white',
-					width: '90%',
-					borderRadius: '50rpx',
-					backgroundColor: '#5A7EFF'
-				} //按钮样式
+				name: '', //姓名
+				idCard: '', //身份证号码
+				phone: '', //手机号码
+				code: '', //验证码
+				email: '', //邮箱
+				password: '', //邮箱
 			}
 		},
 		onLoad() {
@@ -125,22 +128,31 @@
 				})
 			},
 			async adminCheckRegister() {
-				
+
 				const params = {
-					code:1,
-					email:1,
-					idCard:1,
-					note:1,
-					password:1,
-					phone:1,
-					realName:1,
+					code: 1,
+					email: 1,
+					idCard: 1,
+					note: 1,
+					password: 1,
+					phone: 1,
+					realName: 1,
 				}
 				const [err, res] = await adminCheckRegister(params)
 				console.log(err)
 				console.log(res)
 				if (err) return
-				
-				
+
+
+			},
+			async sendRegisterCode() {
+				const params = {
+					phone: this.phone
+				}
+				const [err, res] = await sendRegisterCode(params)
+				console.log(err)
+				console.log(res)
+				if (err) return
 			}
 		}
 	}
@@ -165,6 +177,7 @@
 		font-size: 24rpx;
 		color: #999999;
 		padding-left: 20rpx;
+		margin-top: 20rpx;
 	}
 
 	.fromTitel {
