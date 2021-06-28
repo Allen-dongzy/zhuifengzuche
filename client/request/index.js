@@ -16,7 +16,7 @@ const Status = {
 	401: '该操作未经授权！',
 	403: '该操作被禁止！',
 	404: '未找到资源！',
-	500: '',
+	500: '操作异常',
 	999: '未知的状态'
 }
 
@@ -158,28 +158,16 @@ const commAfter = params => {
 
 // 状态管理
 const codeManager = (res) => {
-	let code = parseInt(res.data.code)
+	const code = parseInt(res.data.code)
 	// 通信合集
 	let returnResult = []
 	//返回状态
-	switch (code) {
-		case 200:
-			returnResult = [null, res.data]
-			break
-		case 201:
-		case 401:
-		case 403:
-		case 404:
-			returnResult = [res.data]
-			break
-		case 500:
-			const message = res.data.message
-			if (Object.prototype.toString.call(message) === '[object String]') Status[code] = message
-			returnResult = [res.data]
-			break
-		default:
-			code = 999
-			returnResult = [res.data]
+	if (code === 200) {
+		returnResult = [null, res.data]
+	} else {
+		const message = res.data.message
+		if (Object.prototype.toString.call(message) === '[object String]') Status[code] = message
+		returnResult = [res.data]
 	}
 	if (Status[code]) toast(Status[code])
 	return returnResult
