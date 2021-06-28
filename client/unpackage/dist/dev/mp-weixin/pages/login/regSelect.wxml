@@ -1,1 +1,0 @@
-<view class="content"><view class="box"><view class="regBox"><image style="height:92rpx;width:316rpx;" src="{{$root.g0}}" mode></image></view><view><view data-event-opts="{{[['tap',[['next',[1]]]]]}}" class="typeBox" bindtap="__e">我是车主</view><view data-event-opts="{{[['tap',[['next',[2]]]]]}}" class="typeBox" bindtap="__e">我是商家</view></view></view></view>

@@ -1,1 +1,0 @@
-<view><view data-event-opts="{{[['tap',[['next']]]]}}" class="box" bindtap="__e">OTA管理</view></view>
