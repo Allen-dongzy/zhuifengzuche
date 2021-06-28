@@ -28,7 +28,6 @@ const request = async (params) => {
 
 // 请求控制器
 const requestController = async (params) => {
-	console.log(params)
 	// 设置请求地址
 	params = setUrl(params)
 	// 设置请求动词
@@ -60,9 +59,8 @@ const setUrl = params => {
 
 // 设置请求动词
 const setRquestMethod = params => {
-	console.log(params)
 	let method = params.method.toUpperCase()
-	if (~Methods.indexOf(method)) method = 'GET'
+	if (!~Methods.indexOf(method)) method = 'GET'
 	params.method = method
 	return params
 }
