@@ -1,7 +1,7 @@
 import request from '@/request'
 
 // 添加门店评价
-const evaluateAdd = (data, loading = '新增中') => {
+export const evaluateAdd = (data, loading = '新增中') => {
 	return request({
 		url: "shop/evaluate/add",
 		contentType: 'application/json',
@@ -12,7 +12,7 @@ const evaluateAdd = (data, loading = '新增中') => {
 }
 
 // 删除门店评价
-const evaluateDel = (data, loading = '删除中') => {
+export const evaluateDel = (data, loading = '删除中') => {
 	return request({
 		url: "shop/evaluate/del",
 		contentType: 'application/json',
@@ -23,7 +23,7 @@ const evaluateDel = (data, loading = '删除中') => {
 }
 
 // 修改门店评价
-const evaluateEdit = (data, loading = '修改中') => {
+export const evaluateEdit = (data, loading = '修改中') => {
 	return request({
 		url: "shop/evaluate/edit",
 		contentType: 'application/json',
@@ -34,7 +34,7 @@ const evaluateEdit = (data, loading = '修改中') => {
 }
 
 // 门店评价分页
-const evaluatePageQuery = (data, loading = '') => {
+export const evaluatePageQuery = (data, loading = '') => {
 	return request({
 		url: "shop/evaluate/pageQuery",
 		contentType: 'application/json',

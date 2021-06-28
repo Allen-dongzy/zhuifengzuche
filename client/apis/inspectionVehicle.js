@@ -1,7 +1,7 @@
 import request from '@/request'
 
 // 新增事故记录
-const insertAccident = (data, loading = '新增中') => {
+export const insertAccident = (data, loading = '新增中') => {
 	return request({
 		url: "inspectionVehicle/insertAccident",
 		contentType: 'application/json',
@@ -12,7 +12,7 @@ const insertAccident = (data, loading = '新增中') => {
 }
 
 // 新增其他记录
-const insertOther = (data, loading = '新增中') => {
+export const insertOther = (data, loading = '新增中') => {
 	return request({
 		url: "inspectionVehicle/insertOther",
 		contentType: 'application/json',
@@ -23,7 +23,7 @@ const insertOther = (data, loading = '新增中') => {
 }
 
 // 分页查询记录表
-const inspectionVehiclePageQuery = (data, loading = '') => {
+export const inspectionVehiclePageQuery = (data, loading = '') => {
 	return request({
 		url: "inspectionVehicle/pageQuery",
 		contentType: 'application/json',

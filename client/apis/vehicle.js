@@ -1,7 +1,7 @@
 import request from '@/request'
 
 // 修改车辆状态
-const vehicleChangeStatus = (vehicleId, vehicleStatus, loading = '修改中') => {
+export const vehicleChangeStatus = (vehicleId, vehicleStatus, loading = '修改中') => {
 	return request({
 		url: `vehicle/changeStatus/${vehicleId}/${vehicleStatus}`,
 		contentType: 'application/x-www-form-urlencoded',
@@ -12,7 +12,7 @@ const vehicleChangeStatus = (vehicleId, vehicleStatus, loading = '修改中') =>
 }
 
 // 车辆新增
-const vehicleInsert = (data, loading = '新增中') => {
+export const vehicleInsert = (data, loading = '新增中') => {
 	return request({
 		url: 'vehicle/insert',
 		contentType: 'application/json',
@@ -23,7 +23,7 @@ const vehicleInsert = (data, loading = '新增中') => {
 }
 
 // 车辆管理租赁计划条件分页查询
-const vehiclePageLeaseQuery = (data, loading = '') => {
+export const vehiclePageLeaseQuery = (data, loading = '') => {
 	return request({
 		url: 'vehicle/pageLeaseQuery',
 		contentType: 'application/json',
@@ -34,7 +34,7 @@ const vehiclePageLeaseQuery = (data, loading = '') => {
 }
 
 // 车辆管理首页条件分页查询
-const vehiclePageQuery = (data, loading = '') => {
+export const vehiclePageQuery = (data, loading = '') => {
 	return request({
 		url: 'vehicle/pageQuery',
 		contentType: 'application/json',
@@ -45,7 +45,7 @@ const vehiclePageQuery = (data, loading = '') => {
 }
 
 // 车辆租赁计划预留
-const vehiclePlanInsert = (data, loading = '') => {
+export const vehiclePlanInsert = (data, loading = '') => {
 	return request({
 		url: 'vehicle/planInsert',
 		contentType: 'application/json',
@@ -56,7 +56,7 @@ const vehiclePlanInsert = (data, loading = '') => {
 }
 
 // 根据车辆主键查询
-const vehicleSelectOne = (id, loading = '') => {
+export const vehicleSelectOne = (id, loading = '') => {
 	return request({
 		url: `vehicle/selectOne/${id}`,
 		contentType: 'application/x-www-form-urlencoded',
@@ -67,7 +67,7 @@ const vehicleSelectOne = (id, loading = '') => {
 }
 
 // 车辆详情租赁计划列表
-const vehicleSelectRentalPlanList = (vehicleId, loading = '') => {
+export const vehicleSelectRentalPlanList = (vehicleId, loading = '') => {
 	return request({
 		url: `vehicle/selectRentalPlanList/${vehicleId}`,
 		contentType: 'application/x-www-form-urlencoded',
@@ -78,7 +78,7 @@ const vehicleSelectRentalPlanList = (vehicleId, loading = '') => {
 }
 
 // 车辆修改
-const vehicleUpdate = (data, loading = '修改中') => {
+export const vehicleUpdate = (data, loading = '修改中') => {
 	return request({
 		url: 'vehicle/update',
 		contentType: 'application/json',

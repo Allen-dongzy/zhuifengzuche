@@ -1,7 +1,7 @@
 import request from '@/request'
 
 // 登出功能
-const adminLogout = (data, loading = '等待中') => {
+export const adminLogout = (data, loading = '等待中') => {
 	return request({
 		url: "admin/logout",
 		contentType: 'application/x-www-form-urlencoded',
@@ -11,7 +11,7 @@ const adminLogout = (data, loading = '等待中') => {
 	})
 }
 // 添加员工
-const addEmployee = (data, loading = '添加中') => {
+export const addEmployee = (data, loading = '添加中') => {
 	return request({
 		url: "admin/addEmployee",
 		contentType: 'application/json',
@@ -21,7 +21,7 @@ const addEmployee = (data, loading = '添加中') => {
 	})
 }
 // 车主注册
-const adminCarOwnersRegister = (data, loading = '等待中') => {
+export const adminCarOwnersRegister = (data, loading = '等待中') => {
 	return request({
 		url: "admin/carOwnersRegister",
 		contentType: 'application/json',
@@ -41,7 +41,7 @@ export const adminCheckRegister = (data, loading = '等待中') => {
 	})
 }
 // 删除指定用户信息
-const deleteUserId = (userId, loading = '删除中') => {
+export const deleteUserId = (userId, loading = '删除中') => {
 	return request({
 		url: `admin/delete/${userId}`,
 		contentType: 'application/x-www-form-urlencoded',
@@ -52,7 +52,7 @@ const deleteUserId = (userId, loading = '删除中') => {
 }
 
 // 编辑员工
-const editEmployee = (data, loading = '更新中') => {
+export const editEmployee = (data, loading = '更新中') => {
 	return request({
 		url: "admin/editEmployee",
 		contentType: 'application/json',
@@ -63,7 +63,7 @@ const editEmployee = (data, loading = '更新中') => {
 }
 
 // 微信或支付宝登录根据code授权
-const getCodeByWxCode = (data, loading = '等待中') => {
+export const getCodeByWxCode = (data, loading = '等待中') => {
 	return request({
 		url: "admin/getCodeByWxCode",
 		contentType: 'application/json',
@@ -74,7 +74,7 @@ const getCodeByWxCode = (data, loading = '等待中') => {
 }
 
 // 获取当前登录用户信息
-const getInfo = (data, loading = '') => {
+export const getInfo = (data, loading = '') => {
 	return request({
 		url: "admin/info",
 		contentType: 'application/x-www-form-urlencoded',
@@ -85,7 +85,7 @@ const getInfo = (data, loading = '') => {
 }
 
 // 根据用户名或姓名分页获取用户列表
-const getList = (data, loading = '等待中') => {
+export const getList = (data, loading = '等待中') => {
 	return request({
 		url: "admin/list",
 		contentType: 'application/x-www-form-urlencoded',
@@ -95,7 +95,7 @@ const getList = (data, loading = '等待中') => {
 	})
 }
 // 根据用户名获取通用用户信息
-const getLoadByUsername = (data, loading = '') => {
+export const getLoadByUsername = (data, loading = '') => {
 	return request({
 		url: "admin/loadByUsername",
 		contentType: 'application/x-www-form-urlencoded',
@@ -105,7 +105,7 @@ const getLoadByUsername = (data, loading = '') => {
 	})
 }
 // 员工端统一登录接口(登录以后返回token)
-const login = (data, loading = '') => {
+export const login = (data, loading = '') => {
 	return request({
 		url: "admin/login",
 		contentType: 'application/json',
@@ -116,7 +116,7 @@ const login = (data, loading = '') => {
 }
 
 // 给用户分配角色
-const update = (data, loading = '等待中') => {
+export const update = (data, loading = '等待中') => {
 	return request({
 		url: "admin/role/update",
 		contentType: 'application/x-www-form-urlencoded',
@@ -127,7 +127,7 @@ const update = (data, loading = '等待中') => {
 }
 
 // 获取指定用户的角色
-const setspecialUserId = (userId, loading = '等待中') => {
+export const setspecialUserId = (userId, loading = '等待中') => {
 	return request({
 		url:`admin/role/${userId}`,
 		contentType: 'application/x-www-form-urlencoded',
@@ -148,7 +148,7 @@ export const shopOwnerRegister = (data, loading = '等待中') => {
 }
 
 // 同步支付宝或微信用户数据
-const synchronizeUserInfo = (data, loading = '等待中') => {
+export const synchronizeUserInfo = (data, loading = '等待中') => {
 	return request({
 		url: "admin/synchronizeUserInfo",
 		contentType: 'application/json',
@@ -159,7 +159,7 @@ const synchronizeUserInfo = (data, loading = '等待中') => {
 }
 
 // 修改指定用户信息
-const editUserid = (userid, loading = '等待中') => {
+export const editUserid = (userid, loading = '等待中') => {
 	return request({
 		url: `admin/update/${userid}`,
 		contentType: 'application/json',
@@ -169,7 +169,7 @@ const editUserid = (userid, loading = '等待中') => {
 	})
 } 
 // 忘记密码
-const updatePassword = (data, loading = '等待中') => {
+export const updatePassword = (data, loading = '等待中') => {
 	return request({
 		url: `admin/updatePassword`,
 		contentType: 'application/json',
@@ -180,7 +180,7 @@ const updatePassword = (data, loading = '等待中') => {
 }
 
 // 修改帐号状态
-const changgeId = (id, loading = '等待中') => {
+export const changgeId = (id, loading = '等待中') => {
 	return request({
 		url: `admin/updateStatus/${id}`,
 		contentType: 'application/x-www-form-urlencoded',
@@ -191,7 +191,7 @@ const changgeId = (id, loading = '等待中') => {
 }
 
 // 获取指定用户信息
-const getId = (Id, loading = '等待中') => {
+export const getId = (Id, loading = '等待中') => {
 	return request({
 		url: `admin/${Id}`,
 		contentType: 'application/x-www-form-urlencoded',

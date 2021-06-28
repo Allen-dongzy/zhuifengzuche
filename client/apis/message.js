@@ -1,7 +1,7 @@
 import request from '@/request'
 
 // 添加消息通知
-const messageAdd = (data, loading = '新增中') => {
+export const messageAdd = (data, loading = '新增中') => {
 	return request({
 		url: "message/add",
 		contentType: 'application/json',
@@ -12,7 +12,7 @@ const messageAdd = (data, loading = '新增中') => {
 }
 
 // 删除消息通知
-const messageDel = (data, loading = '删除中') => {
+export const messageDel = (data, loading = '删除中') => {
 	return request({
 		url: "message/del",
 		contentType: 'application/json',
@@ -23,7 +23,7 @@ const messageDel = (data, loading = '删除中') => {
 }
 
 // 编辑消息通知
-const messageEdit = (data, loading = '更新中') => {
+export const messageEdit = (data, loading = '更新中') => {
 	return request({
 		url: "message/edit",
 		contentType: 'application/json',
@@ -34,7 +34,7 @@ const messageEdit = (data, loading = '更新中') => {
 }
 
 //  消息通知分页
-const messagePageQuery = (data, loading = '') => {
+export const messagePageQuery = (data, loading = '') => {
 	return request({
 		url: "message/pageQuery",
 		contentType: 'application/json',

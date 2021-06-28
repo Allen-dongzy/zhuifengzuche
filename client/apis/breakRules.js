@@ -1,7 +1,7 @@
 import request from '@/request'
 
 // 根据主键查询
-const breakRulesFindOneById = (id, loading = '') => {
+export const breakRulesFindOneById = (id, loading = '') => {
 	return request({
 		url: `breakRules/findOneById/${id}`,
 		contentType: 'application/x-www-form-urlencoded',
@@ -12,7 +12,7 @@ const breakRulesFindOneById = (id, loading = '') => {
 }
 
 // 新增
-const breakRulesInsert = (data, loading = '新增中') => {
+export const breakRulesInsert = (data, loading = '新增中') => {
 	return request({
 		url: 'breakRules/insert',
 		contentType: 'application/json',
@@ -23,7 +23,7 @@ const breakRulesInsert = (data, loading = '新增中') => {
 }
 
 // 分页查询违章列表
-const breakRulesPageNewQuery = (data, loading = '') => {
+export const breakRulesPageNewQuery = (data, loading = '') => {
 	return request({
 		url: 'breakRules/pageNewQuery',
 		contentType: 'application/json',

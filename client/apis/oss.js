@@ -2,7 +2,7 @@ import request from '@/request'
 import config from '@/request/config'
 
 // 上传oss图片
-const uploadFiles = async tempFilePaths => {
+export const uploadFiles = async tempFilePaths => {
 	return new Promise((resolve, reject) => {
 		let imgArr = []
 		for (let i = 0; i < tempFilePaths.length; i++) {

@@ -1,7 +1,7 @@
 import request from '@/request'
 
 // 提交换车信息
-const transferCommit = (data, loading = '发送中') => {
+export const transferCommit = (data, loading = '发送中') => {
 	return request({
 		url: "transfer/commit",
 		contentType: 'application/json',
@@ -12,7 +12,7 @@ const transferCommit = (data, loading = '发送中') => {
 }
 
 // 获取差价	
-const differenceOfPrices = (data, loading = '') => {
+export const differenceOfPrices = (data, loading = '') => {
 	return request({
 		url: "transfer/differenceOfPrices",
 		contentType: 'application/json',
