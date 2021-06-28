@@ -1,7 +1,7 @@
 import request from '@/request'
 
 // 非权限-查询区域
-const allFindAreasList = (data, loading = '') => {
+export const allFindAreasList = (data, loading = '') => {
 	return request({
 		url: "regionProvince/all/findAreasList",
 		contentType: 'application/x-www-form-urlencoded',
@@ -12,7 +12,7 @@ const allFindAreasList = (data, loading = '') => {
 }
 
 // 非权限-查询城市
-const allFindCityList = (data, loading = '') => {
+export const allFindCityList = (data, loading = '') => {
 	return request({
 		url: "regionProvince/all/findCityList",
 		contentType: 'application/x-www-form-urlencoded',
@@ -23,7 +23,7 @@ const allFindCityList = (data, loading = '') => {
 }
 
 // 非权限-查询省份
-const allFindProvincesList = (data, loading = '') => {
+export const allFindProvincesList = (data, loading = '') => {
 	return request({
 		url: "regionProvince/all/findProvincesList",
 		contentType: 'application/x-www-form-urlencoded',
@@ -34,7 +34,7 @@ const allFindProvincesList = (data, loading = '') => {
 }
 
 // 权限-查询区域
-const findAreasList = (data, loading = '') => {
+export const findAreasList = (data, loading = '') => {
 	return request({
 		url: "regionProvince/findAreasList",
 		contentType: 'application/x-www-form-urlencoded',
@@ -45,7 +45,7 @@ const findAreasList = (data, loading = '') => {
 }
 
 // 权限-查询城市
-const findCityList = (data, loading = '') => {
+export const findCityList = (data, loading = '') => {
 	return request({
 		url: "regionProvince/findCityList",
 		contentType: 'application/x-www-form-urlencoded',
@@ -56,7 +56,7 @@ const findCityList = (data, loading = '') => {
 }
 
 // 权限-查询省份
-const findProvincesList = (data, loading = '') => {
+export const findProvincesList = (data, loading = '') => {
 	return request({
 		url: "regionProvince/findProvincesList",
 		contentType: 'application/x-www-form-urlencoded',
