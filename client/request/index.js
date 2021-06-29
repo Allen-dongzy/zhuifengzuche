@@ -1,5 +1,6 @@
 import md5 from 'js-md5'
 import config from '@/request/config'
+import storage from '@/utils/storage'
 import {
 	open,
 	toast,
@@ -16,7 +17,7 @@ const Status = {
 	401: '该操作未经授权！',
 	403: '该操作被禁止！',
 	404: '未找到资源！',
-	500: '',
+	500: '操作异常',
 	999: '未知的状态'
 }
 
@@ -67,26 +68,25 @@ const setRquestMethod = params => {
 
 // 设置请求头信息
 const setRquestHeader = params => {
-	// 设置header-content-type
-	let contentType = ''
+	params.header = {}
+	// 设置content-type
 	if (params.contentType) {
-		contentType = params.contentType
+		params.header['Content-Type'] = params.contentType
 		delete params.contentType
 	} else if (params.method === "GET") {
-		contentType = "application/x-www-form-urlencoded;charset=UTF-8"
+		params.header['Content-Type'] = "application/x-www-form-urlencoded"
 	} else {
-		contentType = "application/json;charset=UTF-8"
+		params.header['Content-Type'] = "application/json"
 	}
-	params.header = {
-		'Content-Type': contentType
-	}
+	// 设置token
+	if (storage.get('token')) params.header.token = storage.get('token')
 	return params
 }
 
 // 设置请求体信息
 const setRquestData = params => {
 	// 空参数处理
-	if (params.data === '' || params.data === null) params.data = {}
+	if (params.data === '' || params.data === null || params.data === undefined) params.data = {}
 	return params
 }
 
@@ -158,26 +158,16 @@ const commAfter = params => {
 
 // 状态管理
 const codeManager = (res) => {
-	let code = parseInt(res.data.code)
+	const code = parseInt(res.data.code)
 	// 通信合集
 	let returnResult = []
 	//返回状态
-	switch (code) {
-		case 200:
-			returnResult = [null, res.data]
-			break
-		case 201:
-		case 401:
-		case 403:
-		case 404:
-		case 500:
-			const message = res.data.message
-			if (Object.prototype.toString.call(message) === '[object String]') Status[code] = message
-			returnResult = [res.data]
-			break
-		default:
-			code = 999
-			returnResult = [res.data]
+	if (code === 200) {
+		returnResult = [null, res.data]
+	} else {
+		const message = res.data.message
+		if (Object.prototype.toString.call(message) === '[object String]') Status[code] = message
+		returnResult = [res.data]
 	}
 	if (Status[code]) toast(Status[code])
 	return returnResult
