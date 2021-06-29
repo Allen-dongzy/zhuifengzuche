@@ -20,9 +20,9 @@
 			"navigationBarTitleText": "选择时间"
 		}
 	}, {
-		"path": "pages/common/article",
+		"path": "pages/common/joinInvestment",
 		"style": {
-			"navigationBarTitleText": ""
+			"navigationBarTitleText": "招商加盟"
 		}
 	}, {
 		"path": "pages/home/selectCity",

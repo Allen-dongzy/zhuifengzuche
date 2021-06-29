@@ -360,8 +360,12 @@
 			"style": {
 				"navigationBarTitleText": "选择时间"
 			}
+		}, {
+			"path": "pages/Store/storeRegister",
+			"style": {
+				"navigationBarTitleText": "商家注册"
+			}
 		}
-
 	],
 	"globalStyle": {
 		"navigationBarBackgroundColor": "#FFFFFF", //默认导航栏背景颜色

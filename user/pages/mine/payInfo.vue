@@ -12,6 +12,10 @@
 			<view class="flexright">张全蛋</view>
 		</view>
 		<view class="flexBox">
+			<view class="flexleft">平台</view>
+			<view class="flexright">追风租车</view>
+		</view>
+		<view class="flexBox">
 			<view class="flexleft">金额</view>
 			<view class="flexright" style="color: #FC3736;">¥100.00</view>
 		</view>
@@ -19,7 +23,10 @@
 			<view class="flexleft">付款人</view>
 			<view class="flexright">张全蛋</view>
 		</view>
-		
+		<view class="flexBox">
+			<view class="flexleft">银行卡</view>
+			<view class="flexright">中国工商银行 1236596326963256932</view>
+		</view>
 		<view style="width: 90%;margin: auto;margin-top: 30rpx;font-size: 28rpx;">备注</view>
 		<view style="width: 90%;margin: auto;margin-top: 30rpx;color: #999999;font-size: 24rpx;">这里是备注信息这里是备注信息</view>
 		<view  style="width: 90%;margin: auto;">

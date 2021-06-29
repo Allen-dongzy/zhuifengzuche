@@ -20,9 +20,9 @@
 		</view>
 		<view class="flexBoxLeft" @click="lookinfo">
 			<image :src="$util.fileUrl('/xiaoxi.png')" style="height: 36rpx;width: 36rpx;" mode=""></image>
-			<view style="font-size: 28rpx;color: black;width: 70%;margin-left: 20rpx;">消息通知</view>
+			<view style="font-size: 28rpx;color: black;width: 75%;margin-left: 20rpx;">消息通知</view>
 			<view class="label">99</view>
-			<view style="color: #EFF0F3;font-size: 35rpx;margin-left: 20rpx;"> > </view>
+			<view class="arrow"></view>
 		</view>
 		<view class="goout" @tap="quit">退出登陆</view>
 	</view>
@@ -32,7 +32,7 @@
 	import {
 		open
 	} from '@/utils/uni-tools'
-	
+
 	export default {
 		data() {
 			return {
@@ -70,6 +70,8 @@
 </script>
 
 <style lang="scss">
+	@import '@/static/scss/_mixin.scss';
+
 	.box {
 		height: 440rpx;
 		width: 100%;
@@ -122,6 +124,15 @@
 		border-radius: 30rpx;
 		padding: 5rpx 25rpx;
 		background-color: #FC3736;
+	}
+
+	.arrow {
+		@include square(16rpx);
+		border: 1px solid #999;
+		border-left: 0;
+		border-bottom: 0;
+		transform: rotate(45deg);
+		margin-left: 10rpx;
 	}
 
 	.goout {

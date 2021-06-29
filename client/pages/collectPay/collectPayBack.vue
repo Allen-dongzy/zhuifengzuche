@@ -5,6 +5,10 @@
 			<view class="titleRight">2021-06-02</view>
 		</view>
 		<view class="flexbox">
+			<view class="titleLeft">平台</view>
+			<view class="titleRight">追风租车</view>
+		</view>
+		<view class="flexbox">
 			<view class="titleLeft">项目</view>
 			<view class="titleRight">大方租车</view>
 		</view>
@@ -35,16 +39,17 @@
 		</view>
 
 
-	<!-- 修改金额弹窗 -->
+		<!-- 修改金额弹窗 -->
 		<view v-if="money==true" class="Mask">
 
 		</view>
 		<view v-if="money==true" class="box1">
 			<view style="width: 90%;margin: auto;font-size:32rpx;padding: 20rpx 0rpx;">修改金额</view>
 			<view style="width: 90%;margin: auto;">
-				<input value="" style="background-color:#EFF0F3;padding-left: 20rpx;height: 74rpx;border-radius: 10rpx;" placeholder="请输入修改金额" />
+				<input value="" style="background-color:#EFF0F3;padding-left: 20rpx;height: 74rpx;border-radius: 10rpx;"
+					placeholder="请输入修改金额" />
 			</view>
-			<view style="width: 90%;margin: auto;" >
+			<view style="width: 90%;margin: auto;">
 				<view style="display: inline-block;width: 50%;">
 					<view class="close">取消</view>
 				</view>
@@ -53,8 +58,8 @@
 				</view>
 			</view>
 		</view>
-		
-		<button  style=" color: white;
+
+		<button style=" color: white;
 			width: 80%;
 					margin: auto;
 					margin-top: 50rpx;
@@ -63,7 +68,12 @@
 				    font-size: 32rpx;
 					line-height: 96rpx;
 				    height: 96rpx;" type="default" @click="next">确认收款</button>
-		
+
+		<view class="btn-box">
+			<view class="btn reject">拒绝</view>
+			<view class="btn confirm">通过</view>
+		</view>
+
 	</view>
 </template>
 
@@ -71,7 +81,7 @@
 	export default {
 		data() {
 			return {
-				money:false
+				money: false
 			}
 		},
 		methods: {
@@ -80,7 +90,9 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
+	@import '@/static/scss/_mixin.scss';
+
 	.flexbox {
 		display: flex;
 		align-items: center;
@@ -104,11 +116,12 @@
 		color: #999999;
 	}
 
-	.garyLine{
+	.garyLine {
 		height: 20rpx;
 		width: 100%;
 		background-color: #EFF0F3;
 	}
+
 	.Mask {
 		position: fixed;
 		background-color: #000000;
@@ -117,7 +130,7 @@
 		width: 100%;
 		top: 0px;
 	}
-	
+
 	.box1 {
 		width: 90%;
 		position: absolute;
@@ -129,7 +142,8 @@
 		left: 5%;
 		border-radius: 20rpx;
 	}
-	.close{
+
+	.close {
 		height: 60rpx;
 		width: 136rpx;
 		border: 1px solid #5A7EFF;
@@ -139,7 +153,8 @@
 		margin: 20px 0rpx;
 		border-radius: 10rpx;
 	}
-	.yes{
+
+	.yes {
 		height: 60rpx;
 		width: 136rpx;
 		color: white;
@@ -148,6 +163,25 @@
 		line-height: 60rpx;
 		margin: 20px 0rpx;
 		border-radius: 10rpx;
-		    margin-left: 50%;
+		margin-left: 50%;
+	}
+
+	.btn-box {
+		@include flex-row(space-between);
+		padding: 42rpx 32rpx;
+		.btn {
+			@include box(300rpx, 96rpx);
+			@include flex-center;
+			font-size: 32rpx;
+			border-radius: 52rpx;
+			&.confirm {
+				background-color: #5A7EFF;
+				color: #fff;
+			}
+			&.reject {
+				border: 1px solid #FC3736;
+				color: #FC3736;
+			}
+		}
 	}
 </style>

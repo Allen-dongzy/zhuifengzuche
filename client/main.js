@@ -4,6 +4,7 @@ import store from './store'
 import util from './common/js/util'
 import storage from './utils/storage'
 import cuCustom from './components/colorui/components/cu-custom.vue'
+import '@/utils/uni-tools'
 
 /**
  * 注册全局模块

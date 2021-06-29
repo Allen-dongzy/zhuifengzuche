@@ -5,6 +5,10 @@
 			<view class="titleRight">2021-06-02</view>
 		</view>
 		<view class="flexbox">
+			<view class="titleLeft">平台</view>
+			<view class="titleRight">追风租车</view>
+		</view>
+		<view class="flexbox">
 			<view class="titleLeft">项目</view>
 			<view class="titleRight">大方租车</view>
 		</view>

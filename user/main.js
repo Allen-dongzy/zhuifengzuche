@@ -2,22 +2,12 @@ import Vue from 'vue'
 import App from './App'
 import store from '@/store'
 import config from '@/request/config'
-import {
-	open,
-	close,
-	toast,
-	showLoading
-} from '@/utils/uni-tools'
+import '@/utils/uni-tools'
 
 // 挂载vuex
 Vue.prototype.$store = store
 // 挂载oss
 Vue.prototype.$ossUrl = config.ossUrl
-// 挂载uni小工具
-Vue.prototype.$open = open
-Vue.prototype.$close = close
-Vue.prototype.$toast = toast
-Vue.prototype.$showLoading = showLoading
 
 Vue.config.productionTip = false
 

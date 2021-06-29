@@ -93,8 +93,8 @@ const showModal = ({
 			confirmText,
 			cancelText,
 			success(res) {
-				if (res.confirm) resolve(0)
-				else if (res.cancel) resolve(1)
+				if (res.confirm) resolve('confirm')
+				else if (res.cancel) resolve('cancel')
 			},
 			fail(err) {
 				reject(err)
