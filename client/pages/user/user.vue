@@ -1,11 +1,14 @@
 <template>
 	<view class="box" :style="{backgroundImage: 'url('+$util.fileUrl('/userimg.png')+')'}">
 		<view class="nameBox">
-			<view class="">
+			<view @click="$open()">
 				<image style="height: 100rpx;width: 100rpx;border-radius: 50%;" :src="$util.fileUrl('/icon1.png')"
 					mode=""></image>
 			</view>
-			<view style="font-size: 40rpx;color: white;margin-left: 20rpx;">用户姓名</view>
+			<view v-show="$storage.get('token')" style="font-size: 40rpx;color: white;margin-left: 20rpx;">{{username}}
+			</view>
+			<view v-show="!$storage.get('token')" style="font-size: 40rpx;color: white;margin-left: 20rpx;"
+				@click="$open('/pages/login/home', 2)">请登录</view>
 		</view>
 		<view class="allBox">
 			<view class="flexBox" style="width: 40%;height:128rpx;border-radius: 10rpx;" @click="wallet">
@@ -21,17 +24,19 @@
 		<view class="flexBoxLeft" @click="lookinfo">
 			<image :src="$util.fileUrl('/xiaoxi.png')" style="height: 36rpx;width: 36rpx;" mode=""></image>
 			<view style="font-size: 28rpx;color: black;width: 75%;margin-left: 20rpx;">消息通知</view>
-			<view class="label">99</view>
+			<view v-show="true" class="label">99</view>
 			<view class="arrow"></view>
 		</view>
-		<view class="goout" @tap="quit">退出登陆</view>
+		<view v-show="$storage.get('token')" class="goout" @click="quit">退出登陆</view>
 	</view>
 </template>
 
 <script>
 	import {
-		open
-	} from '@/utils/uni-tools'
+		mapActions,
+		mapMutations,
+		mapState
+	} from 'vuex'
 
 	export default {
 		data() {
@@ -39,7 +44,18 @@
 
 			};
 		},
+		onLoad() {
+			this.getInfo()
+		},
+		computed: {
+			// user模块 用户名
+			...mapState('user', ['username'])
+		},
 		methods: {
+			// user模块 获取用户信息
+			...mapActions('user', ['getInfo']),
+			// user模块 清除用户信息
+			...mapMutations('user', ['clearInfo']),
 			lookinfo() {
 				uni.navigateTo({
 					url: './news',
@@ -61,9 +77,14 @@
 					animationType: 'pop-in'
 				})
 			},
+			// 退出
 			quit() {
-				// todo
-				open('/pages/login/home', 2)
+				this.$showLoading('退出中')
+				setTimeout(() => {
+					this.$storage.remove('token')
+					this.clearInfo()
+					uni.hideLoading()
+				}, 500)
 			}
 		}
 	}

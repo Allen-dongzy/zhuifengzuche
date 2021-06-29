@@ -168,6 +168,7 @@ const codeManager = (res) => {
 		const message = res.data.message
 		if (Object.prototype.toString.call(message) === '[object String]') Status[code] = message
 		returnResult = [res.data]
+		if (code === 401) open('/pages/login/login')
 	}
 	if (Status[code]) toast(Status[code])
 	return returnResult
