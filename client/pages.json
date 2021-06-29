@@ -380,13 +380,13 @@
 		"backgroundColor": "#FFFFFF", //背景颜色
 		"list": [{
 			"pagePath": "pages/home/home",
-			"iconPath": "static/img/home@2x.png",
-			"selectedIconPath": "static/img/home@2x.png",
+			"iconPath": "static/img/home.png",
+			"selectedIconPath": "static/img/home-ac.png",
 			"text": "首页"
 		}, {
 			"pagePath": "pages/user/user",
-			"iconPath": "static/img/Frame9@2x.png",
-			"selectedIconPath": "static/img/Frame9@2x.png",
+			"iconPath": "static/img/mine.png",
+			"selectedIconPath": "static/img/mine-ac.png",
 			"text": "我的"
 		}]
 	},
