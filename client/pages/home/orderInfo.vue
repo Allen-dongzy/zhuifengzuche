@@ -21,16 +21,8 @@
 					<view class="moreContent">白色</view>
 				</view>
 				<view class="flexBox">
-					<view class="moreTitle">当前里程</view>
-					<view class="moreContent">2222km</view>
-				</view>
-				<view class="flexBox">
 					<view class="moreTitle">燃烧型号</view>
 					<view class="moreContent">92号</view>
-				</view>
-				<view class="flexBox">
-					<view class="moreTitle">当前油量</view>
-					<view class="moreContent">10%</view>
 				</view>
 			</view>
 			<view class="flexBox">

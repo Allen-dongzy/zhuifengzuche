@@ -5,6 +5,10 @@
 			<view class="titleRight">2021-06-02</view>
 		</view>
 		<view class="flexbox">
+			<view class="titleLeft">平台</view>
+			<view class="titleRight">追风租车</view>
+		</view>
+		<view class="flexbox">
 			<view class="titleLeft">项目</view>
 			<view class="titleRight">大方租车</view>
 		</view>
@@ -23,6 +27,10 @@
 		<view class="flexbox">
 			<view class="titleLeft">付款人</view>
 			<view class="titleRight">张全蛋</view>
+		</view>
+		<view class="flexbox">
+			<view class="titleLeft">银行卡</view>
+			<view class="titleRight">中国工商银行 6222023100002243000</view>
 		</view>
 		<view class="flexbox" style="border-bottom: 0rpx;">
 			<view class="titleLeft">备注</view>
