@@ -22,22 +22,35 @@
 		</view>
 
 		<view class="">
-
-			<view class="fromTitel">城市</view>
-			<picker class="pickerBox" @change="bindPickerChange" :value="index" :range="selectorObj"
-				range-key="cateName">
-				<view v-show="index==-1" class="uni-input">请选择城市</view>
-				<view v-show="index!=-1" class="uni-input">{{selectorObj[index].cateName}}</view>
+			<view class="fromTitel">省份</view>
+			<picker class="pickerBox" @change="selectShen" :value="shenindex" :range="selectShenobj" range-key="name">
+				<view v-show="shenindex==-1" class="uni-input">请选择城市</view>
+				<view v-show="shenindex!=-1" class="uni-input">{{selectShenobj[shenindex].name}}</view>
 			</picker>
 
+			<view class="fromTitel">城市</view>
+			<picker class="pickerBox" @change="selectShi" :value="shiindex" :range="selectorObj" range-key="name">
+				<view v-show="shiindex==-1" class="uni-input">请选择城市</view>
+				<view v-show="shiindex!=-1" class="uni-input">{{selectorObj[shiindex].name}}</view>
+			</picker>
+
+			<view class="fromTitel">区域</view>
+			<picker class="pickerBox" @change="selectQu" :value="quindex" :range="selectorquObj" range-key="name">
+				<view v-show="quindex==-1" class="uni-input">请选择区域</view>
+				<view v-show="quindex!=-1" class="uni-input">{{selectorquObj[quindex].name}}</view>
+			</picker>
+
+
+
+
 			<view class="fromTitel">门店名称</view>
-			<input class="inpBox" type="text" placeholder="请填写门店名字" />
+			<input class="inpBox" v-model="storeName" type="text" placeholder="请填写门店名字" />
 
 			<view class="fromTitel">门店地址</view>
-			<input class="inpBox" type="text" placeholder="请填写门店地址" />
+			<input class="inpBox" v-model="address" type="text" placeholder="请填写门店地址" />
 
 			<view class="fromTitel">门店电话</view>
-			<input class="inpBox" type="text" placeholder="请填写门店电话" />
+			<input class="inpBox" v-model="storePhone" type="text" placeholder="请填写门店电话" />
 
 			<view class="fromTitel">营业时间</view>
 			<view class="timeBox">
@@ -56,18 +69,46 @@
 
 			<view class="fromTitel">地图经纬度</view>
 			<view class="local">
-				<input style="width: 43%;" class="inpBox" type="text" placeholder="请输入经度" />
-				<input style="width: 43%;margin-left: 4%;" class="inpBox" type="text" placeholder="请输入经度" />
+				<input style="width: 43%;" v-model="longitude" class="inpBox" type="text" placeholder="请输入经度" />
+				<input style="width: 43%;margin-left: 4%;" v-model="latitude" class="inpBox" type="text"
+					placeholder="请输入经度" />
 			</view>
 
 			<view class="fromTitel">门店图片</view>
-			<image class="imgBox" :src="$util.fileUrl('/upload_image@2x.png')" mode=""></image>
+			<image class="imgBox" @click="getImg(0)" :src="storeImg || $util.fileUrl('/upload_image@2x.png')" mode="">
+			</image>
 
 			<view class="fromTitel">负责人/法人</view>
-			<input class="inpBox" type="text" placeholder="请填写负责人或者法人名称" />
+			<input class="inpBox" v-model="corporationName" type="text" placeholder="请填写负责人或者法人名称" />
 
 			<view class="fromTitel">负责人/法人 电话</view>
-			<input class="inpBox" type="text" placeholder="请填写负责人或者法人名称电话" />
+			<input class="inpBox" type="text" v-model="corporationNamePhone" placeholder="请填写负责人或者法人名称电话" />
+
+
+
+			<view class="title">门店图片-门头照片</view>
+			<view class="idCard">
+				<image class="imgBox1" :src="idCard1 || $util.fileUrl('/guanxi.png')" mode="" @click="getImg(1)">
+				</image>
+			</view>
+
+			<view class="title">门店图片-店内照片</view>
+			<view class="idCard">
+				<image class="imgBox1" :src="idCard2 || $util.fileUrl('/guanxi.png')" mode="" @click="getImg(2)">
+				</image>
+			</view>
+
+			<view class="title">门店图片-店铺室外照片</view>
+			<view class="idCard">
+				<image class="imgBox1" :src="idCard3 || $util.fileUrl('/guanxi.png')" mode="" @click="getImg(3)">
+				</image>
+			</view>
+
+			<view class="title">对公账户开户许可证</view>
+			<view class="idCard">
+				<image class="imgBox1" :src="idCard4 || $util.fileUrl('/guanxi.png')" mode="" @click="getImg(4)">
+				</image>
+			</view>
 
 
 			<button style=" color: white;
@@ -87,56 +128,180 @@
 	import {
 		open
 	} from '@/utils/uni-tools'
+	import {
+		allFindCityList,
+		allFindProvincesList,
+		allFindAreasList
+	} from '@/apis/regionProvince';
+	import {
+		uploadFiles
+	} from '@/apis/oss';
+	import {
+		shopOwnerRegister
+	} from '@/apis/admin';
+
 
 	export default {
 		data() {
 			return {
-				form: {
-					name: '',
-					intro: '',
-					sex: ''
-				}, //表单数据
 				show: false, //表单底部边框线
-				selectorObj: [{
-					cateName: '1',
-					id: 1
-				}, {
-					cateName: '2',
-					id: 2
-				}], //城市列表
-				index: -1, //选择城市角标
+
+				selectShenobj: [], //省列表
+				selectorObj: [], //城市列表
+				selectorquObj: [], //区域列表	
+				
+				city: '', //城市
+				shenindex: -1, //选择省角标
+				shiindex: -1, //选择市角标
+				quindex: -1, //选择区角标
 				indexStar: -1, //开始时间角标
 				indexEnd: -1, //结束时间角标
-				customStyle: {
-					margin: 'auto',
-					marginTop: '60px', // 注意驼峰命名，并且值必须用引号包括，因为这是对象
-					marginBottom: '20px',
-					color: 'white',
-					width: '90%',
-					borderRadius: '50rpx',
-					backgroundColor: '#5A7EFF'
-				} //提交按钮样式
+				obj: {}, //传递的全部数据
 
+				selectProvince: '', //选择的省
+				selectCity: '', //选择的市
+				selectArea: '', //选择的区 
+				selectStar: '', //选择的开始时间
+				selectEnd: '', //选择的结束时间
+				storeName: '追风', //门店名字
+				address: '民安大道', //门店地址
+				storePhone: '15870463592', //门店电话
+				longitude: '106.52908', //经度
+				latitude: '29.608926', //纬度
+				storeImg: '', //门店照片
+				idCard1: '', //门店图片-门头照片
+				idCard2: '', //门店图片-店内照片
+				idCard3: '', //门店图片-店铺室外照片
+				idCard4: '', //对公账户开户许可证
+				corporationName: '张三', //法人姓名
+				corporationNamePhone: '15870463592', //法人电话
 			}
 		},
 		onLoad() {
-
+			// console.log(JSON.parse(e))
+			uni.$on('businessParams', (e) => {
+				console.log('--------')
+				console.log(e)
+				this.obj = e
+			})
+			this.allFindProvincesList()
 		},
 		methods: {
-			next() {
-				open('/pages/home/home', 3)
+			async allFindProvincesList() {
+				console.log('pp')
+				const [err, res] = await allFindProvincesList({})
+				if (err || res.code !== 200) return
+				console.log(res.data)
+				this.selectShenobj = res.data
 			},
-			bindPickerChange: function(e) {
+			async allFindCityList(e) {
+
+				let data = {
+					name: e
+				}
+				const [err, res] = await allFindCityList(data)
+				if (err || res.code !== 200) return
+				console.log(res.data)
+				this.selectorObj = res.data
+			},
+			
+			async allFindAreasList(e,q) {
+			
+				let data = {
+					name: "",
+					cityCodes:q
+				}
+				const [err, res] = await allFindAreasList(data)
+				if (err || res.code !== 200) return
+				console.log(res.data)
+				this.selectorquObj = res.data
+			},
+			async next() {
+
+				this.obj.provinceCode = this.selectProvince
+				this.obj.cityCode = this.selectCity
+				this.obj.areaCode = this.selectArea
+				this.obj.name = this.storeName
+				this.obj.memberAddress = this.address
+				this.obj.memberPhone = this.storePhone
+				this.obj.beginTime = this.selectStar
+				this.obj.endTime = this.selectEnd
+				this.obj.lon = this.longitude
+				this.obj.lat = this.latitude
+				this.obj.shopImages = this.storeImg
+				this.obj.principal = this.corporationName
+				this.obj.principalPhone = this.corporationNamePhone
+				this.obj.doorHeadPicture = this.idCard1
+				this.obj.inStorePicture = this.idCard2
+				this.obj.outdoorPictures = this.idCard3
+				this.obj.accountOpeningPermit = this.idCard4
+
+				const [err, res] = await shopOwnerRegister(this.obj)
+				if (err) return
+				console.log(res)
+				open('/pages/login/login', 2)
+			},
+			selectShen: function(e) {
 				console.log('picker发送选择改变，携带值为', e.target.value)
-				this.index = e.target.value
+				this.shenindex = e.target.value
+				this.selectProvince = this.selectShenobj[this.shenindex].code
+				this.allFindCityList(this.selectShenobj[this.shenindex].name)
+			},
+			selectShi: function(e) {
+				console.log('picker发送选择改变，携带值为', e.target.value)
+				this.shiindex = e.target.value
+				this.selectCity = this.selectorObj[this.shiindex].code
+				this.allFindAreasList(this.selectorObj[this.shiindex].name,this.selectorObj[this.shiindex].code)
+				
+			},
+			selectQu: function(e) {
+				console.log('picker发送选择改变，携带值为', e.target.value)
+				this.quindex = e.target.value
+				this.selectArea = this.selectorquObj[this.quindex].areaCode 
+				
 			},
 			pickerStar: function(e) {
 				console.log('picker发送选择改变，携带值为', e.target.value)
 				this.indexStar = e.target.value
+				this.selectStar = this.indexStar
 			},
 			pickerEnd: function(e) {
 				console.log('picker发送选择改变，携带值为', e.target.value)
 				this.indexEnd = e.target.value
+				this.selectEnd = this.indexEnd
+			},
+			getImg(e) {
+				uni.chooseImage({
+					count: 1,
+					sizeType: ['original', 'compressed'],
+					sourceType: ['camera', 'album'], //camera 拍照 album 相册
+					success: async (res) => {
+						console.log(res)
+						const [err, rese] = await uploadFiles([res.tempFilePaths[0]]);
+						console.log(rese)
+						if (err) return
+						console.log(rese)
+
+						if (e == 0) {
+							this.storeImg = rese[0].url[0]
+						} else if (e == 1) {
+							this.idCard1 = rese[0].url[0]
+						} else if (e == 2) {
+							this.idCard2 = rese[0].url[0]
+						} else if (e == 3) {
+							this.idCard3 = rese[0].url[0]
+						} else {
+							this.idCard4 = rese[0].url[0]
+						}
+
+					},
+					fail() {
+						uni.showToast({
+							title: "拍照或引用相册失败",
+							duration: 2000
+						})
+					}
+				})
 			},
 		}
 	}
@@ -161,6 +326,7 @@
 		font-size: 24rpx;
 		color: #999999;
 		padding-left: 20rpx;
+		margin-top: 20rpx;
 	}
 
 	.fromTitel {
@@ -172,17 +338,20 @@
 
 	.pickerBox {
 		width: 90%;
+		height: 74rpx;
 		margin: auto;
 		background: #EFF0F3;
 		border-radius: 10rpx;
 		padding-left: 20rpx;
-		color: #999999
+		color: #999999;
+		margin-top: 20rpx;
 	}
 
 	.timeBox {
 		display: flex;
 		justify-items: center;
 		align-items: center;
+		margin-top: 20rpx;
 	}
 
 	.local {
@@ -194,6 +363,35 @@
 	.imgBox {
 		height: 186rpx;
 		width: 44%;
-		margin: 0px 3%;
+		margin: 20px 0rpx 0rpx 5%;
+	}
+
+	.uni-input {
+		height: 74rpx;
+		line-height: 74rpx;
+		font-size: 24rpx;
+	}
+
+
+	.title {
+
+		color: black;
+		font-size: 28rpx;
+		width: 90%;
+		margin: auto;
+		margin-top: 40rpx;
+
+	}
+
+	.idCard {
+		width: 90%;
+		margin: auto;
+		padding-top: 20rpx;
+	}
+
+	.imgBox1 {
+		height: 186rpx;
+		width: 44%;
+
 	}
 </style>
