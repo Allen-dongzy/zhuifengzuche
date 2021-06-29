@@ -79,7 +79,7 @@ const setRquestHeader = params => {
 		params.header['Content-Type'] = "application/json"
 	}
 	// 设置token
-	if (storage.get('token')) params.header.token = storage.get('token')
+	if (storage.get('token')) params.header.Authorization = storage.get('token')
 	return params
 }
 
