@@ -27,7 +27,7 @@
 			<view v-show="true" class="label">99</view>
 			<view class="arrow"></view>
 		</view>
-		<view v-show="$storage.get('token')" class="goout" @click="quit">退出登陆</view>
+		<view v-show="$storage.get('token')" class="goout" @click="adminLogout">退出登陆</view>
 	</view>
 </template>
 
@@ -37,6 +37,9 @@
 		mapMutations,
 		mapState
 	} from 'vuex'
+	import {
+		adminLogout
+	} from '@/apis/admin'
 
 	export default {
 		data() {
@@ -78,8 +81,9 @@
 				})
 			},
 			// 退出
-			quit() {
-				this.$showLoading('退出中')
+			async adminLogout() {
+				const [err, res] = await adminLogout()
+				if (err) return
 				setTimeout(() => {
 					this.$storage.remove('token')
 					this.clearInfo()

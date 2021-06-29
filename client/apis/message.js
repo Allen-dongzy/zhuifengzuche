@@ -34,7 +34,7 @@ export const messageEdit = (data, loading = '更新中') => {
 }
 
 //  消息通知分页
-export const messagePageQuery = (data, loading = '') => {
+export const messagePageQuery = (data, loading = '') => {  // 对接
 	return request({
 		url: "message/pageQuery",
 		contentType: 'application/json',

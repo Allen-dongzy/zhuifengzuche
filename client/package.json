@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "crazy-validator": "^1.0.2",
     "js-md5": "^0.7.3"
   }
 }

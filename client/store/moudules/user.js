@@ -37,7 +37,7 @@ const user = {
 			commit
 		}) {
 			const [err, res] = await getInfo()
-			if (err || res.code !== 200) return
+			if (err) return
 			commit('getInfo', res.data)
 		}
 	}
