@@ -102,27 +102,28 @@
 
 			login: throttle(async function() {
 				var that = this;
-			if(that.selectType==false){
-				uni.showToast({
-					title:"请勾选用户协议",
-					icon:'none'
-				})
-			}else{
-				const params = {
-					username: that.phone,
-					loginType: 1,
-					password: that.password,
-				
+				if (that.selectType == false) {
+					uni.showToast({
+						title: "请勾选用户协议",
+						icon: 'none'
+					})
+				} else {
+					const params = {
+						username: that.phone,
+						loginType: 1,
+						password: that.password,
+
+					}
+					const [err, res] = await login(params)
+					if (err) return
+					console.log(res)
+					this.$storage.set('token', res.data.token)
+					uni.reLaunch({
+						url: '../home/home',
+						animationType: 'pop-in',
+						animationDuration: 200,
+					})
 				}
-				const [err, res] = await login(params)
-				if (err) return
-				console.log(res)
-				uni.reLaunch({
-					url: '../home/home',
-					animationType: 'pop-in',
-					animationDuration: 200,
-				})
-			}
 
 			}),
 		}

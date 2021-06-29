@@ -85,7 +85,7 @@
 	import {
 		adminCheckRegister
 	} from '@/apis/admin';
-	import {
+	import { 
 		sendRegisterCode
 	} from '@/apis/sms';
 	import {

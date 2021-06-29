@@ -22,8 +22,8 @@
 
 
 		<view class="idCard">
-			<image class="imgBox" :src="$util.fileUrl('/idCard1.png')" mode=""></image>
-			<image class="imgBox" :src="$util.fileUrl('/idCard2.png')" mode=""></image>
+			<image class="imgBox" :src="idCard1 || $util.fileUrl('/idCard1.png')" mode="" @click="getImg(1)"></image>
+			<image class="imgBox" :src="idCard2 || $util.fileUrl('/idCard2.png')" mode="" @click="getImg(2)"></image>
 		</view>
 		<view class="lineBox"></view>
 		<view class="flexbox">
@@ -31,8 +31,8 @@
 			<view class="title" style="text-align: right;color: #5A7EFF;" @click="open2">查看示例图</view>
 		</view>
 		<view class="idCard">
-			<image class="imgBox" :src="$util.fileUrl('/driver1.png')" mode=""></image>
-			<image class="imgBox" :src="$util.fileUrl('/driver2.png')" mode=""></image>
+			<image class="imgBox" :src="idCard3 || $util.fileUrl('/driver1.png')" mode="" @click="getImg(3)"></image>
+			<image class="imgBox" :src="idCard4 || $util.fileUrl('/driver2.png')" mode="" @click="getImg(4)"></image>
 		</view>
 		<view class="title">车牌号码</view>
 		<view class="idCard">
@@ -41,6 +41,10 @@
 		<view class="title">品牌型号</view>
 		<view class="idCard">
 			<input class="nameBox" placeholder="请输入品牌型号" type="text" value="" />
+		</view>
+		<view class="title">车辆识别码</view>
+		<view class="idCard">
+			<input class="nameBox" placeholder="请输入车辆识别码" type="text" value="" />
 		</view>
 		<view class="title">发动机号码</view>
 		<view class="idCard">
@@ -101,34 +105,34 @@
 	import {
 		open
 	} from '@/utils/uni-tools'
+	import {
+		uploadFiles
+	} from '@/apis/oss';
 
 	export default {
 		data() {
 			return {
-				customStyle: {
-					margin: 'auto',
-					marginTop: '60px', // 注意驼峰命名，并且值必须用引号包括，因为这是对象
-					marginBottom: '20px',
-					color: 'white',
-					width: '90%',
-					borderRadius: '50rpx',
-					backgroundColor: '#5A7EFF'
-				}, //提交按钮样式
-
 				selectorObj: [{
 					cateName: '1',
 					id: 1
-				}, {
+				}, { 
 					cateName: '2',
 					id: 2
 				}], //城市列表
 				index: -1, //选择城市角标
 				indexStar: -1,
-				indexCreat: -1
+				indexCreat: -1,
+				
+				idCard1: '',
+				idCard2: '',
+				idCard3: '',
+				idCard4: '',
+				carNum:'',
+				
 			}
 		},
-		onLoad() {
-
+		onLoad(e) {
+			console.log(JSON.parse(e.obj))
 		},
 		methods: {
 			next() {
@@ -158,6 +162,38 @@
 			// 营业执照关
 			close2() {
 				this.$refs.popup2.close()
+			},
+			
+			
+			getImg(e) {
+				uni.chooseImage({
+					count: 1,
+					sizeType: ['original', 'compressed'],
+					sourceType: ['camera', 'album'], //camera 拍照 album 相册
+					success: async (res) => {
+						console.log(res)
+						const [err, rese] = await uploadFiles([res.tempFilePaths[0]]);
+						if (err) return
+			
+						console.log(rese[0].url[0])
+						if (e == 1) {
+							this.idCard1 = rese[0].url[0]
+						} else if (e == 2) {
+							this.idCard2 = rese[0].url[0]
+						} else if(e==3){
+							this.idCard3 = rese[0].url[0]
+						}else{
+							this.idCard4 = rese[0].url[0]
+						}
+			
+					},
+					fail() {
+						uni.showToast({
+							title: "拍照或引用相册失败",
+							duration: 2000
+						})
+					}
+				})
 			},
 		}
 	}

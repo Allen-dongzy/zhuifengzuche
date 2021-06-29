@@ -18,58 +18,60 @@
 
 
 			<view class="fromTitel">姓名</view>
-			<input class="inpBox" type="text" placeholder="请填写姓名" />
+			<input class="inpBox" v-model="name" type="text" placeholder="请填写姓名" />
 
 
 
 			<view class="fromTitel">身份证号码 </view>
-			<input class="inpBox" type="text" placeholder="请填写身份证号码" />
+			<input class="inpBox" v-model="idCard" type="text" placeholder="请填写身份证号码" />
 
 
 
 			<view class="fromTitel">手机号</view>
-			<input class="inpBox" type="text" placeholder="请填写手机号码" />
+			<input class="inpBox" v-model="phone" type="text" placeholder="请填写手机号码" />
 
 
 
 			<view class="fromTitel">验证码</view>
 			<view class="moreInpbox">
-				<view style="width: 78%;"><input class="inpBox" style="width: 100%;" type="text" placeholder="请填写验证码" />
+				<view style="width: 78%;"><input v-model="code" class="inpBox" style="width: 100%;" type="text"
+						placeholder="请填写验证码" />
 				</view>
-				<view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;">获取验证码</view>
+				<view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"
+					@click="sendRegisterCode">{{time}}</view>
 			</view>
 
 
 
 			<view class="fromTitel">邮箱</view>
-			<input class="inpBox" type="text" placeholder="请填写邮箱" />
+			<input class="inpBox" v-model="email" type="text" placeholder="请填写邮箱" />
 
 
 
 			<view class="fromTitel">密码</view>
 			<view class="moreInpbox">
-				<view style="width: 90%;"><input :type="inpType" class="inpBox" style="width: 95%;"
+				<view style="width: 90%;"><input v-model="password" :type="inpType" class="inpBox" style="width: 95%;"
 						placeholder="请填写密码" /></view>
 				<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
-				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
+				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
 					mode="" @click="look"></image>
-				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
+				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
 					mode="" @click="look"></image>
 				<!-- </view> -->
 			</view>
 
 
 			<view class="fromTitel">推荐码 </view>
-			<input class="inpBox" type="text" placeholder="请填写推荐码" />
+			<input class="inpBox" v-model="recommendCode" type="text" placeholder="请填写推荐码" />
 
 
-	<button  style=" color: white;
+			<button style=" color: white;
 		width: 80%;
-				margin: 20rpx auto;
+				margin: 40rpx auto;
 			    background-color: #5A7EFF;
 			    border-radius: 50px;
 			    font-size: 32rpx;
-			    height: 96rpx;line-height: 96rpx;" type="default"  @click="next()">下一步</button>
+			    height: 96rpx;line-height: 96rpx;" type="default" @click="adminCheckRegister()">下一步</button>
 
 
 		</view>
@@ -77,14 +79,34 @@
 </template>
 
 <script>
+	import {
+		adminCheckRegister
+	} from '@/apis/admin';
+	import {
+		sendRegisterCode
+	} from '@/apis/sms';
+	import {
+		throttle
+	} from '@/utils/tools';
 	export default {
 		data() {
 			return {
 
 
-				showpass: true, //密码眼睛切换 false 关闭  true开启
+				showpass: false, //密码眼睛切换 false 关闭  true开启
 				inpType: 'password', //切换密码框type
+				name: '王长宇', //姓名
+				idCard: '500228199609126559', //身份证号码
+				phone: '17623178041', //手机号码
+				code: '', //验证码
+				email: '617208375@qq.com', //邮箱
+				password: '1234567', //密码
+				recommendCode: 'CIALYQ', //推荐码
 
+
+				time: '获取验证码', //倒计时
+				get_code_time: 60,
+				get_code_status: false
 			}
 		},
 		onLoad() {
@@ -101,13 +123,48 @@
 					this.inpType = 'number'
 				}
 			},
-			next() {
+			sendRegisterCode: throttle(async function() {
+				var that = this;
+
+				if (that.get_code_status == false) {
+					const params = {
+						phone: that.phone
+					}
+					const [err, res] = await sendRegisterCode(params)
+					if (err) return
+					var timer = setInterval(function() {
+						if (that.get_code_time > 1) {
+							that.get_code_time = that.get_code_time - 1
+							that.time = '剩余' + that.get_code_time + '秒'
+							that.get_code_status = true
+						} else {
+							clearInterval(timer);
+							that.get_code_time = 60
+							that.time = '获取验证码'
+							that.get_code_status = false
+						}
+
+					}, 1000);
+				}
+
+			}),
+
+			adminCheckRegister: throttle(async function() {
+				const params = {
+					code: this.code,
+					email: this.email,
+					idCard: this.idCard,
+					password: this.password,
+					phone: this.phone,
+					realName: this.name,
+					note: this.recommendCode,
+				}
+				const [err, res] = await adminCheckRegister(params)
+				if (err || res.code !== 200) return
 				uni.navigateTo({
-					url: './OwnerCard',
-					animationType: 'pop-in',
-					animationDuration: 200
+					url: './OwnerCard?obj=' + JSON.stringify(params),
 				})
-			}
+			}),
 		}
 	}
 </script>
@@ -135,7 +192,7 @@
 
 	.fromTitel {
 		width: 90%;
-		margin: auto;
+		margin: 20rpx auto;
 	}
 
 	.moreInpbox {
