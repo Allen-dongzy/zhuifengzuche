@@ -12,41 +12,39 @@
     width: 90%;
     margin: auto;
     height: 96rpx;
-    border-radius: 10rpx;" type="text" value="" />
+    border-radius: 10rpx;padding-left: 20rpx;" type="text"  v-model="phone" placeholder="请输入手机号" />
 
 
 			<view class="textTitle">{{account}}</view>
 			<view style="display: flex;justify-content: center;align-items: center;">
 				<view style="height: 96rpx;line-height: 96rpx;width: 66%;">
-					<input class="codeInp" type="text" value="" />
+					<input placeholder="请输入验证码" v-model="code" class="codeInp" type="text" value="" />
 				</view>
-				<view class="codeText">
-					获取验证码
-				</view>
+				<view class="codeText" @click="sendForgotCode">{{time}}</view>
 			</view>
 
 			<view class="textTitle">{{codeText}}</view>
 
 			<view class="moreInpbox">
-				<view style="width: 90%;"><input :type="inpType" class="inpBox" style="width: 95%;"
-						placeholder="请填写密码" /></view>
-				<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
-				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
+				<view style="width: 90%;">
+					<input :type="inpType" v-model="password1" placeholder="请输入密码" class="inpBox" style="width: 95%;"/></view>
+			
+				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
 					mode="" @click="look"></image>
-				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
+				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
 					mode="" @click="look"></image>
-				<!-- </view> -->
+				
 			</view>
 
 			<view class="textTitle">{{password}}</view>
 
 			<view class="moreInpbox">
-				<view style="width: 90%;"><input :type="inpType" class="inpBox" style="width: 95%;"
-						placeholder="请填写密码" /></view>
-				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" src="../../static/img/guan.png"
-					mode="" @click="look"></image>
-				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" src="../../static/img/kai.png"
-					mode="" @click="look"></image>
+				<view style="width: 90%;">
+					<input v-model="password2" :type="inpType1" placeholder="请确认密码" class="inpBox" style="width: 95%;"></view>
+				<image v-show="showpass1==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
+					mode="" @click="look1"></image>
+				<image v-show="showpass1==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
+					mode="" @click="look1"></image>
 
 			</view>
 
@@ -59,7 +57,7 @@
 				    background-color: #5A7EFF;
 				    border-radius: 50px;
 				    font-size: 32rpx;
-				    height: 96rpx;line-height: 96rpx;" type="default" @tap="goBack">完成</button>
+				    height: 96rpx;line-height: 96rpx;" type="default" @tap="updatePassword">完成</button>
 
 		</view>
 
@@ -69,22 +67,82 @@
 
 <script>
 	import {
-		close
-	} from '@/utils/uni-tools'
+		throttle
+	} from '@/utils/tools';
 
+	import {
+		sendForgotCode
+	} from '@/apis/sms';
+	import {
+		updatePassword
+	} from '@/apis/admin';
+	
+	
 	export default {
 		data() {
 			return {
-				account: '请输入手机号！', //手机号校验提示语句
-				codeText: '验证码错误！', //验证码校验提示语句
-				password: '两次账号密码不一样', //密码校验提示语句
+				account: '', //手机号校验提示语句
+				codeText: '', //验证码校验提示语句
+				password: '', //密码校验提示语句
 				showpass: true, //密码眼睛切换 false 关闭  true开启
+				inpType:'',
+				showpass1: true, //密码眼睛切换 false 关闭  true开启
+				inpType1:'',
+				phone:'17623178041',//账号
+				code:'',//验证码
+				password1:'',//密码1
+				password2:'',//密码2
+				time: '获取验证码', //倒计时
+				get_code_time: 60,
+				get_code_status: false
 			}
 		},
 		methods: {
-			goBack() {
-				close()
-			},
+
+			updatePassword: throttle(async function() {
+				const params = {
+					code: this.code,
+					username: this.phone,
+					newPassword: this.password1,
+				}
+				if(this.password1 == this.password2){
+					const [err, res] = await updatePassword(params)
+					if (err || res.code !== 200) return
+					console.log(res)
+					uni.navigateBack({
+						delta:1
+					})
+				}else{
+				
+				}
+			}),
+			
+			
+			sendForgotCode: throttle(async function() {
+				var that = this;
+			
+				if (that.get_code_status == false) {
+					const params = {
+						phone: that.phone
+					}
+					const [err, res] = await sendForgotCode(params)
+					if (err) return
+					var timer = setInterval(function() {
+						if (that.get_code_time > 1) {
+							that.get_code_time = that.get_code_time - 1
+							that.time = '剩余' + that.get_code_time + '秒'
+							that.get_code_status = true
+						} else {
+							clearInterval(timer);
+							that.get_code_time = 60
+							that.time = '获取验证码'
+							that.get_code_status = false
+						}
+			
+					}, 1000);
+				}
+			
+			}),
 			look() {
 				console.log('ppp')
 				if (this.showpass) {
@@ -93,6 +151,16 @@
 				} else {
 					this.showpass = true
 					this.inpType = 'number'
+				}
+			},
+			look1() {
+				console.log('ppp')
+				if (this.showpass1) {
+					this.showpass1 = false
+					this.inpType1 = 'password'
+				} else {
+					this.showpass1 = true
+					this.inpType1 = 'number'
 				}
 			},
 		}
