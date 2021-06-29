@@ -61,7 +61,7 @@
 			</view>
 		</view>
 		<view class="bottom">
-			<view class="item" @click="$open('/pages/common/article')">
+			<view class="item" @click="$open('/pages/common/joinInvestment')">
 				<image class="icon" :src="`${ossUrl}/home/join.png`" mode="heightFix"></image>
 				<text>招商加盟</text>
 			</view>

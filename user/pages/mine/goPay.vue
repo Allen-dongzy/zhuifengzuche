@@ -21,6 +21,26 @@
 			</view>
 		</view>
 		<view class="flexBox">
+			<view class="blackTitle">平台</view>
+			<view style="width: 56%;">
+				<picker @change="bindPickerChange" :value="index" :range="list" :range-key="'name'" class="pickerBox">
+					<label v-if="!log3" class="grayTetx">请选择</label>
+					<label v-else class="grayTetx">{{list[index].name}}</label>
+				</picker>
+			</view>
+			<image style="width:28rpx;height: 38rpx;" :src="`${ossUrl}/mine/huiyou.png`" mode=""></image>
+		</view>
+		<view class="flexBox">
+			<view class="blackTitle">订单</view>
+			<view style="width: 56%;">
+				<picker @change="bindPickerChange" :value="index" :range="list" :range-key="'name'" class="pickerBox">
+					<label v-if="!log3" class="grayTetx">请选择</label>
+					<label v-else class="grayTetx">{{list[index].name}}</label>
+				</picker>
+			</view>
+			<image style="width:28rpx;height: 38rpx;" :src="`${ossUrl}/mine/huiyou.png`" mode=""></image>
+		</view>
+		<view class="flexBox">
 			<view class="blackTitle">项目</view>
 			<view style="width: 56%;">
 				<picker @change="bindPickerChange" :value="index" :range="list" :range-key="'name'" class="pickerBox">
@@ -49,9 +69,15 @@
 			</view>
 		</view>
 		<view class="flexBox">
-			<view class="blackTitle">付款人</view>
+			<view class="blackTitle">付款人/收款人</view>
 			<view style="width: 59%;">
 				<input style="grayTetx" type="text" value="" placeholder="请填写付款人姓名" />
+			</view>
+		</view>
+		<view class="flexBox">
+			<view class="blackTitle">银行卡</view>
+			<view style="width: 59%;">
+				<input style="grayTetx" type="text" value="" placeholder="请填写银行卡" />
 			</view>
 		</view>
 		<view class="flexBox" style="border: none;">备注</view>

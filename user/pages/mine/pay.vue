@@ -1,6 +1,6 @@
 <template>
 	<view class="">
-		<view class="box">
+		<view class="box" @click="$open('/pages/mine/payInfo')">
 			<view class="flexBox">
 				<view class="blackText">项目名称项目名称</view>
 				<view class="colorText"style="color: #FFA05B;">待确认</view>
