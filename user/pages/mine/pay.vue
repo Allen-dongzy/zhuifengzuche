@@ -3,7 +3,7 @@
 		<view class="box" @click="$open('/pages/mine/payInfo')">
 			<view class="flexBox">
 				<view class="blackText">项目名称项目名称</view>
-				<view class="colorText"style="color: #FFA05B;">待确认</view>
+				<view class="colorText" style="color: #FFA05B;">待确认</view>
 			</view>
 			<view class="grayTetx">渝A·5231B丨2021-06-03</view>
 			<view class="redText">¥ 188.00</view>
