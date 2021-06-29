@@ -15,13 +15,21 @@
 
 		</view>
 
-		<view class="title">身份证照片</view>
+		<view class="flexbox">
+			<view class="title" style="text-align: left;margin-left: 0rpx;">身份证照片</view>
+			<view class="title" style="text-align: right;color: #5A7EFF;" @click="open1">查看示例图</view>
+		</view>
+
+
 		<view class="idCard">
 			<image class="imgBox" :src="$util.fileUrl('/idCard1.png')" mode=""></image>
 			<image class="imgBox" :src="$util.fileUrl('/idCard2.png')" mode=""></image>
 		</view>
 		<view class="lineBox"></view>
-		<view class="title">行驶证照片</view>
+		<view class="flexbox">
+			<view class="title" style="text-align: left;margin-left: 0rpx;">行驶证照片</view>
+			<view class="title" style="text-align: right;color: #5A7EFF;" @click="open2">查看示例图</view>
+		</view>
 		<view class="idCard">
 			<image class="imgBox" :src="$util.fileUrl('/driver1.png')" mode=""></image>
 			<image class="imgBox" :src="$util.fileUrl('/driver2.png')" mode=""></image>
@@ -62,6 +70,28 @@
 				    border-radius: 50px;
 				    font-size: 32rpx;
 				    height: 96rpx;line-height: 96rpx;" type="default" @click="next()">完成</button>
+
+
+		<uni-popup ref="popup" type="center" style="text-align: center;">
+			<view class="popTitle">拍照示例：身份证正面</view>
+			<image class="popImg" :src="$util.fileUrl('/idzheng.png')" mode=""></image>
+			<view class="popTitle">拍照示例：身份证反面</view>
+			<image class="popImg" :src="$util.fileUrl('/idfan.png')" mode=""></image>
+			<view class="">
+				<image class="popclose" @click="close1" :src="$util.fileUrl('/shilica.png')" mode=""></image>
+			</view>
+		</uni-popup>
+
+		<uni-popup ref="popup2" type="center" style="text-align: center;">
+			<view class="popTitle">拍照示例：行驶证正页</view>
+			<image class="popImg" :src="$util.fileUrl('/xszz.png')" mode=""></image>
+			<view class="popTitle">拍照示例：行驶证副页</view>
+			<image class="popImg" :src="$util.fileUrl('/xszf.png')" mode=""></image>
+			<view class="">
+				<image class="popclose" @click="close2" :src="$util.fileUrl('/shilica.png')" mode=""></image>
+			</view>
+		</uni-popup>
+
 
 
 	</view>
@@ -112,6 +142,23 @@
 				console.log('picker发送选择改变，携带值为', e.target.value)
 				this.indexCreat = e.target.value
 			},
+			// 身份证开
+			open1() {
+				this.$refs.popup.open()
+			},
+			// 身份证关
+			close1() {
+				this.$refs.popup.close()
+			},
+
+			// 营业执照开
+			open2() {
+				this.$refs.popup2.open()
+			},
+			// 营业执照关
+			close2() {
+				this.$refs.popup2.close()
+			},
 		}
 	}
 </script>
@@ -130,7 +177,8 @@
 		color: black;
 		font-size: 28rpx;
 		margin-top: 40rpx;
-		margin-left: 32rpx;
+		margin-left: 41rpx;
+		width: 50%;
 	}
 
 	.idCard {
@@ -171,5 +219,36 @@
 		border-radius: 10rpx;
 		padding-left: 20rpx;
 		color: #999999
+	}
+
+
+	.popTitle {
+		margin: auto;
+		width: 80%;
+		color: white;
+		text-align: center;
+		font-size: 28rpx;
+	}
+
+	.popImg {
+		width: 446rpx;
+		height: 280rpx;
+		margin: auto;
+		margin-top: 20rpx;
+	}
+
+	.popclose {
+		width: 80rpx;
+		height: 80rpx;
+		margin: auto;
+		margin-top: 20rpx;
+	}
+
+	.flexbox {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 90%;
+		margin: auto;
 	}
 </style>

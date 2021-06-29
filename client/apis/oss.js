@@ -12,7 +12,7 @@ export const uploadFiles = async tempFilePaths => {
 				},
 				url: `${config.host}/${config.apiKeyword}/oss/uploadImage`, //上传接口
 				filePath: tempFilePaths[i],
-				name: 'file',
+				name: 'img',
 				success: (res) => {
 					const url = JSON.parse(res.data).data
 					imgArr.push(url);

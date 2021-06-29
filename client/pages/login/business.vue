@@ -43,7 +43,8 @@
 				<view style="width: 78%;"><input class="inpBox" v-model="code" style="width: 100%;margin-top: 0rpx;"
 						type="text" placeholder="请填写验证码" />
 				</view>
-				<view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;" @click="sendRegisterCode">获取验证码</view>
+				<view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"
+					@click="sendRegisterCode">{{time}}</view>
 			</view>
 
 
@@ -58,9 +59,9 @@
 				<view style="width: 90%;"><input v-model="password" :type="inpType" class="inpBox"
 						style="width: 95%;margin-top: 0rpx;" placeholder="请填写密码" /></view>
 				<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
-				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
+				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
 					mode="" @click="look"></image>
-				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
+				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
 					mode="" @click="look"></image>
 				<!-- </view> -->
 			</view>
@@ -69,7 +70,7 @@
 
 			<button style=" color: white;
 			width: 80%;
-					margin: 20rpx auto;
+					margin: 60rpx auto 20rpx;
 				    background-color: #5A7EFF;
 				    border-radius: 50px;
 				    font-size: 32rpx;
@@ -87,6 +88,9 @@
 	import {
 		sendRegisterCode
 	} from '@/apis/sms';
+	import {
+		throttle
+	} from '@/utils/tools';
 	export default {
 		data() {
 			return {
@@ -96,14 +100,17 @@
 					sex: ''
 				}, //表单列表
 				show: false, //底部边框线
-				showpass: true, //密码眼睛切换 false 关闭  true开启
+				showpass: false, //密码眼睛切换 false 关闭  true开启
 				inpType: 'password', //切换密码框type
-				name: '', //姓名
-				idCard: '', //身份证号码
-				phone: '', //手机号码
+				name: '王长宇', //姓名
+				idCard:'500228199609126559', //身份证号码
+				phone: '15870463592', //手机号码
 				code: '', //验证码
-				email: '', //邮箱
-				password: '', //邮箱
+				email: '617208375@qq.com', //邮箱
+				password: '123456', //密码
+				time: '获取验证码', //倒计时
+				get_code_time: 60,
+				get_code_status: false
 			}
 		},
 		onLoad() {
@@ -111,7 +118,7 @@
 		},
 		methods: {
 			look() {
-				console.log('ppp')
+
 				if (this.showpass) {
 					this.showpass = false
 					this.inpType = 'password'
@@ -120,40 +127,47 @@
 					this.inpType = 'number'
 				}
 			},
-			next() {
-				uni.navigateTo({
-					url: './businessCard',
-					animationType: 'pop-in',
-					animationDuration: 200
-				})
-			},
-			async adminCheckRegister() {
 
+			adminCheckRegister: throttle(async function() {
 				const params = {
-					code: 1,
-					email: 1,
-					idCard: 1,
-					note: 1,
-					password: 1,
-					phone: 1,
-					realName: 1,
+					code: this.code,
+					email: this.email,
+					idCard: this.idCard,
+					password: this.password,
+					phone: this.phone,
+					realName: this.name,
 				}
 				const [err, res] = await adminCheckRegister(params)
-				console.log(err)
-				console.log(res)
-				if (err) return
+				if (err || res.code !== 200) return
+				uni.navigateTo({
+					url: './businessCard?obj=' + JSON.stringify(params),
+				})
+			}),
+			sendRegisterCode: throttle(async function() {
+				var that = this;
 
+				if (that.get_code_status == false) {
+					const params = {
+						phone: that.phone
+					}
+					const [err, res] = await sendRegisterCode(params)
+					if (err) return
+					var timer = setInterval(function() {
+						if (that.get_code_time > 1) {
+							that.get_code_time = that.get_code_time - 1
+							that.time = '剩余' + that.get_code_time + '秒'
+							that.get_code_status = true
+						} else {
+							clearInterval(timer);
+							that.get_code_time = 60
+							that.time = '获取验证码'
+							that.get_code_status = false
+						}
 
-			},
-			async sendRegisterCode() {
-				const params = {
-					phone: this.phone
+					}, 1000);
 				}
-				const [err, res] = await sendRegisterCode(params)
-				console.log(err)
-				console.log(res)
-				if (err) return
-			}
+
+			}),
 		}
 	}
 </script>
