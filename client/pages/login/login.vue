@@ -89,7 +89,6 @@
 					this.showpass = true
 					this.inpType = 'number'
 				}
-				console.log(this.inpType)
 			},
 			forget() {
 				uni.navigateTo({
@@ -116,7 +115,6 @@
 					}
 					const [err, res] = await login(params)
 					if (err) return
-					console.log(res)
 					this.$storage.set('token', res.data.token)
 					uni.reLaunch({
 						url: '../home/home',

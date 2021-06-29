@@ -1,7 +1,7 @@
 import request from '@/request'
 
 // 登出功能
-export const adminLogout = (data, loading = '等待中') => {
+export const adminLogout = (data, loading = '退出中') => {  // 对接
 	return request({
 		url: "admin/logout",
 		contentType: 'application/x-www-form-urlencoded',
@@ -74,7 +74,7 @@ export const getCodeByWxCode = (data, loading = '等待中') => {
 }
 
 // 获取当前登录用户信息
-export const getInfo = (data, loading = '') => {
+export const getInfo = (data, loading = '') => {  // 对接
 	return request({
 		url: "admin/info",
 		contentType: 'application/x-www-form-urlencoded',
