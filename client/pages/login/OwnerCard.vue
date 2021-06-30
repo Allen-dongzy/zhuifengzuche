@@ -36,19 +36,19 @@
 		</view>
 		<view class="title">车牌号码</view>
 		<view class="idCard">
-			<input class="nameBox" placeholder="请输入车牌号码" type="text" value="" />
+			<input class="nameBox" v-model="carNum" placeholder="请输入车牌号码" type="text" value="" />
 		</view>
 		<view class="title">品牌型号</view>
 		<view class="idCard">
-			<input class="nameBox" placeholder="请输入品牌型号" type="text" value="" />
+			<input class="nameBox" v-model="carType" placeholder="请输入品牌型号" type="text" value="" />
 		</view>
 		<view class="title">车辆识别码</view>
 		<view class="idCard">
-			<input class="nameBox" placeholder="请输入车辆识别码" type="text" value="" />
+			<input class="nameBox" v-model="vehicleIdentificationCode" placeholder="请输入车辆识别码" type="text" value="" />
 		</view>
 		<view class="title">发动机号码</view>
 		<view class="idCard">
-			<input class="nameBox" placeholder="请输入发动机号码" type="text" value="" />
+			<input class="nameBox" v-model="engineNumber" placeholder="请输入发动机号码" type="text" value="" />
 		</view>
 
 		<view class="title">发证日期</view>
@@ -73,7 +73,7 @@
 				    background-color: #5A7EFF;
 				    border-radius: 50px;
 				    font-size: 32rpx;
-				    height: 96rpx;line-height: 96rpx;" type="default" @click="next()">完成</button>
+				    height: 96rpx;line-height: 96rpx;" type="default" @click="adminCarOwnersRegister()">注册</button>
 
 
 		<uni-popup ref="popup" type="center" style="text-align: center;">
@@ -108,6 +108,9 @@
 	import {
 		uploadFiles
 	} from '@/apis/oss';
+	import {
+		adminCarOwnersRegister
+	} from '@/apis/admin';
 
 	export default {
 		data() {
@@ -120,24 +123,51 @@
 					id: 2
 				}], //城市列表
 				index: -1, //选择城市角标
-				indexStar: -1,
-				indexCreat: -1,
 				
-				idCard1: '',
-				idCard2: '',
-				idCard3: '',
-				idCard4: '',
-				carNum:'',
+				obj:{},//上一页数据
+				indexStar: -1,//发证时间
+				indexCreat: -1,//注册时间
+				idCard1: '',//身份证正面
+				idCard2: '',//身份证背面
+				idCard3: '',//行驶证正
+				idCard4: '',//行驶证副
+				carNum:'',//车牌
+				carType:'',//车型
+				vehicleIdentificationCode:'',//车辆识别码
+				engineNumber:'',//发动机识别码
 				
 			}
 		},
 		onLoad(e) {
 			console.log(JSON.parse(e.obj))
+			this.obj=JSON.parse(e.obj)
 		},
 		methods: {
-			next() {
-				open('/pages/home/home', 3)
+
+			async adminCarOwnersRegister() {
+			
+				this.obj.releaseDate = this.indexStar+" 00:00:00"
+				this.obj.registrationDate = this.indexCreat+" 00:00:00"
+				this.obj.idCardFront = this.idCard1
+				this.obj.idCardBack = this.idCard2
+				this.obj.vehicleLicenseFront = this.idCard3
+				this.obj.vehicleLicenseBack = this.idCard4
+				
+				this.obj.carBrandNumber = this.carNum
+				this.obj.brandModels = this.carType
+				this.obj.vehicleIdentificationCode = this.vehicleIdentificationCode
+				this.obj.engineNumber = this.engineNumber
+				
+				
+		
+			
+				const [err, res] = await adminCarOwnersRegister(this.obj)
+				if (err || res.code!=200 ) return
+				console.log(res)
+				open('/pages/login/login', 2)
 			},
+			
+			
 			pickerStar: function(e) {
 				console.log('picker发送选择改变，携带值为', e.target.value)
 				this.indexStar = e.target.value

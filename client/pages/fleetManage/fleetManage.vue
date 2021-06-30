@@ -17,7 +17,7 @@
 			</view>
 		</view>
 		<view class="flex-center flex-wrap content">
-			<view v-for="(item, index) in 10" :key="index" class="panel" @click="carInfo()">
+			<view v-for="(item, index) in list" :key="index" class="panel" @click="carInfo()">
 				<view class="flex titlePanel">
 					<p class="title">渝A·5231B</p>
 					<p class="type">租赁中</p>
@@ -83,13 +83,33 @@
 </template>
 
 <script>
+	import {vehiclePageQuery} from '@/apis/vehicle'
 	export default {
 		data() {
 			return {
-				modalName: ''
+				modalName: '',
+				page:1,//页码
+				size:10,//数量
+				list:[],//数据组
 			}
 		},
+		onLoad() {
+		this.getlist()	
+		},
 		methods: {
+			
+		async	getlist(){
+			 let data={
+				 page:this.page,
+				 size:this.size
+			 }
+			const [err,res] = await vehiclePageQuery()
+			 if (err) return
+			 console.log(res)
+			 this.list=res.data.list
+			 
+			},
+			
 			/**
 			 * 显示筛选框
 			 * @param {Object} e

@@ -365,7 +365,7 @@
 			"style": {
 				"navigationBarTitleText": "商家注册"
 			}
-		},{
+		}, {
 			"path": "pages/customerRecords/selectCart",
 			"style": {
 				"navigationBarTitleText": "选择车辆"
@@ -379,7 +379,7 @@
 		"navigationStyle": "default" //导航栏样式,custom为自定义导航栏
 	},
 	"tabBar": {
-		"color": "#000000", //字体默认颜色
+		"color": "#000000", //字体默认颜色 
 		"selectedColor": "#5A7EFF", //选中颜色
 		"borderStyle": "black", //边框样式
 		"backgroundColor": "#FFFFFF", //背景颜色
@@ -406,7 +406,7 @@
 		"current": 0, //当前激活的模式（list 的索引项）
 		"list": [{
 			"name": "wcy", // wcy
-			"path": "pages/user/wallet" //启动页面，必选
+			"path": "pages/fleetManage/addCar" //启动页面，必选
 		}, {
 			"name": "dzy", // dzy
 			"path": "pages/customerRecords/addCustomer" //启动页面，必选

@@ -21,7 +21,7 @@ export const insertVehicleModel = (data, loading = '新增中') => {
 	})
 }
 // 车型条件分页查询
-export const vehicleModelPageQuery = (data, loading = ' ') => {
+export const vehicleModelPageQuery = (data, loading = ' ') => { //对接
 	return request({
 		url: "vehicleModel/pageQuery",
 		contentType: 'application/json',
@@ -31,7 +31,7 @@ export const vehicleModelPageQuery = (data, loading = ' ') => {
 	})
 }
 // 车型租金修改
-export const vehicleModelUpdate = (data, loading = '等待中') => {
+export const vehicleModelPrice = (data, loading = '等待中') => {
 	return request({
 		url: "vehicleModel/rentList/update",
 		contentType: 'application/json',
@@ -50,3 +50,25 @@ export const vehicleModelUpdate = (data, loading = '等待中') => {
 		loading
 	})
 }
+
+// 车辆排量列表
+export const outputVolume = (data, loading = '') => { //对接
+	return request({
+		url: "outputVolume/queryAll",
+		contentType: 'application/json',
+		method: 'POST',
+		data,
+		loading
+	})
+}
+// 车辆排量列表
+export const queryAll = (data, loading = '') => { //对接
+	return request({
+		url: "vehicleModel/queryAll",
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'GET',
+		data,
+		loading
+	})
+}
+

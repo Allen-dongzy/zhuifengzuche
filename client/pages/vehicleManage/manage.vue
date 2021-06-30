@@ -1,15 +1,15 @@
 <template>
 	<view class="manage">
 		<view class="home-bar" v-show="!searchMode">
-			<view class="add-label" @click="goAdd">
+			<view class="add-label" @tap="goAdd">
 				新增+
 			</view>
 			<view class="function-box">
-				<view class="sel-box" @click="showModal" data-target="DrawerModalR">
+				<view class="sel-box" @tap="showModal" data-target="DrawerModalR">
 					<text>筛选</text>
 					<image :src="`${filePath}/vehicleManage/down.png`"></image>
 				</view>
-				<view class="search-box" @click="tapHeader">
+				<view class="search-box" @tap="tapHeader">
 					<text>搜索</text>
 					<image :src="`${filePath}/vehicleManage/search.png`"></image>
 				</view>
@@ -18,14 +18,15 @@
 		<view class="search-bar" v-show="searchMode">
 			<view class="serach-box">
 				<image class="search-icon" :src="`${filePath}/vehicleManage/search-big.png`"></image>
-				<input type="text" placeholder="请输入车型" placeholder-class="input">
+				<input @input="onInput" v-model="searchVal" type="text" placeholder="请输入车型" placeholder-class="input">
 				<image class="clear" :src="`${filePath}/vehicleManage/clear.png`"></image>
 			</view>
-			<view class="cancel" @click="tapHeader">取消</view>
+			<view class="cancel" @tap="tapHeader">取消</view>
 		</view>
 		<view class="header-mat"></view>
 		<view class="manage-list">
-			<view class="manage-item" v-for="(item, index) in 10" :key="index" @click="goDetail(index)">奥迪A4L 2021年型
+			<view class="manage-item" v-for="(item, index) in list" :key="index" @tap="goDetail(item.id)">
+				{{item.brandName}}{{item.name}}{{item.categoryName}}
 			</view>
 		</view>
 		<view class="cu-modal drawer-modal justify-end" catchtouchmove='true'
@@ -33,36 +34,39 @@
 			<view class="cu-dialog basis-lg" @click.stop="">
 				<view class="flex status">
 					<i></i>
-					<p>状态</p>
+					<p>排挡</p>
 				</view>
 				<view class="flex flex-wrap statusList">
-					<i class="flex-center">全部</i>
-					<i class="flex-center blue-i">正常</i>
-					<i class="flex-center">异常</i>
-					<i class="flex-center">租赁中</i>
-					<i class="flex-center">预留中</i>
+					<view v-for="(item,index) in stallList" @click="selectStall(index)">
+						<i v-if="item.status==false" class="flex-center">{{item.text}}</i>
+						<i v-else class="flex-center blue-i">{{item.text}}</i>
+					</view>
 				</view>
 				<view class="flex status">
 					<i></i>
-					<p>类别</p>
+					<p>座位</p>
 				</view>
 				<view class="flex flex-wrap statusList">
-					<i class="flex-center">全部</i>
-					<i class="flex-center blue-i">豪华</i>
-					<i class="flex-center">奢华</i>
-					<i class="flex-center">中等</i>
+					<view v-for="(item,index) in seatList" @click="selectSeat(index)">
+						<i v-if="item.status==false" class="flex-center">{{item.text}}</i>
+						<i v-else class="flex-center blue-i">{{item.text}}</i>
+					</view>
 				</view>
 				<view class="flex status">
 					<i></i>
 					<p>品牌</p>
 				</view>
 				<view class="flex flex-wrap statusList">
-					<i class="flex-center blue-i">玛莎拉蒂-总裁</i>
-					<i v-for="(item, index) in 50" :key="index" class="flex-center">宝马</i>
+					<!-- <i class="flex-center blue-i">玛莎拉蒂-总裁</i> -->
+					<view v-for="(item, index) in brandList" :key="index" @click="selectBrand(index)">
+						<i v-if="item.status==false" class="flex-center">{{item.name}}</i>
+						<i v-else class="flex-center blue-i">{{item.name}}</i>
+					</view>
+
 				</view>
 				<view class="flex btn">
-					<button type="default" class="flex-center reset">清空</button>
-					<button type="default" class="flex-center submit">确定</button>
+					<button type="default" class="flex-center reset" @click="clearAll">清空</button>
+					<button type="default" class="flex-center submit" @click="sureSearch">确定</button>
 				</view>
 			</view>
 		</view>
@@ -71,9 +75,22 @@
 
 <script>
 	import {
-		open
+		open,
 	} from '@/utils/uni-tools.js'
 	import config from '@/common/js/config'
+
+	import {
+		vehicleModelPageQuery
+	} from '@/apis/vehicleModel'
+
+	import {
+		vehicleBrandQueryAll
+	} from '@/apis/vehicleBrand'
+
+	import {
+		debounce
+	} from '@/utils/tools';
+
 
 	export default {
 		data() {
@@ -81,9 +98,82 @@
 				filePath: config.filePath,
 				searchMode: false, // 是否为搜索模式
 				modalName: '', // 模态框名称
+				list: [], //数据列表
+				page: 1, //页码
+				size: 10, //数量
+				brandId: '', //品牌Id
+				seatId: '', //座位Id
+				stallId: '', //排挡Id
+				brandList: [], //品牌数组
+				seatList: [{
+					text: '5座',
+					status: false
+				}, {
+					text: '7座',
+					status: false
+				}, {
+					text: '9座',
+					status: false
+				}], // 座位数列表
+				stallList: [{
+					text: '全部',
+					status: false
+				}, {
+					text: '手动',
+					status: false
+				}, {
+					text: '自动',
+					status: false
+				}], // 排档列表
+				searchVal: '', //搜索关键词
 			}
 		},
+		onLoad() {
+
+		},
+		onShow() {
+			this.getlist()
+			this.getBrand()
+		},
 		methods: {
+			onInput: debounce(async function() {
+				let data = {
+					page: this.page,
+					size: this.size,
+					name: this.searchVal
+				}
+				const [err, res] = await vehicleModelPageQuery(data)
+				if (err) return
+				console.log(res)
+				this.list = res.data.list
+
+			}),
+			//品牌
+			async getBrand() {
+				const [err, res] = await vehicleBrandQueryAll()
+				if (err) return
+				console.log(res)
+				this.brandList = res.data
+				for (let i = 0; i < this.brandList.length; i++) {
+					this.brandList[i].status = false
+				}
+			},
+
+
+			//获取 车型列表
+			async getlist() {
+				let data = {
+					page: this.page,
+					size: this.size
+				}
+				const [err, res] = await vehicleModelPageQuery(data)
+				if (err) return
+				console.log(res)
+				this.list = res.data.list
+
+			},
+
+
 			// 切换头部
 			tapHeader() {
 				this.searchMode = !this.searchMode
@@ -94,7 +184,8 @@
 			},
 			// 前往详情
 			goDetail(index) {
-				open('/pages/vehicleManage/detail')
+				console.log(index)
+				open('/pages/vehicleManage/detail?id=' + index)
 			},
 			// 显示筛选框
 			showModal(e) {
@@ -103,7 +194,66 @@
 			// 隐藏筛选框
 			hideModal(e) {
 				this.modalName = ''
+			},
+			//选择排挡
+			selectStall(e) {
+				console.log(e)
+				for (let i = 0; i < this.stallList.length; i++) {
+					this.stallList[i].status = false
+				}
+				this.stallId = this.stallList[e].text
+				this.stallList[e].status = true
+			},
+			//选择座位数
+			selectSeat(e) {
+				for (let i = 0; i < this.seatList.length; i++) {
+					this.seatList[i].status = false
+				}
+
+				this.seatId = this.seatList[e].text
+
+				this.seatList[e].status = true
+			},
+			//选择品牌
+			selectBrand(e) {
+				console.log(e)
+				for (let i = 0; i < this.brandList.length; i++) {
+					this.brandList[i].status = false
+				}
+				this.brandList[e].status = true
+				this.$forceUpdate()
+				this.brandId = this.brandList[e].id
+			},
+			//清空
+			clearAll() {
+				for (let i = 0; i < this.brandList.length; i++) {
+					this.brandList[i].status = false
+				}
+				for (let i = 0; i < this.seatList.length; i++) {
+					this.seatList[i].status = false
+				}
+				for (let i = 0; i < this.stallList.length; i++) {
+					this.stallList[i].status = false
+				}
+			},
+			//确定
+			async sureSearch() {
+				if (this.stallId === "全部") {
+					this.stallId = ""
+				}
+				let data = {
+					page: this.page,
+					size: this.size,
+					brandId: this.brandId,
+					capacity: this.seatId,
+					gears: this.stallId,
+				}
+				const [err, res] = await vehicleModelPageQuery(data)
+				if (err) return
+				console.log(res)
+				this.list = res.data.list
 			}
+
 		}
 	}
 </script>

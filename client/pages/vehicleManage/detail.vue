@@ -1,18 +1,20 @@
 <template>
 	<view class="detail">
 		<swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000">
-			<swiper-item v-for="(item, index) in 5" :key="index">
+			<swiper-item v-for="(item, index) in obj.vehicleModelFiles" :key="index">
 				<image
-					src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fcdn.duitang.com%2Fuploads%2Fblog%2F201306%2F25%2F20130625150506_fiJ2r.jpeg&refer=http%3A%2F%2Fcdn.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1626260068&t=ec6c776e9da581576d609de89cc34822"
+					:src="item"
 					mode="aspectFill"></image>
 			</swiper-item>
 		</swiper>
 		<view class="goods-info">
-			<view class="caption">奥迪A3 Sportback 2020年型</view>
-			<view class="description">奥迪/自动/5座/2.0L/95#</view>
+			<view class="caption">{{obj.brandName}}{{obj.categoryName}}</view>
+			<view class="description">{{obj.brandName}}/{{obj.gears}}/{{obj.capacity}}/{{obj.outputVolumeName}}/{{obj.model}}</view>
 			<view class="label-box">
-				<view class="label">豪华型</view>
-				<view class="label add-label">+添加标签</view>
+				<view class="label">{{obj.categoryName}}</view>
+				<view class="" v-for="(item,index) in obj.labels" style="margin: 0rpx 10rpx;">
+					<view class="label add-label">{{item}}</view>
+				</view>
 			</view>
 		</view>
 		<view class="vehicle-nums">
@@ -22,26 +24,26 @@
 					<text>车辆数量</text>
 				</view>
 				<view class="nums">
-					<text>99</text>
+					<text>{{obj.vehicleNumber}}</text>
 					<image class="arrow" :src="`${filePath}/vehicleManage/right.png`"></image>
 				</view>
 			</view>
 			<view class="list">
-				<view class="item">
+				<view class="item" style="border-bottom: 0rpx;">
 					<view class="caption">费用</view>
-					<view class="price">￥1000</view>
+				<!-- 	<view class="price">￥1000</view> -->
 				</view>
 				<view class="item">
 					<view class="caption">押金</view>
-					<view class="price">￥1000</view>
+					<view class="price">￥{{obj.rentalMoney}}</view>
 				</view>
 				<view class="item">
-					<view class="caption">服务费</view>
-					<view class="price">￥1000</view>
+					<view class="caption">基本保障费</view>
+					<view class="price">￥{{obj.protectionMoney}}</view>
 				</view>
-				<view class="item">
+				<view class="item"> 
 					<view class="caption">违章押金</view>
-					<view class="price">￥1000</view>
+					<view class="price">￥{{obj.breakRulesMoney}}</view>
 				</view>
 			</view>
 		</view>
@@ -56,18 +58,43 @@
 			</view>
 			<uni-calendar class="aaa" :insert="true" :lunar="true" :start-date="'2019-3-2'" :end-date="'2019-5-20'"
 				@change="change"></uni-calendar>
-			<div class="btn">编辑</div>
+			<view class="btn" @click="eidt" >编辑</view>
 		</view>
 	</view>
 </template>
 
 <script>
 	import config from '@/common/js/config'
+	
+	import {
+		searchCarid
+	} from '@/apis/vehicleModel'
 
 	export default {
 		data() {
 			return {
-				filePath: config.filePath
+				filePath: config.filePath,
+				obj:{},
+				id:''
+			}
+		},
+		onLoad(e) {
+			console.log(e)
+			this.id=e.id
+			this.searchCarid(e.id)
+		},
+		methods: {
+			async  searchCarid(e){
+				const [err,res] = await searchCarid(e)
+				if(err) true
+				res.data.vehicleModelFiles = JSON.parse(res.data.vehicleModelFiles)
+				res.data.labels = JSON.parse(res.data.labels)
+				this.obj=res.data
+			},
+			eidt(){
+				uni.navigateTo({
+					url:"./add?id="+this.id
+				})
 			}
 		}
 	}
