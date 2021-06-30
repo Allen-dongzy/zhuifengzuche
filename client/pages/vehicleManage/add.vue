@@ -7,7 +7,7 @@
 		<view class="vehicle-information">
 			<view class="item">
 				<view class="caption">选择品牌</view>
-				<tui-dropdown-list :show="brandKey" :top="80" :height="(76*brandList.length)+(40*2)">
+				<tui-dropdown-list :show="brandKey" :top="80" height="200">
 					<template v-slot:selectionbox>
 						<view class="info" @tap="brandKey ? closeSelBox('brand') :openSelBox('brand')">
 							<text>{{ brand ? brand :'请选择品牌'}}</text>
@@ -17,31 +17,38 @@
 					<template v-slot:dropdownbox>
 						<view class="box">
 							<view class="drop-item" v-for="(item, index) in brandList" :key="index"
-								@tap="checkBrand(index)">{{ item.text }}</view>
+								@tap="checkBrand(index)">{{ item.name }}</view>
 						</view>
 					</template>
 				</tui-dropdown-list>
 			</view>
+
+
+
+
 			<view class="item">
 				<view class="caption">选择类别</view>
-				<tui-dropdown-list :show="classesKey" :top="80" :height="(76*classesList.length)+(40*2)">
+				<tui-dropdown-list :show="classesKey" :top="80" height="200">
 					<template v-slot:selectionbox>
-						<view class="info" @tap="classesKey ? closeSelBox('classes') : openSelBox('classes')">
-							<text>{{ classes ? classes :'请选择类别'}}</text>
+						<view class="info" @tap="classesKey ? closeSelBox('classes') :openSelBox('classes')">
+							<text>{{ classes ? classes :'请选择品牌'}}</text>
 							<image class="icon" :src="`${filePath}/vehicleManage/down-mini.png`"></image>
 						</view>
 					</template>
 					<template v-slot:dropdownbox>
 						<view class="box">
 							<view class="drop-item" v-for="(item, index) in classesList" :key="index"
-								@tap="checkClasses(index)">{{ item.text }}</view>
+								@tap="checkClasses(index)">{{ item.name }}</view>
 						</view>
 					</template>
 				</tui-dropdown-list>
 			</view>
+
+
 			<view class="item">
 				<view class="caption">车型</view>
-				<input class="info" type="text" placeholder="请填写车型" placeholder-style="color:#999;" maxlength="80">
+				<input class="info" v-model="vehicleModel" type="text" placeholder="请填写车型"
+					placeholder-style="color:#999;" maxlength="80">
 			</view>
 			<view class="item">
 				<view class="caption">排档</view>
@@ -79,7 +86,7 @@
 			</view>
 			<view class="item">
 				<view class="caption">排量</view>
-				<tui-dropdown-list :show="displacementKey" :top="80" :height="(76*displacementList.length)+(40*2)">
+				<tui-dropdown-list :show="displacementKey" :top="80" height="200">
 					<template v-slot:selectionbox>
 						<view class="info"
 							@tap="displacementKey ? closeSelBox('displacement') : openSelBox('displacement')">
@@ -90,46 +97,37 @@
 					<template v-slot:dropdownbox>
 						<view class="box">
 							<view class="drop-item" v-for="(item, index) in displacementList" :key="index"
-								@tap="checkDisplacement(index)">{{ item.text }}</view>
+								@tap="checkDisplacement(index)">{{ item.name }}</view>
 						</view>
 					</template>
 				</tui-dropdown-list>
 			</view>
 			<view class="item">
 				<view class="caption">燃油型号</view>
-				<input class="info" type="text" placeholder="请填写燃油型号" placeholder-style="color:#999;" maxlength="80">
+				<input class="info" v-model="model" type="text" placeholder="请填写燃油型号" placeholder-style="color:#999;"
+					maxlength="80">
 			</view>
-			<view class="item">
+			<view class="item" style="height: auto;">
 				<view class="caption">添加标签</view>
 				<view class="label-box">
-					<view class="label add">+新增</view>
-					<view class="label">新车</view>
-					<view class="label">五个字标签</view>
+					<view class="label add" @click="addlabel">+新增</view>
+					<view class="label" style="position: relative;" v-for="(item,index) in labelList">
+						<image style="width:30rpx;height: 30rpx;position: absolute;top:-3rpx;right:-3rpx" :src="`${filePath}/vehicleManage/delete.png`"  @click="delLabel(index)" mode=""></image>
+						{{item}}
+					</view>
 				</view>
 			</view>
 			<view class="picture-group">
 				<div class="color-bar"></div>
 				<view class="caption">车型图片</view>
 				<view class="picture-box">
-					<view class="image-card">
-						<image class="picture"
-							src="https://img0.baidu.com/it/u=1631582372,4013670020&fm=11&fmt=auto&gp=0.jpg"
-							mode="aspectFill"></image>
-						<image class="delete" :src="`${filePath}/vehicleManage/delete.png`"></image>
+					<view class="image-card" v-for="(item,index) in cartypeImg">
+						<image class="picture" :src="item" mode="aspectFill"></image>
+						<image class="delete" :src="`${filePath}/vehicleManage/delete.png`" @click.stop="del(1,index)">
+						</image>
 					</view>
-					<view class="image-card">
-						<image class="picture"
-							src="https://img0.baidu.com/it/u=1631582372,4013670020&fm=11&fmt=auto&gp=0.jpg"
-							mode="aspectFill"></image>
-						<image class="delete" :src="`${filePath}/vehicleManage/delete.png`"></image>
-					</view>
-					<view class="image-card">
-						<image class="picture"
-							src="https://img0.baidu.com/it/u=1631582372,4013670020&fm=11&fmt=auto&gp=0.jpg"
-							mode="aspectFill"></image>
-						<image class="delete" :src="`${filePath}/vehicleManage/delete.png`"></image>
-					</view>
-					<view class="image-card add">
+
+					<view class="image-card add" @click="getImg(1)">
 						<image class="picture" :src="`${filePath}/vehicleManage/camera.png`" mode="aspectFill"></image>
 					</view>
 				</view>
@@ -138,25 +136,13 @@
 				<div class="color-bar"></div>
 				<view class="caption">实拍图片</view>
 				<view class="picture-box">
-					<view class="image-card">
-						<image class="picture"
-							src="https://img0.baidu.com/it/u=1631582372,4013670020&fm=11&fmt=auto&gp=0.jpg"
-							mode="aspectFill"></image>
-						<image class="delete" :src="`${filePath}/vehicleManage/delete.png`"></image>
+					<view class="image-card" v-for="(item,index) in actualImg">
+						<image class="picture" :src="item" mode="aspectFill"></image>
+						<image class="delete" :src="`${filePath}/vehicleManage/delete.png`" @click="del(2,index)">
+						</image>
 					</view>
-					<view class="image-card">
-						<image class="picture"
-							src="https://img0.baidu.com/it/u=1631582372,4013670020&fm=11&fmt=auto&gp=0.jpg"
-							mode="aspectFill"></image>
-						<image class="delete" :src="`${filePath}/vehicleManage/delete.png`"></image>
-					</view>
-					<view class="image-card">
-						<image class="picture"
-							src="https://img0.baidu.com/it/u=1631582372,4013670020&fm=11&fmt=auto&gp=0.jpg"
-							mode="aspectFill"></image>
-						<image class="delete" :src="`${filePath}/vehicleManage/delete.png`"></image>
-					</view>
-					<view class="image-card add">
+
+					<view class="image-card add" @click="getImg(2)">
 						<image class="picture" :src="`${filePath}/vehicleManage/camera.png`" mode="aspectFill"></image>
 					</view>
 				</view>
@@ -169,15 +155,18 @@
 		<view class="costs-set">
 			<view class="item">
 				<view class="caption">租车押金</view>
-				<input class="info" type="text" placeholder="请设置租车押金" placeholder-style="color:#999;" maxlength="80">
+				<input class="info" v-model="rentalMoney" type="text" placeholder="请设置租车押金"
+					placeholder-style="color:#999;" maxlength="80">
 			</view>
 			<view class="item">
 				<view class="caption">基本保障费</view>
-				<input class="info" type="text" placeholder="请设置基本保障费" placeholder-style="color:#999;" maxlength="80">
+				<input class="info" v-model="protectionMoney" type="text" placeholder="请设置基本保障费"
+					placeholder-style="color:#999;" maxlength="80">
 			</view>
 			<view class="item">
 				<view class="caption">违章押金</view>
-				<input class="info" type="text" placeholder="请设置违章押金" placeholder-style="color:#999;" maxlength="80">
+				<input class="info" v-model="breakRulesMoney" type="text" placeholder="请设置违章押金"
+					placeholder-style="color:#999;" maxlength="80">
 			</view>
 		</view>
 		<view class="header">
@@ -185,55 +174,78 @@
 			<text>批量设置租金</text>
 		</view>
 		<view class="set-up-the-rent">
-			<view class="tab-header">
+			<view class="tab-header" v-if="weekType==1">
 				<view class="tab ac">周内价格</view>
-				<view class="tab">周末价格</view>
+				<view class="tab" @click="select(2)">周末价格</view>
+			</view>
+			<view class="tab-header" v-else>
+				<view class="tab" @click="select(1)">周内价格</view>
+				<view class="tab ac">周末价格</view>
 			</view>
 			<view class="input-box">
-				<view class="square">-10%</view>
-				<view class="square">-1</view>
-				<view class="input">50</view>
-				<view class="square">+1</view>
-				<view class="square">+10%</view>
+				<view class="square" @click="reduce(2)">-10%</view>
+				<view class="square" @click="reduce(1)">-1</view>
+				<!-- 	<view class="input">50</view> -->
+				<input class="input" type="text" v-model="price" />
+				<view class="square" @click="add(1)">+1</view>
+				<view class="square" @click="add(2)">+10%</view>
 			</view>
-			<view class="btn">添加</view>
+			<view v-if="carId==''" class="btn" @click="sure(1)">添加</view>
+			<view v-else class="btn" @click="sure(2)">编辑</view>
 		</view>
+
+		<uni-popup ref="popup" type="center">
+			<view style="width:500rpx;margin: auto;background-color: white;border-radius: 20rpx;padding:30rpx 0rpx;">
+				<view style="text-align: center;margin: 20rpx 0rpx;">添加标签</view>
+				<input type="text" value="" v-model="labelText" placeholder="请输入标签"
+					style="border: 2rpx solid #5A7EFF;border-radius: 10rpx;width: 90%;margin: auto;height: 80rpx;line-height: 80rpx;padding-left: 20rpx;" />
+				<view style="display: flex;justify-content:center;align-items: center;margin: 20rpx 0rpx;">
+					<view
+						style="background-color: #5A7EFF;color: white;font-size: 28rpx;text-align: center;height: 60rpx;line-height: 40rpx;padding: 10rpx 20rpx;width: 150rpx;border-radius: 15rpx;margin-right: 20rpx;"
+						@click="close(1)">确定</view>
+					<view
+						style="border: 2rpx solid #5A7EFF;color: #5A7EFF;font-size: 28rpx;text-align: center;height: 60rpx;line-height: 40rpx;padding: 10rpx 20rpx;width: 150rpx;border-radius: 15rpx;margin-left: 20rpx;"
+						@click="close(2)">取消</view>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
 	import config from '@/common/js/config'
 
+	import {
+		vehicleBrandQueryAll
+	} from '@/apis/vehicleBrand'
+
+	import {
+		vehicleCategoryQueryAll
+	} from '@/apis/vehicleCategory'
+	import {
+		outputVolume,
+		insertVehicleModel,
+		searchCarid
+	} from '@/apis/vehicleModel'
+
+
+
+	import {
+		uploadFiles
+	} from '@/apis/oss';
+
 	export default {
 		data() {
 			return {
 				filePath: config.filePath,
-				brandList: [{
-					text: '奔驰'
-				}, {
-					text: '宝马'
-				}, {
-					text: '大众'
-				}, {
-					text: '迪奥'
-				}], // 品牌列表
+				brandList: [], // 品牌列表
 				brandKey: false, // 品牌开关
 				brand: '', // 品牌
-				classesList: [{
-					text: '豪华型'
-				}, {
-					text: '经济型'
-				}, {
-					text: '商务型'
-				}, {
-					text: '舒适型'
-				}, {
-					text: '城市suv'
-				}, {
-					text: '高端型'
-				}], // 类别列表
+				brandId: '', //品牌id
+				classesList: [], // 类别列表
 				classesKey: false, // 类别开关
 				classes: '', // 类别
+				classesId: '', //类别Id
 				stallList: [{
 					text: '手动'
 				}, {
@@ -250,30 +262,185 @@
 				}], // 座位数列表
 				seatKey: false, // 座位开关
 				seat: '', // 座位
-				displacementList: [{
-					text: '1.5T'
-				}, {
-					text: '2.0T'
-				}, {
-					text: '6.0T'
-				}, {
-					text: '8.0T'
-				}], // 排量列表
+				displacementList: [], // 排量列表
 				displacementKey: false, // 排量开关
 				displacement: '', // 排量
+				displacementId: '', // 排量Id
 				action: '',
-				fileList: [{
-					url: 'http://pics.sc.chinaz.com/files/pic/pic9/201912/hpic1886.jpg',
-				}, {
-					url: 'http://pics.sc.chinaz.com/files/pic/pic9/201912/hpic1886.jpg',
-				}, {
-					url: 'http://pics.sc.chinaz.com/files/pic/pic9/201912/hpic1886.jpg',
-				}, {
-					url: 'http://pics.sc.chinaz.com/files/pic/pic9/201912/hpic1886.jpg',
-				}]
+				actualImg: [], //实际图片 
+				cartypeImg: [], //车型图片 
+				price: "", //价格
+				labelList: [], //标签数组
+				labelText: '', //输入标签
+				rentalMoney: '', //租车押金
+				protectionMoney: '', //基本保障费
+				breakRulesMoney: '', //违章押金
+				model: '', //燃油型号
+				vehicleModel: '', //车型
+				weekType: 1, //1周末价格 2周内价格
+				weekExternal: '', //周末价格
+				weekWithin: '', //周内价格
+				carId: '', //车型id
+	
+			}
+		},
+		watch: {
+			price(newVal) {
+				if (this.weekType== 1) {
+					this.weekWithin = this.price
+					this.weekType = 1
+				} else {
+					this.weekExternal = this.price
+					this.weekType = 2
+				}
+			}
+		},
+		onLoad(e) {
+			this.getBrand()
+			this.getType()
+			this.outputVolume()
+			console.log(e.id)
+			if (e.id != undefined) {
+				this.searchCarid(e.id)
+				this.carId = e.id
+			} else {
+
 			}
 		},
 		methods: {
+			delLabel(e){
+				this.labelList.splice(e, 1)
+			},
+			select(e){
+				this.weekType=e
+				this.price=""
+				if(this.carId==""){
+					
+				}else{
+					if(e==1){
+						this.price=this.weekWithin
+					}else{
+						this.price=this.weekExternal
+					}
+				}
+			},
+			//详情
+			async searchCarid(e) {
+				const [err, res] = await searchCarid(e)
+				if (err) true
+				console.log(res)
+
+				this.brand = res.data.brandName
+				this.classes = res.data.categoryName
+				this.displacement = res.data.outputVolumeName
+
+				this.brandId = res.data.brandId
+				this.classesId = res.data.categoryId
+				this.displacementId = res.data.outputVolumeId
+
+				this.stall = res.data.gears
+				this.seat = res.data.capacity
+				this.vehicleModel = res.data.name
+				this.model = res.data.model
+				this.labelList = JSON.parse(res.data.labels)
+				this.cartypeImg = JSON.parse(res.data.vehicleModelFiles)
+				this.actualImg = JSON.parse(res.data.realPicturesFiles)
+				this.rentalMoney = res.data.rentalMoney
+				this.protectionMoney = res.data.protectionMoney
+				this.breakRulesMoney = res.data.breakRulesMoney
+				this.weekExternal = res.data.weekExternal
+				this.weekWithin = res.data.weekWithin
+				this.price = res.data.weekWithin
+
+			},
+			//品牌
+			async getBrand() {
+				const [err, res] = await vehicleBrandQueryAll()
+				if (err) return
+				console.log(res)
+				this.brandList = res.data
+			},
+			//类别
+			async getType() {
+				const [err, res] = await vehicleCategoryQueryAll()
+				if (err) return
+				console.log(res)
+				this.classesList = res.data
+			},
+			//排量
+			async outputVolume() {
+				const [err, res] = await outputVolume()
+				if (err) return
+				console.log(res)
+				this.displacementList = res.data
+			},
+			//上传图片
+			getImg(e) {
+				uni.chooseImage({
+					count: 9,
+					sizeType: ['original', 'compressed'],
+					sourceType: ['camera', 'album'], //camera 拍照 album 相册
+					success: async (res) => {
+						console.log(res)
+						const [err, rese] = await uploadFiles(res.tempFilePaths);
+						if (err) return
+						console.log(rese)
+						if (e == 1) {
+							for (let i = 0; i < rese.length; i++) {
+								this.cartypeImg.push(rese[i].url[0])
+							}
+
+						} else {
+							for (let i = 0; i < rese.length; i++) {
+
+								this.actualImg.push(rese[i].url[0])
+							}
+
+						}
+
+					},
+					fail() {
+						uni.showToast({
+							title: "拍照或引用相册失败",
+							duration: 2000
+						})
+					}
+				})
+			},
+			//e是类型 q是角标
+			del(e, q) {
+				if (e == 1) {
+					this.cartypeImg.splice(q, 1)
+				} else {
+					this.actualImg.splice(q, 1)
+				}
+			},
+			reduce(e) {
+				if (this.price > 1) {
+					if (e == 1) {
+
+						this.price--;
+
+					} else {
+						this.price = this.price - this.price * 0.1
+					}
+				}
+				this.price = this.price.toFixed(2)
+			},
+			add(e) {
+				if (this.price > 0) {
+					this.price = parseFloat(this.price)
+					if (e == 1) {
+
+						this.price++;
+
+					} else {
+						this.price = this.price + this.price * 0.1
+					}
+				}
+				console.log(this.price)
+				this.price = this.price.toFixed(2)
+			},
 			// 打开选择
 			openSelBox(selName) {
 				this.closeAllSelBox()
@@ -290,13 +457,15 @@
 			},
 			// 选择品牌
 			checkBrand(index) {
-				this.brand = this.brandList[index].text
+				this.brand = this.brandList[index].name
 				this.closeSelBox('brand')
+				this.brandId = this.brandList[index].id
 			},
 			// 选择类别
 			checkClasses(index) {
-				this.classes = this.classesList[index].text
+				this.classes = this.classesList[index].name
 				this.closeSelBox('classes')
+				this.classesId = this.classesList[index].id
 			},
 			// 选择排档
 			checkStall(index) {
@@ -310,9 +479,74 @@
 			},
 			// 选择排量
 			checkDisplacement(index) {
-				this.displacement = this.displacementList[index].text
+				this.displacement = this.displacementList[index].name
+				this.displacementId = this.displacementList[index].id
 				this.closeSelBox('displacement')
-			}
+			},
+
+
+			// 添加标签弹窗关
+			close(e) {
+				if (e == 1) {
+					this.labelList.push(this.labelText)
+					console.log(this.labelList)
+				}
+				this.$refs.popup.close()
+			},
+			// 添加标签弹窗开
+			addlabel() {
+				this.$refs.popup.open()
+				this.labelText = ""
+			},
+
+			async sure(e) {
+				if (e == 1) {
+					var data = {
+						brandId: this.brandId,
+						categoryId: this.classesId,
+						name: this.vehicleModel,
+						gears: this.stall,
+						capacity: this.seat,
+						outputVolumeId: this.displacementId,
+						model: this.model,
+						labels: JSON.stringify(this.labelList),
+						vehicleModelFiles: JSON.stringify(this.cartypeImg),
+						realPicturesFiles: JSON.stringify(this.actualImg),
+						rentalMoney: this.rentalMoney,
+						protectionMoney: this.protectionMoney,
+						breakRulesMoney: this.breakRulesMoney,
+						weekExternal: this.weekExternal,
+						weekWithin: this.weekWithin
+					}
+				} else {
+					var data = {
+						id: this.carId,
+						brandId: this.brandId,
+						categoryId: this.classesId,
+						name: this.vehicleModel,
+						gears: this.stall,
+						capacity: this.seat,
+						outputVolumeId: this.displacementId,
+						model: this.model,
+						labels: JSON.stringify(this.labelList),
+						vehicleModelFiles: JSON.stringify(this.cartypeImg),
+						realPicturesFiles: JSON.stringify(this.actualImg),
+						rentalMoney: this.rentalMoney,
+						protectionMoney: this.protectionMoney,
+						breakRulesMoney: this.breakRulesMoney,
+						weekExternal: this.weekExternal,
+						weekWithin: this.weekWithin
+					}
+				}
+
+
+				const [err, res] = await insertVehicleModel(data)
+				if (err) return
+				console.log(res)
+				uni.navigateBack({
+					delta: 1
+				})
+			},
 		}
 	}
 </script>
@@ -370,14 +604,16 @@
 				}
 
 				.label-box {
-					@include box(520rpx, 74rpx);
-					@include flex-row();
+					@include box-w(520rpx);
+					@include flex-wrap;
+					padding-bottom: 20rpx;
 
 					.label {
 						background-color: #EFF0F3;
 						padding: 20rpx 36rpx;
 						@include font-set(24rpx, #000000);
 						border-radius: 10rpx;
+						margin-top: 20rpx;
 
 						&~.label {
 							margin-left: 20rpx;
@@ -397,6 +633,8 @@
 					padding: 39rpx;
 					border: 1px solid #ddd;
 					border-top: 0;
+					height: 400rpx;
+					overflow-y: auto;
 
 					.drop-item {
 						@include box(100%, 76rpx);
@@ -420,18 +658,19 @@
 				}
 
 				.picture-box {
-					margin-top: 40rpx;
+					margin-top: 10rpx;
 					padding: 0 40rpx;
 					@include box-w();
-					@include flex-row();
+					@include flex-wrap;
 
 					.image-card {
 						position: relative;
 						@include square(160rpx);
 						border-radius: 10rpx;
+						margin-top: 20rpx;
 
-						&~.image-card {
-							margin-left: 16rpx;
+						&:not(:nth-of-type(4n+1)) {
+							margin-left: 10rpx;
 						}
 
 						&.add {
@@ -495,6 +734,7 @@
 					@include flex-center;
 					@include font-set(24rpx, #5A7EFF, 500);
 					border-radius: 10rpx;
+					text-align: center;
 				}
 			}
 

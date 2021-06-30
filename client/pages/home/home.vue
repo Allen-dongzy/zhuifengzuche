@@ -30,7 +30,8 @@
 					<view class="flex main">
 						<view v-for="(item, index) in tabList" :key="index" class="flex flex-direction tab"
 							@click="tabClick(index)">
-							<p :style="{color: (item.check?'#5A7EFF':'#999999')}">{{ item.text }}</p>
+							<p v-if="item.statusCount!=''" :style="{color: (item.check?'#5A7EFF':'#999999')}">{{ item.orderStatus }}{{item.statusCount}}</p>
+							<p v-else :style="{color: (item.check?'#5A7EFF':'#999999')}">{{ item.orderStatus }}</p>
 							<i v-show="item.check"></i>
 						</view>
 					</view>
@@ -61,7 +62,7 @@
 						<p class="name">大众迈腾</p>
 						<view class="flex radioCheck">
 							<p>异地还车</p>
-							<switch @change="radioChange" class="switch" :class="(radio?'checked':'')"
+							<switch @change.stop="radioChange" class="switch" :class="(radio?'checked':'')"
 								:checked="(radio?true:false)"></switch>
 						</view>
 					</view>
@@ -119,8 +120,9 @@
 
 <script>
 	import {
-		open
-	} from '@/utils/uni-tools'
+		getOrderStatus
+	} from '@/apis/rentalOrder';
+	
 	export default {
 		data() {
 			return {
@@ -160,27 +162,37 @@
 					url: '../risk/risk'
 				}],
 				tabCheck: 0,
-				tabList: [{
-					text: '待发车(2)',
-					check: true
-				}, {
-					text: '待收车(2)',
-					check: false
-				}, {
-					text: '已完成',
-					check: false
-				}, {
-					text: '待支付',
-					check: false
-				}, {
-					text: '已取消',
-					check: false
-				}],
+				tabList: [],
 				radio: false,
 				orderSize: false
 			};
 		},
+		onLoad() {
+			this.getlist()
+		
+		},
 		methods: {
+			
+			async getlist() {
+				console.log('pp')
+				const [err, res] = await getOrderStatus()
+				if (err) return
+				console.log(res)
+				for (let i=0;i<res.data.length;i++) {
+					res.data[i].check=false
+			
+					if(i>1){
+						res.data[i].statusCount=''
+					}else{
+						res.data[i].statusCount="("+res.data[i].statusCount+")"
+					}
+				}
+				res.data[0].check=true
+				this.tabList=res.data
+			},
+
+
+
 			/**
 			 * 状态切换
 			 */
