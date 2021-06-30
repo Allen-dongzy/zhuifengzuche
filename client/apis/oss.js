@@ -14,7 +14,7 @@ export const uploadFiles = async tempFilePaths => {
 				filePath: tempFilePaths[i],
 				name: 'img',
 				success: (res) => {
-					const url = JSON.parse(res.data).data
+					const url = JSON.parse(res.data).data.url[0]
 					imgArr.push(url);
 					if (imgArr.length === tempFilePaths.length) resolve(imgArr)
 				},

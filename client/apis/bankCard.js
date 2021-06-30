@@ -1,7 +1,7 @@
 import request from '@/request'
 
 // 添加银行卡
-export const bankCardAdd = (data, loading = '添加中') => {
+export const bankCardAdd = (data, loading = '添加中') => { // 对接
 	return request({
 		url: 'bankCard/add',
 		contentType: 'application/json',
@@ -29,6 +29,28 @@ export const bankCardEdit = (data, loading = '提交中') => {
 		contentType: 'application/json',
 		method: 'POST',
 		data,
+		loading
+	})
+}
+
+// 银行卡列表
+export const bankCardList = (data, loading = '') => {
+	return request({
+		url: 'bank/list',
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'GET',
+		data,
+		loading
+	})
+}
+
+// 查询单张银行卡
+export const bankCard = (id, loading = '') => {
+	return request({
+		url: `bankCard/${id}`,
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'GET',
+		data: {},
 		loading
 	})
 }
