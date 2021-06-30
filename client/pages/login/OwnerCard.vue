@@ -205,15 +205,15 @@
 						const [err, rese] = await uploadFiles([res.tempFilePaths[0]]);
 						if (err) return
 			
-						console.log(rese[0].url[0])
+				
 						if (e == 1) {
-							this.idCard1 = rese[0].url[0]
+							this.idCard1 = rese[0]
 						} else if (e == 2) {
-							this.idCard2 = rese[0].url[0]
+							this.idCard2 = rese[0]
 						} else if(e==3){
-							this.idCard3 = rese[0].url[0]
+							this.idCard3 = rese[0]
 						}else{
-							this.idCard4 = rese[0].url[0]
+							this.idCard4 = rese[0]
 						}
 			
 					},
