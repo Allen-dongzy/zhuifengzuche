@@ -58,7 +58,7 @@
 			<view :class="['item', {'other': otherFees}]">
 				<view class="content">
 					<view class="caption">其他费用</view>
-					<view v-show="mode===1" class="input" @tap="openOtherFeesModal">
+					<view v-show="mode===1" class="input" @click="openOtherFeesModal">
 						{{ otherFees ? '￥'+otherFees : '请填写其他费用'}} >
 					</view>
 					<view v-show="mode===0" class="input readonly">{{ '￥'+ (otherFees || 'xxxxx') }}</view>
@@ -67,7 +67,7 @@
 			</view>
 		</view>
 		<view v-show="mode===1" class="group">
-			<view class="add-record" @tap="openSelModal">
+			<view class="add-record" @click="openSelModal">
 				<image class="icon" :src="`${filePath}/vehicleManage/add.png`"></image>
 				<text>添加记录</text>
 			</view>
@@ -93,14 +93,14 @@
 						placeholder-style="font-size:24rpx;color:#999;font-weight:100;" />
 				</view>
 				<view class="bottom">
-					<view class="cancel" @tap="closeOtherFeesModal">取消</view>
-					<view class="confirm" @tap="otherFeesModalConfirm">确定</view>
+					<view class="cancel" @click="closeOtherFeesModal">取消</view>
+					<view class="confirm" @click="otherFeesModalConfirm">确定</view>
 				</view>
 			</view>
 		</uni-popup>
 		<uni-popup ref="selPopup" type="center">
 			<view class="sel-modal">
-				<view class="item" @tap="selModalConfirm(index)" v-for="(item, index) in selList" :key="index">
+				<view class="item" @click="selModalConfirm(index)" v-for="(item, index) in selList" :key="index">
 					{{ item.text }}
 				</view>
 			</view>

@@ -365,6 +365,11 @@
 			"style": {
 				"navigationBarTitleText": "商家注册"
 			}
+		},{
+			"path": "pages/customerRecords/selectCart",
+			"style": {
+				"navigationBarTitleText": "选择车辆"
+			}
 		}
 	],
 	"globalStyle": {
@@ -400,8 +405,11 @@
 	"condition": { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式（list 的索引项）
 		"list": [{
-			"name": "default", //模式名称 
+			"name": "wcy", // wcy
 			"path": "pages/user/wallet" //启动页面，必选
+		}, {
+			"name": "dzy", // dzy
+			"path": "pages/customerRecords/addCustomer" //启动页面，必选
 		}]
 	}
 }

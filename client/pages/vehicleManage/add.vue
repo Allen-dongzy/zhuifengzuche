@@ -9,7 +9,7 @@
 				<view class="caption">选择品牌</view>
 				<tui-dropdown-list :show="brandKey" :top="80" :height="(76*brandList.length)+(40*2)">
 					<template v-slot:selectionbox>
-						<view class="info" @tap="brandKey ? closeSelBox('brand') :openSelBox('brand')">
+						<view class="info" @click="brandKey ? closeSelBox('brand') :openSelBox('brand')">
 							<text>{{ brand ? brand :'请选择品牌'}}</text>
 							<image class="icon" :src="`${filePath}/vehicleManage/down-mini.png`"></image>
 						</view>
@@ -17,7 +17,7 @@
 					<template v-slot:dropdownbox>
 						<view class="box">
 							<view class="drop-item" v-for="(item, index) in brandList" :key="index"
-								@tap="checkBrand(index)">{{ item.text }}</view>
+								@click="checkBrand(index)">{{ item.text }}</view>
 						</view>
 					</template>
 				</tui-dropdown-list>
@@ -26,7 +26,7 @@
 				<view class="caption">选择类别</view>
 				<tui-dropdown-list :show="classesKey" :top="80" :height="(76*classesList.length)+(40*2)">
 					<template v-slot:selectionbox>
-						<view class="info" @tap="classesKey ? closeSelBox('classes') : openSelBox('classes')">
+						<view class="info" @click="classesKey ? closeSelBox('classes') : openSelBox('classes')">
 							<text>{{ classes ? classes :'请选择类别'}}</text>
 							<image class="icon" :src="`${filePath}/vehicleManage/down-mini.png`"></image>
 						</view>
@@ -34,7 +34,7 @@
 					<template v-slot:dropdownbox>
 						<view class="box">
 							<view class="drop-item" v-for="(item, index) in classesList" :key="index"
-								@tap="checkClasses(index)">{{ item.text }}</view>
+								@click="checkClasses(index)">{{ item.text }}</view>
 						</view>
 					</template>
 				</tui-dropdown-list>
@@ -47,7 +47,7 @@
 				<view class="caption">排档</view>
 				<tui-dropdown-list :show="stallKey" :top="80" :height="(76*stallList.length)+(40*2)">
 					<template v-slot:selectionbox>
-						<view class="info" @tap="stallKey ? closeSelBox('stall') : openSelBox('stall')">
+						<view class="info" @click="stallKey ? closeSelBox('stall') : openSelBox('stall')">
 							<text>{{ stall ? stall :'请选择排档'}}</text>
 							<image class="icon" :src="`${filePath}/vehicleManage/down-mini.png`"></image>
 						</view>
@@ -55,7 +55,7 @@
 					<template v-slot:dropdownbox>
 						<view class="box">
 							<view class="drop-item" v-for="(item, index) in stallList" :key="index"
-								@tap="checkStall(index)">{{ item.text }}</view>
+								@click="checkStall(index)">{{ item.text }}</view>
 						</view>
 					</template>
 				</tui-dropdown-list>
@@ -64,7 +64,7 @@
 				<view class="caption">座位数</view>
 				<tui-dropdown-list :show="seatKey" :top="80" :height="(76*seatList.length)+(40*2)">
 					<template v-slot:selectionbox>
-						<view class="info" @tap="seatKey ? closeSelBox('seat') : openSelBox('seat')">
+						<view class="info" @click="seatKey ? closeSelBox('seat') : openSelBox('seat')">
 							<text>{{ seat ? seat :'请选择座位数'}}</text>
 							<image class="icon" :src="`${filePath}/vehicleManage/down-mini.png`"></image>
 						</view>
@@ -72,7 +72,7 @@
 					<template v-slot:dropdownbox>
 						<view class="box">
 							<view class="drop-item" v-for="(item, index) in seatList" :key="index"
-								@tap="checkSeat(index)">{{ item.text }}</view>
+								@click="checkSeat(index)">{{ item.text }}</view>
 						</view>
 					</template>
 				</tui-dropdown-list>
@@ -82,7 +82,7 @@
 				<tui-dropdown-list :show="displacementKey" :top="80" :height="(76*displacementList.length)+(40*2)">
 					<template v-slot:selectionbox>
 						<view class="info"
-							@tap="displacementKey ? closeSelBox('displacement') : openSelBox('displacement')">
+							@click="displacementKey ? closeSelBox('displacement') : openSelBox('displacement')">
 							<text>{{ displacement ? displacement :'请选择排量'}}</text>
 							<image class="icon" :src="`${filePath}/vehicleManage/down-mini.png`"></image>
 						</view>
@@ -90,7 +90,7 @@
 					<template v-slot:dropdownbox>
 						<view class="box">
 							<view class="drop-item" v-for="(item, index) in displacementList" :key="index"
-								@tap="checkDisplacement(index)">{{ item.text }}</view>
+								@click="checkDisplacement(index)">{{ item.text }}</view>
 						</view>
 					</template>
 				</tui-dropdown-list>

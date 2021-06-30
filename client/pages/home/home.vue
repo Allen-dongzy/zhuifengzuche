@@ -93,17 +93,17 @@
 						</view>
 						<view class="flex">
 							<button type="default" v-show="tabCheck==0" class="flex-center btn"
-								@tap.stop="toHomeLevel('/pages/home/goInspect')">出车检验</button>
+								@click.stop="toHomeLevel('/pages/home/goInspect')">出车检验</button>
 							<button type="default" v-show="tabCheck==0" class="flex-center btn"
 								style="margin-left: 20rpx;"
-								@tap.stop="toHomeLevel('/pages/home/deliverCar')">交付车辆</button>
+								@click.stop="toHomeLevel('/pages/home/deliverCar')">交付车辆</button>
 							<button type="default" v-show="tabCheck==1" class="flex-center btn"
-								@tap.stop="toHomeLevel('/pages/home/deliverCar')">交车情况</button>
+								@click.stop="toHomeLevel('/pages/home/deliverCar')">交车情况</button>
 							<button type="default" v-show="tabCheck==1" class="flex-center btn"
 								style="margin-left: 20rpx;"
-								@tap.stop="toHomeLevel('/pages/home/inspectionCollect')">检验收车</button>
+								@click.stop="toHomeLevel('/pages/home/inspectionCollect')">检验收车</button>
 							<button type="default" v-show="tabCheck==2" class="flex-center btn"
-								@tap.stop="toHomeLevel('/pages/home/inspectionCollect')">收车详情</button>
+								@click.stop="toHomeLevel('/pages/home/inspectionCollect')">收车详情</button>
 							<button type="default" v-show="tabCheck==2" class="flex-center btn bg-btn">退还押金</button>
 						</view>
 					</view>

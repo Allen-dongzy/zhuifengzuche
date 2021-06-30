@@ -1,15 +1,15 @@
 <template>
 	<view class="manage">
 		<view class="home-bar" v-show="!searchMode">
-			<view class="add-label" @tap="goAdd">
+			<view class="add-label" @click="goAdd">
 				新增+
 			</view>
 			<view class="function-box">
-				<view class="sel-box" @tap="showModal" data-target="DrawerModalR">
+				<view class="sel-box" @click="showModal" data-target="DrawerModalR">
 					<text>筛选</text>
 					<image :src="`${filePath}/vehicleManage/down.png`"></image>
 				</view>
-				<view class="search-box" @tap="tapHeader">
+				<view class="search-box" @click="tapHeader">
 					<text>搜索</text>
 					<image :src="`${filePath}/vehicleManage/search.png`"></image>
 				</view>
@@ -21,11 +21,11 @@
 				<input type="text" placeholder="请输入车型" placeholder-class="input">
 				<image class="clear" :src="`${filePath}/vehicleManage/clear.png`"></image>
 			</view>
-			<view class="cancel" @tap="tapHeader">取消</view>
+			<view class="cancel" @click="tapHeader">取消</view>
 		</view>
 		<view class="header-mat"></view>
 		<view class="manage-list">
-			<view class="manage-item" v-for="(item, index) in 10" :key="index" @tap="goDetail(index)">奥迪A4L 2021年型
+			<view class="manage-item" v-for="(item, index) in 10" :key="index" @click="goDetail(index)">奥迪A4L 2021年型
 			</view>
 		</view>
 		<view class="cu-modal drawer-modal justify-end" catchtouchmove='true'
