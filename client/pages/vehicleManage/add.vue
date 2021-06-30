@@ -112,7 +112,8 @@
 				<view class="label-box">
 					<view class="label add" @click="addlabel">+新增</view>
 					<view class="label" style="position: relative;" v-for="(item,index) in labelList">
-						<image style="width:30rpx;height: 30rpx;position: absolute;top:-3rpx;right:-3rpx" :src="`${filePath}/vehicleManage/delete.png`"  @click="delLabel(index)" mode=""></image>
+						<image style="width:30rpx;height: 30rpx;position: absolute;top:-3rpx;right:-3rpx"
+							:src="`${filePath}/vehicleManage/delete.png`" @click="delLabel(index)" mode=""></image>
 						{{item}}
 					</view>
 				</view>
@@ -281,12 +282,12 @@
 				weekExternal: '', //周末价格
 				weekWithin: '', //周内价格
 				carId: '', //车型id
-	
+
 			}
 		},
 		watch: {
 			price(newVal) {
-				if (this.weekType== 1) {
+				if (this.weekType == 1) {
 					this.weekWithin = this.price
 					this.weekType = 1
 				} else {
@@ -308,7 +309,7 @@
 			}
 		},
 		methods: {
-			delLabel(e){
+			delLabel(e) {
 				this.labelList.splice(e, 1)
 			},
 			select(e){

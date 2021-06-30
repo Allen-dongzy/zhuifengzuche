@@ -30,7 +30,9 @@
 					<view class="flex main">
 						<view v-for="(item, index) in tabList" :key="index" class="flex flex-direction tab"
 							@click="tabClick(index)">
-							<p v-if="item.statusCount!=''" :style="{color: (item.check?'#5A7EFF':'#999999')}">{{ item.orderStatus }}{{item.statusCount}}</p>
+							<p v-if="item.statusCount!=''" :style="{color: (item.check?'#5A7EFF':'#999999')}">
+								{{ item.orderStatus }}{{item.statusCount}}
+							</p>
 							<p v-else :style="{color: (item.check?'#5A7EFF':'#999999')}">{{ item.orderStatus }}</p>
 							<i v-show="item.check"></i>
 						</view>
@@ -122,7 +124,7 @@
 	import {
 		getOrderStatus
 	} from '@/apis/rentalOrder';
-	
+
 	export default {
 		data() {
 			return {
@@ -169,26 +171,26 @@
 		},
 		onLoad() {
 			this.getlist()
-		
+
 		},
 		methods: {
-			
+
 			async getlist() {
 				console.log('pp')
 				const [err, res] = await getOrderStatus()
 				if (err) return
 				console.log(res)
-				for (let i=0;i<res.data.length;i++) {
-					res.data[i].check=false
-			
-					if(i>1){
-						res.data[i].statusCount=''
-					}else{
-						res.data[i].statusCount="("+res.data[i].statusCount+")"
+				for (let i = 0; i < res.data.length; i++) {
+					res.data[i].check = false
+
+					if (i > 1) {
+						res.data[i].statusCount = ''
+					} else {
+						res.data[i].statusCount = "(" + res.data[i].statusCount + ")"
 					}
 				}
-				res.data[0].check=true
-				this.tabList=res.data
+				res.data[0].check = true
+				this.tabList = res.data
 			},
 
 

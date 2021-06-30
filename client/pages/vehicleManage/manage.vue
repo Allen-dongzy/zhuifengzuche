@@ -125,7 +125,7 @@
 					text: '自动',
 					status: false
 				}], // 排档列表
-				searchVal:'',//搜索关键词
+				searchVal: '', //搜索关键词
 			}
 		},
 		onLoad() {
@@ -137,125 +137,125 @@
 		},
 		methods: {
 			onInput: debounce(async function() {
-						let data = {
-							page: this.page,
-							size: this.size,
-							name:this.searchVal
-						}
-						const [err, res] = await vehicleModelPageQuery(data)
-						if (err) return
-						console.log(res)
-						this.list = res.data.list
+				let data = {
+					page: this.page,
+					size: this.size,
+					name: this.searchVal
+				}
+				const [err, res] = await vehicleModelPageQuery(data)
+				if (err) return
+				console.log(res)
+				this.list = res.data.list
 
-					}),
-					//品牌
-					async getBrand() {
-							const [err, res] = await vehicleBrandQueryAll()
-							if (err) return
-							console.log(res)
-							this.brandList = res.data
-							for (let i = 0; i < this.brandList.length; i++) {
-								this.brandList[i].status = false
-							}
-						},
-
-
-						//获取 车型列表
-						async getlist() {
-								let data = {
-									page: this.page,
-									size: this.size
-								}
-								const [err, res] = await vehicleModelPageQuery(data)
-								if (err) return
-								console.log(res)
-								this.list = res.data.list
-
-							},
+			}),
+			//品牌
+			async getBrand() {
+				const [err, res] = await vehicleBrandQueryAll()
+				if (err) return
+				console.log(res)
+				this.brandList = res.data
+				for (let i = 0; i < this.brandList.length; i++) {
+					this.brandList[i].status = false
+				}
+			},
 
 
-							// 切换头部
-							tapHeader() {
-								this.searchMode = !this.searchMode
-							},
-							// 去添加
-							goAdd() {
-								open('/pages/vehicleManage/add')
-							},
-							// 前往详情
-							goDetail(index) {
-								console.log(index)
-								open('/pages/vehicleManage/detail?id=' + index)
-							},
-							// 显示筛选框
-							showModal(e) {
-								this.modalName = e.currentTarget.dataset.target
-							},
-							// 隐藏筛选框
-							hideModal(e) {
-								this.modalName = ''
-							},
-							//选择排挡
-							selectStall(e) {
-								console.log(e)
-								for (let i = 0; i < this.stallList.length; i++) {
-									this.stallList[i].status = false
-								}
-								this.stallId = this.stallList[e].text
-								this.stallList[e].status = true
-							},
-							//选择座位数
-							selectSeat(e) {
-								for (let i = 0; i < this.seatList.length; i++) {
-									this.seatList[i].status = false
-								}
+			//获取 车型列表
+			async getlist() {
+				let data = {
+					page: this.page,
+					size: this.size
+				}
+				const [err, res] = await vehicleModelPageQuery(data)
+				if (err) return
+				console.log(res)
+				this.list = res.data.list
 
-								this.seatId = this.seatList[e].text
+			},
 
-								this.seatList[e].status = true
-							},
-							//选择品牌
-							selectBrand(e) {
-								console.log(e)
-								for (let i = 0; i < this.brandList.length; i++) {
-									this.brandList[i].status = false
-								}
-								this.brandList[e].status = true
-								this.$forceUpdate()
-								this.brandId = this.brandList[e].id
-							},
-							//清空
-							clearAll() {
-								for (let i = 0; i < this.brandList.length; i++) {
-									this.brandList[i].status = false
-								}
-								for (let i = 0; i < this.seatList.length; i++) {
-									this.seatList[i].status = false
-								}
-								for (let i = 0; i < this.stallList.length; i++) {
-									this.stallList[i].status = false
-								}
-							},
-							//确定
-							async sureSearch() {
-								if (this.stallId === "全部") {
-									this.stallId = ""
-								}
-								let data = {
-									page: this.page,
-									size: this.size,
-									brandId: this.brandId,
-									capacity: this.seatId,
-									gears: this.stallId,
-								}
-								const [err, res] = await vehicleModelPageQuery(data)
-								if (err) return
-								console.log(res)
-								this.list = res.data.list
-							}
 
+			// 切换头部
+			tapHeader() {
+				this.searchMode = !this.searchMode
+			},
+			// 去添加
+			goAdd() {
+				open('/pages/vehicleManage/add')
+			},
+			// 前往详情
+			goDetail(index) {
+				console.log(index)
+				open('/pages/vehicleManage/detail?id=' + index)
+			},
+			// 显示筛选框
+			showModal(e) {
+				this.modalName = e.currentTarget.dataset.target
+			},
+			// 隐藏筛选框
+			hideModal(e) {
+				this.modalName = ''
+			},
+			//选择排挡
+			selectStall(e) {
+				console.log(e)
+				for (let i = 0; i < this.stallList.length; i++) {
+					this.stallList[i].status = false
+				}
+				this.stallId = this.stallList[e].text
+				this.stallList[e].status = true
+			},
+			//选择座位数
+			selectSeat(e) {
+				for (let i = 0; i < this.seatList.length; i++) {
+					this.seatList[i].status = false
+				}
+
+				this.seatId = this.seatList[e].text
+
+				this.seatList[e].status = true
+			},
+			//选择品牌
+			selectBrand(e) {
+				console.log(e)
+				for (let i = 0; i < this.brandList.length; i++) {
+					this.brandList[i].status = false
+				}
+				this.brandList[e].status = true
+				this.$forceUpdate()
+				this.brandId = this.brandList[e].id
+			},
+			//清空
+			clearAll() {
+				for (let i = 0; i < this.brandList.length; i++) {
+					this.brandList[i].status = false
+				}
+				for (let i = 0; i < this.seatList.length; i++) {
+					this.seatList[i].status = false
+				}
+				for (let i = 0; i < this.stallList.length; i++) {
+					this.stallList[i].status = false
+				}
+			},
+			//确定
+			async sureSearch() {
+				if (this.stallId === "全部") {
+					this.stallId = ""
+				}
+				let data = {
+					page: this.page,
+					size: this.size,
+					brandId: this.brandId,
+					capacity: this.seatId,
+					gears: this.stallId,
+				}
+				const [err, res] = await vehicleModelPageQuery(data)
+				if (err) return
+				console.log(res)
+				this.list = res.data.list
 			}
+
 		}
+	}
 </script>
 
 <style lang="scss" scoped>

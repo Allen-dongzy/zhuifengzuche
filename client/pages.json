@@ -360,8 +360,17 @@
 			"style": {
 				"navigationBarTitleText": "选择时间"
 			}
+		}, {
+			"path": "pages/Store/storeRegister",
+			"style": {
+				"navigationBarTitleText": "商家注册"
+			}
+		}, {
+			"path": "pages/customerRecords/selectCart",
+			"style": {
+				"navigationBarTitleText": "选择车辆"
+			}
 		}
-
 	],
 	"globalStyle": {
 		"navigationBarBackgroundColor": "#FFFFFF", //默认导航栏背景颜色
@@ -396,8 +405,11 @@
 	"condition": { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式（list 的索引项）
 		"list": [{
-			"name": "default", //模式名称 
+			"name": "wcy", // wcy
 			"path": "pages/fleetManage/addCar" //启动页面，必选
+		}, {
+			"name": "dzy", // dzy
+			"path": "pages/customerRecords/addCustomer" //启动页面，必选
 		}]
 	}
 }

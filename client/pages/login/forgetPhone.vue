@@ -12,7 +12,7 @@
     width: 90%;
     margin: auto;
     height: 96rpx;
-    border-radius: 10rpx;padding-left: 20rpx;" type="text"  v-model="phone" placeholder="请输入手机号" />
+    border-radius: 10rpx;padding-left: 20rpx;" type="text" v-model="phone" placeholder="请输入手机号" />
 
 
 			<view class="textTitle">{{account}}</view>
@@ -27,20 +27,22 @@
 
 			<view class="moreInpbox">
 				<view style="width: 90%;">
-					<input :type="inpType" v-model="password1" placeholder="请输入密码" class="inpBox" style="width: 95%;"/></view>
-			
+					<input :type="inpType" v-model="password1" placeholder="请输入密码" class="inpBox" style="width: 95%;" />
+				</view>
+
 				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
 					mode="" @click="look"></image>
 				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
 					mode="" @click="look"></image>
-				
+
 			</view>
 
 			<view class="textTitle">{{password}}</view>
 
 			<view class="moreInpbox">
 				<view style="width: 90%;">
-					<input v-model="password2" :type="inpType1" placeholder="请确认密码" class="inpBox" style="width: 95%;"></view>
+					<input v-model="password2" :type="inpType1" placeholder="请确认密码" class="inpBox" style="width: 95%;">
+				</view>
 				<image v-show="showpass1==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
 					mode="" @click="look1"></image>
 				<image v-show="showpass1==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
@@ -58,7 +60,6 @@
 				    border-radius: 50px;
 				    font-size: 32rpx;
 				    height: 96rpx;line-height: 96rpx;" type="default" @tap="updatePassword">完成</button>
-
 		</view>
 
 	</view>
@@ -76,8 +77,8 @@
 	import {
 		updatePassword
 	} from '@/apis/admin';
-	
-	
+
+
 	export default {
 		data() {
 			return {
@@ -85,13 +86,13 @@
 				codeText: '', //验证码校验提示语句
 				password: '', //密码校验提示语句
 				showpass: true, //密码眼睛切换 false 关闭  true开启
-				inpType:'',
+				inpType: '',
 				showpass1: true, //密码眼睛切换 false 关闭  true开启
-				inpType1:'',
-				phone:'17623178041',//账号
-				code:'',//验证码
-				password1:'',//密码1
-				password2:'',//密码2
+				inpType1: '',
+				phone: '17623178041', //账号
+				code: '', //验证码
+				password1: '', //密码1
+				password2: '', //密码2
 				time: '获取验证码', //倒计时
 				get_code_time: 60,
 				get_code_status: false
@@ -105,22 +106,22 @@
 					username: this.phone,
 					newPassword: this.password1,
 				}
-				if(this.password1 == this.password2){
+				if (this.password1 == this.password2) {
 					const [err, res] = await updatePassword(params)
 					if (err || res.code !== 200) return
 					console.log(res)
 					uni.navigateBack({
-						delta:1
+						delta: 1
 					})
-				}else{
-				
+				} else {
+
 				}
 			}),
-			
-			
+
+
 			sendForgotCode: throttle(async function() {
 				var that = this;
-			
+
 				if (that.get_code_status == false) {
 					const params = {
 						phone: that.phone
@@ -138,10 +139,10 @@
 							that.time = '获取验证码'
 							that.get_code_status = false
 						}
-			
+
 					}, 1000);
 				}
-			
+
 			}),
 			look() {
 				console.log('ppp')

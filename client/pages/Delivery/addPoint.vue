@@ -44,7 +44,7 @@
 			<view style="width: 22%;text-align: left;">送车点地址</view>
 			<view class="inpBox" style="padding-left: 0rpx;background-color: white;">
 				<map :style="[{width:mapWidth,height: mapHeight}]" :controls="controls" :latitude="latitude"
-					:longitude="longitude" :markers="covers" @tap="getadd" @controltap="controltapfunc"
+					:longitude="longitude" :markers="covers" @click="getadd" @controltap="controltapfunc"
 					 @updated="updatedmap"></map>
 			</view>
 		</view>
