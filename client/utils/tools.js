@@ -145,7 +145,6 @@ const throttle = (callback, delay = 1000) => {
 			start = Date.now()
 			return
 		}
-		toast('操作频繁，请稍后再试！')
 	}
 }
 

@@ -1,12 +1,13 @@
 <template>
-	<view class="">
-		<view v-for="(item,index) in 5" class="box">
+	<view>
+		<view v-for="(item, index) in list.length" :key="index" class="box">
 			<view class="flexBox">
-				<view class="title">报销审核通过</view>
-				<view class="time">2021-06-003</view>
+				<view class="title">{{ item.title }}</view>
+				<view class="time">{{ item.createTime }}</view>
 			</view>
-			<view class="content">您提交的订单 5896231545 的报销已通过审核</view>
+			<view class="content">{{ item.content }}</view>
 		</view>
+		<uni-load-more :status="dataStatus" />
 	</view>
 </template>
 
@@ -14,30 +15,48 @@
 	import {
 		messagePageQuery
 	} from '@/apis/message'
+	import {
+		listManager
+	} from '@/utils/uni-tools'
 
 	export default {
 		data() {
 			return {
+				list: [],
 				page: 1,
-				size: 10
+				size: 10,
+				requestKey: true,
+				dataStatus: '' // more loading noMore noData
 			}
 		},
 		onLoad() {
 			this.messagePageQuery()
 		},
+		onReachBottom() {
+			if (!this.requestKey) return
+			this.page++
+			this.messagePageQuery()
+		},
 		methods: {
 			// 获取消息列表
 			async messagePageQuery() {
+				this.dataStatus = 'loading'
 				const params = {
-					messageVO: {
-						page: this.page,
-						size: this.size,
-						userSource: 0
-					}
+					page: this.page,
+					size: this.size,
+					userSource: 0
 				}
 				const [err, res] = await messagePageQuery(params)
-				console.log(res)
-				console.log(err)
+				if (err) return
+				const {
+					dataStatus,
+					requestKey,
+					isRender
+				} = listManager(res.data.list, this.page, this.size)
+				this.dataStatus = dataStatus
+				this.requestKey = requestKey
+				if (!isRender) return
+				this.list = [...this.list, ...res.data.list]
 			}
 		}
 	}

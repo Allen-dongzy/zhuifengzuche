@@ -34,9 +34,20 @@ export const messageEdit = (data, loading = '更新中') => {
 }
 
 //  消息通知分页
-export const messagePageQuery = (data, loading = '') => {  // 对接
+export const messagePageQuery = (data, loading = '') => { // 对接
 	return request({
 		url: "message/pageQuery",
+		contentType: 'application/json',
+		method: 'POST',
+		data,
+		loading
+	})
+}
+
+//  消息通知总数
+export const messageCount = (data, loading = '') => { // 对接
+	return request({
+		url: "message/count",
 		contentType: 'application/json',
 		method: 'POST',
 		data,

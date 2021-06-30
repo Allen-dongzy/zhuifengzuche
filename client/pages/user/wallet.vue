@@ -1,70 +1,82 @@
 <template>
-	<view>
-		<view class="topNav">
-			<view class="tips">当前余额</view>
-			<view class="flexBox">
-				<view class="num">¥1234.55</view>
-				<view class="lookOther" @tap="lookBill">查看账单</view>
-			</view>
-		</view>
-		<view class="line"></view>
-		<view class="addCard">
+	<view class="wallet">
+		<view v-show="bankCardStatus === 1" class="addCard" @click="setCard(1)">
 			<image style="height: 36rpx;width: 36rpx;margin-left: 40rpx;" :src="$util.fileUrl('/addCard.png')" mode="">
 			</image>
-			<view style="margin-left: 10rpx;" @click="setCard(0)">添加银行卡</view>
+			<view style="margin-left: 10rpx;">添加银行卡</view>
 		</view>
-
-		<view
-			style="border: 2rpx solid rgba(114,141,244,0.25);border-radius: 20rpx;width: 90%;margin: auto;padding: 20rpx 0rpx;">
-			<view class="title" @click="setCard(1)">管理银行卡</view>
+		<view v-show="bankCardStatus === 2"
+			style="border: 2rpx solid rgba(114,141,244,0.25);border-radius: 20rpx;width: 90%;margin: auto;padding: 20rpx 0rpx;"
+			@click="setCard(2)">
+			<view class="title">管理银行卡</view>
 			<view class="cardline"></view>
-			<view class="bank">中国工商银行 (张全蛋 尾号8888)</view>
+			<view v-if="wallet && wallet.cardNumber" class="bank">{{ wallet.bankName }} ({{ wallet.name }}
+				尾号{{ wallet.cardNumber.slice(wallet.cardNumber.length-4) }})
+				<view class="arrow"></view>
+			</view>
 		</view>
-
 	</view>
 </template>
 
 <script>
 	import {
-		open
-	} from '@/utils/uni-tools'
+		walletQuery
+	} from '@/apis/wallet'
 
 	export default {
 		data() {
 			return {
-				obj: {
-					id: 1,
-					kaihu: '重庆支行',
-					name: '梨花',
-					num: '1234 1234 1234 1234',
-					phone: '13333333333'
-				}
+				wallet: null, // 钱包
+				walletId: '', // 钱包id
+			}
+		},
+		onLoad() {
+			this.walletQuery()
+			this.eventListener()
+		},
+		computed: {
+			// 银行卡状态
+			bankCardStatus() {
+				if (this.wallet && Object.keys(this.wallet).length === 0) return 1
+				else if (this.wallet && Object.keys(this.wallet).length > 0) return 2
+				else if (!this.wallet) return 0
 			}
 		},
 		methods: {
-			lookBill() {
-				open('/pages/user/bill')
-			},
-			setCard(e) {
-				if (e == 0) {
-					uni.navigateTo({
-						url: './addCard?type=1',
-						animationDuration: 200,
-						animationType: 'pop-in'
-					})
-				} else {
-					uni.navigateTo({
-						url: './addCard?obj=' + JSON.stringify(this.obj) + '&type=1',
-						animationDuration: 200,
-						animationType: 'pop-in'
-					})
+			// 查询钱包
+			async walletQuery() {
+				const params = {
+					userSource: 0
 				}
+				const [err, res] = await walletQuery(params)
+				if (err) return
+				this.walletId = res.data.id
+				this.wallet = res.data.bankCardVOs[0] || {}
+			},
+			// 新增银行卡/跳转银行卡详情
+			setCard(e) {
+				this.$open('/pages/user/addCard', {
+					type: e,
+					walletId: this.walletId,
+					bankCardId: this.wallet && this.wallet.id ? this.wallet.id : ''
+				})
+			},
+			// 监听事件
+			eventListener() {
+				uni.$on('refreshWallet', () => {
+					this.walletQuery()
+				})
 			}
 		}
 	}
 </script>
 
-<style>
+<style lang="scss">
+	
+	.wallet {
+		padding-top: 30rpx;
+	}
+
 	.flexBox {
 		display: flex;
 		align-items: center;
@@ -129,9 +141,22 @@
 	}
 
 	.bank {
+		width: 88%;
 		color: #999999;
 		height: 100rpx;
 		line-height: 100rpx;
 		margin-left: 40rpx;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		.arrow {
+			width: 16rpx;
+			height: 16rpx;
+			border: 1px solid #999;
+			border-left: 0;
+			border-bottom: 0;
+			transform: rotate(45deg);
+		}
 	}
 </style>

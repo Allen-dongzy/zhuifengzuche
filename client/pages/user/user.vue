@@ -11,20 +11,22 @@
 				@click="$open('/pages/login/home', 2)">请登录</view>
 		</view>
 		<view class="allBox">
-			<view class="flexBox" style="width: 40%;height:128rpx;border-radius: 10rpx;" @click="wallet">
-				<image style="height: 36rpx;width: 36rpx;" :src="$util.fileUrl('/user1.png')" mode=""></image>
+			<view class="flexBox" style="width: 40%;height:128rpx;border-radius: 10rpx;"
+				@click="$open('/pages/user/wallet')">
+				<image style="height: 36rpx;width: 36rpx;" :src="$util.fileUrl('/user1.png')"></image>
 				<view style="margin-left: 15rpx;">钱包</view>
 			</view>
 			<view class="line"></view>
-			<view class="flexBox" style="width: 40%;height:128rpx;border-radius: 10rpx;" @click="bill">
-				<image style="height: 36rpx;width: 36rpx;" :src="$util.fileUrl('/user2.png')" mode=""></image>
+			<view class="flexBox" style="width: 40%;height:128rpx;border-radius: 10rpx;"
+				@click="$open('/pages/user/bill')">
+				<image style="height: 36rpx;width: 36rpx;" :src="$util.fileUrl('/user2.png')"></image>
 				<view style="margin-left: 15rpx;">账单</view>
 			</view>
 		</view>
-		<view class="flexBoxLeft" @click="lookinfo">
-			<image :src="$util.fileUrl('/xiaoxi.png')" style="height: 36rpx;width: 36rpx;" mode=""></image>
+		<view class="flexBoxLeft" @click="$open('/pages/user/news')">
+			<image :src="$util.fileUrl('/xiaoxi.png')" style="height: 36rpx;width: 36rpx;"></image>
 			<view style="font-size: 28rpx;color: black;width: 75%;margin-left: 20rpx;">消息通知</view>
-			<view v-show="true" class="label">99</view>
+			<view :class="['label', {'ac': total>0}]">{{ total }}</view>
 			<view class="arrow"></view>
 		</view>
 		<view v-show="$storage.get('token')" class="goout" @click="adminLogout">退出登陆</view>
@@ -40,15 +42,22 @@
 	import {
 		adminLogout
 	} from '@/apis/admin'
+	import {
+		messageCount
+	} from '@/apis/message'
+	import {
+		throttle
+	} from '@/utils/tools'
 
 	export default {
 		data() {
 			return {
-
-			};
+				total: 0, // 总数
+			}
 		},
 		onLoad() {
 			this.getInfo()
+			this.messageCount()
 		},
 		computed: {
 			// user模块 用户名
@@ -59,29 +68,17 @@
 			...mapActions('user', ['getInfo']),
 			// user模块 清除用户信息
 			...mapMutations('user', ['clearInfo']),
-			lookinfo() {
-				uni.navigateTo({
-					url: './news',
-					animationDuration: 200,
-					animationType: 'pop-in'
-				})
-			},
-			wallet() {
-				uni.navigateTo({
-					url: './wallet',
-					animationDuration: 200,
-					animationType: 'pop-in'
-				})
-			},
-			bill() {
-				uni.navigateTo({
-					url: './bill',
-					animationDuration: 200,
-					animationType: 'pop-in'
-				})
+			// 消息总数
+			async messageCount() {
+				const params = {
+					userSource: 0
+				}
+				const [err, res] = await messageCount(params)
+				if (err) return
+				this.total = res.data.total
 			},
 			// 退出
-			async adminLogout() {
+			adminLogout: throttle(async function() {
 				const [err, res] = await adminLogout()
 				if (err) return
 				setTimeout(() => {
@@ -89,7 +86,7 @@
 					this.clearInfo()
 					uni.hideLoading()
 				}, 500)
-			}
+			})
 		}
 	}
 </script>
@@ -131,11 +128,11 @@
 
 	.flexBoxLeft {
 		display: flex;
-
 		align-items: center;
 		width: 90%;
-		margin: auto;
-		margin-top: 80rpx;
+		margin: 60rpx auto 0;
+		padding: 20rpx 10rpx;
+		box-sizing: border-box;
 	}
 
 	.line {
@@ -149,6 +146,11 @@
 		border-radius: 30rpx;
 		padding: 5rpx 25rpx;
 		background-color: #FC3736;
+		opacity: 0;
+
+		&.ac {
+			opacity: 1;
+		}
 	}
 
 	.arrow {
