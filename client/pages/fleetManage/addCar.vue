@@ -25,10 +25,10 @@
 		</view>
 		<view class="flexBoxContent">
 			<view class="">车身颜色</view>
-			<view class="selectBox">
+			<view class="selectBox" @click="open">
 				<view
 					style="width: 80%;padding-left: 20rpx;height: 74rpx;line-height: 74rpx;display: flex;align-items: center;">
-					<view class="">黑色</view>
+					<view class="">{{colorName}}</view>
 					<view class="colorBox" :style="{backgroundColor:boxColor}"></view>
 				</view>
 				<view style="width:15%;">
@@ -44,7 +44,7 @@
 					<picker @change="bindPickerChange1" :value="index1" :range="carStatus" :range-key="'name'"
 						class="pickerBox">
 						<label v-if="!log2" class="pickerText">请选择</label>
-						<label v-else class="pickerText">{{carStatus[index].name}}</label>
+						<label v-else class="pickerText">{{carStatus[index1].name}}</label>
 					</picker>
 				</view>
 				<view style="width:15%;">
@@ -57,7 +57,7 @@
 			<view class="">购置日期</view>
 			<view class="selectBox">
 				<view style="width: 80%;">
-					<picker mode="date" @change="Time" :value="purchaseTime" :start="startDate" :end="endDate"
+					<picker mode="date" @change="selectpurchaseTime" :value="purchaseTime" :start="startDate" :end="endDate"
 						class="pickerBox">
 						<label v-if="!log3" class="pickerText">请选择</label>
 						<label v-else class="pickerText">{{purchaseTime}}</label>
@@ -70,7 +70,7 @@
 			</view>
 		</view>
 		<view class="lineBox"></view>
-		<view class="title">身份证照片</view>
+		<view class="title">行驶证照片</view>
 		<view class="idCard">
 			<image class="imgBox" @click="getImg(1)" :src="idCard1 || $util.fileUrl('/driver1.png')" mode=""></image>
 			<image class="imgBox" @click="getImg(2)" :src="idCard2 ||$util.fileUrl('/driver2.png')" mode=""></image>
@@ -79,22 +79,22 @@
 
 		<view class="title">号牌号码</view>
 		<view class="idCard">
-			<input class="inpBox" type="text" value="" placeholder="请输入号牌号码" />
+			<input class="inpBox" v-model="plateNumber" type="text" value="" placeholder="请输入号牌号码" />
 		</view>
 
 		<view class="title">品牌型号</view>
 		<view class="idCard">
-			<input class="inpBox" type="text" value="" placeholder="请输入品牌型号" />
+			<input class="inpBox" v-model="brandModel" type="text" value="" placeholder="请输入品牌型号" />
 		</view>
 
 		<view class="title">车辆识别代号</view>
 		<view class="idCard">
-			<input class="inpBox" type="text" value="" placeholder="请输入车辆识别代号" />
+			<input class="inpBox" v-model="discernCode" type="text" value="" placeholder="请输入车辆识别代号" />
 		</view>
 
 		<view class="title">发动机号码</view>
 		<view class="idCard">
-			<input class="inpBox" type="text" value="" placeholder="请输入发动机号码" />
+			<input class="inpBox" v-model="engineNum" type="text" value="" placeholder="请输入发动机号码" />
 		</view>
 
 
@@ -103,7 +103,7 @@
 		<view class="title">发证日期</view>
 		<view class="selectBox" style="margin-left: 10%;width: 82%;margin-top: 20rpx;">
 			<view style="width: 80%;">
-				<picker mode="date" @change="getTime" :value="getcard" :start="startDate" :end="endDate"
+				<picker mode="date" @change="selectgetcard" :value="getcard" :start="startDate" :end="endDate"
 					class="pickerBox">
 					<label v-if="!log4" class="pickerText">请选择</label>
 					<label v-else class="pickerText">{{getcard}}</label>
@@ -138,7 +138,7 @@
 
 		<view class="flexBoxContent">
 			<view class="">单&ensp;&ensp;&ensp;&ensp;号</view>
-			<input class="inpBox" style="width: 70%;" type="text" value="" placeholder="请输入车牌号" />
+			<input class="inpBox" v-model="insuranceSn" style="width: 70%;" type="text" value="" placeholder="请输入单号" />
 		</view>
 
 
@@ -146,7 +146,7 @@
 			<view class="">续保日期</view>
 			<view class="selectBox">
 				<view style="width: 80%;">
-					<picker mode="date" @change="Time" :value="RenewalTime" :start="startDate" :end="endDate"
+					<picker mode="date" @change="selectRenewalTime" :value="RenewalTime" :start="startDate" :end="endDate"
 						class="pickerBox">
 						<label v-if="!log6" class="pickerText">请选择</label>
 						<label v-else class="pickerText">{{RenewalTime}}</label>
@@ -160,14 +160,14 @@
 		</view>
 
 		<view style="margin-top: 40rpx;">
-			<view v-for="(item,index) in 4" :key="index" style="display: inline-block;width: 20%;margin: 0px 2%;">
+			<view v-for="(item,index) in CompulsoryList" :key="index" style="display: inline-block;width: 20%;margin: 0px 2%;">
 				<view style="position: relative;">
-					<image style="height:160rpx;width: 160rpx;" :src="$util.fileUrl('/icon3.png')" mode=""></image>
+					<image style="height:160rpx;width: 160rpx;" :src="item" mode=""></image>
 					<image style="position: absolute;height: 36rpx;width: 36rpx;top: -20rpx;left:140rpx;"
-						:src="$util.fileUrl('/lancha.png')" mode=""></image>
+						:src="$util.fileUrl('/lancha.png')" @click="delImg(1,index)" mode=""></image>
 				</view>
 			</view>
-			<view style="display: inline-block;width: 20%;margin: 0px 2%;" @click="getImg(3)">
+			<view style="display: inline-block;width: 20%;margin: 0px 2%;" @click="getImgMore(3)">
 				<image style="height:160rpx;width: 160rpx;" :src="$util.fileUrl('/guanxi.png')" mode=""></image>
 			</view>
 		</view>
@@ -181,7 +181,7 @@
 
 		<view class="flexBoxContent">
 			<view class="">单&ensp;&ensp;&ensp;&ensp;号</view>
-			<input class="inpBox" style="width: 70%;" type="text" value="" placeholder="请输入车牌号" />
+			<input class="inpBox" v-model="businessSn" style="width: 70%;" type="text" value="" placeholder="请输入单号" />
 		</view>
 
 
@@ -189,10 +189,10 @@
 			<view class="">续保日期</view>
 			<view class="selectBox">
 				<view style="width: 80%;">
-					<picker mode="date" @change="Time" :value="RenewalTime" :start="startDate" :end="endDate"
+					<picker mode="date" @change="selectBusinessDate" :value="businessDate" :start="startDate" :end="endDate"
 						class="pickerBox">
 						<label v-if="!log7" class="pickerText">请选择</label>
-						<label v-else class="pickerText">{{RenewalTime}}</label>
+						<label v-else class="pickerText">{{businessDate}}</label>
 					</picker>
 
 				</view>
@@ -203,12 +203,15 @@
 		</view>
 
 		<view style="margin-top: 40rpx;">
-			<view v-for="(item,index) in list" :key="index" style="display: inline-block;width: 20%;margin: 0px 2%;">
+			<view v-for="(item,index) in businessList" :key="index" style="display: inline-block;width: 20%;margin: 0px 2%;">
 				<view style="position: relative;">
-					<image style="height:160rpx;width: 160rpx;" :src="$util.fileUrl('/icon3.png')" mode=""></image>
-					<image style="position: absolute;height: 36rpx;width: 36rpx;top: -20rpx;left:140rpx;"
+					<image style="height:160rpx;width: 160rpx;" :src="item" mode=""></image>
+					<image @click="delImg(2,index)" style="position: absolute;height: 36rpx;width: 36rpx;top: -20rpx;left:140rpx;"
 						:src="$util.fileUrl('/lancha.png')" mode=""></image>
 				</view>
+			</view>
+			<view style="display: inline-block;width: 20%;margin: 0px 2%;" @click="getImgMore(4)">
+				<image style="height:160rpx;width: 160rpx;" :src="$util.fileUrl('/guanxi.png')" mode=""></image>
 			</view>
 		</view>
 
@@ -220,12 +223,15 @@
 
 
 		<view style="margin-top: 40rpx;">
-			<view v-for="(item,index) in list" :key="index" style="display: inline-block;width: 20%;margin: 0px 2%;">
+			<view v-for="(item,index) in InsuranceList" :key="index" style="display: inline-block;width: 20%;margin: 0px 2%;">
 				<view style="position: relative;">
-					<image style="height:160rpx;width: 160rpx;" :src="$util.fileUrl('/icon3.png')" mode=""></image>
+					<image style="height:160rpx;width: 160rpx;" :src="item" mode=""></image>
 					<image style="position: absolute;height: 36rpx;width: 36rpx;top: -20rpx;left:140rpx;"
-						:src="$util.fileUrl('/lancha.png')" mode=""></image>
+						:src="$util.fileUrl('/lancha.png')" @click="delImg(3,index)" mode=""></image>
 				</view>
+			</view>
+			<view style="display: inline-block;width: 20%;margin: 0px 2%;" @click="getImgMore(5)">
+				<image style="height:160rpx;width: 160rpx;" :src="$util.fileUrl('/guanxi.png')" mode=""></image>
 			</view>
 		</view>
 
@@ -238,6 +244,21 @@
 					    height: 96rpx;line-height: 96rpx;margin-top: 40rpx;margin-bottom: 20rpx;" type="default"
 			@click="next">新增</button>
 
+
+
+	<uni-popup ref="popup" type="center">
+		<view style="background-color: #F1F1F1;width: 450rpx;height: 400rpx;border-radius: 20rpx;padding: 20rpx;">
+			<view v-for="(item,index) in colorList" style="display: inline-block;margin-right: 20rpx;" @click="selectColor(index)">
+				<view style="display: flex;justify-content: center;align-items: center;">
+					<view class="">{{item.name}}</view>
+					<view class="coloBox" :style="{backgroundColor:item.color}"></view>
+				</view>
+
+			</view>
+		</view>
+	</uni-popup>
+
+
 	</view>
 </template>
 
@@ -248,6 +269,10 @@
 	import {
 		uploadFiles
 	} from '@/apis/oss';
+	import {
+		vehicleInsert
+	} from '@/apis/vehicle'
+	
 
 	export default {
 		data() {
@@ -277,6 +302,8 @@
 				log7: false,
 				//log 所有选择器 初始显示
 				boxColor: '#000000',//彩色小方块
+				colorName:'黑色',//颜色名字
+				colorList:[{name:'黑色',color:'#000000'},{name:'红色',color:'#ff0e14'}],
 				
 				purchaseTime: '',//购置时间
 				getcard: '',//发证时间
@@ -285,9 +312,18 @@
 				RenewalTime:'',//续保日期2
 				idCard1: '', //身份证正
 				idCard2: '', //身份证反
-				CompulsoryList:'',//交强险img List
-				businessList:'',//商业img List
-				InsuranceList:'',//商业img List
+				CompulsoryList:[],//交强险img List
+				businessList:[],//商业img List
+				InsuranceList:[],//保险证img List
+				vehicleModelId:'',//车型id
+				statusId:'',//状态id
+				plateNumber:'',//号牌号码
+				brandModel:'',//品牌型号
+				discernCode:'',//车辆识别
+				engineNum:'',//发动机号码
+				insuranceSn:'',//交强险单号
+				businessSn:'',//商业险单号
+				businessDate:'',//商业险续保日期
 			}
 		},
 		computed: {
@@ -302,12 +338,36 @@
 			this.queryAll()
 		},
 		methods: {
+			delImg(e,q) {
+				if(e==1){
+					this.CompulsoryList.splice(e, 1)
+				}else if(e==2){
+					this.businessList.splice(e, 1)
+				}else{
+				this.labelList.splice(e, 1)	
+				}
+			},
+			
 			async queryAll() {
 				const [err, res] = await queryAll()
 				if (err) return
 				console.log(res)
 				this.list = res.data
 			},
+		selectColor(e){
+			console.log(e)
+			this.colorName=this.colorList[e].name
+			this.boxColor=this.colorList[e].color
+			this.$refs.popup.close()
+		},
+			// 打开颜色弹窗
+			open() {
+				this.$refs.popup.open()
+			},
+			// 关闭颜色弹窗
+			// close() {
+			// 	this.$refs.popup.close()
+			// },
 			//身份证图片上传
 			getImg(e) {
 				uni.chooseImage({
@@ -321,9 +381,9 @@
 						if (err) return
 						console.log(rese)
 						if (e == 1) {
-							this.idCard1 = rese[0].url[0]
+							this.idCard1 = rese[0]
 						} else {
-							this.idCard2 = rese[0].url[0]
+							this.idCard2 = rese[0]
 						}
 
 					},
@@ -337,32 +397,32 @@
 			},
 
 			//交强险图片上传
-			getImg(e) {
+			getImgMore(e) {
 				uni.chooseImage({
 					count: 9,
 					sizeType: ['original', 'compressed'],
 					sourceType: ['camera', 'album'], //camera 拍照 album 相册
 					success: async (res) => {
 						console.log(res)
-						const [err, rese] = await uploadFiles([res.tempFilePaths]);
+						const [err, rese] = await uploadFiles(res.tempFilePaths);
 						console.log(rese)
 						if (err) return
 						console.log(rese)
 						if (e == 3) {
 							for (let i = 0; i < rese.length; i++) {
-								this.CompulsoryList.push(rese[i].url[0])
+								this.CompulsoryList.push(rese[i])
 							}
 
 						} else if(e==4){
 							for (let i = 0; i < rese.length; i++) {
 
-								this.businessList.push(rese[i].url[0])
+								this.businessList.push(rese[i])
 							}
 
 						}else{
 							for (let i = 0; i < rese.length; i++) {
 							
-								this.InsuranceList.push(rese[i].url[0])
+								this.InsuranceList.push(rese[i])
 							}
 						}
 
@@ -375,35 +435,70 @@
 					}
 				})
 			},
+		async	next(){
+			  let data={
+				  vehicleModelId:this.vehicleModelId,
+				  carNumber:this.carNum,
+				  colour:this.colorName,
+				  vehicleStatus:this.statusId,
+				  purchaseTime:this.purchaseTime,
+				  vehicleDrivingPositiveFiles:this.idCard1,
+				  vehicleDrivingNegativeFiles:this.idCard2,
+				  plateNumber:this.plateNumber,
+				  brandModel:this.brandModel,
+				  discernCode:this.discernCode,
+				  engineNum:this.engineNum,
+				  issueDate:this.getcard,
+				  registeredDate:this.ceartTime,
+				  insuranceSn:this.insuranceSn,
+				  insuranceTime:this.RenewalTime,
+				  insuranceFile:JSON.stringify(this.CompulsoryList),
+				  businessSn:this.businessSn,
+				  businessDate:this.businessDate,
+				  businessFile:JSON.stringify(this.businessList),
+				  insuranceUrls:JSON.stringify(this.InsuranceList),
+			  }	
+			 const [err,res] = await vehicleInsert(data)
+			 if(err) return
+			  console.log(res)
+			},
 			bindPickerChange: function(e) {
 				console.log('pp1')
 				this.log1 = true
 				this.index = e.target.value //取其下标
+				this.vehicleModelId=this.list[this.index].id
 			},
 			bindPickerChange1: function(e) {
 				console.log('pp1')
 				this.log2 = true
-				this.index = e.target.value //取其下标
-
+				console.log(e.target.value)
+				this.index1 = e.target.value //取其下标
+				this.statusId=this.carStatus[this.index1].id
 			},
-
-			Time: function(e) {
-
+			selectpurchaseTime(e){
 				this.log3 = true
-				this.timeDate = e.target.value
+				this.purchaseTime = e.target.value
 			},
-			getTime: function(e) {
+
+			selectgetcard: function(e) {
 				console.log(e.target.value)
 				this.log4 = true
 				this.getcard = e.target.value
 			},
+			
+			
+			
 			setTime: function(e) {
 				this.log5 = true
 				this.ceartTime = e.target.value
 			},
-			protectDay: function(e) {
+			selectRenewalTime(e){
 				this.log6 = true
-				this.protectTime = e.target.value
+				this.RenewalTime = e.target.value
+			},
+			selectBusinessDate: function(e) { 
+				this.log7 = true
+				this.businessDate = e.target.value
 			},
 			getDate(type) {
 				const date = new Date();
@@ -519,5 +614,11 @@
 		height: 186rpx;
 		width: 44%;
 		margin: 0px 3%;
+	}
+	.coloBox{
+		    height: 24rpx;
+		    width: 24rpx;
+		    border-radius: 5rpx;
+			margin-left: 10rpx;
 	}
 </style>

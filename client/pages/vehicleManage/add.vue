@@ -314,7 +314,7 @@
 			},
 			select(e) {
 				this.weekType = e
-				this.price = ""
+
 				if (this.carId == "") {
 
 				} else {
@@ -388,15 +388,17 @@
 						console.log(rese)
 						if (e == 1) {
 							for (let i = 0; i < rese.length; i++) {
-								this.cartypeImg.push(rese[i].url[0])
+								this.cartypeImg.push(rese[i])
 							}
 
 						} else {
 							for (let i = 0; i < rese.length; i++) {
 
-								this.actualImg.push(rese[i].url[0])
+								this.actualImg.push(rese[i])
 							}
+
 						}
+
 					},
 					fail() {
 						uni.showToast({
