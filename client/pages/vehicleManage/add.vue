@@ -396,9 +396,7 @@
 
 								this.actualImg.push(rese[i].url[0])
 							}
-
 						}
-
 					},
 					fail() {
 						uni.showToast({

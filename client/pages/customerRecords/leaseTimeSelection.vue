@@ -2,8 +2,10 @@
 	<view class="lease-time-selection">
 		<view class="header">
 			<view class="left">
-				<view class="caption">5月13日</view>
-				<view class="sub-caption">周四 14:00</view>
+				<view v-show="false" class="caption">{{takeCarDate}}</view>
+				<view v-show="true" class="caption" @click="$toast('请选择取车日期')">选择日期</view>
+				<view v-show="false" class="sub-caption">{{takeCarDay}} {{takeCarTime}}</view>
+				<view v-show="true" class="sub-caption" @click="$toast('请选择取车时间')">选择时间</view>
 			</view>
 			<view class="title">
 				<view class="left-arrow"></view>
@@ -11,28 +13,30 @@
 				<view class="right-arrow"></view>
 			</view>
 			<view class="right">
-				<view class="caption">5月13日</view>
-				<view class="sub-caption">周四 14:00</view>
+				<view v-show="false" class="caption">5月13日</view>
+				<view v-show="true" class="caption" @click="$toast('请选择还车日期')">选择日期</view>
+				<view v-show="false" class="sub-caption">周四 14:00</view>
+				<view v-show="true" class="sub-caption" @click="$toast('请选择还车时间')">选择时间</view>
 			</view>
 		</view>
-		<uni-calendar :insert="true" :showMonth="false" :start-date="'2021-6-1'" :end-date="'2021-6-30'" :range="true">
+		<uni-calendar :insert="true" :showMonth="false" :range="true" @change="calendarChange">
 		</uni-calendar>
 		<view class="date">2021年6月</view>
 		<view class="picker-box">
 			<view class="picker-item">
 				<view class="caption">取车时间</view>
-				<picker-view :value="takeCarTime" class="picker-view" @change="takeCarTimeChange">
+				<picker-view :value="takeCarTimeIndex" class="picker-view" @change="takeCarTimeIndexChange">
 					<picker-view-column>
-						<view :class="['item',{'ac': takeCarTime[0]===index}]" v-for="(item,index) in timeBox"
+						<view :class="['item',{'ac': takeCarTimeIndex[0]===index}]" v-for="(item,index) in timeBox"
 							:key="index">{{item}}</view>
 					</picker-view-column>
 				</picker-view>
 			</view>
 			<view class="picker-item">
 				<view class="caption">还车时间</view>
-				<picker-view :value="carAlsoTime" class="picker-view" @change="carAlsoTimeChange">
+				<picker-view :value="carAlsoTimeIndex" class="picker-view" @change="carAlsoTimeIndexChange">
 					<picker-view-column>
-						<view :class="['item',{'ac': carAlsoTime[0]===index}]" v-for="(item,index) in timeBox"
+						<view :class="['item',{'ac': carAlsoTimeIndex[0]===index}]" v-for="(item,index) in timeBox"
 							:key="index">{{item}}</view>
 					</picker-view-column>
 				</picker-view>
@@ -57,18 +61,40 @@
 					'16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00',
 					'21:30', '22:00', '22:30', '23:00', '23:30'
 				],
-				takeCarTime: [1], // 取车时间下标
-				carAlsoTime: [1], // 还车时间下标
+				takeCarTimeIndex: [1], // 取车时间下标
+				carAlsoTimeIndex: [1], // 还车时间下标
+				takeCarDate: '', // 取车日期
+				takeCarDay: '', // 取车日是周几
+				takeCarTime: '', // 取车时间
+				carAlsoDate: '', // 还车日期
+				carAlsoDay: '', // 还车日是周几
+				carAlsoTime: '', // 还车时间
+				totalDay: '', // 总天数
+			}
+		},
+		watch: {
+			// 监听取车日期
+			takeCarDate(newVal) {
+
+			},
+			// 监听取车日期
+			carAlsoDate(newVal) {
+
 			}
 		},
 		methods: {
 			// 取车时间改变
-			takeCarTimeChange(e) {
-				this.$set(this.takeCarTime, 0, e.detail.value[0])
+			takeCarTimeIndexChange(e) {
+				this.$set(this.takeCarTimeIndex, 0, e.detail.value[0])
 			},
 			// 还车时间改变
-			carAlsoTimeChange(e) {
-				this.$set(this.carAlsoTime, 0, e.detail.value[0])
+			carAlsoTimeIndexChange(e) {
+				this.$set(this.carAlsoTimeIndex, 0, e.detail.value[0])
+			},
+			// 日历改变
+			calendarChange(e) {
+				if (e && e.range && e.range.before) this.takeCarDate = e.range.before
+				if (e && e.range && e.range.after) this.carAlsoDate = e.range.after
 			}
 		}
 	}
@@ -84,24 +110,7 @@
 			margin: 0 auto;
 		}
 
-		/deep/ .uni-calendar__header-btn-box,
-		/deep/ .uni-calendar__backtoday {
-			display: none;
-		}
-
-		/deep/ .uni-calendar__weeks:nth-of-type(1) {
-			position: relative;
-			top: -100rpx;
-		}
-
-		/deep/ .uni-calendar__weeks {
-			position: relative;
-			top: -40rpx;
-		}
-
 		/deep/ .uni-calendar__header {
-			position: relative;
-			top: 70rpx;
 			border-bottom: 0;
 		}
 
@@ -156,6 +165,10 @@
 					@include font-set(24rpx, #999);
 					line-height: 34rpx;
 				}
+			}
+
+			.right {
+				@include flex-col(center, flex-end);
 			}
 
 			.title {
