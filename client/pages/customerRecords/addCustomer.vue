@@ -35,8 +35,8 @@
 			</view>
 			<view class="flexBox">
 				<view class="title">租期</view>
-				<view class="timeBox" @click="$open('/pages/customerRecords/leaseTimeSelection')">取车时间</view>
-				<view class="timeBox" style="margin-left: 10%;" @click="goTime">换车时间</view>
+				<view class="timeBox" @click="goTime">{{takeCarTime || '取车时间'}}</view>
+				<view class="timeBox" style="margin-left: 30rpx;" @click="goTime">{{carAlsoTime || '还车时间'}}</view>
 			</view>
 			<view class="flexBox">
 				<view class="title">金额</view>
@@ -79,12 +79,19 @@
 				phone: '', // 手机号
 				price: '', // 金额
 				remark: '', // 备注
+				takeCarTime: '', // 取车时间
+				carAlsoTime: '' // 还车时间
 			}
 		},
 		onLoad() {
 			// this.recordsAdd()
+			this.eventListener()
 		},
 		methods: {
+			// 前往选择时间
+			goTime() {
+				this.$open('/pages/customerRecords/leaseTimeSelection')
+			},
 			// 添加记录
 			async recordsAdd() {
 				const params = {
@@ -95,6 +102,14 @@
 				console.log(err)
 				if (err) return
 
+			},
+			// 监听
+			eventListener() {
+				// 获取租车时间
+				uni.$on('getCarRentalTime', (e) => {
+					this.takeCarTime = e.takeCarTime
+					this.carAlsoTime = e.carAlsoTime
+				})
 			}
 		}
 	}
@@ -169,13 +184,12 @@
 
 	.timeBox {
 		background-color: #EFF0F3;
-		padding-left: 5%;
-		width: 33%;
+		width: 35%;
 		border-radius: 10rpx;
 		height: 74rpx;
 		line-height: 74rpx;
 		font-size: 24rpx;
-		padding-left: 20rpx;
+		padding-left: 16rpx;
 	}
 
 	.btn {
