@@ -1,197 +1,244 @@
 <template>
 	<view class="">
 		<view class="flexBox">
-			<view v-for="(item,index) in list" :key="index" style="width: 25%;" @click="selectOne(index)">
+			<view v-for="(item,index) in tabList" :key="index" style="width: 25%;" @click="selectOne(index)">
 				<view v-if="item.stuse==0" class="titleBox">{{item.name}}</view>
 				<view v-else class="actitleBox">{{item.name}}</view>
 			</view>
 		</view>
 		<!-- 收款 -->
 		<view v-if="type==0">
-			<view class="content" v-for="(item,index) in orderList" :key="index" @click="backMoney()">
+			<view class="content" v-for="(item,index) in orderList" :key="index"
+				@click="$open('/pages/collectPay/collectPayBack')">
 				<view class="contenBox" style="border-bottom: 2rpx dashed    #EFF0F3 ;">
-						<view class="carNum">渝A·5231B</view> 
-						<view class="price" style="border-bottom: 0rpx;text-align: right;">¥188.00</view>
+					<view class="carNum">渝A·5231B</view>
+					<view class="price" style="border-bottom: 0rpx;text-align: right;">¥188.00</view>
 				</view>
 				<view class="contentBottom">
-					<image class="xiangmuIcon" :src="$util.fileUrl('/xiangmu.png')" mode=""></image> 
+					<image class="xiangmuIcon" :src="$util.fileUrl('/xiangmu.png')" mode=""></image>
 					<view style="font-size: 24rpx;color: #C0C0C0;">项目名称</view>
-					<image class="timeIcon" :src="$util.fileUrl('/time.png')" mode=""></image> 
+					<image class="timeIcon" :src="$util.fileUrl('/time.png')" mode=""></image>
 					<view class="time">2020-06-02</view>
 				</view>
 			</view>
 		</view>
 		<!-- 付款 -->
 		<view v-if="type==1">
-			<view class="content" v-for="(item,index) in orderList" :key="index" @click="goMoney()">
+			<view class="content" v-for="(item,index) in orderList" :key="index"
+				@click="$open('/pages/collectPay/collectPayGo')">
 				<view class="contenBox">
-						<view class="carNum">渝A·5231B</view>
-						<view v-if="item.stuse==0" class="orderType" style="color:#5A7EFF;">待处理</view>
-						<view v-if="item.stuse==1" class="orderType" style="color:#FFA05B;">审核中</view>
-						<view v-if="item.stuse==2" class="orderType" style="color:#FC3736;">未通过</view>
+					<view class="carNum">渝A·5231B</view>
+					<view v-if="item.stuse==0" class="orderType" style="color:#5A7EFF;">待处理</view>
+					<view v-if="item.stuse==1" class="orderType" style="color:#FFA05B;">审核中</view>
+					<view v-if="item.stuse==2" class="orderType" style="color:#FC3736;">未通过</view>
 				</view>
 				<view class="price">¥188.00</view>
 				<view class="contentBottom">
-					<image class="xiangmuIcon" :src="$util.fileUrl('/xiangmu.png')" mode=""></image> 
+					<image class="xiangmuIcon" :src="$util.fileUrl('/xiangmu.png')" mode=""></image>
 					<view style="font-size: 24rpx;color: #C0C0C0;">项目名称</view>
-					<image class="timeIcon" :src="$util.fileUrl('/time.png')" mode=""></image> 
+					<image class="timeIcon" :src="$util.fileUrl('/time.png')" mode=""></image>
 					<view class="time">2020-06-02</view>
 				</view>
 			</view>
 		</view>
 		<!-- 已收款 -->
 		<view v-if="type==2">
-			<view class="content" v-for="(item,index) in orderList" :key="index" @click="backedMoney()">
+			<view class="content" v-for="(item,index) in orderList" :key="index"
+				@click="$open('/pages/collectPay/collectPayBacked')">
 				<view class="contenBox" style="border-bottom: 2rpx dashed    #EFF0F3 ;">
-						<view class="carNum">渝A·5231B</view> 
-						<view class="price" style="border-bottom: 0rpx;text-align: right;">¥188.00</view>
+					<view class="carNum">渝A·5231B</view>
+					<view class="price" style="border-bottom: 0rpx;text-align: right;">¥188.00</view>
 				</view>
 				<view class="contentBottom">
-					<image class="xiangmuIcon" :src="$util.fileUrl('/xiangmu.png')" mode=""></image> 
+					<image class="xiangmuIcon" :src="$util.fileUrl('/xiangmu.png')" mode=""></image>
 					<view style="font-size: 24rpx;color: #C0C0C0;">项目名称</view>
-					<image class="timeIcon" :src="$util.fileUrl('/time.png')" mode=""></image> 
+					<image class="timeIcon" :src="$util.fileUrl('/time.png')" mode=""></image>
 					<view class="time">2020-06-02</view>
 				</view>
 			</view>
 		</view>
-		
+
 		<!--已付款 -->
 		<view v-if="type==3">
-			<view class="content" v-for="(item,index) in orderList" :key="index" @click="goedMoney()">
+			<view class="content" v-for="(item,index) in orderList" :key="index"
+				@click="$open('/pages/collectPay/collectPayGoed')">
 				<view class="contenBox">
-						<view class="carNum">渝A·5231B</view>
-						<view class="orderType" style="color:#5A7EFF;">支付成功</view>
+					<view class="carNum">渝A·5231B</view>
+					<view class="orderType" style="color:#5A7EFF;">支付成功</view>
 				</view>
 				<view class="price">¥188.00</view>
 				<view class="contentBottom">
-					<image class="xiangmuIcon" :src="$util.fileUrl('/xiangmu.png')" mode=""></image> 
+					<image class="xiangmuIcon" :src="$util.fileUrl('/xiangmu.png')" mode=""></image>
 					<view style="font-size: 24rpx;color: #C0C0C0;">项目名称</view>
-					<image class="timeIcon" :src="$util.fileUrl('/time.png')" mode=""></image> 
+					<image class="timeIcon" :src="$util.fileUrl('/time.png')" mode=""></image>
 					<view class="time">2020-06-02</view>
 				</view>
 			</view>
 		</view>
 
 
-		
+
 	</view>
 </template>
 
 <script>
+	import {
+		receiptPaymentPageQuery
+	} from '@/apis/receiptPayment'
+	import {
+		listManager
+	} from '@/utils/uni-tools'
+
 	export default {
 		data() {
 			return {
-				list:[{name:'收款',stuse:'0'},{name:'付款',stuse:'0'},{name:'已收款',stuse:'1'},{name:'已付款',stuse:'0'}],
-				type:2,
-				orderList:[{stuse:0},{stuse:1},{stuse:2}]
+				tabList: [{
+					name: '收款',
+					stuse: '0'
+				}, {
+					name: '付款',
+					stuse: '0'
+				}, {
+					name: '已收款',
+					stuse: '1'
+				}, {
+					name: '已付款',
+					stuse: '0'
+				}],
+				type: 2, // tab类型
+				orderList: [{
+					stuse: 0
+				}, {
+					stuse: 1
+				}, {
+					stuse: 2
+				}],
+				list: [],
+				page: 1,
+				size: 10,
+				requestKey: true,
+				dataStatus: ''
 			}
 		},
+		onLoad() {
+			this.receiptPaymentPageQuery()
+		},
 		methods: {
-			selectOne(e){
-				for(let i=0;i<this.list.length;i++){
-					this.list[i].stuse=0
+			selectOne(e) {
+				for (let i = 0; i < this.tabList.length; i++) {
+					this.tabList[i].stuse = 0
 				}
-				this.list[e].stuse=1
-				this.type=e	
+				this.tabList[e].stuse = 1
+				this.type = e
 			},
-			goMoney(){
-				uni.navigateTo({
-					url:'./collectPayGo',
-					animationDuration:200,
-					animationType:'pop-in'
-				})
-			},
-			backMoney(){
-				uni.navigateTo({
-					url:'./collectPayBack',
-					animationDuration:200,
-					animationType:'pop-in'
-				})
-			},
-			goedMoney(){
-				uni.navigateTo({
-					url:'./collectPayGoed',
-					animationDuration:200,
-					animationType:'pop-in'
-				})
-			},
-			backedMoney(){
-				uni.navigateTo({
-					url:'./collectPayBacked',
-					animationDuration:200,
-					animationType:'pop-in'
-				})
-			},
+			// 获取收付款
+			async receiptPaymentPageQuery() {
+				const params = {
+					page: this.page,
+					size: this.size,
+					transactionType: this.type
+				}
+				this.dataStatus = 'loading'
+				const [err, res] = await receiptPaymentPageQuery(params)
+				console.log(res)
+				console.log(err)
+				if (err) {
+					this.dataStatus = 'noData'
+					return
+				}
+				// listManager()
+			}
 		}
 	}
 </script>
 
 <style>
-	.flexBox{
+	.flexBox {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		width: 100%;
-		
+
 	}
-	.titleBox{
+
+	.titleBox {
 		text-align: center;
 		padding: 20rpx 0rpx;
 		font-size: 28rpx;
 		color: #999999;
 	}
-	.actitleBox{
+
+	.actitleBox {
 		text-align: center;
 		border-bottom: 2rpx solid #5A7EFF;
 		padding: 20rpx 0rpx;
 		font-size: 28rpx;
-		color: #5A7EFF; 
+		color: #5A7EFF;
 	}
-	.contenBox{
+
+	.contenBox {
 		display: flex;
 		align-items: center;
 		width: 84%;
 		margin: auto;
 		margin-top: 30rpx;
 	}
-	.content{
+
+	.content {
 		width: 90%;
 		margin: auto;
-		border:2rpx solid  rgba(114,141,244,0.25);
+		border: 2rpx solid rgba(114, 141, 244, 0.25);
 		border-radius: 20rpx;
 		margin-top: 30rpx;
 	}
-	.carNum{
+
+	.carNum {
 		font-size: 28rpx;
 		color: #000000;
 		width: 50%;
 		text-align: left;
 	}
-	.orderType{
+
+	.orderType {
 		font-size: 24rpx;
 		width: 50%;
 		text-align: right;
 	}
-	.price{
+
+	.price {
 		height: 90rpx;
 		line-height: 90rpx;
 		width: 84%;
 		margin: auto;
-		border-bottom: 2rpx dashed    #EFF0F3 ;
+		border-bottom: 2rpx dashed #EFF0F3;
 		font-size: 32rpx;
 		color: #FC3736;
-		
+
 	}
-	.contentBottom{
-		display: flex;align-items: center;width: 84%;margin: auto;height:120rpx;
+
+	.contentBottom {
+		display: flex;
+		align-items: center;
+		width: 84%;
+		margin: auto;
+		height: 120rpx;
 	}
-	.time{
-		margin-left: 20rpx;font-size: 24rpx;color: #000000;
+
+	.time {
+		margin-left: 20rpx;
+		font-size: 24rpx;
+		color: #000000;
 	}
-	.timeIcon{
-		height: 22rpx;width: 22rpx;margin-left: 42%;
+
+	.timeIcon {
+		height: 22rpx;
+		width: 22rpx;
+		margin-left: 42%;
 	}
-	.xiangmuIcon{
-		height: 22rpx;width: 22rpx;margin-right: 20rpx;
+
+	.xiangmuIcon {
+		height: 22rpx;
+		width: 22rpx;
+		margin-right: 20rpx;
 	}
 </style>

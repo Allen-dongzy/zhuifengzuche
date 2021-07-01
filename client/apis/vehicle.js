@@ -87,3 +87,14 @@ export const vehicleUpdate = (data, loading = '修改中') => {
 		loading
 	})
 }
+
+// 车辆列表
+export const vehicleQueryAll = (data, loading = '') => { // 对接
+	return request({
+		url: 'vehicle/queryAll',
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'GET',
+		data,
+		loading
+	})
+}

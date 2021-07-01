@@ -1,10 +1,25 @@
 <template>
 	<view>
 		<view class="box">
+			<view class="flexBoxContent">
+				<view class="title">门店</view>
+				<view class="selectBox" @click="">
+					<view style="width: 85%;">
+						<view class="pickerBox">
+							<label v-if="true" class="pickerText">{{cartName || '请选择门店'}}</label>
+							<label v-else class="pickerText"></label>
+						</view>
+					</view>
+					<view style="width:10%;">
+						<image style="width:40rpx;height: 20rpx;transform: rotate(-90deg);"
+							:src="$util.fileUrl('/xiangxiahui.png')"></image>
+					</view>
+				</view>
+			</view>
 			<view class="flexBox">
-				<view class="title">品牌型号</view>
+				<view class="title">客户名称</view>
 				<view class="item">
-					<input class="inpBox" type="text" v-model="brand" placeholder="请输入品牌型号" />
+					<input class="inpBox" type="text" v-model="name" placeholder="请输入客户名称" />
 				</view>
 			</view>
 			<view class="flexBox">
@@ -24,11 +39,11 @@
 				<view class="selectBox" @click="$open('/pages/customerRecords/selectCart')">
 					<view style="width: 85%;">
 						<view class="pickerBox">
-							<label v-if="true" class="pickerText">请选择</label>
+							<label v-if="true" class="pickerText">{{cartName || '请选择车辆'}}</label>
 							<label v-else class="pickerText"></label>
 						</view>
 					</view>
-					<view style="width:15%;">
+					<view style="width:10%;">
 						<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')"></image>
 					</view>
 				</view>
@@ -41,7 +56,7 @@
 			<view class="flexBox">
 				<view class="title">金额</view>
 				<view class="item">
-					<input class="inpBox" type="text" v-model="price" placeholder="请填写金额" />
+					<input class="inpBox" type="number" v-model="price" placeholder="请填写金额" />
 				</view>
 			</view>
 			<view style="display: flex;margin-top: 30rpx;">
@@ -49,19 +64,21 @@
 				<view class="item">
 					<textarea
 						style="padding: 20rpx;background-color:#EFF0F3;height:144rpx;width: 100%;border-radius: 10rpx;"
-						type="text" v-model="remark" placeholder="请填写金额" />
+						type="text" v-model="remark" placeholder="请填写备注" />
 				</view>
 			</view>
 			<view class="flexBox" style="margin-top: 40rpx;">
-				<view class="title">添加照片</view>
-				<view style="position: relative;width: 22%;display: inline-block;">
-					<image style="width:160rpx;height: 160rpx;" :src="$util.fileUrl('/icon5.png')"></image>
-					<image style="width:36rpx;height: 36rpx;position:absolute;top: -10rpx;right: -10rpx;"
-						:src="$util.fileUrl('/lancha.png')"></image>
+				<view class="title">备注图片</view>
+				<view class="pic-box" v-for="(item, index) in picBox" :key="index">
+					<image class="pic" :src="item" @click="previewPic(index)" mode="aspectFill"></image>
+					<image class="delete" :src="$util.fileUrl('/lancha.png')" @click="deletePic(index)"></image>
+				</view>
+				<view v-if="picBox.length<3" class="pic-box">
+					<image class="pic" :src="$util.fileUrl('/guanxi.png')" @click="chooseImgs"></image>
 				</view>
 			</view>
 		</view>
-		<view class="btn" type="default" @click="next()">完成</view>
+		<view class="btn" type="default" @click="recordsAdd()">完成</view>
 	</view>
 </template>
 
@@ -69,22 +86,41 @@
 	import {
 		recordsAdd
 	} from '@/apis/customer'
+	import {
+		uploadFiles
+	} from '@/apis/oss'
+	import {
+		chooseImgs,
+		previewImgs
+	} from '@/utils/uni-tools'
+	import {
+		throttle
+	} from '@/utils/tools'
+	import {
+		mapState
+	} from 'vuex'
 	import validator from 'crazy-validator'
 
 	export default {
 		data() {
 			return {
-				brand: '', // 品牌
+				name: '', // 名称
 				idCard: '', // 身份证
 				phone: '', // 手机号
 				price: '', // 金额
 				remark: '', // 备注
 				takeCarTime: '', // 取车时间
-				carAlsoTime: '' // 还车时间
+				carAlsoTime: '', // 还车时间
+				cartId: '', // 选中车辆id
+				cartName: '', // 选中车辆名称
+				picBox: [], // 图片
 			}
 		},
+		computed: {
+			//  user模式 门店id
+			...mapState('user', ['shopId'])
+		},
 		onLoad() {
-			// this.recordsAdd()
 			this.eventListener()
 		},
 		methods: {
@@ -93,15 +129,91 @@
 				this.$open('/pages/customerRecords/leaseTimeSelection')
 			},
 			// 添加记录
-			async recordsAdd() {
+			recordsAdd: throttle(async function() {
+				const checkList = [{
+					value: this.name,
+					rules: [{
+						type: 'required',
+						msg: '请输入客户名称'
+					}]
+				}, {
+					value: this.idCard,
+					rules: [{
+						type: 'required',
+						msg: '请输入客户身份证'
+					}, {
+						type: 'identity',
+						msg: '请输入正确的客户身份证'
+					}]
+				}, {
+					value: this.phone,
+					rules: [{
+						type: 'required',
+						msg: '请输入客户手机号'
+					}, {
+						type: 'phone',
+						msg: '请输入正确的客户手机号'
+					}]
+				}, {
+					value: this.cartId,
+					rules: [{
+						type: 'required',
+						msg: '请选择车辆'
+					}]
+				}, {
+					value: this.takeCarTime,
+					rules: [{
+						type: 'required',
+						msg: '请选择取车时间'
+					}]
+				}, {
+					value: this.carAlsoTime,
+					rules: [{
+						type: 'required',
+						msg: '请选择还车时间'
+					}]
+				}, {
+					value: this.price,
+					rules: [{
+						type: 'required',
+						msg: '请输入金额'
+					}]
+				}]
+				const checkRes = validator(checkList, this.$toast)
+				if (checkRes.status !== 1000) return
 				const params = {
-
+					shopId: this.shopId,
+					name: this.name,
+					idCard: this.idCard,
+					phone: this.phone,
+					vehicleId: this.cartId,
+					collectionTime: this.takeCarTime,
+					giveBackTime: this.carAlsoTime,
+					amount: this.price,
+					remark: this.remark,
+					remarkImages: this.picBox.join()
 				}
 				const [err, res] = await recordsAdd(params)
 				console.log(res)
 				console.log(err)
 				if (err) return
 
+			}),
+			// 预览图片
+			previewPic(index) {
+				previewImgs(this.picBox, index)
+			},
+			// 删除图片
+			deletePic(index) {
+				this.picBox.splice(index, 1)
+			},
+			// 选择照片
+			async chooseImgs() {
+				const [err, res] = await chooseImgs(3 - this.picBox.length)
+				if (err) return
+				const [upErr, upRes] = await uploadFiles(res)
+				if (upErr) return
+				this.picBox = [...this.picBox, ...upRes]
 			},
 			// 监听
 			eventListener() {
@@ -109,6 +221,11 @@
 				uni.$on('getCarRentalTime', (e) => {
 					this.takeCarTime = e.takeCarTime
 					this.carAlsoTime = e.carAlsoTime
+				})
+				// 获取选中的车辆
+				uni.$on('selectCart', (e) => {
+					this.cartId = e.cartId
+					this.cartName = e.cartName
 				})
 			}
 		}
@@ -155,6 +272,7 @@
 		width: 75%;
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 		border-radius: 10rpx;
 		color: #999999;
 		font-size: 24rpx;
@@ -203,5 +321,27 @@
 		line-height: 96rpx;
 		letter-spacing: 10rpx;
 		text-align: center;
+	}
+
+	.pic-box {
+		position: relative;
+		width: 22%;
+
+		&~.pic-box {
+			margin-left: 28rpx;
+		}
+
+		.pic {
+			width: 160rpx;
+			height: 160rpx;
+		}
+
+		.delete {
+			width: 36rpx;
+			height: 36rpx;
+			position: absolute;
+			top: -10rpx;
+			right: -10rpx;
+		}
 	}
 </style>

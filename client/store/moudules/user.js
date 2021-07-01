@@ -8,6 +8,7 @@ const user = {
 		icon: '', // 头像
 		menus: [], // 菜单
 		roles: [], // 角色
+		shopId: '', // 门店id
 		username: '' // 用户名
 	},
 	mutations: {
@@ -16,11 +17,13 @@ const user = {
 			icon,
 			menus,
 			roles,
+			shopId,
 			username
 		}) {
 			if (icon) state.icon = icon
 			if (menus) state.menus = menus
 			if (roles) state.roles = roles
+			if (shopId) state.shopId = shopId
 			if (username) state.username = username
 		},
 		// 清空用户信息
@@ -28,6 +31,7 @@ const user = {
 			state.icon = ''
 			state.menus = []
 			state.roles = []
+			state.shopId = ''
 			state.username = ''
 		}
 	},
