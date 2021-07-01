@@ -48,30 +48,32 @@
 					<i></i>
 					<p>状态</p>
 				</view>
+				
 				<view class="flex flex-wrap statusList">
-					<i class="flex-center">全部</i>
-					<i class="flex-center blue-i">正常</i>
-					<i class="flex-center">异常</i>
-					<i class="flex-center">租赁中</i>
-					<i class="flex-center">预留中</i>
+					<view v-for="(item,index) in carStatus" :key="index" @click="selectStatus(index)">
+						<i  v-if="item.status==false" class="flex-center">{{item.name}}</i>
+						<i   v-else class="flex-center blue-i">{{item.name}}</i>
+					</view>
 				</view>
 				<view class="flex status">
 					<i></i>
 					<p>类别</p>
 				</view>
 				<view class="flex flex-wrap statusList">
-					<i class="flex-center">全部</i>
-					<i class="flex-center blue-i">豪华</i>
-					<i class="flex-center">奢华</i>
-					<i class="flex-center">中等</i>
+						<view v-for="(item,index) in classesList" :key="index" @click="selectClasss(index)">
+							<i  v-if="item.status==false" class="flex-center">{{item.name}}</i>
+							<i   v-else class="flex-center blue-i">{{item.name}}</i>
+						</view>
 				</view>
 				<view class="flex status">
 					<i></i>
 					<p>品牌</p>
 				</view>
 				<view class="flex flex-wrap statusList">
-					<i class="flex-center blue-i">玛莎拉蒂-总裁</i>
-					<i v-for="(item, index) in 50" class="flex-center">宝马</i>
+						<view v-for="(item,index) in brandList" :key="index" @click="selectBrand(index)">
+							<i  v-if="item.status==false" class="flex-center">{{item.name}}</i>
+							<i   v-else class="flex-center blue-i">{{item.name}}</i>
+						</view>
 				</view>
 				<view class="flex btn">
 					<button type="default" class="flex-center reset">清空</button>
@@ -84,6 +86,12 @@
 
 <script>
 	import {vehiclePageQuery} from '@/apis/vehicle'
+	import {
+		vehicleBrandQueryAll
+	} from '@/apis/vehicleBrand'
+	import {
+		vehicleCategoryQueryAll
+	} from '@/apis/vehicleCategory'
 	export default {
 		data() {
 			return {
@@ -91,13 +99,77 @@
 				page:1,//页码
 				size:10,//数量
 				list:[],//数据组
+				classesList:[],//类别数组
+				carStatus: [{
+					name: '全部',
+					id: "",
+					status:false,
+				},{
+					name: '正常',
+					id: 1,
+					status:false,
+				}, {
+					name: '异常',
+					id: 2,
+					status:false,
+				}, {
+					name: '租赁中',
+					id: 3,
+					status:false,
+				}, {
+					name: '预留中',
+					id: 4,
+					status:false,
+				}],//状态list
+				brandList:[]//品牌列表
 			}
 		},
 		onLoad() {
 		this.getlist()	
+		this.getType()
+		this.getBrand()
 		},
 		methods: {
-			
+		 selectStatus(e){
+			 for(let i=0;i<this.carStatus.length;i++) {
+				 this.carStatus[i].status=false
+			 }
+			  this.carStatus[e].status=true
+		 },
+		 selectClasss(e){
+		 			 for(let i=0;i<this.classesList.length;i++) {
+		 				 this.classesList[i].status=false
+		 			 }
+		 			  this.classesList[e].status=true
+		 },
+		 selectBrand(e){
+		 			 for(let i=0;i<this.brandList.length;i++) {
+		 				 this.brandList[i].status=false
+		 			 }
+		 			  this.brandList[e].status=true
+		 },
+		 //品牌
+		 async getBrand() {
+		 	const [err, res] = await vehicleBrandQueryAll()
+		 	if (err) return
+		 	console.log(res)
+			for(let i=0;i<res.data.length;i++) {
+				res.data[i].status=false
+			}
+		 	this.brandList = res.data
+		 },
+		 
+		 //类别
+		 async getType() {
+		 	const [err, res] = await vehicleCategoryQueryAll()
+		 	if (err) return
+		 	console.log(res)
+			for(let i=0;i<res.data.length;i++) {
+				res.data[i].status=false
+			}
+		 	this.classesList = res.data
+		 },
+		 //获取列表
 		async	getlist(){
 			 let data={
 				 page:this.page,

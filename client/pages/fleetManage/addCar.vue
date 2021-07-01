@@ -164,7 +164,7 @@
 				<view style="position: relative;">
 					<image style="height:160rpx;width: 160rpx;" :src="item" mode=""></image>
 					<image style="position: absolute;height: 36rpx;width: 36rpx;top: -20rpx;left:140rpx;"
-						:src="$util.fileUrl('/lancha.png')" mode=""></image>
+						:src="$util.fileUrl('/lancha.png')" @click="delImg(1,index)" mode=""></image>
 				</view>
 			</view>
 			<view style="display: inline-block;width: 20%;margin: 0px 2%;" @click="getImgMore(3)">
@@ -206,7 +206,7 @@
 			<view v-for="(item,index) in businessList" :key="index" style="display: inline-block;width: 20%;margin: 0px 2%;">
 				<view style="position: relative;">
 					<image style="height:160rpx;width: 160rpx;" :src="item" mode=""></image>
-					<image style="position: absolute;height: 36rpx;width: 36rpx;top: -20rpx;left:140rpx;"
+					<image @click="delImg(2,index)" style="position: absolute;height: 36rpx;width: 36rpx;top: -20rpx;left:140rpx;"
 						:src="$util.fileUrl('/lancha.png')" mode=""></image>
 				</view>
 			</view>
@@ -227,7 +227,7 @@
 				<view style="position: relative;">
 					<image style="height:160rpx;width: 160rpx;" :src="item" mode=""></image>
 					<image style="position: absolute;height: 36rpx;width: 36rpx;top: -20rpx;left:140rpx;"
-						:src="$util.fileUrl('/lancha.png')" mode=""></image>
+						:src="$util.fileUrl('/lancha.png')" @click="delImg(3,index)" mode=""></image>
 				</view>
 			</view>
 			<view style="display: inline-block;width: 20%;margin: 0px 2%;" @click="getImgMore(5)">
@@ -269,6 +269,10 @@
 	import {
 		uploadFiles
 	} from '@/apis/oss';
+	import {
+		vehicleInsert
+	} from '@/apis/vehicle'
+	
 
 	export default {
 		data() {
@@ -334,6 +338,16 @@
 			this.queryAll()
 		},
 		methods: {
+			delImg(e,q) {
+				if(e==1){
+					this.CompulsoryList.splice(e, 1)
+				}else if(e==2){
+					this.businessList.splice(e, 1)
+				}else{
+				this.labelList.splice(e, 1)	
+				}
+			},
+			
 			async queryAll() {
 				const [err, res] = await queryAll()
 				if (err) return
@@ -421,29 +435,32 @@
 					}
 				})
 			},
-			next(){
+		async	next(){
 			  let data={
 				  vehicleModelId:this.vehicleModelId,
 				  carNumber:this.carNum,
-				  colour:'黑色',
+				  colour:this.colorName,
 				  vehicleStatus:this.statusId,
-				  purchaseTime:this.purchaseTime+' 00:00:00',
-				  vehicleDrivingLicenseFiles:this.idCard1,
+				  purchaseTime:this.purchaseTime,
+				  vehicleDrivingPositiveFiles:this.idCard1,
+				  vehicleDrivingNegativeFiles:this.idCard2,
 				  plateNumber:this.plateNumber,
 				  brandModel:this.brandModel,
 				  discernCode:this.discernCode,
 				  engineNum:this.engineNum,
-				  issueDate:this.getcard+' 00:00:00',
-				  registeredDate:this.ceartTime+' 00:00:00',
+				  issueDate:this.getcard,
+				  registeredDate:this.ceartTime,
 				  insuranceSn:this.insuranceSn,
-				  insuranceTime:this.RenewalTime+' 00:00:00',
+				  insuranceTime:this.RenewalTime,
 				  insuranceFile:JSON.stringify(this.CompulsoryList),
 				  businessSn:this.businessSn,
 				  businessDate:this.businessDate,
 				  businessFile:JSON.stringify(this.businessList),
 				  insuranceUrls:JSON.stringify(this.InsuranceList),
 			  }	
-			  console.log(data)
+			 const [err,res] = await vehicleInsert(data)
+			 if(err) return
+			  console.log(res)
 			},
 			bindPickerChange: function(e) {
 				console.log('pp1')
