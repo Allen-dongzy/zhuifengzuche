@@ -35,20 +35,40 @@
 
 <script>
 	import config from '@/common/js/config'
+	import {
+		memberShopPageQuery
+	} from '@/apis/memberShop'
 
 	export default {
 		data() {
 			return {
 				filePath: config.filePath,
 				searchMode: false, // 是否为搜索模式
-				list: [1, 1, 1],
-				search: false
+				list: [],
+				page: 1,
+				size: 10,
+				requestKey: true,
+				dataStatus: '' // more loading noMore noData
 			}
+		},
+		onLoad() {
+			this.memberShopPageQuery()
 		},
 		methods: {
 			// 切换头部
 			tapHeader() {
 				this.searchMode = !this.searchMode
+			},
+			// 门店查询
+			async memberShopPageQuery() {
+				const params = {
+					page: this.page,
+					size: this.size
+				}
+				const [err, res] = await memberShopPageQuery(params)
+				console.log(res)
+				console.log(err)
+				if (err) return
 			}
 		}
 	}

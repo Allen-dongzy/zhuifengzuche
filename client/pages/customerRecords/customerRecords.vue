@@ -15,8 +15,9 @@
 			<view class="search-bar" v-show="searchMode">
 				<view class="serach-box">
 					<image class="search-icon" :src="`${filePath}/vehicleManage/search-big.png`"></image>
-					<input type="text" placeholder="请输入车型" placeholder-class="input">
-					<image class="clear" :src="`${filePath}/vehicleManage/clear.png`"></image>
+					<input type="text" placeholder="请输入车型" placeholder-class="input" v-model="keyword"
+						@input="inputSearch">
+					<image class="clear" :src="`${filePath}/vehicleManage/clear.png`" @click="clearSearch"></image>
 				</view>
 				<view class="cancel" @click="tapHeader">取消</view>
 			</view>
@@ -24,16 +25,15 @@
 			<view class="list">
 				<view class="box-item" v-for="(item, index) in list" :key="index">
 					<view class="flexBox">
-						<view class="blackText">渝A·5231B</view>
-						<view class="redText">¥188.00</view>
+						<view class="blackText">{{item.carNumber}}</view>
+						<view class="redText">¥{{item.amount}}</view>
 					</view>
 					<view class="flexBox">
-						<view class="grayText">大众</view>
-						<view class="grayText">捷达</view>
+						<view class="grayText">{{item.vehicleModelName}}</view>
 					</view>
 					<view class="flexBox">
-						<view class="name">张全蛋</view>
-						<view class="time">2021-06-02 18:54 - 2021-06-03 18:54</view>
+						<view class="name">{{item.name}}</view>
+						<view class="time">{{item.collectionTime}} - {{item.giveBackTime}}</view>
 					</view>
 				</view>
 			</view>
@@ -47,6 +47,15 @@
 	import {
 		recordsPageQuery
 	} from '@/apis/customer'
+	import {
+		mapState
+	} from 'vuex'
+	import {
+		listManager
+	} from '@/utils/uni-tools'
+	import {
+		debounce
+	} from '@/utils/tools'
 
 	export default {
 		data() {
@@ -54,6 +63,7 @@
 				filePath: config.filePath,
 				searchMode: false, // 是否为搜索模式
 				modalName: '', // 模态框名称
+				keyword: '', // 关键字
 				list: [], // 列表
 				dataStatus: 'noData', // more loading noMore noData
 				requestKey: true,
@@ -61,10 +71,68 @@
 				size: 10
 			}
 		},
+		computed: {
+			//  user模式 门店id
+			...mapState('user', ['shopId'])
+		},
+		onLoad() {
+			this.recordsPageQuery()
+			this.eventListener()
+		},
+		onReachBottom() {
+			if (!this.requestKey) return
+			this.page++
+			this.recordsPageQuery()
+		},
 		methods: {
 			// 切换头部
 			tapHeader() {
 				this.searchMode = !this.searchMode
+			},
+			// 搜索
+			inputSearch: debounce(function() {
+				this.init()
+				this.recordsPageQuery()
+			}),
+			// 初始化
+			init() {
+				this.page = 1
+				this.requestKey = true
+				this.list = []
+			},
+			// 清空关键字
+			clearSearch() {
+				this.keyword = ''
+				this.init()
+				this.recordsPageQuery()
+			},
+			// 查询记录
+			async recordsPageQuery() {
+				this.dataStatus = 'loading'
+				const params = {
+					page: this.page,
+					size: this.size,
+					shopId: this.shopId,
+					search: this.keyword
+				}
+				const [err, res] = await recordsPageQuery(params)
+				if (err) return
+				const {
+					requestKey,
+					dataStatus,
+					isRender
+				} = listManager(res.data.list, this.page, this.size)
+				this.dataStatus = dataStatus
+				this.requestKey = requestKey
+				if (!isRender) return
+				this.list = [...this.list, ...res.data.list]
+			},
+			// 监听
+			eventListener() {
+				uni.$on('refreshEvaluation', () => {
+					this.init()
+					this.recordsPageQuery()
+				})
 			}
 		}
 	}

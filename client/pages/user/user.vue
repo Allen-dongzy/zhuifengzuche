@@ -35,7 +35,6 @@
 
 <script>
 	import {
-		mapActions,
 		mapMutations,
 		mapState
 	} from 'vuex'
@@ -56,7 +55,6 @@
 			}
 		},
 		onLoad() {
-			this.getInfo()
 			this.messageCount()
 		},
 		computed: {
@@ -64,8 +62,6 @@
 			...mapState('user', ['username'])
 		},
 		methods: {
-			// user模块 获取用户信息
-			...mapActions('user', ['getInfo']),
 			// user模块 清除用户信息
 			...mapMutations('user', ['clearInfo']),
 			// 消息总数

@@ -194,10 +194,12 @@
 					remarkImages: this.picBox.join()
 				}
 				const [err, res] = await recordsAdd(params)
-				console.log(res)
-				console.log(err)
 				if (err) return
-
+				this.$toast('添加成功')
+				uni.$emit('refreshEvaluation')
+				setTimeout(() => {
+					this.$close()
+				}, 500)
 			}),
 			// 预览图片
 			previewPic(index) {

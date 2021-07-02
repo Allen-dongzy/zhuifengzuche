@@ -1,12 +1,16 @@
 <script>
 	import Vue from 'vue'
+	import {
+		mapActions
+	} from 'vuex'
 	export default {
 		globalData: {
-			
+
 		},
 		onLaunch: function() {
 			console.log('App Launch')
 			this.header()
+			this.getInfo()
 		},
 		onShow: function() {
 			console.log('App Show')
@@ -15,10 +19,12 @@
 			console.log('App Hide')
 		},
 		methods: {
+			// user模块 获取用户信息
+			...mapActions('user', ['getInfo']),
 			/**
 			 * 获取顶部高度
 			 */
-			header(){
+			header() {
 				uni.getSystemInfo({
 					success: function(e) {
 						// #ifndef MP
@@ -49,7 +55,7 @@
 <style lang="scss">
 	/* 每个页面公共css */
 	@import "components/colorui/main.css";
-	@import "components/colorui/icon.css"; 
+	@import "components/colorui/icon.css";
 	@import 'common/css/main.css';
 	@import 'common/css/thorui.css';
 	@import '@/static/scss/_reset.scss';
