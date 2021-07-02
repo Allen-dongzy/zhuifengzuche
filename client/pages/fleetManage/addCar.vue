@@ -10,7 +10,7 @@
 				<view style="width: 80%;">
 					<picker @change="bindPickerChange" :value="index" :range="list" :range-key="'name'"
 						class="pickerBox">
-						<label v-if="!log1" class="pickerText">请选择</label>
+						<label v-if="!log1" class="pickerText">{{carObj!=''?carObj.vehicleModelName:'请选择'}}</label>
 						<label v-else class="pickerText">{{list[index].name}}</label>
 					</picker>
 				</view>
@@ -57,8 +57,8 @@
 			<view class="">购置日期</view>
 			<view class="selectBox">
 				<view style="width: 80%;">
-					<picker mode="date" @change="selectpurchaseTime" :value="purchaseTime" :start="startDate" :end="endDate"
-						class="pickerBox">
+					<picker mode="date" @change="selectpurchaseTime" :value="purchaseTime" :start="startDate"
+						:end="endDate" class="pickerBox">
 						<label v-if="!log3" class="pickerText">请选择</label>
 						<label v-else class="pickerText">{{purchaseTime}}</label>
 					</picker>
@@ -146,8 +146,8 @@
 			<view class="">续保日期</view>
 			<view class="selectBox">
 				<view style="width: 80%;">
-					<picker mode="date" @change="selectRenewalTime" :value="RenewalTime" :start="startDate" :end="endDate"
-						class="pickerBox">
+					<picker mode="date" @change="selectRenewalTime" :value="RenewalTime" :start="startDate"
+						:end="endDate" class="pickerBox">
 						<label v-if="!log6" class="pickerText">请选择</label>
 						<label v-else class="pickerText">{{RenewalTime}}</label>
 					</picker>
@@ -160,7 +160,8 @@
 		</view>
 
 		<view style="margin-top: 40rpx;">
-			<view v-for="(item,index) in CompulsoryList" :key="index" style="display: inline-block;width: 20%;margin: 0px 2%;">
+			<view v-for="(item,index) in CompulsoryList" :key="index"
+				style="display: inline-block;width: 20%;margin: 0px 2%;">
 				<view style="position: relative;">
 					<image style="height:160rpx;width: 160rpx;" :src="item" mode=""></image>
 					<image style="position: absolute;height: 36rpx;width: 36rpx;top: -20rpx;left:140rpx;"
@@ -189,8 +190,8 @@
 			<view class="">续保日期</view>
 			<view class="selectBox">
 				<view style="width: 80%;">
-					<picker mode="date" @change="selectBusinessDate" :value="businessDate" :start="startDate" :end="endDate"
-						class="pickerBox">
+					<picker mode="date" @change="selectBusinessDate" :value="businessDate" :start="startDate"
+						:end="endDate" class="pickerBox">
 						<label v-if="!log7" class="pickerText">请选择</label>
 						<label v-else class="pickerText">{{businessDate}}</label>
 					</picker>
@@ -203,10 +204,12 @@
 		</view>
 
 		<view style="margin-top: 40rpx;">
-			<view v-for="(item,index) in businessList" :key="index" style="display: inline-block;width: 20%;margin: 0px 2%;">
+			<view v-for="(item,index) in businessList" :key="index"
+				style="display: inline-block;width: 20%;margin: 0px 2%;">
 				<view style="position: relative;">
 					<image style="height:160rpx;width: 160rpx;" :src="item" mode=""></image>
-					<image @click="delImg(2,index)" style="position: absolute;height: 36rpx;width: 36rpx;top: -20rpx;left:140rpx;"
+					<image @click="delImg(2,index)"
+						style="position: absolute;height: 36rpx;width: 36rpx;top: -20rpx;left:140rpx;"
 						:src="$util.fileUrl('/lancha.png')" mode=""></image>
 				</view>
 			</view>
@@ -223,7 +226,8 @@
 
 
 		<view style="margin-top: 40rpx;">
-			<view v-for="(item,index) in InsuranceList" :key="index" style="display: inline-block;width: 20%;margin: 0px 2%;">
+			<view v-for="(item,index) in InsuranceList" :key="index"
+				style="display: inline-block;width: 20%;margin: 0px 2%;">
 				<view style="position: relative;">
 					<image style="height:160rpx;width: 160rpx;" :src="item" mode=""></image>
 					<image style="position: absolute;height: 36rpx;width: 36rpx;top: -20rpx;left:140rpx;"
@@ -246,17 +250,18 @@
 
 
 
-	<uni-popup ref="popup" type="center">
-		<view style="background-color: #F1F1F1;width: 450rpx;height: 400rpx;border-radius: 20rpx;padding: 20rpx;">
-			<view v-for="(item,index) in colorList" style="display: inline-block;margin-right: 20rpx;" @click="selectColor(index)">
-				<view style="display: flex;justify-content: center;align-items: center;">
-					<view class="">{{item.name}}</view>
-					<view class="coloBox" :style="{backgroundColor:item.color}"></view>
-				</view>
+		<uni-popup ref="popup" type="center">
+			<view style="background-color: #F1F1F1;width: 450rpx;height: 400rpx;border-radius: 20rpx;padding: 20rpx;">
+				<view v-for="(item,index) in colorList" style="display: inline-block;margin-right: 20rpx;"
+					@click="selectColor(index)">
+					<view style="display: flex;justify-content: center;align-items: center;">
+						<view class="">{{item.name}}</view>
+						<view class="coloBox" :style="{backgroundColor:item.color}"></view>
+					</view>
 
+				</view>
 			</view>
-		</view>
-	</uni-popup>
+		</uni-popup>
 
 
 	</view>
@@ -270,14 +275,17 @@
 		uploadFiles
 	} from '@/apis/oss';
 	import {
-		vehicleInsert
+		vehicleInsert,
+		vehicleSelectOne
 	} from '@/apis/vehicle'
-	
+
+
+
 
 	export default {
 		data() {
 			return {
-				list: [],//车型list
+				list: [], //车型list
 				carStatus: [{
 					name: '正常',
 					id: 1
@@ -290,7 +298,7 @@
 				}, {
 					name: '预留中',
 					id: 4
-				}],//状态list
+				}], //状态list
 				index: 0,
 				index1: 0,
 				log1: false,
@@ -301,29 +309,38 @@
 				log6: false,
 				log7: false,
 				//log 所有选择器 初始显示
-				boxColor: '#000000',//彩色小方块
-				colorName:'黑色',//颜色名字
-				colorList:[{name:'黑色',color:'#000000'},{name:'红色',color:'#ff0e14'}],
-				
-				purchaseTime: '',//购置时间
-				getcard: '',//发证时间
-				ceartTime: '',//注册时间
-				RenewalTime:'',//续保日期1
-				RenewalTime:'',//续保日期2
+				boxColor: '#000000', //彩色小方块
+				colorName: '黑色', //颜色名字
+				colorList: [{
+					name: '黑色',
+					color: '#000000'
+				}, {
+					name: '红色',
+					color: '#ff0e14'
+				}],
+
+				carNum: '', //车牌号
+				purchaseTime: '', //购置时间
+				getcard: '', //发证时间
+				ceartTime: '', //注册时间
+				RenewalTime: '', //续保日期1
+				RenewalTime: '', //续保日期2
 				idCard1: '', //身份证正
 				idCard2: '', //身份证反
-				CompulsoryList:[],//交强险img List
-				businessList:[],//商业img List
-				InsuranceList:[],//保险证img List
-				vehicleModelId:'',//车型id
-				statusId:'',//状态id
-				plateNumber:'',//号牌号码
-				brandModel:'',//品牌型号
-				discernCode:'',//车辆识别
-				engineNum:'',//发动机号码
-				insuranceSn:'',//交强险单号
-				businessSn:'',//商业险单号
-				businessDate:'',//商业险续保日期
+				CompulsoryList: [], //交强险img List
+				businessList: [], //商业img List
+				InsuranceList: [], //保险证img List
+				vehicleModelId: '', //车型id
+				statusId: '', //状态id
+				plateNumber: '', //号牌号码
+				brandModel: '', //品牌型号
+				discernCode: '', //车辆识别
+				engineNum: '', //发动机号码
+				insuranceSn: '', //交强险单号
+				businessSn: '', //商业险单号
+				businessDate: '', //商业险续保日期
+				carObj: '', //详情车辆信息、
+				carId: ''
 			}
 		},
 		computed: {
@@ -334,32 +351,93 @@
 				return this.getDate('end');
 			}
 		},
-		onLoad() {
+		onLoad(e) {
 			this.queryAll()
+			if (e.id != undefined) {
+				this.vehicleSelectOne(e.id)
+				this.carId = e.id
+			}
+
 		},
 		methods: {
-			delImg(e,q) {
-				if(e==1){
+			//获取详情
+			async vehicleSelectOne(e) {
+				const [err, res] = await vehicleSelectOne(e)
+				if (err) return
+				console.log(res)
+				this.carObj = res.data
+
+
+				// this.log1: false,
+				this.log2 = true,
+					this.log3 = true,
+					this.log4 = true,
+					this.log5 = true,
+					this.log6 = true,
+					this.log7 = true,
+
+
+					this.carNum = this.carObj.carNumber
+				for (let i = 0; i < this.colorList.length; i++) {
+					if (this.carObj.colour == this.colorList[i].name) {
+						this.boxColor = this.colorList[i].color
+						this.colorName = this.colorList[i].name
+					}
+				}
+				for (let i = 0; i < this.carStatus.length; i++) {
+					if (this.carObj.vehicleStatus == this.carStatus[i].id) {
+						this.index1 = i
+					}
+				}
+				this.vehicleModelId = this.carObj.vehicleModelId
+				this.statusId = this.carStatus[this.index1].id
+				this.purchaseTime = this.carObj.purchaseTime
+				this.idCard1 = this.carObj.vehicleDrivingPositiveFiles
+				this.idCard2 = this.carObj.vehicleDrivingNegativeFiles
+				this.plateNumber = this.carObj.plateNumber
+				this.brandModel = this.carObj.brandModel
+				this.discernCode = this.carObj.discernCode
+				this.engineNum = this.carObj.engineNum
+				this.getcard = this.carObj.issueDate
+				this.ceartTime = this.carObj.registeredDate
+				this.insuranceSn = this.carObj.insuranceSn
+				this.RenewalTime = this.carObj.insuranceTime
+				this.CompulsoryList = JSON.parse(this.carObj.insuranceFile)
+				this.businessSn = this.carObj.businessSn
+				this.businessDate = this.carObj.businessDate
+				this.businessList = JSON.parse(this.carObj.businessFile)
+				this.InsuranceList = JSON.parse(this.carObj.insuranceUrls)
+
+
+
+
+
+				console.log(this.carObj)
+			},
+			//删除图片
+			delImg(e, q) {
+				if (e == 1) {
 					this.CompulsoryList.splice(e, 1)
-				}else if(e==2){
+				} else if (e == 2) {
 					this.businessList.splice(e, 1)
-				}else{
-				this.labelList.splice(e, 1)	
+				} else {
+					this.labelList.splice(e, 1)
 				}
 			},
-			
+			//获取车型
 			async queryAll() {
 				const [err, res] = await queryAll()
 				if (err) return
 				console.log(res)
 				this.list = res.data
 			},
-		selectColor(e){
-			console.log(e)
-			this.colorName=this.colorList[e].name
-			this.boxColor=this.colorList[e].color
-			this.$refs.popup.close()
-		},
+			//选择颜色
+			selectColor(e) {
+				console.log(e)
+				this.colorName = this.colorList[e].name
+				this.boxColor = this.colorList[e].color
+				this.$refs.popup.close()
+			},
 			// 打开颜色弹窗
 			open() {
 				this.$refs.popup.open()
@@ -413,15 +491,15 @@
 								this.CompulsoryList.push(rese[i])
 							}
 
-						} else if(e==4){
+						} else if (e == 4) {
 							for (let i = 0; i < rese.length; i++) {
 
 								this.businessList.push(rese[i])
 							}
 
-						}else{
+						} else {
 							for (let i = 0; i < rese.length; i++) {
-							
+
 								this.InsuranceList.push(rese[i])
 							}
 						}
@@ -435,47 +513,77 @@
 					}
 				})
 			},
-		async	next(){
-			  let data={
-				  vehicleModelId:this.vehicleModelId,
-				  carNumber:this.carNum,
-				  colour:this.colorName,
-				  vehicleStatus:this.statusId,
-				  purchaseTime:this.purchaseTime,
-				  vehicleDrivingPositiveFiles:this.idCard1,
-				  vehicleDrivingNegativeFiles:this.idCard2,
-				  plateNumber:this.plateNumber,
-				  brandModel:this.brandModel,
-				  discernCode:this.discernCode,
-				  engineNum:this.engineNum,
-				  issueDate:this.getcard,
-				  registeredDate:this.ceartTime,
-				  insuranceSn:this.insuranceSn,
-				  insuranceTime:this.RenewalTime,
-				  insuranceFile:JSON.stringify(this.CompulsoryList),
-				  businessSn:this.businessSn,
-				  businessDate:this.businessDate,
-				  businessFile:JSON.stringify(this.businessList),
-				  insuranceUrls:JSON.stringify(this.InsuranceList),
-			  }	
-			 const [err,res] = await vehicleInsert(data)
-			 if(err) return
-			  console.log(res)
+			async next() {
+				if (this.carId == "") {
+					var data = {
+						vehicleModelId: this.vehicleModelId,
+						carNumber: this.carNum,
+						colour: this.colorName,
+						vehicleStatus: this.statusId,
+						purchaseTime: this.purchaseTime,
+						vehicleDrivingPositiveFiles: this.idCard1,
+						vehicleDrivingNegativeFiles: this.idCard2,
+						plateNumber: this.plateNumber,
+						brandModel: this.brandModel,
+						discernCode: this.discernCode,
+						engineNum: this.engineNum,
+						issueDate: this.getcard,
+						registeredDate: this.ceartTime,
+						insuranceSn: this.insuranceSn,
+						insuranceTime: this.RenewalTime,
+						insuranceFile: JSON.stringify(this.CompulsoryList),
+						businessSn: this.businessSn,
+						businessDate: this.businessDate,
+						businessFile: JSON.stringify(this.businessList),
+						insuranceUrls: JSON.stringify(this.InsuranceList),
+					}
+				} else {
+					var data = {
+						id: this.carId,
+						vehicleModelId: this.vehicleModelId,
+						carNumber: this.carNum,
+						colour: this.colorName,
+						vehicleStatus: this.statusId,
+						purchaseTime: this.purchaseTime,
+						vehicleDrivingPositiveFiles: this.idCard1,
+						vehicleDrivingNegativeFiles: this.idCard2,
+						plateNumber: this.plateNumber,
+						brandModel: this.brandModel,
+						discernCode: this.discernCode,
+						engineNum: this.engineNum,
+						issueDate: this.getcard,
+						registeredDate: this.ceartTime,
+						insuranceSn: this.insuranceSn,
+						insuranceTime: this.RenewalTime,
+						insuranceFile: JSON.stringify(this.CompulsoryList),
+						businessSn: this.businessSn,
+						businessDate: this.businessDate,
+						businessFile: JSON.stringify(this.businessList),
+						insuranceUrls: JSON.stringify(this.InsuranceList),
+					}
+				}
+
+				const [err, res] = await vehicleInsert(data)
+				if (err) return
+				console.log(res)
+				uni.navigateBack({
+					delta: 1
+				})
 			},
 			bindPickerChange: function(e) {
 				console.log('pp1')
 				this.log1 = true
 				this.index = e.target.value //取其下标
-				this.vehicleModelId=this.list[this.index].id
+				this.vehicleModelId = this.list[this.index].id
 			},
 			bindPickerChange1: function(e) {
 				console.log('pp1')
 				this.log2 = true
 				console.log(e.target.value)
 				this.index1 = e.target.value //取其下标
-				this.statusId=this.carStatus[this.index1].id
+				this.statusId = this.carStatus[this.index1].id
 			},
-			selectpurchaseTime(e){
+			selectpurchaseTime(e) {
 				this.log3 = true
 				this.purchaseTime = e.target.value
 			},
@@ -485,18 +593,18 @@
 				this.log4 = true
 				this.getcard = e.target.value
 			},
-			
-			
-			
+
+
+
 			setTime: function(e) {
 				this.log5 = true
 				this.ceartTime = e.target.value
 			},
-			selectRenewalTime(e){
+			selectRenewalTime(e) {
 				this.log6 = true
 				this.RenewalTime = e.target.value
 			},
-			selectBusinessDate: function(e) { 
+			selectBusinessDate: function(e) {
 				this.log7 = true
 				this.businessDate = e.target.value
 			},
@@ -615,10 +723,11 @@
 		width: 44%;
 		margin: 0px 3%;
 	}
-	.coloBox{
-		    height: 24rpx;
-		    width: 24rpx;
-		    border-radius: 5rpx;
-			margin-left: 10rpx;
+
+	.coloBox {
+		height: 24rpx;
+		width: 24rpx;
+		border-radius: 5rpx;
+		margin-left: 10rpx;
 	}
 </style>

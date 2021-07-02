@@ -4,34 +4,37 @@
 			<view class="fleetManageSearch">
 				<view class="flex searchPanel">
 					<view class="flex searchInput">
-						<input type="text" class="search" />
+						<input v-model="carNum" placeholder="请输入车牌号" type="text" class="search" />
 						<i class="cuIcon-search"></i>
 						<i class="cuIcon-roundclosefill"></i>
 					</view>
 				</view>
 			</view>
-			<view class="searchText">搜索</view>
+			<view class="searchText" @click="search">搜索</view>
 		</view>
 		<view class="flex-center flex-wrap content">
-			<view v-for="(item, index) in 10" :key="index" class="panel">
-				<view class="flex titlePanel">
-					<p class="title">渝A·5231B</p>
-					<p class="type">租赁中</p>
+				<view v-for="(item, index) in list" :key="index" class="panel" @click="carInfo()">
+					<view class="flex titlePanel">
+						<p class="title">{{item.carNumber}}</p>
+						<p v-show="item.vehicleStatus==1" class="type">正常</p>
+						<p v-show="item.vehicleStatus==2" class="type">异常</p>
+						<p v-show="item.vehicleStatus==3" class="type">租赁中</p>
+						<p v-show="item.vehicleStatus==4" class="type">预留中</p>
+					</view>
+					<p class="text">{{item.brandName}}丨{{item.gears}} {{item.capacity}}座 {{item.outputVolumeName}}</p>
+					<view class="flex detail">
+						<p class="oil" v-show="item.oil!=null">油量：62%</p>
+						<p class="car">车龄：{{item.carAge}}</p>
+					</view>
+					<view class="flex-center line">
+						<i></i>
+					</view>
+					<p class="name" v-show="item.vehicleStatus==3">使用人：张全蛋</p>
+					<view class="flex timeText" v-show="item.vehicleStatus>2">
+						<text class="cuIcon-countdown"></text>
+						<p>05-25 14:48 至 05-30 14:48</p>
+					</view>
 				</view>
-				<p class="text">大众 捷达丨自动 5座 2.0L</p>
-				<view class="flex detail">
-					<p class="oil">油量：62%</p>
-					<p class="car">车辆：3年20天</p>
-				</view>
-				<view class="flex-center line">
-					<i></i>
-				</view>
-				<p class="name">使用人：张全蛋</p>
-				<view class="flex timeText">
-					<text class="cuIcon-countdown"></text>
-					<p>05-25 14:48 至 05-30 14:48</p>
-				</view>
-			</view>
 			<view class="loadmore">
 				<tui-loadmore v-if="false" :index="2"></tui-loadmore>
 				<tui-nomore v-else text="没有更多了"></tui-nomore>
@@ -47,14 +50,44 @@
 </template>
 
 <script>
+	import {
+		vehiclePageQuery
+	} from '@/apis/vehicle'
+	
 	export default {
 		data() {
 			return {
-
+				list:[],
+				carNum:''
 			}
 		},
+		onLoad() {
+			this.getlist()
+		},
 		methods: {
-
+			//获取列表
+			async getlist() {
+				let data = {
+					page: this.page,
+					size: this.size
+				}
+				const [err, res] = await vehiclePageQuery(data)
+				if (err) return
+				console.log(res)
+				this.list = res.data.list
+			
+			},
+		async	search(){
+				let data = {
+					page: this.page,
+					size: this.size,
+					carNumber:this.carNum
+				}
+				const [err, res] = await vehiclePageQuery(data)
+				if (err) return
+				console.log(res)
+				this.list = res.data.list
+			}
 		}
 	}
 </script>
@@ -156,6 +189,7 @@
 					font-weight: 400;
 					color: #000000;
 					letter-spacing: 0rpx;
+					margin-right: 60rpx;
 				}
 
 				.car {
@@ -163,7 +197,7 @@
 					font-weight: 400;
 					color: #000000;
 					letter-spacing: 0rpx;
-					margin-left: 60rpx;
+					
 				}
 			}
 
