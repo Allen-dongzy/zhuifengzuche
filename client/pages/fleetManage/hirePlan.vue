@@ -4,8 +4,8 @@
 		<view class="topNav" v-if="search==false">
 			<image style="width: 48rpx;height: 48rpx;" :src="$util.fileUrl('/time.png')" mode=""></image>
 			<view style="margin-left: 2%;">
-				<picker mode="date" :value="stardate" :start="startDate" :end="endDate" @change="starTime">
-					<view class="uni-input">{{stardate}}</view>
+				<picker mode="date" :value="staredate" :start="startDate" :end="endDate" @change="starTime">
+					<view class="uni-input">{{staredate}}</view>
 				</picker>
 			</view>
 			<view style="margin-left: 2%;">
@@ -13,7 +13,7 @@
 					<view class="uni-input">{{enddate}}</view>
 				</picker>
 			</view>
-			<view class="statusBox" @click="changeStuse">
+			<view class="statusBox" @click="changestatus">
 				<view class="">状态</view>
 				<view class="">
 					<image style="width:32rpx;height: 16rpx;" :src="$util.fileUrl('/xiangxia.png')" mode=""></image>
@@ -24,13 +24,15 @@
 				<image style="width:28rpx;height:28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode=""></image>
 			</view>
 		</view>
-		
+
 		<view class="topNav" style="color: #8E8E93;font-size: 30rpx" v-if="search==true">
-			<input type="text" style="background-color:#EFF0F3;height: 70rpx;width: 500rpx;border-radius: 50rpx;padding-left: 20rpx;" value="" />
+			<input type="text" @input="onInput" v-model="searchField"
+				style="background-color:#EFF0F3;height: 70rpx;width: 500rpx;border-radius: 50rpx;padding-left: 20rpx;"
+				value="" />
 			<view style="margin-left: 20rpx;" @click="showSearch">取消</view>
 		</view>
-		
-		
+
+
 
 		<view style="margin-top: 60rpx;">
 			<view class="colorTitle">
@@ -51,55 +53,59 @@
 			<view class="carName" style="margin: 40rpx 16rpx;">
 				<view class="buleLine"> </view>
 				<view class="">
-					<view style="color: #000000;font-size: 28rpx;font-weight: bold;">渝A·5213B</view>
+					<view style="color: #000000;font-size: 28rpx;font-weight: bold;">{{item.carNumber}}</view>
 					<view class="carName">
-						<view class="">豪华</view>
+						<view class="">{{item.categoryName}}</view>
 						<view class="garyLine"></view>
-						<view class="">大众</view>
+						<view class="">{{item.brandName}}</view>
 					</view>
 				</view>
 			</view>
 			<view class="dayBox">
-				<view v-for="(item,index) in list" :key="index">
-					<view v-if="item.stuse==1" class="timecolorBox" style="background-color: #FFA05B;">
-						<view>{{item.name}}</view>
-						<view style="font-size: 20rpx;">¥{{item.price}}</view>
+				<view v-for="(itemy,indexy) in item.rentalPlans" :key="indexy">
+					<view v-if="itemy.planStatus==0" class="timecolorBox">
+						<view>{{itemy.planStartTime.slice(8,11)}}</view>
+						<view style="font-size: 20rpx;">¥{{itemy.money}}</view>
 					</view>
-					<view v-if="item.stuse==2" class="timecolorBox" style="background-color: #5A7EFF;">
-						<view>{{item.name}}</view>
-						<view style="font-size: 20rpx;">¥{{item.price}}</view>
+					<view v-if="itemy.planStatus==1" class="timecolorBox" style="background-color: #FFA05B;">
+						<view>{{itemy.planStartTime.slice(8,11)}}</view>
+						<view style="font-size: 20rpx;">¥{{itemy.money}}</view>
 					</view>
-					<view v-if="item.stuse==3" class="timecolorBox" style="background-color: #EC80E1;">
-						<view>{{item.name}}</view>
-						<view style="font-size: 20rpx;">¥{{item.price}}</view>
+					<view v-if="itemy.planStatus==2" class="timecolorBox" style="background-color: #5A7EFF;">
+						<view>{{itemy.planStartTime.slice(8,11)}}</view>
+						<view style="font-size: 20rpx;">¥{{itemy.money}}</view>
 					</view>
-					<view v-if="item.stuse==4" class="timecolorBox" style="background-color: #C4C4C4;">
-						<view>{{item.name}}</view>
-						<view style="font-size: 20rpx;">¥{{item.price}}</view>
+					<view v-if="itemy.planStatus==3" class="timecolorBox" style="background-color: #EC80E1;">
+						<view>{{itemy.planStartTime.slice(8,11)}}</view>
+						<view style="font-size: 20rpx;">¥{{itemy.money}}</view>
 					</view>
-					<view v-if="item.stuse==5" class="timecolorBox">
-						<view>{{item.name}}</view>
-						<view style="font-size: 20rpx;">¥{{item.price}}</view>
+					<view v-if="itemy.planStatus==4" class="timecolorBox" style="background-color: #C4C4C4;">
+						<view>{{itemy.planStartTime.slice(8,11)}}</view>
+						<view style="font-size: 20rpx;">¥{{itemy.money}}</view>
+					</view>
+					<view v-if="itemy.planStatus==5" class="timecolorBox">
+						<view>{{itemy.planStartTime.slice(8,11)}}</view>
+						<view style="font-size: 20rpx;">¥{{itemy.money}}</view>
 						<view class="redLine"></view>
 					</view>
-					<view v-if="item.stuse==6" class="timecolorBox">
-						<view>{{item.name}}</view>
-						<view style="font-size: 20rpx;">¥{{item.price}}</view>
+					<view v-if="itemy.planStatus==6" class="timecolorBox">
+						<view>{{itemy.planStartTime.slice(8,11)}}</view>
+						<view style="font-size: 20rpx;">¥{{itemy.money}}</view>
 					</view>
 				</view>
 			</view>
 		</view>
 
 
-		<view v-if="showStuse==true" class="Mask">
+		<view v-if="showStatus==true" class="Mask">
 
 		</view>
-		<view class="box1" v-if="showStuse==true">
+		<view class="box1" v-if="showStatus==true">
 			<view class="topNav" style="margin-bottom: 20rpx;">
 				<image style="width: 48rpx;height: 48rpx;" :src="$util.fileUrl('/time.png')" mode=""></image>
 				<view style="margin-left: 2%;">
-					<picker mode="date" :value="stardate" :start="startDate" :end="endDate" @change="starTime">
-						<view class="uni-input">{{stardate}}</view>
+					<picker mode="date" :value="staredate" :start="startDate" :end="endDate" @change="starTime">
+						<view class="uni-input">{{staredate}}</view>
 					</picker>
 				</view>
 				<view style="margin-left: 2%;">
@@ -107,7 +113,7 @@
 						<view class="uni-input">{{enddate}}</view>
 					</picker>
 				</view>
-				<view class="statusBox" @click="changeStuse">
+				<view class="statusBox" @click="changestatus">
 					<view style="color:#5A7EFF">状态</view>
 					<view class="">
 						<image style="width:32rpx;height: 16rpx;" :src="$util.fileUrl('/xiangshang.png')" mode="">
@@ -122,14 +128,14 @@
 			<view class="colorTitle"
 				style="padding: 30rpx 0px;border-bottom: 1px solid #EFF0F3;border-top: 1px solid #EFF0F3;">
 				<view style="margin-right: :;;">全部</view>
-				<view v-for="(item,index) in stuseList" :key="index" @click="changeType(index)">
-					<view v-if="item.stuse==1" class="noSelect">{{item.name}}</view>
-					<view v-else  class="yesSelect">{{item.name}}</view>
+				<view v-for="(item,index) in statusList" :key="index" @click="changeType(index)">
+					<view v-if="item.status==false" class="noSelect">{{item.name}}</view>
+					<view v-else class="yesSelect">{{item.name}}</view>
 				</view>
 			</view>
 			<view class="colorTitle" style="margin-top: 20rpx ;">
 				<view class="setnull">清空</view>
-				<view class="sure">确定</view>
+				<view class="sure" @click="sure">确定</view>
 			</view>
 		</view>
 
@@ -137,60 +143,74 @@
 </template>
 
 <script>
+	import {
+		vehiclePageLeaseQuery
+	} from '@/apis/vehicle'
+
+	import {
+		debounce
+	} from '@/utils/tools';
+
 	export default {
 		data() {
 
 			return {
-	
-		
 				index: 0,
 				carList: [1, 1, 1, 1],
 				list: [{
 					name: 19,
 					price: 219,
-					stuse: 1
+					status: 1
 				}, {
 					name: 19,
 					price: 219,
-					stuse: 2
+					status: 2
 				}, {
 					name: 19,
 					price: 219,
-					stuse: 3
+					status: 3
 				}, {
 					name: 19,
 					price: 219,
-					stuse: 4
+					status: 4
 				}, {
 					name: 19,
 					price: 219,
-					stuse: 5
+					status: 5
 				}, {
 					name: 19,
 					price: 219,
-					stuse: 6
+					status: 6
 				}],
-				stuseList: [{
-					name: '预定',
-					stuse: 1
+				statusList: [{
+					name: '正常',
+					id: 1,
+					status: false
 				}, {
-					name: '租凭中',
-					stuse: 2
+					name: '异常',
+					id: 2,
+					status: false
+				}, {
+					name: '租赁中',
+					id: 3,
+					status: false
 				}, {
 					name: '预留中',
-					stuse: 1
-				}, {
-					name: '可用',
-					stuse: 1
-				}],
-				stardate: '开始时间',
+					id: 4,
+					status: false
+				}], //状态list
+				staredate: '开始时间',
 				enddate: '结束时间',
-				showStuse: false,
-				search:false
+				showStatus: false,
+				search: false,
+				page: 1,
+				size: 10,
+				statuseId: '',
+				searchField: ''
 			}
 		},
 		onLoad() {
-
+			this.vehiclePageLeaseQuery()
 		},
 
 		computed: {
@@ -202,12 +222,74 @@
 			}
 		},
 		methods: {
+			//监听搜索
+			onInput: debounce(async function() {
+				let data = {
+					page: this.page,
+					size: this.size,
+					searchField: this.searchField
+				}
+				const [err, res] = await vehiclePageLeaseQuery(data)
+				if (err) return
+				this.carList = res.data.list
 
-			starTime: function(e) {
-				this.stardate = e.target.value
+			}),
+			//列表
+
+			async vehiclePageLeaseQuery() {
+				let data = {
+					page: this.page,
+					size: this.size,
+					planStatus: this.statuseId,
+					searchField: this.searchField
+				}
+				const [err, res] = await vehiclePageLeaseQuery(data)
+				if (err) return
+				this.carList = res.data.list
+				console.log(res.data.list)
 			},
-			endTime: function(e) {
+			sure() {
+				this.vehiclePageLeaseQuery()
+				this.showStatus = false
+			},
+			async starTime(e) {
+				this.staredate = e.target.value
+				if (this.enddate == '结束时间') {
+					this.$toast("请选择结束时间")
+					return false;
+				} else {
+					var data = {
+						page: this.page,
+						size: this.size,
+						planBeginTime: this.staredate + ' 00:00:00',
+						planEndTime: this.enddate + ' 00:00:00',
+					}
+				}
+				const [err, res] = await vehiclePageLeaseQuery(data)
+				if (err) return
+				this.carList = res.data.list
+				console.log(res.data.list)
+
+
+			},
+			async endTime(e) {
 				this.enddate = e.target.value
+
+				if (this.staredate == '开始时间') {
+					this.$toast("请选择开始时间")
+					return false;
+				} else {
+					var data = {
+						page: this.page,
+						size: this.size,
+						planBeginTime: this.staredate + ' 00:00:00',
+						planEndTime: this.enddate + ' 00:00:00',
+					}
+				}
+				const [err, res] = await vehiclePageLeaseQuery(data)
+				if (err) return
+				this.carList = res.data.list
+				console.log(res.data.list)
 			},
 
 			getDate(type) {
@@ -225,26 +307,27 @@
 				day = day > 9 ? day : '0' + day;
 				return `${year}-${month}-${day}`;
 			},
-			changeStuse() {
-				if (this.showStuse) {
-					this.showStuse = false
+			changestatus() {
+				if (this.showStatus) {
+					this.showStatus = false
 				} else {
-					this.showStuse = true
+					this.showStatus = true
 				}
 			},
-			changeType(e){
-				for(let i=0;i<this.stuseList.length;i++){
-					this.stuseList[i].stuse=1
+			changeType(e) {
+				for (let i = 0; i < this.statusList.length; i++) {
+					this.statusList[i].status = false
 				}
-				this.stuseList[e].stuse=2
+				this.statusList[e].status = true
+				this.statuseId = this.statusList[e].id
 			},
-			showSearch(){
-				if(this.search){
-					this.search=false
-					
-				}else{
-					this.search=true
-					this.showStuse=false
+			showSearch() {
+				if (this.search) {
+					this.search = false
+
+				} else {
+					this.search = true
+					this.showStatus = false
 				}
 			}
 		}
@@ -427,5 +510,4 @@
 		margin: 0px 20rpx;
 		border-radius: 50rpx;
 	}
-
 </style>
