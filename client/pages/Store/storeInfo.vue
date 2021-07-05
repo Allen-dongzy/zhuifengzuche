@@ -37,9 +37,9 @@
 						{{ businessStatus ? '正在营业': '未在营业'}}
 					</view>
 				</view>
-				<view class="allFlex" style="margin-top: 20rpx;" @click="callPhone(info.memberPhone)">
+				<view class="allFlex" style="margin-top: 20rpx;">
 					<view class="title">联系电话：</view>
-					<view class="conten">{{info.memberPhone}}</view>
+					<view class="conten" @click="callPhone(info.memberPhone)">{{info.memberPhone}}</view>
 				</view>
 				<view class="allFlex" style="margin-top: 20rpx;">
 					<view class="title">营业时间：</view>
@@ -53,16 +53,17 @@
 					<view class="title">负责人：</view>
 					<view class="conten">{{info.principal}}</view>
 				</view>
-				<view class="allFlex" style="margin-top: 20rpx;" @click="callPhone(info.principalPhone)">
+				<view class="allFlex" style="margin-top: 20rpx;">
 					<view class="title">负责人电话：</view>
-					<view class="conten">{{info.principalPhone}}</view>
+					<view class="conten" @click="callPhone(info.principalPhone)">{{info.principalPhone}}</view>
 				</view>
 				<view class="allFlex" style="margin-top: 20rpx;">
 					<view class="title">推荐码：</view>
 					<view class="conten">{{info.note || '暂无'}}</view>
 				</view>
 				<view class="allFlex" style="margin-top: 40rpx;">
-					<view class="point" style="margin-left: 50%;" @click="$open('/pages/Store/storePoint')">送车点管理</view>
+					<view class="point" style="margin-left: 50%;"
+						@click="$open('/pages/Store/storePoint', {shopId: info.id})">送车点管理</view>
 					<view class="point" style="margin-left: 20rpx;" @click="$open('/pages/Store/staff')">员工管理</view>
 				</view>
 
@@ -70,20 +71,24 @@
 		</view>
 		<view style="font-size: 32rpx;color: #000000;width: 90%;margin: auto;margin-top: 40rpx;">评价（<text
 				style="font-size: 32rpx;color: #5A7EFF;">{{info.evaluationNumber || 0}}</text>）条</view>
-		<view style="width: 90%;margin: auto;border-bottom: 2rpx solid #EFF0F3;padding: 20rpx 0rpx;">
+		<view style="width: 90%;margin: auto;border-bottom: 2rpx solid #EFF0F3;padding: 20rpx 0rpx;"
+			v-for="(item, index) in list" :key="index">
 			<view class="allFlex">
-				<image style="height: 64rpx;width: 64rpx;" :src="item.shopImages || $util.fileUrl('/cache-logo.png')"
+				<image style="height: 64rpx;width: 64rpx;" :src="item.evaluationUrl || $util.fileUrl('/cache-logo.png')"
 					mode="aspectFill"></image>
 				<view style="width: 450rpx;margin-left:20rpx;">
-					<view style="font-size: 28rpx;color: #000000;">隔壁老*</view>
+					<view style="font-size: 28rpx;color: #000000;">{{item.customInfoName}}</view>
 					<view>
-						<image class="star" :src="$util.fileUrl('/xing.png')"></image>
+						<image v-for="(item,index) in starCode" :key="index" class="star"
+							:src="$util.fileUrl('/xing.png')"></image>
 					</view>
 				</view>
-				<view style="color: #B2B2B2;font-size: 24rpx;">2021-05-18</view>
+				<view style="color: #B2B2B2;font-size: 24rpx;">{{item.createTime}}</view>
 			</view>
-			<view style="color: #000000;font-size: 28rpx;margin-left: 80rpx;margin-top: 20rpx;">服务特别好，牛逼plus!</view>
-			<view style="color:#FC3736;font-size: 28rpx;width: 100%;text-align: right;">删除</view>
+			<view style="color: #000000;font-size: 28rpx;margin-left: 80rpx;margin-top: 20rpx;">
+				{{item.evaluationDetails}}
+			</view>
+			<view style="color:#FC3736;font-size: 28rpx;width: 100%;text-align: right;" @click="evaluateDel">删除</view>
 		</view>
 		<uni-load-more :status="dataStatus" customNoMore="没有更多评论了" customNoData="暂无评论" />
 	</view>
@@ -204,8 +209,6 @@
 					size: this.size
 				}
 				const [err, res] = await evaluatePageQuery(params)
-				console.log(res)
-				console.log(err)
 				if (err) return
 				const {
 					requestKey,
@@ -216,6 +219,24 @@
 				this.dataStatus = dataStatus
 				if (!isRender) return
 				this.list = [...this.list, ...res.data.list]
+			},
+			// 删除评论
+			evaluateDel(index) {
+				uni.showModal({
+					title: '提示',
+					content: '要删除该评价吗？',
+					success: async btnRes => {
+						if (!btnRes.confirm) return
+						const params = {
+							id: this.list[index].id
+						}
+						const [err, res] = await evaluateDel(params)
+						console.log(res)
+						console.log(err)
+						if (err) return
+						// todo
+					}
+				})
 			}
 		}
 	}
