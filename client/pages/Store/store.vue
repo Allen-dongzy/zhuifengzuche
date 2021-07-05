@@ -1,5 +1,5 @@
 <template>
-	<view class="">
+	<view class="store">
 		<view class="home-bar" v-show="!searchMode">
 			<view class="add-label"></view>
 			<view class="function-box">
@@ -12,24 +12,24 @@
 		<view class="search-bar" v-show="searchMode">
 			<view class="serach-box">
 				<image class="search-icon" :src="`${filePath}/vehicleManage/search-big.png`"></image>
-				<input @input="onInput" v-model="searchVal" type="text" placeholder="请输入车型" placeholder-class="input">
-				<image class="clear" :src="`${filePath}/vehicleManage/clear.png`"></image>
+				<input @input="inputChange" v-model="keyword" type="text" placeholder="请输入车型" placeholder-class="input">
+				<image class="clear" :src="`${filePath}/vehicleManage/clear.png`" @click="clear"></image>
 			</view>
 			<view class="cancel" @tap="tapHeader">取消</view>
 		</view>
 		<view class="header-mat"></view>
-
 		<view v-for="(item,index) in list" :key="index" class="allFlex list-item"
-			@click="$open('/pages/Store/storeInfo')">
-			<image class="pic" :src="$util.fileUrl('/cache-logo.png')" mode="aspectFill"></image>
+			@click="$open('/pages/Store/storeInfo', {id: list[index].id})">
+			<image class="pic" :src="item.shopImages || $util.fileUrl('/cache-logo.png')" mode="aspectFill"></image>
 			<view class="desc">
-				<view class="name">门店名称</view>
-				<view class="addres">这是门店地址</view>
+				<view class="name">{{item.name}}</view>
+				<view class="addres">{{item.memberAddress}}</view>
 				<view class="allFlex star-box">
 					<image class="star" :src="$util.fileUrl('/xing.png')"></image>
 				</view>
 			</view>
 		</view>
+		<uni-load-more :status="dataStatus" />
 	</view>
 </template>
 
@@ -38,6 +38,13 @@
 	import {
 		memberShopPageQuery
 	} from '@/apis/memberShop'
+	import {
+		listManager
+	} from '@/utils/uni-tools'
+	import {
+		throttle,
+		debounce
+	} from '@/utils/tools'
 
 	export default {
 		data() {
@@ -48,10 +55,16 @@
 				page: 1,
 				size: 10,
 				requestKey: true,
+				keyword: '', // 关键字
 				dataStatus: '' // more loading noMore noData
 			}
 		},
 		onLoad() {
+			this.memberShopPageQuery()
+		},
+		onReachBottom() {
+			if (!this.requestKey) return
+			this.page++
 			this.memberShopPageQuery()
 		},
 		methods: {
@@ -59,16 +72,43 @@
 			tapHeader() {
 				this.searchMode = !this.searchMode
 			},
+			// input变化
+			inputChange: debounce(function() {
+				this.init()
+				this.memberShopPageQuery()
+			}),
+			// 初始化
+			init() {
+				this.requestKey = true
+				this.page = 1
+				this.list = []
+			},
+			// 清除关键字
+			clear: throttle(function() {
+				if (!this.keyword) return
+				this.keyword = ''
+				this.init()
+				this.memberShopPageQuery()
+			}),
 			// 门店查询
 			async memberShopPageQuery() {
+				this.dataStatus = 'loading'
 				const params = {
 					page: this.page,
-					size: this.size
+					size: this.size,
+					search: this.keyword
 				}
 				const [err, res] = await memberShopPageQuery(params)
-				console.log(res)
-				console.log(err)
 				if (err) return
+				const {
+					requestKey,
+					dataStatus,
+					isRender
+				} = listManager(res.data.list, this.page, this.size)
+				this.requestKey = requestKey
+				this.dataStatus = dataStatus
+				if (!isRender) return
+				this.list = [...this.list, ...res.data.list]
 			}
 		}
 	}
@@ -77,10 +117,15 @@
 <style lang="scss">
 	@import '@/static/scss/_mixin.scss';
 
+	.store {
+		padding-bottom: 30rpx;
+	}
+
 	.home-bar,
 	.search-bar {
 		position: fixed;
-		@include box(100%, 90rpx);
+		z-index: 9;
+		@include box(100%, 90rpx, #fff);
 		@include flex-row(space-between);
 		padding: 0 32rpx;
 
@@ -174,9 +219,11 @@
 	}
 
 	.addres {
+		max-width: 520rpx;
 		font-size: 24rpx;
 		color: #B2B2B2;
 		margin-top: 6rpx;
+		@include text-one;
 	}
 
 	.topNav {

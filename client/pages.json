@@ -336,7 +336,7 @@
 		{
 			"path": "pages/vehicleManage/add",
 			"style": {
-				"navigationBarTitleText": "添加车型"
+				"navigationBarTibtleText": "添加车型"
 			}
 		},
 		{
@@ -409,7 +409,7 @@
 			"path": "pages/fleetManage/addCar" //启动页面，必选
 		}, {
 			"name": "dzy", // dzy
-			"path": "pages/customerRecords/addCustomer" //启动页面，必选
+			"path": "pages/Store/store" //启动页面，必选
 		}]
 	}
 }
