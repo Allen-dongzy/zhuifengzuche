@@ -294,10 +294,10 @@
 		"current": 0,
 		"list": [{
 			"name": "wcy", // wcy
-			"path": "pages/Delivery/carPoint"
+			"path": "pages/common/userAgreement"
 		}, {
 			"name": "dzy", // dzy
-			"path": "pages/common/userAgreement"
+			"path": "pages/mine/mine"
 		}]
 	}
 }
