@@ -1,53 +1,50 @@
 <template>
 	<view class="box" :style="{backgroundImage: 'url('+`${ossUrl}/mine/userbg.png`+')'}">
-		<view class="nameBox">
-			<view class="">
-				<image style="height: 100rpx;width: 100rpx;border-radius: 50%;" :src="`${ossUrl}/mine/touxiang.png`"
-					mode=""></image>
+		<view class="name-box">
+			<image class="avatar" :src="`${ossUrl}/mine/touxiang.png`" mode="aspectFill"></image>
+			<view class="nickname" @click="$open('/pages/common/login')">点击登陆<view class="arrow"></view>
 			</view>
-			<view style="font-size: 40rpx;color: white;margin-left: 20rpx;" @click="$open('/pages/common/login')">点击登陆</view>
 		</view>
-		<view class="allBox">
-			<view class="">
-				<view class="flexBox" style="width: 100%;height:48rpx;border-radius: 10rpx;" @click="wallet">
-					<image style="height: 36rpx;width: 36rpx;" :src="`${ossUrl}/mine/yue.png`" mode=""></image>
-					<view style="margin-left: 15rpx;">余额</view>
+		<view class="all-box">
+			<view>
+				<view class="flex-box item" @click="wallet">
+					<image class="icon" :src="`${ossUrl}/mine/yue.png`"></image>
+					<view class="text">余额</view>
 				</view>
-				<view style="font-size: 60rpx;">0.00<label style="font-size:24rpx;">元</label></view>
+				<view class="price">0.00<text>元</text></view>
 			</view>
-
 			<view class="line"></view>
-			<view class="">
-				<view class="flexBox" style="width: 100%;height:48rpx;border-radius: 10rpx;" @click="coupon">
-					<image style="height: 36rpx;width: 36rpx;" :src="`${ossUrl}/mine/youhui.png`" mode=""></image>
-					<view style="margin-left: 15rpx;">优惠券</view>
+			<view>
+				<view class="flex-box item" @click="coupon">
+					<image class="icon" :src="`${ossUrl}/mine/youhui.png`"></image>
+					<view class="text">优惠券</view>
 				</view>
-				<view style="font-size: 60rpx;">0.00<label style="font-size:24rpx;">张</label></view>
+				<view class="price">0<text>张</text></view>
 			</view>
 		</view>
-		<view class="flexBox">
-			<view class="flexBoxOne" @click="lookinfo">
-				<image style="height: 80rpx;width: 80rpx;" :src="`${ossUrl}/mine/news.png`" mode=""></image>
-				<view class="grayTetx">消息通知</view>
+		<view class="flex-box function">
+			<view class="flex-box-one" @click="lookinfo">
+				<image class="icon" :src="`${ossUrl}/mine/news.png`"></image>
+				<view class="gray-text">消息通知</view>
 			</view>
-			<view class="flexBoxOne" @click="violation">
-				<image style="height: 80rpx;width: 80rpx;" :src="`${ossUrl}/mine/weizhang.png`" mode=""></image>
-				<view class="grayTetx">违章记录</view>
+			<view class="flex-box-one" @click="violation">
+				<image class="icon" :src="`${ossUrl}/mine/weizhang.png`"></image>
+				<view class="gray-text">违章记录</view>
 			</view>
-			<view class="flexBoxOne" @click="$open('/pages/mine/pay')">
-				<image style="height: 80rpx;width: 80rpx;" :src="`${ossUrl}/mine/fukuan.png`" mode=""></image>
-				<view class="grayTetx">付款</view>
+			<view class="flex-box-one" @click="$open('/pages/mine/pay')">
+				<image class="icon" :src="`${ossUrl}/mine/fukuan.png`"></image>
+				<view class="gray-text">付款</view>
 			</view>
-			<view class="flexBoxOne" @click="$open('/pages/mine/pay')">
-				<image style="height: 80rpx;width: 80rpx;" :src="`${ossUrl}/mine/shoukuan.png`" mode=""></image>
-				<view class="grayTetx">收款</view>
+			<view class="flex-box-one" @click="$open('/pages/mine/pay')">
+				<image class="icon" :src="`${ossUrl}/mine/shoukuan.png`"></image>
+				<view class="gray-text">收款</view>
 			</view>
 		</view>
-		<view class="grayLine"></view>
-		<view class="flexBoxLeft" @click="selectOne(item.path)" v-for="(item,index) in list " :key="index">
-			<image :src="`${ossUrl}`+item.img+``" style="height: 42rpx;width: 46rpx;" mode=""></image>
-			<view style="font-size: 28rpx;color: black;width: 90%;margin-left: 20rpx;">{{item.name}}</view>
-			<image :src="`${ossUrl}/mine/huiyou.png`" style="height: 40rpx;width: 26rpx;" mode=""></image>
+		<view class="gray-line"></view>
+		<view class="flex-box-left" @click="selectOne(item.path)" v-for="(item,index) in list " :key="index">
+			<image class="icon" :src="`${ossUrl}`+item.img+``" mode="widthFix"></image>
+			<view class="text">{{item.name}}</view>
+			<image class="arrow" :src="`${ossUrl}/mine/huiyou.png`"></image>
 		</view>
 	</view>
 </template>
@@ -134,6 +131,8 @@
 </script>
 
 <style lang="scss">
+	@import '@/static/scss/_mixin.scss';
+
 	.box {
 		height: 220rpx;
 		width: 100%;
@@ -142,19 +141,74 @@
 		padding-top: 200rpx;
 	}
 
-	.nameBox {
+	.name-box {
 		display: flex;
 		align-items: center;
 		margin-left: 40rpx;
+
+		.avatar {
+			height: 100rpx;
+			width: 100rpx;
+			border-radius: 50%;
+		}
+
+		.nickname {
+			@include flex-row();
+			font-size: 40rpx;
+			line-height: 56rpx;
+			color: #fff;
+			margin-left: 30rpx;
+
+			.arrow {
+				@include square(16rpx);
+				border: 1px solid #fff;
+				border-left: 0;
+				border-bottom: 0;
+				transform: rotate(45deg) translateY(4rpx);
+				margin-left: 10rpx;
+			}
+		}
 	}
 
-	.flexBox {
+	.flex-box {
 		display: flex;
 		justify-content: center;
 		align-items: center;
+
+		.item {
+			width: 100%;
+			height: 48rpx;
+			border-radius: 10rpx;
+		}
+
+		.icon {
+			height: 36rpx;
+			width: 36rpx;
+		}
+
+		.text {
+			margin-left: 15rpx;
+			@include font-set(28rpx, #000);
+			line-height: 40rpx;
+		}
+
+		&.function {
+			padding: 0 48rpx;
+			@include flex-row(space-between);
+		}
 	}
 
-	.allBox {
+	.price {
+		@include font-set(60rpx, #000, 700);
+		line-height: 84rpx;
+
+		text {
+			@include font-set(24rpx, #000, 700);
+			line-height: 34rpx;
+		}
+	}
+
+	.all-box {
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -162,12 +216,16 @@
 		width: 90%;
 		margin: auto;
 		border-radius: 20rpx;
-		margin-top: 20rpx;
+		margin-top: 30rpx;
 		padding: 25rpx 0px;
 		box-shadow: 5rpx 5rpx 2rpx rgba(114, 141, 244, 0.25);
+
+		&>view {
+			@include flex-col();
+		}
 	}
 
-	.flexBoxLeft {
+	.flex-box-left {
 		display: flex;
 		align-items: center;
 		width: 90%;
@@ -175,6 +233,22 @@
 		margin-top: 20rpx;
 		border-bottom: 2rpx solid #eff0f3;
 		padding: 30rpx 0rpx;
+
+		.text {
+			font-size: 28rpx;
+			color: black;
+			width: 90%;
+			margin-left: 20rpx;
+		}
+
+		.icon {
+			width: 45rpx;
+		}
+
+		.arrow {
+			height: 38rpx;
+			width: 22rpx;
+		}
 	}
 
 	.line {
@@ -204,19 +278,27 @@
 		margin-top: 48vh;
 	}
 
-	.grayTetx {
+	.gray-text {
 		font-size: 24rpx;
 		color: #999999;
 		text-align: center;
+		margin-top: 10rpx;
 	}
 
-	.grayLine {
+	.gray-line {
 		height: 20rpx;
 		width: 100%;
 		background-color: #EFF0F3;
 	}
 
-	.flexBoxOne {
-		margin: 40rpx 40rpx;
+	.flex-box-one {
+		@include flex-col();
+		margin: 30rpx 0;
+
+		.icon {
+			height: 80rpx;
+			width: 80rpx;
+			display: block;
+		}
 	}
 </style>
