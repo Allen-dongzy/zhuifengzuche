@@ -1,5 +1,16 @@
 import request from '@/request'
 
+// 银行卡列表
+export const receiptPaymentBankList = (id, loading = '') => {
+	return request({
+		url: 'receiptPayment/bankList',
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'POST',
+		data: {},
+		loading
+	})
+}
+
 // 查询详情
 export const receiptPaymentFindOneById = (id, loading = '') => {
 	return request({
@@ -11,13 +22,13 @@ export const receiptPaymentFindOneById = (id, loading = '') => {
 	})
 }
 
-// 发起付款-订单集合
-export const orderList = (data, loading = '') => {
+// 订单列表
+export const receiptPaymentOrderList = (id, loading = '') => {
 	return request({
 		url: 'receiptPayment/orderList',
 		contentType: 'application/x-www-form-urlencoded',
 		method: 'POST',
-		data,
+		data: {},
 		loading
 	})
 }
