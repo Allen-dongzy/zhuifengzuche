@@ -3,7 +3,8 @@
 		<view class="flex-center swiperList">
 			<swiper class="swiper" indicator-dots :indicator-color="indicatorColor"
 				:indicator-active-color="indicatorActiveColor">
-				<swiper-item class="flex flex-wrap swiperItem" v-for="(item,index) in carInfo.vehicleModelFiles" :key='index'>
+				<swiper-item class="flex flex-wrap swiperItem" v-for="(item,index) in carInfo.vehicleModelFiles"
+					:key='index'>
 					<image :src="item" lazy-load></image>
 				</swiper-item>
 			</swiper>
@@ -256,7 +257,7 @@
 					<view style="width: 50%;text-align: right;">当前选择日期:{{dayTime}}</view>
 				</view>
 
-				<slider style="margin-bottom: 0px;" value="0" activeColor="#5A7EFF" block-size="20" step="2"
+				<slider style="margin-bottom: 0px;" :value="sliderVal" activeColor="#5A7EFF" block-size="20" step="2"
 					@change="sliderChange" min="0" max="24" show-value />
 
 				<view style="display: flex;justify-content: center; align-items: center;padding: 60rpx 0rpx;">
@@ -313,92 +314,100 @@
 				id: '',
 				day1: '',
 				day2: '',
-				dayTime: '',//显示选择时间
-				dayTime1: '',//开始时间
-				dayTime2: '',//结束时间
-				
+				dayTime: '', //显示选择时间
+				dayTime1: '', //开始时间
+				dayTime2: '', //结束时间
+				sliderVal: 0, //滑块值
 			}
 		},
 		onLoad(e) {
 			this.id = e.id
 			this.vehicleSelectOne(e.id)
 			this.vehicleSelectRentalPlanList()
+	
 		},
 		methods: {
-		async	sure(){
-			if(this.day1==''){
-				this.$toast("请选择开始时间")
-				return false
-			}else{
-				if(this.dayTime1==''){
-					this.dayTime1=this.day1+'00:00'
+			async sure() {
+				if (this.day1 == '') {
+					this.$toast("请选择开始时间")
+					return false
+				} else {
+					if (this.dayTime1 == '') {
+						this.dayTime1 = this.day1 + '00:00:00'
+					}
 				}
-			}
-			
-			if(this.day2==''){
-				this.$toast("请选择结束时间")
-				return false
-			}else{
-				if(this.dayTime2==''){
-					this.dayTime2=this.day2+'00:00'
+
+				if (this.day2 == '') {
+					this.$toast("请选择结束时间")
+					return false
+				} else {
+					if (this.dayTime2 == '') {
+						this.dayTime2 = this.day2 + '00:00:00'
+					}
 				}
-			}
-			
-			let data= {
-				
-				planStartTime:this.dayTime1,
-				planEndTime:this.dayTime2,
-			}
-			const [err,res] =await vehiclePlanInsert(data)
-			if(err) return
-			console.log(res)
+
+				let data = {
+					planStartTime: this.dayTime1,
+					planEndTime: this.dayTime2,
+					vehicleId: this.id
+				}
+				const [err, res] = await vehiclePlanInsert(data)
+				if (err) return
+				console.log(res)
 			},
 			selectReserve(e) {
+						
+					
 				this.reserveId = e
 				for (let i = 0; i < this.reserveTitle.length; i++) {
 					this.reserveTitle[i].status = false
 				}
 				this.reserveTitle[e].status = true
-
+				this.dayTime = ""
+				this.sliderVal=0
+				// this.$forceUpdate()
 			},
 			selectDay(e) {
 				this.dayTime = e.slice(5, 11)
-				if(this.reserveId==0){
-					this.day1=e.slice(0, 11)
-				}else{
-					this.day2=e.slice(0, 11)
+				if (this.reserveId == 0) {
+					this.day1 = e.slice(0, 11)
+				} else {
+					this.day2 = e.slice(0, 11)
 				}
 			},
 			sliderChange(e) {
-				if(this.reserveId==0){
-					if(this.day1==''){
+		
+					
+				this.sliderVal=e.detail.value
+				if (this.reserveId == 0) {
+					if (this.day1 == '') {
 						this.$toast('请选择开始日期')
 						return false
-					}else{
-						if(e.detail.value>9){
-							this.dayTime1=this.day1+e.detail.value+':00'
-						}else{
-							this.dayTime1=this.day1+ '0'+e.detail.value+':00'
+					} else {
+						if (e.detail.value > 9) {
+							this.dayTime1 = this.day1 + e.detail.value + ':00' + ':00'
+						} else {
+							this.dayTime1 = this.day1 + '0' + e.detail.value + ':00' + ':00'
 						}
-						
+
 					}
-				}else{
-					
-					if(this.day2==''){
+				} else {
+
+					if (this.day2 == '') {
 						this.$toast('请选结束日期')
 						return false
-					}else{
-						if(e.detail.value>9){
-							this.dayTime2=this.day2+e.detail.value+':00'
-						}else{
-							this.dayTime2=this.day2+ '0'+e.detail.value+':00'
+					} else {
+						if (e.detail.value > 9) {
+							this.dayTime2 = this.day2 + e.detail.value + ':00' + ':00'
+						} else {
+							this.dayTime2 = this.day2 + '0' + e.detail.value + ':00' + ':00'
 						}
-						
+
 					}
 				}
-				
-	
-				
+
+
+
 			},
 			lookopen() {
 				this.$refs.popup.open()

@@ -3,25 +3,28 @@
 		<view class="topNav" v-if="search==false">
 			<view class="add" @click="add">新增+</view>
 			<view class="title" @click="select">筛选</view>
-			<image style="height:25rpx;width: 35rpx;margin-right: 30rpx;" :src="$util.fileUrl('/xiangxia.png')" mode="">
+			<image style="height:25rpx;width: 35rpx;margin-right: 30rpx;" @click="select" :src="$util.fileUrl('/xiangxia.png')" mode="">
 			</image>
 			<view class="title" @click="showSearch">搜索</view>
-			<image style="height: 28rpx;width: 28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode="" @click="showSearch"></image>
+			<image style="height: 28rpx;width: 28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode=""
+				@click="showSearch"></image>
 		</view>
-		
+
 		<!-- 搜索 -->
 		<view class="topNav" style="color: #8E8E93;font-size: 30rpx" v-if="search==true">
-			<input type="text" placeholder="请输入送车点" style="background-color:#EFF0F3;height: 70rpx;width: 580rpx;border-radius: 50rpx;padding-left: 20rpx;" value="" />
-			<view style="margin-left: 20rpx;"  @click="showSearch">取消</view>
+			<input type="text" placeholder="请输入送车点" v-model="searchVal"
+				style="background-color:#EFF0F3;height: 70rpx;width: 580rpx;border-radius: 50rpx;padding-left: 20rpx;"
+				@input="setSearch" />
+			<view style="margin-left: 20rpx;" @click="showSearch">取消</view>
 		</view>
-		
+
 		<!-- 弹框 -->
 		<view class="Mask" v-if="selectShow==true"></view>
 		<view class="popBox" v-if="selectShow==true">
 			<view class="topNav" style="margin-bottom: 0rpx;">
-				<view class="add" >新增+</view>
+				<view class="add">新增+</view>
 				<view class="title" @click="select">筛选</view>
-				<image style="height:25rpx;width: 35rpx;margin-right: 30rpx;" :src="$util.fileUrl('/xiangxia.png')"
+				<image style="height:25rpx;width: 35rpx;margin-right: 30rpx;" @click="select" :src="$util.fileUrl('/xiangxia.png')"
 					mode=""></image>
 				<view class="title">搜索</view>
 				<image style="height: 28rpx;width: 28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode=""></image>
@@ -34,72 +37,210 @@
 			</view>
 			<view class="place">
 				<view class="leftBox">
-					<view class="" v-for="(item,index) in 7" :key="index" class="leftItem">重庆</view>
+					<view class="" v-for="(item,index) in cityList" :key="index" class="leftItem"
+						@click="selectCity(index)">
+						<view style="color:#5A7EFF" v-if="item.status==true">{{item.name}}</view>
+						<view style="color: black;" v-else>{{item.name}}</view>
+					</view>
 				</view>
 				<view class="rightBox">
-					<view class="" v-for="(item,index) in 7" :key="index" class="rightItem">重庆</view>
+					<view class="" v-for="(item,index) in areaList" :key="index" class="rightItem"
+						@click="selectArea(index)">
+						<view style="color:#5A7EFF" v-if="item.status==true">{{item.name}}</view>
+						<view style="color: black;" v-else>{{item.name}}</view>
+					</view>
 				</view>
 			</view>
 			<view class="buttonBox">
-				<view class="empty">清空</view>
-				<view class="sure">确定</view>
+				<view class="empty" @click="clear()">清空</view>
+				<view class="sure" @click="sure()">确定</view>
 			</view>
 		</view>
-		
+
 		<!-- 列表 -->
-		<view v-for="(item,index) in 5" class="listBox" @click="lookinfo">
+		<view v-for="(item,index) in list" class="listBox" @click="lookinfo(item)">
 			<view class="place">
-				<view class="title">江北区</view>
+				<view class="title">{{item.areaName}}</view>
 				<view class="bankLine"></view>
-				<view class="title">滨江路皇冠大道送车点</view>
+				<view class="title">{{item.name}}</view>
 			</view>
-			<view style="color: #B2B2B2;font-size: 24rpx;margin-top: 10rpx;">这里是送车点地址</view>
+			<view style="color: #B2B2B2;font-size: 24rpx;margin-top: 10rpx;">{{item.address}}</view>
 		</view>
+
 
 
 	</view>
 </template>
 
 <script>
+	import {
+		deliveryPageQuery
+	} from '@/apis/delivery'
+	import {
+		debounce
+	} from '@/utils/tools';
+
+	import {
+		allFindCityList,
+		allFindProvincesList,
+		allFindAreasList
+	} from '@/apis/regionProvince';
+
 	export default {
 		data() {
 			return {
-				selectShow:false,
-				search:false
+				selectShow: false,
+				search: false,
+				cityList: [],
+				areaList: [],
+				list: [],
+				page: 1,
+				size: 10,
+				cityId: '', //城市id
+				areaId: '', //区域id
+				searchVal:'',//输入内容
 			}
 		},
+		onLoad() {
+			this.deliveryPageQuery()
+			this.allFindCityList()
+		},
 		methods: {
-			select(){
-				if(this.selectShow){
-					
-					this.selectShow=false
-				}else{
-					this.selectShow=true
+			//市
+			async allFindCityList(e, q) {
+
+				const [err, res] = await allFindCityList()
+				if (err || res.code !== 200) return
+				console.log(res.data)
+				this.cityList = res.data
+				for (let i = 0; i < this.cityList.length; i++) {
+					this.cityList[i].status = false
+				}
+				this.cityList[0].status = true
+				this.allFindAreasList(this.cityList[0].code)
+				this.cityId = this.cityList[0].code
+			},
+			//区
+			async allFindAreasList(e) {
+
+				let data = {
+					name: "",
+					cityCodes: e
+				}
+				const [err, res] = await allFindAreasList(data)
+				if (err || res.code !== 200) return
+				console.log(res.data)
+				this.areaList = res.data
+				for (let i = 0; i < this.areaList.length; i++) {
+					this.areaList[i].status = false
+				}
+				this.areaList[0].status = true
+				this.areaId = this.areaList[0].areaCode
+			},
+			//获取列表
+			async deliveryPageQuery() {
+				let data = {
+					page: this.page,
+					size: this.size
+				}
+				const [err, res] = await deliveryPageQuery(data)
+				if (err) return
+				console.log(res)
+				this.list = res.data.list
+			},
+			//筛选
+			select() {
+				if (this.selectShow) {
+
+					this.selectShow = false
+				} else {
+					this.selectShow = true
 				}
 			},
-			showSearch(){
-				
-				if(this.search){
-					this.search=false
-					
-				}else{
-					this.search=true
-					this.showStuse=false
+			//搜索
+			showSearch() {
+
+				if (this.search) {
+					this.search = false
+
+				} else {
+					this.search = true
+					this.showStuse = false
 				}
 			},
-			add(){
+
+			setSearch: debounce(async function() {
+				let data = {
+					page: this.page,
+					size: this.size,
+					search: this.searchVal
+				}
+				const [err, res] = await deliveryPageQuery(data)
+				if (err) return
+				console.log(res)
+				this.list = res.data.list
+			
+			}),
+			add() {
 				uni.navigateTo({
-					url:'./addPoint', 
-					animationType:'pop-in',
-					animationDuration:200,
+					url: './addPoint',
+					animationType: 'pop-in',
+					animationDuration: 200,
 				})
 			},
-			lookinfo(){
+			lookinfo(e) {
 				uni.navigateTo({
-					url:'./pointInfo', 
-					animationType:'pop-in',
-					animationDuration:200,
+					url: './pointInfo?obj=' + JSON.stringify(e),
+					animationType: 'pop-in',
+					animationDuration: 200,
 				})
+			},
+			selectCity(e) {
+				console.log('pp')
+				for (let i = 0; i < this.cityList.length; i++) {
+					this.cityList[i].status = false
+				}
+				this.cityList[e].status = true
+				this.allFindAreasList(this.cityList[e].code)
+				this.cityId = this.cityList[e].code
+
+				this.$forceUpdate()
+			},
+			selectArea(e) {
+				for (let i = 0; i < this.areaList.length; i++) {
+					this.areaList[i].status = false
+				}
+				this.areaList[e].status = true
+				this.areaId = this.areaList[e].areaCode
+				this.$forceUpdate()
+			},
+			clear(){
+				for (let i = 0; i < this.areaList.length; i++) {
+					this.areaList[i].status = false
+				}
+				for (let i = 0; i < this.cityList.length; i++) {
+					this.cityList[i].status = false
+				}
+				this.areaList[0].status = true
+				this.cityList[0].status = true
+				this.areaId = ""
+				this.cityId = ""
+			},
+		async	sure(){
+				let data = {
+					page: this.page,
+					size: this.size,
+					areaCode:this.areaId,
+					cityCode:this.cityId
+				}
+				const [err, res] = await deliveryPageQuery(data)
+				if (err) return
+				console.log(res)
+				this.list = res.data.list
+				if(this.list.length==0){
+					this.$toast("暂无数据")
+				}
+				this.select()
 			}
 		}
 	}
@@ -178,6 +319,7 @@
 		border-radius: 50rpx;
 		margin-left: 20rpx;
 	}
+
 	.buttonBox {
 		justify-content: center;
 		border-top: 2rpx solid #EFF0F3;
@@ -185,8 +327,8 @@
 		display: flex;
 		align-items: center;
 	}
-	
-	
+
+
 
 	.popBox {
 		position: fixed;
@@ -234,6 +376,4 @@
 		font-size: 26rpx;
 		border-bottom: 2rpx solid #EFF0F3;
 	}
-
-
 </style>

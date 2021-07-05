@@ -17,21 +17,24 @@
 			</view>
 		</view>
 		<view class="flex-center flex-wrap content">
-			<view v-for="(item, index) in list" :key="index" class="panel" @click="carInfo()">
+			<view v-for="(item, index) in list" :key="index" class="panel" @click="carInfo(item.id)">
 				<view class="flex titlePanel">
-					<p class="title">渝A·5231B</p>
-					<p class="type">租赁中</p>
+					<p class="title">{{item.carNumber}}</p>
+					<p v-show="item.vehicleStatus==1" class="type">正常</p>
+					<p v-show="item.vehicleStatus==2" class="type">异常</p>
+					<p v-show="item.vehicleStatus==3" class="type">租赁中</p>
+					<p v-show="item.vehicleStatus==4" class="type">预留中</p>
 				</view>
-				<p class="text">大众 捷达丨自动 5座 2.0L</p>
+				<p class="text">{{item.brandName}}丨{{item.gears}} {{item.capacity}}座 {{item.outputVolumeName}}</p>
 				<view class="flex detail">
-					<p class="oil">油量：62%</p>
-					<p class="car">车辆：3年20天</p>
+					<p class="oil" v-show="item.oil!=null">油量：62%</p>
+					<p class="car">车龄：{{item.carAge}}</p>
 				</view>
 				<view class="flex-center line">
 					<i></i>
 				</view>
-				<p class="name">使用人：张全蛋</p>
-				<view class="flex timeText">
+				<p class="name" v-show="item.vehicleStatus==3">使用人：张全蛋</p>
+				<view class="flex timeText" v-show="item.vehicleStatus>2">
 					<text class="cuIcon-countdown"></text>
 					<p>05-25 14:48 至 05-30 14:48</p>
 				</view>
@@ -77,8 +80,8 @@
 					</view>
 				</view>
 				<view class="flex btn">
-					<button type="default" class="flex-center reset">清空</button>
-					<button type="default" class="flex-center submit">确定</button>
+					<button type="default" class="flex-center reset" @click="clear()">清空</button>
+					<button type="default" class="flex-center submit" @click="sure()">确定</button>
 				</view>
 			</view>
 		</view>
@@ -124,32 +127,42 @@
 					id: 4,
 					status: false,
 				}], //状态list
-				brandList: [] //品牌列表
+				brandList: [], //品牌列表
+				statusId: '', //选择车辆状态id
+				BrandId: '', //选择品牌id
+				classId: '', //选择类别id
+
 			}
 		},
 		onLoad() {
-			this.getlist()
-			this.getType()
-			this.getBrand()
+			this.getlist() //车list
+			this.getType() //车类型
+			this.getBrand() //车品牌
 		},
 		methods: {
+			//选择车状态
 			selectStatus(e) {
 				for (let i = 0; i < this.carStatus.length; i++) {
 					this.carStatus[i].status = false
 				}
 				this.carStatus[e].status = true
+				this.statusId = this.carStatus[e].id
 			},
+			//选择车类型
 			selectClasss(e) {
 				for (let i = 0; i < this.classesList.length; i++) {
 					this.classesList[i].status = false
 				}
 				this.classesList[e].status = true
+				this.classId = this.classesList[e].id
 			},
+			//选择车品牌
 			selectBrand(e) {
 				for (let i = 0; i < this.brandList.length; i++) {
 					this.brandList[i].status = false
 				}
 				this.brandList[e].status = true
+				this.BrandId = this.brandList[e].id
 			},
 			//品牌
 			async getBrand() {
@@ -178,13 +191,40 @@
 					page: this.page,
 					size: this.size
 				}
-				const [err, res] = await vehiclePageQuery()
+				const [err, res] = await vehiclePageQuery(data)
 				if (err) return
 				console.log(res)
 				this.list = res.data.list
 
 			},
+			clear() {
+				for (let i = 0; i < this.carStatus.length; i++) {
+					this.carStatus[i].status = false
+				}
+				for (let i = 0; i < this.classesList.length; i++) {
+					this.classesList[i].status = false
+				}
+				for (let i = 0; i < this.brandList.length; i++) {
+					this.brandList[i].status = false
+				}
+			},
+			async sure() {
+				let data = {
+					page: this.page,
+					size: this.size,
+					vehicleStatus: this.statusId,
+					brandId: this.BrandId,
+					categoryId: this.classId,
+				}
+				const [err, res] = await vehiclePageQuery(data)
+				if (err) return
+				console.log(res)
+				this.list = res.data.list
+				if (this.list.length == 0) {
+					this.$toast("暂无数据")
+				}
 
+			},
 			/**
 			 * 显示筛选框
 			 * @param {Object} e
@@ -220,9 +260,9 @@
 					animationType: 'pop-in'
 				})
 			},
-			carInfo() {
+			carInfo(e) {
 				uni.navigateTo({
-					url: './fleetDetail',
+					url: './fleetDetail?id=' + e,
 					animationDuration: 200,
 					animationType: 'pop-in'
 				})
@@ -337,6 +377,7 @@
 						font-weight: 400;
 						color: #000000;
 						letter-spacing: 0rpx;
+						margin-right: 60rpx;
 					}
 
 					.car {
@@ -344,7 +385,7 @@
 						font-weight: 400;
 						color: #000000;
 						letter-spacing: 0rpx;
-						margin-left: 60rpx;
+
 					}
 				}
 
@@ -354,7 +395,7 @@
 
 					i {
 						width: 590rpx;
-						border-bottom: 1rpx dashed #999999;
+						border-bottom: 2rpx dashed #999999;
 					}
 				}
 
@@ -450,7 +491,7 @@
 				position: sticky;
 				bottom: 0;
 				background-color: #FFFFFF;
-				border-top: 1rpx solid rgba(0, 0, 0, .2);
+				border-top: 2rpx solid rgba(0, 0, 0, .2);
 
 				.reset {
 					width: 160rpx;

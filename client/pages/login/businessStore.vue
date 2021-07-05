@@ -194,10 +194,11 @@
 				console.log(res.data)
 				this.selectShenobj = res.data
 			},
-			async allFindCityList(e) {
+			async allFindCityList(e,q) {
 
 				let data = {
-					name: e
+					name: "",
+					provinceCodes:q
 				}
 				const [err, res] = await allFindCityList(data)
 				if (err || res.code !== 200) return
@@ -245,14 +246,16 @@
 				console.log('picker发送选择改变，携带值为', e.target.value)
 				this.shenindex = e.target.value
 				this.selectProvince = this.selectShenobj[this.shenindex].code
-				this.allFindCityList(this.selectShenobj[this.shenindex].name)
+				this.allFindCityList(this.selectShenobj[this.shenindex].name,this.selectShenobj[this.shenindex].code)
+					this.shiindex=-1
+					this.quindex=-1
 			},
 			selectShi: function(e) {
 				console.log('picker发送选择改变，携带值为', e.target.value)
 				this.shiindex = e.target.value
 				this.selectCity = this.selectorObj[this.shiindex].code
 				this.allFindAreasList(this.selectorObj[this.shiindex].name,this.selectorObj[this.shiindex].code)
-				
+				this.quindex=-1
 			},
 			selectQu: function(e) {
 				console.log('picker发送选择改变，携带值为', e.target.value)

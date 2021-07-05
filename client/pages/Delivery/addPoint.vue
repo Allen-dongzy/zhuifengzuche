@@ -4,13 +4,31 @@
 			<view class="buleLine"></view>
 			<view class="title" style="margin-top: 0rpx;">填写送车点信息</view>
 		</view>
+
+		<view class="flexBoxContent">
+			<view style="width: 22%;text-align: left;">省份</view>
+			<view class="selectBox">
+				<view style="width: 90%;">
+					<picker @change="selectShen" :value="provinceIndex" :range="provinceList" :range-key="'name'"
+						class="pickerBox">
+						<label v-if="!log" class="pickerText">{{selectProvinceName!=''?selectProvinceName:'请选择'}}</label>
+						<label v-else class="pickerText">{{provinceList[provinceIndex].name}}</label>
+					</picker>
+				</view>
+				<view style="width:10%;">
+					<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode=""></image>
+				</view>
+			</view>
+		</view>
+
+
 		<view class="flexBoxContent">
 			<view style="width: 22%;text-align: left;">城市</view>
 			<view class="selectBox">
 				<view style="width: 90%;">
-					<picker @change="cityPicker" :value="cityIndex" :range="cityList" :range-key="'name'"
+					<picker @change="selectShi" :value="cityIndex" :range="cityList" :range-key="'name'"
 						class="pickerBox">
-						<label v-if="!log1" class="pickerText">请选择</label>
+						<label v-if="!log1" class="pickerText">{{selectCityName!=''?selectCityName:'请选择'}}</label>
 						<label v-else class="pickerText">{{cityList[cityIndex].name}}</label>
 					</picker>
 				</view>
@@ -24,10 +42,10 @@
 			<view style="width: 22%;text-align: left;">区域</view>
 			<view class="selectBox">
 				<view style="width: 90%;">
-					<picker @change="blockPicker" :value="blockIndex" :range="cityList" :range-key="'name'"
+					<picker @change="selectQu" :value="areaIndex" :range="areaList" :range-key="'name'"
 						class="pickerBox">
-						<label v-if="!log2" class="pickerText">请选择</label>
-						<label v-else class="pickerText">{{cityList[blockIndex].name}}</label>
+						<label v-if="!log2" class="pickerText">{{selectAreaName!=''?selectAreaName:'请选择'}}</label>
+						<label v-else class="pickerText">{{areaList[areaIndex].name}}</label>
 					</picker>
 				</view>
 				<view style="width:10%;">
@@ -38,38 +56,42 @@
 
 		<view class="flexBoxContent">
 			<view style="width: 22%;text-align: left;">送车点名称</view>
-			<input class="inpBox" type="text" value="" placeholder="请输入车牌号" />
+			<input class="inpBox" v-model="carPoint" type="text" value="" placeholder="请输入送车点名称" />
 		</view>
 		<view class="flexBoxContent">
 			<view style="width: 22%;text-align: left;">送车点地址</view>
 			<view class="inpBox" style="padding-left: 0rpx;background-color: white;">
 				<map :style="[{width:mapWidth,height: mapHeight}]" :controls="controls" :latitude="latitude"
 					:longitude="longitude" :markers="covers" @click="getadd" @controltap="controltapfunc"
-					 @updated="updatedmap"></map>
+					@updated="updatedmap"></map>
 			</view>
 		</view>
 		<view class="flexBoxContent" style="margin-top: 280rpx;">
+			<view style="width: 22%;text-align: left;">具体地址:</view>
+			<input class="inpBox" type="text" v-model="address" placeholder="请输入地图经度" />
+		</view>
+		<view class="flexBoxContent">
 			<view style="width: 22%;text-align: left;">地图经度</view>
-			<input class="inpBox" type="text" :value="longitude" placeholder="请输入地图经度" />
+			<input class="inpBox" type="text" v-model="longitudeInp" placeholder="请输入地图经度" />
 		</view>
 		<view class="flexBoxContent">
 			<view style="width: 22%;text-align: left;">地图纬度</view>
-			<input class="inpBox" type="text" :value="latitude" placeholder="请输入地图纬度" />
+			<input class="inpBox" type="text" v-model="latitudeInp" placeholder="请输入地图纬度" />
 		</view>
 
 		<view class="flexBoxContent">
 			<view style="width: 22%;text-align: left;">车辆整备费</view>
-			<input class="inpBox" type="text" value="" placeholder="请输入车辆整备费" />
+			<input class="inpBox" v-model="price" type="text" value="" placeholder="请输入车辆整备费" />
 		</view>
-		
+
 		<view class="flexBoxContent">
 			<view style="width: 22%;text-align: left;">交通枢纽</view>
 			<view class="selectBox">
 				<view style="width: 90%;">
-					<picker @change="Picker" :value="index" :range="cityList" :range-key="'name'"
-						class="pickerBox">
-						<label v-if="!log3" class="pickerText">请选择</label>
-						<label v-else class="pickerText">{{cityList[index].name}}</label>
+					<picker @change="pickerTransportation" :value="index" :range="TransportationList"
+						:range-key="'name'" class="pickerBox">
+						<label v-if="!log3" class="pickerText">{{indexName!=""?indexName:'请选择'}}</label>
+						<label v-else class="pickerText">{{TransportationList[index].name}}</label>
 					</picker>
 				</view>
 				<view style="width:10%;">
@@ -77,38 +99,73 @@
 				</view>
 			</view>
 		</view>
-		
-		<button  style=" color: white;
+
+		<button style=" color: white;
 			width: 80%;
-					margin: auto;
-					margin-top: 50rpx;
+					margin:50rpx auto;
 				    background-color: #5A7EFF;
 				    border-radius: 50px;
 				    font-size: 32rpx;
 					line-height: 96rpx;
-				    height: 96rpx;" type="default" @click="next">新增</button>
-		
+				    height: 96rpx;" type="default" @click="sure">确定</button>
+
 	</view>
 </template>
 
 <script>
+	import {
+		deliverySave,
+		deliveryUpdate
+	} from '@/apis/delivery'
+
+	import {
+		allFindCityList,
+		allFindProvincesList,
+		allFindAreasList
+	} from '@/apis/regionProvince';
+
+	import {
+		mapState
+	} from 'vuex'
+
 	export default {
 		data() {
 			return {
+				log: false,
 				log1: false,
 				log2: false,
 				log3: false,
-				cityList: [{
-					name: '重庆'
+				provinceList: [], //省份数组
+				cityList: [], //城市数组
+				areaList: [], //区域数组
+				provinceIndex: '', //省份角标
+				cityIndex: '', //城市角标
+				areaIndex: '', //区角标
+				index: '', //交通枢纽角标
+				indexName:'',//交通枢纽名字
+				selectProvince: '', //选择省份ID
+				selectProvinceName: '', //选择省份名字
+				selectCity: '', //选择城市ID
+				selectCityName: '', //选择城市名字
+				selectArea: '', //选择区域ID
+				selectAreaName: '', //选择区域名字
+				selectTransportation: '', //选择枢纽ID
+				TransportationList: [{
+					name: '是',
+					id: 1
 				}, {
-					name: '成都'
-				}, {
-					name: '深圳'
-				}],
-				cityIndex: '',
-				blockIndex: '',
-				index:'',
-		
+					name: '否',
+					id: 0
+				}], //交通枢纽数组
+				carPoint: '', //送车点
+				price: '', //装备费用
+				address: '',
+				latitudeInp: '',
+				longitudeInp: '',
+
+
+
+				//地图
 				id: 0, // 使用 marker点击事件 需要填写id
 				mapWidth: "300rpx",
 				mapHeight: "1000rpx",
@@ -131,30 +188,176 @@
 					},
 					clickable: true
 				}],
-
+				//地图
+				obj: "" //编辑详情
 
 			}
 		},
-		onLoad() {
+		onLoad(e) {
+
+			console.log(e.obj == undefined)
+
+			if (e.obj == undefined) {
+
+			} else {
+				this.obj = JSON.parse(e.obj)
+				this.selectProvinceName=this.obj.provinceName
+				this.selectProvince=this.obj.provinceCode
+				this.selectCityName=this.obj.cityName
+				this.selectCity = JSON.parse(e.obj).cityCode
+				this.selectArea = JSON.parse(e.obj).areaCode
+				this.selectAreaName = JSON.parse(e.obj).areaName
+				this.carPoint = JSON.parse(e.obj).name
+				this.address = JSON.parse(e.obj).address
+				this.longitudeInp = JSON.parse(e.obj).lon
+				this.latitudeInp = JSON.parse(e.obj).lat
+				this.price = JSON.parse(e.obj).commission
+				this.selectTransportation = JSON.parse(e.obj).isTraffic
+				if(this.obj.isTraffic==1){
+					this.indexName="是"
+				}else{
+					this.indexName="否"
+				}
+			}
 			this.getSystemInfo()
 			this.getlocation();
+			this.allFindProvincesList()
+		},
+		computed: {
+			//  user模式 门店id
+			...mapState('user', ['shopId'])
 		},
 
 		methods: {
-			cityPicker: function(e) {
-				this.log1 = true
-				this.cityIndex = e.target.value //取其下标
+			//省
+			async allFindProvincesList() {
+				console.log('pp')
+				const [err, res] = await allFindProvincesList({})
+				if (err || res.code !== 200) return
+				console.log(res.data)
+				this.provinceList = res.data
 
 			},
-			blockPicker(e) {
-				this.log2 = true
-				this.blockIndex = e.target.value //取其下标
+			//市
+			async allFindCityList(e, q) {
+
+				let data = {
+					name: "",
+					provinceCodes: q
+				}
+				const [err, res] = await allFindCityList(data)
+				if (err || res.code !== 200) return
+				console.log(res.data)
+				this.cityList = res.data
 			},
+			//区
+			async allFindAreasList(e, q) {
+
+				let data = {
+					name: "",
+					cityCodes: q
+				}
+				const [err, res] = await allFindAreasList(data)
+				if (err || res.code !== 200) return
+				console.log(res.data)
+				this.areaList = res.data
+			},
+			//选择省
+			selectShen: function(e) {
+				console.log('picker发送选择改变，携带值为', e.target.value)
+				this.log = true
+				this.provinceIndex = e.target.value
+				this.selectProvince = this.provinceList[this.provinceIndex].code
+				this.selectProvinceName = this.provinceList[this.provinceIndex].name
+				this.allFindCityList(this.provinceList[this.provinceIndex].name, this.provinceList[this.provinceIndex]
+					.code)
+				this.log1 = false
+				this.log2 = false
+				this.$forceUpdate()
+			},
+			//选择市
+			selectShi: function(e) {
+				console.log('picker发送选择改变，携带值为', e.target.value)
+				this.log1 = true
+				this.cityIndex = e.target.value
+				this.selectCity = this.cityList[this.cityIndex].code
+				this.selectCityName = this.cityList[this.cityIndex].name
+				this.allFindAreasList(this.cityList[this.cityIndex].name, this.cityList[this.cityIndex].code)
+				this.log2 = false
+			},
+			//选择区
+			selectQu: function(e) {
+				console.log('picker发送选择改变，携带值为', e.target.value)
+				this.log2 = true
+				this.areaIndex = e.target.value
+				this.selectArea = this.areaList[this.areaIndex].areaCode
+				this.selectAreaName = this.areaList[this.areaIndex].name
+			},
+			//选择枢纽
+			pickerTransportation(e) {
+				this.log3 = true
+				this.index = e.target.value
+				this.selectTransportation = this.TransportationList[this.index].id
+			},
+			async sure() {
+				
+				if(this.obj==""){
+					var data = {
+						provinceCode: this.selectProvince,
+						provinceName: this.selectProvinceName,
+						cityCode: this.selectCity,
+						cityName: this.selectCityName,
+						areaCode: this.selectArea,
+						areaName: this.selectAreaName,
+						name: this.carPoint,
+						address: this.address,
+						lon: this.longitudeInp,
+						lat: this.latitudeInp,
+						commission: this.price,
+						isTraffic: this.selectTransportation,
+						shopId: this.shopId,
+					}
+					
+					const [err, res] = await deliverySave(data)
+					if (err) return
+					console.log(res)
+					uni.navigateBack({
+						delta: 1
+					})
+				}else{
+					var data = {
+						id:this.obj.id,
+						provinceCode: this.selectProvince,
+						provinceName: this.selectProvinceName,
+						cityCode: this.selectCity,  
+						cityName: this.selectCityName,
+						areaCode: this.selectArea,
+						areaName: this.selectAreaName,
+						name: this.carPoint,
+						address: this.address,
+						lon: this.longitudeInp,
+						lat: this.latitudeInp,
+						commission: this.price,
+						isTraffic: this.selectTransportation,
+						shopId: this.shopId,
+					
+					}
+					
+					const [err, res] = await deliveryUpdate(data)
+					if (err) return
+					console.log(res)
+					uni.navigateBack({
+						delta: 1
+					})
+				}
+			},
+
+
 
 
 
 			updatedmap: function() {},
-		
+
 			controltapfunc: function(e) {
 				this.getlocation();
 			},
@@ -184,31 +387,15 @@
 			},
 			getadd: function(res) {
 				var that = this;
-				that.latitude = res.detail.latitude
-				that.longitude = res.detail.longitude
-				that.covers = [{
-					latitude: res.detail.latitude,
-					longitude: res.detail.longitude,
-					iconPath: '../../static/img/place.png',
-					width: 30,
-					height: 30
-				}]
-				console.log()
-				// that.$forceUpdate()
-				// func.getLocation(res.detail.longitude,res.detail.latitude,function(result){
-				//     that.address =result.data.result.formatted_addresses.recommend
-				// },function(err){
-				// })
-				// that.$forceUpdate();
-			},
-			//获取当前位置
-			getlocation: function() {
-				var that = this;
-				uni.getLocation({
-					type: 'gcj02',
-					success: function(res) { 
-						that.latitude = res.latitude;
-						that.longitude = res.longitude;
+
+				uni.chooseLocation({
+					success: function(res) {
+						console.log(res)
+						that.latitude = res.latitude
+						that.longitude = res.longitude
+						that.latitudeInp = res.latitude
+						that.longitudeInp = res.longitude
+						that.address = res.address
 						that.covers = [{
 							latitude: res.latitude,
 							longitude: res.longitude,
@@ -216,11 +403,36 @@
 							width: 30,
 							height: 30
 						}]
-						//func.getLocation为封装的根据经纬度查询对应的地址的ajax方法
-						// func.getLocation(res.longitude,res.latitude,function(result){
-						//     that.address = result.data.result.formatted_addresses.recommend
-						// },function(err){
-						// })
+						that.$forceUpdate()
+					}
+				});
+
+			},
+			//获取当前位置
+			getlocation: function() {
+				var that = this;
+				uni.getLocation({
+					type: 'gcj02',
+					success: function(res) {
+						console.log(res)
+						console.log(that.obj != "")
+						console.log(typeof(that.obj))
+						if (that.obj != "") {
+							that.longitude = Number(that.obj.lon)
+							that.latitude = Number(that.obj.lat)
+						} else {
+							that.latitude = res.latitude;
+							that.longitude = res.longitude;
+						}
+						that.covers = [{
+							latitude: res.latitude,
+							longitude: res.longitude,
+							iconPath: '../../static/img/place.png',
+							width: 30,
+							height: 30
+						}]
+						// func.getLocation为封装的根据经纬度查询对应的地址的ajax方法
+
 						that.$forceUpdate();
 					},
 					fail: function(ret) {
@@ -290,12 +502,12 @@
 
 
 	.inpBox {
-background-color: #EFF0F3;
+		background-color: #EFF0F3;
 		border-radius: 10rpx;
 		margin-left: 5%;
 		width: 60%;
 		height: 74rpx;
 		padding-left: 20rpx;
-		
+
 	}
 </style>
