@@ -34,7 +34,7 @@ export const evaluateEdit = (data, loading = '修改中') => {
 }
 
 // 门店评价分页
-export const evaluatePageQuery = (data, loading = '') => {
+export const evaluatePageQuery = (data, loading = '') => { // 对接
 	return request({
 		url: "shop/evaluate/pageQuery",
 		contentType: 'application/json',

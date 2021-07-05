@@ -1,5 +1,5 @@
 <template>
-	<view class="uni-load-more" :class="{'no-data':status === 'noData'}" @click="onClick">
+	<view class="uni-load-more" :class="{'no-data': !status || status === 'noData'}" @click="onClick">
 		<!-- #ifdef APP-NVUE -->
 		<loading-indicator v-if="!webviewHide && status === 'loading' && showIcon"
 			:style="{color: color,width:iconSize+'px',height:iconSize+'px'}" :animating="true"
@@ -31,10 +31,13 @@
 				mode="widthFix"></image>
 		</view>
 		<!-- #endif -->
-		<text v-if="customText" class="uni-load-more__text"
-			:style="{color: color}">{{ status === 'more' ? contentText.contentdown : status === 'loading' ? contentText.contentrefresh : status === 'noMore' ? customText : contentText.contentnodata }}</text>
-		<text v-else class="uni-load-more__text"
-			:style="{color: color}">{{ status === 'more' ? contentText.contentdown : status === 'loading' ? contentText.contentrefresh : status === 'noMore' ? contentText.contentnomore : contentText.contentnodata }}</text>
+		<text class="uni-load-more__text" :style="{color: color}">
+			<text v-show="status === 'more'">{{contentText.contentdown}}</text>
+			<text v-show="status === 'loading'">{{contentText.contentrefresh}}</text>
+			<text v-show="status === 'noMore'">{{customNoMore ? customNoMore : contentText.contentnomore}}</text>
+			<text
+				v-show="!status || status === 'noData'">{{customNoData ? customNoData : contentText.contentnodata}}</text>
+		</text>
 	</view>
 </template>
 
@@ -83,7 +86,11 @@
 				type: String,
 				default: '#777777'
 			},
-			customText: {
+			customNoMore: {
+				type: String,
+				default: ''
+			},
+			customNoData: {
 				type: String,
 				default: ''
 			},
@@ -108,7 +115,6 @@
 		// #ifndef APP-NVUE
 		computed: {
 			iconSnowWidth() {
-				console.log((Math.floor(this.iconSize / 24) || 1) * 2);
 				return (Math.floor(this.iconSize / 24) || 1) * 2
 			}
 		},

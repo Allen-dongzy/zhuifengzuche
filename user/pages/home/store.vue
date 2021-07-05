@@ -73,7 +73,7 @@
 			// 打开地图
 			async openMap() {
 				// 获取位置
-				const [err, res] = await await uni.getLocation({
+				const [err, res] = await uni.getLocation({
 					type: 'gcj02'
 				})
 				const latitude = res.latitude
