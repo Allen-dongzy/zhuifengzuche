@@ -61,7 +61,6 @@ export const vehicleSelectOne = (id, loading = '') => {
 		url: `vehicle/selectOne/${id}`,
 		contentType: 'application/x-www-form-urlencoded',
 		method: 'POST',
-		data: {},
 		loading
 	})
 }
