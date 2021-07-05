@@ -293,7 +293,10 @@
 	"condition": {
 		"current": 0,
 		"list": [{
-			"name": "default",
+			"name": "wcy", // wcy
+			"path": "pages/Delivery/carPoint"
+		}, {
+			"name": "dzy", // dzy
 			"path": "pages/common/userAgreement"
 		}]
 	}
