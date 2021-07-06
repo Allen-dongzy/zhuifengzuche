@@ -199,12 +199,13 @@
 	}
 
 	.price {
-		@include font-set(60rpx, #000, 700);
+		@include font-set(60rpx, #000, 500);
 		line-height: 84rpx;
 
 		text {
 			@include font-set(24rpx, #000, 700);
 			line-height: 34rpx;
+			margin-left: 4rpx;
 		}
 	}
 
