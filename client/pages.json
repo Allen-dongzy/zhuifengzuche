@@ -406,7 +406,7 @@
 		"current": 0, //当前激活的模式（list 的索引项）
 		"list": [{
 			"name": "wcy", // wcy
-			"path": "pages/Delivery/carPoint" //启动页面，必选
+			"path": "pages/Store/store" //启动页面，必选
 		}, {
 			"name": "dzy", // dzy
 			"path": "pages/Store/store" //启动页面，必选

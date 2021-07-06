@@ -23,7 +23,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="show-status" @click="$open('/pages/Store/storeRegister')">
+			<view class="show-status" @click="$open('/pages/Store/storeRegister?id='+info.id)">
 				<text>已注册</text>
 				<view class="arrow"></view>
 			</view>
@@ -62,9 +62,14 @@
 					<view class="conten">{{info.note || '暂无'}}</view>
 				</view>
 				<view class="allFlex" style="margin-top: 40rpx;">
+<<<<<<< HEAD
 					<view class="point" style="margin-left: 50%;"
 						@click="$open('/pages/Store/storePoint', {shopId: info.id})">送车点管理</view>
 					<view class="point" style="margin-left: 20rpx;" @click="$open('/pages/Store/staff')">员工管理</view>
+=======
+					<view class="point" style="margin-left: 50%;" @click="$open('/pages/Store/storePoint')">送车点管理</view>
+					<view class="point" style="margin-left: 20rpx;" @click="$open('/pages/Store/staff?id='+info.id)">员工管理</view>
+>>>>>>> ad29ff6 (feat: add Staff management)
 				</view>
 
 			</view>

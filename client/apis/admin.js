@@ -11,7 +11,7 @@ export const adminLogout = (data, loading = '退出中') => {  // 对接
 	})
 }
 // 添加员工
-export const addEmployee = (data, loading = '添加中') => {
+export const addEmployee = (data, loading = '添加中') => { //对接
 	return request({
 		url: "admin/addEmployee",
 		contentType: 'application/json',
@@ -52,7 +52,7 @@ export const deleteUserId = (userId, loading = '删除中') => {
 }
 
 // 编辑员工
-export const editEmployee = (data, loading = '更新中') => {
+export const editEmployee = (data, loading = '更新中') => { //对接
 	return request({
 		url: "admin/editEmployee",
 		contentType: 'application/json',
@@ -137,7 +137,7 @@ export const setspecialUserId = (userId, loading = '等待中') => {
 	})
 }
 // 商家注册
-export const shopOwnerRegister = (data, loading = '等待中') => {
+export const shopOwnerRegister = (data, loading = '等待中') => { //对接
 	return request({
 		url: "admin/shopOwnerRegister",
 		contentType: 'application/json',
@@ -169,7 +169,7 @@ export const editUserid = (userid, loading = '等待中') => {
 	})
 } 
 // 忘记密码
-export const updatePassword = (data, loading = '等待中') => {
+export const updatePassword = (data, loading = '等待中') => { //对接
 	return request({
 		url: `admin/updatePassword`,
 		contentType: 'application/json',
@@ -200,3 +200,15 @@ export const getId = (Id, loading = '等待中') => {
 		loading
 	})
 }
+
+//  员工列表
+export const employeelist = (data, loading = '等待中') => { //对接
+	return request({
+		url: `admin/employee/list`,
+		contentType: 'application/json',
+		method: 'POST',
+		data,
+		loading
+	})
+}
+

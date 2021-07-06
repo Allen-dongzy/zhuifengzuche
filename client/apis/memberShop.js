@@ -32,3 +32,28 @@ export const memberShopPageQuery = (data, loading = '') => { // 对接
 		loading
 	})
 }
+
+// 商家注册详情
+export const merchantRegistrationInformation = (data, loading = '') => { // 对接
+	return request({
+		url: `memberShop/merchantRegistrationInformation/${data}`,
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'Get',
+		data: {},
+		loading
+	})
+}
+
+//注册状态修改
+export const changeRegistrationStatus = (data, loading = '') => { // 对接
+	return request({
+		url: `memberShop/changeRegistrationStatus/${data}`,
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'Get',
+		data: {},
+		loading
+	})
+}
+
+
+

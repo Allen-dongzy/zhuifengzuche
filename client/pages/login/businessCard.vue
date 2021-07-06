@@ -24,7 +24,7 @@
 		</view>
 
 		<view class="flexbox">
-			<view class="title" style="text-align: left;">身份证照片</view>
+			<view class="title" style="text-align: left;">法人身份证照片</view>
 			<view class="title" style="text-align: right;color: #5A7EFF;" @click="open1">查看示例图</view>
 		</view>
 

@@ -2,18 +2,18 @@
 	<view class="store-register">
 		<view class="head">
 			<view class="toast">*长按文本可复制</view>
-			<view class="item">门店名称: <text>这里是门店名称</text></view>
-			<view class="item">注册手机号: <text>15823659632</text></view>
-			<view class="item">联系人: <text>张全蛋</text></view>
-			<view class="item">联系人身份证号: <text>500101569842365963</text></view>
-			<view class="item">联系人电话: <text>023-63256314</text></view>
+			<view class="item">门店名称: <text @click="copy('这里是门店名称')">{{info.name}}</text></view>
+			<view class="item">注册手机号: <text @click="copy('15823659632')">{{info.phone}}</text></view>
+			<view class="item">联系人: <text @click="copy('15823659632')">{{info.principal}}</text></view>
+			<view class="item">联系人身份证号: <text @click="copy('15823659632')">{{info.idCard}}</text></view>
+			<view class="item">联系人电话: <text @click="copy('15823659632')">{{info.principalPhone}}</text></view>
 		</view>
 		<view class="pic-panel">
 			<view class="item">
 				<view class="caption">营业执照</view>
 				<view class="pic-box">
 					<image class="pic-big"
-						src="https://zdkj-oss-bucket.oss-cn-hangzhou.aliyuncs.com/car-rental-user/common/cache-upload-image.png"
+						:src="info.businessLicense"
 						mode="aspectFill"></image>
 				</view>
 			</view>
@@ -21,10 +21,10 @@
 				<view class="caption">法人身份证照片</view>
 				<view class="pic-box">
 					<image class="pic-big"
-						src="https://zdkj-oss-bucket.oss-cn-hangzhou.aliyuncs.com/car-rental-user/common/cache-upload-image.png"
+						:src="info.idCardFront"
 						mode="aspectFill"></image>
 					<image class="pic-big"
-						src="https://zdkj-oss-bucket.oss-cn-hangzhou.aliyuncs.com/car-rental-user/common/cache-upload-image.png"
+						:src="info.idCardBack"
 						mode="aspectFill"></image>
 				</view>
 			</view>
@@ -32,7 +32,7 @@
 				<view class="caption">门店图片-门头照片</view>
 				<view class="pic-box">
 					<image class="pic"
-						src="https://zdkj-oss-bucket.oss-cn-hangzhou.aliyuncs.com/car-rental-user/common/cache-upload-image.png"
+						:src="info.doorHeadPicture"
 						mode="aspectFill"></image>
 				</view>
 			</view>
@@ -40,7 +40,7 @@
 				<view class="caption">门店图片-店内照片</view>
 				<view class="pic-box">
 					<image class="pic"
-						src="https://zdkj-oss-bucket.oss-cn-hangzhou.aliyuncs.com/car-rental-user/common/cache-upload-image.png"
+						:src="info.inStorePicture"
 						mode="aspectFill"></image>
 				</view>
 			</view>
@@ -48,7 +48,7 @@
 				<view class="caption">门店图片-店铺室外照片</view>
 				<view class="pic-box">
 					<image class="pic"
-						src="https://zdkj-oss-bucket.oss-cn-hangzhou.aliyuncs.com/car-rental-user/common/cache-upload-image.png"
+						:src="info.outdoorPictures"
 						mode="aspectFill"></image>
 				</view>
 			</view>
@@ -56,7 +56,7 @@
 				<view class="caption">对公账户开户许可证</view>
 				<view class="pic-box">
 					<image class="pic"
-						src="https://zdkj-oss-bucket.oss-cn-hangzhou.aliyuncs.com/car-rental-user/common/cache-upload-image.png"
+						:src="info.accountOpeningPermit"
 						mode="aspectFill"></image>
 				</view>
 			</view>
@@ -72,23 +72,60 @@
 	import {
 		showModal
 	} from '@/utils/uni-tools'
-
+	import {
+		merchantRegistrationInformation,
+		changeRegistrationStatus
+	} from '@/apis/memberShop.js'
 	export default {
 		data() {
 			return {
-				showText: '未注册'
+				showText: '',
+				info:{},
+				id:''
 			}
 		},
+		onLoad(e) {
+			this.id=e.id
+			this.getInfo(e.id)
+			
+			console.log(e)
+		},
 		methods: {
+		 async	getInfo(e){
+				const [err,res] = await merchantRegistrationInformation(e)
+				if (err) return
+				console.log(res)
+				this.info=res.data
+				if(this.info.registrationStatus==0){
+					this.showText="未注册"
+				}else{
+					this.showText="已注册"
+				}
+			},
 			// 显示模态框
 			async showModal() {
-				const [err, res] = await showModal({
-					content: '是否将状态改为已注册？',
-					confirmText: '是',
-					cancelText: '否'
-				})
-				if (err || res !== 'confirm') return
-				this.showText = '已注册'
+				if(this.showText=='已注册'){
+					
+				}else{
+					const [err, res] = await showModal({
+						content: '是否将状态改为已注册？',
+						confirmText: '是', 
+						cancelText: '否'
+					}) 
+					if (err || res !== 'confirm') return
+					const [error,data] = await changeRegistrationStatus(this.id)
+					if(error) return  
+					console.log(data)
+					this.showText = '已注册'
+				}
+			},
+			copy(e){
+				uni.setClipboardData({
+				    data: e,
+				    success: function () {
+				        this.$toast("复制成功")
+				    }
+				});
 			}
 		}
 	}
