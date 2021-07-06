@@ -1,8 +1,9 @@
 <template>
 	<view class="box" :style="{backgroundImage: 'url('+`${ossUrl}/mine/userbg.png`+')'}">
 		<view class="name-box">
-			<image class="avatar" :src="`${ossUrl}/mine/touxiang.png`" mode="aspectFill"></image>
-			<view class="nickname" @click="$open('/pages/common/login')">点击登陆<view class="arrow"></view>
+			<image class="avatar" :src="icon || `${ossUrl}/mine/touxiang.png`" mode="aspectFill"></image>
+			<view class="nickname" @click="$open('/pages/common/login')">{{nickname || username || '点击登陆'}}
+				<view class="arrow"></view>
 			</view>
 		</view>
 		<view class="all-box">
@@ -53,6 +54,9 @@
 	import {
 		open
 	} from '@/utils/uni-tools'
+	import {
+		mapState
+	} from 'vuex'
 
 	export default {
 		data() {
@@ -84,6 +88,10 @@
 					path: ''
 				}]
 			};
+		},
+		computed: {
+			// user 用户昵称
+			...mapState('user', ['icon', 'nickname', 'username'])
 		},
 		methods: {
 			lookinfo() {

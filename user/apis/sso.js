@@ -12,7 +12,7 @@ export const getCodeByWxCode = (data, loading = '') => {
 }
 
 // 获取会员信息
-export const ssoInfo = (data, loading = '') => {
+export const ssoInfo = (data, loading = '') => { // 对接
 	return request({
 		url: 'sso/info',
 		method: 'GET',

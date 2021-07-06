@@ -192,7 +192,7 @@
 	}, {
 		"path": "pages/common/login",
 		"style": {
-			"navigationBarTitleText": "登录"
+			"navigationBarTitleText": "注册登录"
 		}
 	}, {
 		"path": "pages/order/depositReceived",
