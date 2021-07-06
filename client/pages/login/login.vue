@@ -60,6 +60,9 @@
 	import {
 		throttle
 	} from '@/utils/tools';
+	import {
+		mapActions
+	} from 'vuex'
 
 	export default {
 		data() {
@@ -73,6 +76,8 @@
 			}
 		},
 		methods: {
+			// user模块 获取用户信息
+			...mapActions('user', ['getInfo']),
 			selectbox() {
 				if (this.selectType) {
 					this.selectType = false
@@ -116,6 +121,8 @@
 					const [err, res] = await login(params)
 					if (err) return
 					this.$storage.set('token', res.data.token)
+					this.$toast('登录成功')
+					this.getInfo()
 					uni.reLaunch({
 						url: '../home/home',
 						animationType: 'pop-in',

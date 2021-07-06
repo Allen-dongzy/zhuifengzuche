@@ -1,3 +1,4 @@
+import storage from '@/utils/storage'
 import {
 	getInfo
 } from '@/apis/admin'
@@ -40,6 +41,7 @@ const user = {
 		async getInfo({
 			commit
 		}) {
+			if (!storage.get('token')) return
 			const [err, res] = await getInfo()
 			if (err) return
 			commit('getInfo', res.data)
