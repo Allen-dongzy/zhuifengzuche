@@ -12,7 +12,7 @@ export const evaluateAdd = (data, loading = '新增中') => {
 }
 
 // 删除门店评价
-export const evaluateDel = (data, loading = '删除中') => {
+export const evaluateDel = (data, loading = '删除中') => { // 对接
 	return request({
 		url: "shop/evaluate/del",
 		contentType: 'application/json',

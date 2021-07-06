@@ -12,7 +12,7 @@ export const getCodeByWxCode = (data, loading = '') => {
 }
 
 // 获取会员信息
-export const ssoInfo = (data, loading = '') => {
+export const ssoInfo = (data, loading = '') => { // 对接
 	return request({
 		url: 'sso/info',
 		method: 'GET',
@@ -21,8 +21,8 @@ export const ssoInfo = (data, loading = '') => {
 	})
 }
 
-// 获取会员信息
-export const login = (data, loading = '登陆中') => {
+// 登录
+export const login = (data, loading = '登陆中') => { // 对接
 	return request({
 		url: 'sso/login',
 		method: 'POST',
@@ -42,7 +42,7 @@ export const perfectInformation = (data, loading = '提交中') => {
 }
 
 // 客户端发送登录短信验证码
-export const sendLoginCode = (data, loading = '发送中') => {
+export const sendLoginCode = (data, loading = '发送中') => { // 对接
 	return request({
 		url: 'sso/sendLoginCode',
 		contentType: 'application/x-www-form-urlencoded',

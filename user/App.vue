@@ -10,6 +10,7 @@
 		onLaunch: function() {
 			console.log('App Launch')
 			this.setSystemInfo()
+			this.ssoInfo()
 			this.updateCheck()
 		},
 		onShow: function() {
@@ -21,6 +22,8 @@
 		methods: {
 			// app 获取并设置系统信息
 			...mapActions('app', ['setSystemInfo']),
+			// user 获取用户信息
+			...mapActions('user', ['ssoInfo']),
 			// 小程序更新检测
 			updateCheck() {
 				const updateManager = uni.getUpdateManager()
