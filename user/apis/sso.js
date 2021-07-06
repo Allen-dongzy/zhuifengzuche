@@ -21,7 +21,7 @@ export const ssoInfo = (data, loading = '') => {
 	})
 }
 
-// 获取会员信息
+// 登录
 export const login = (data, loading = '登陆中') => { // 对接
 	return request({
 		url: 'sso/login',
