@@ -32,7 +32,7 @@ export const login = (data, loading = '登陆中') => { // 对接
 }
 
 // 完善信息
-export const perfectInformation = (data, loading = '提交中') => {
+export const perfectInformation = (data, loading = '提交中') => { // 对接
 	return request({
 		url: 'sso/perfectInformation',
 		method: 'POST',
