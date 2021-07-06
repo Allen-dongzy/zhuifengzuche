@@ -117,7 +117,7 @@ const setClipboard = text => {
 }
 
 // 防抖
-const debounce = (callback, delay = 500) => {
+const debounce = (callback, delay = 600) => {
 	let timer // 闭包存定时器状态
 	return function () {
 		let args = arguments // 携带的参数
@@ -129,7 +129,7 @@ const debounce = (callback, delay = 500) => {
 }
 
 // 节流
-const throttle = (callback, delay = 2000) => {
+const throttle = (callback, delay = 1000) => {
 	let isFirst = true
 	let start = Date.now() // 闭包存起始时间
 	return function () {
@@ -145,7 +145,6 @@ const throttle = (callback, delay = 2000) => {
 			start = Date.now()
 			return
 		}
-		toast('操作频繁，请稍后再试！')
 	}
 }
 
