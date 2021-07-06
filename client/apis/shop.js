@@ -43,3 +43,14 @@ export const evaluatePageQuery = (data, loading = '') => { // 对接
 		loading
 	})
 }
+
+// 树形菜单
+export const treeList = (data, loading = '') => { // 对接
+	return request({
+		url: "menu/employee/tree",
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'GET',
+		data,
+		loading
+	})
+}

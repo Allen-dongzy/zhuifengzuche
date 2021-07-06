@@ -7,24 +7,51 @@
 		</view>
 		 
 		<view class="topNav" style="color: #8E8E93;font-size: 30rpx" v-if="search==true">
-			<input type="text" style="background-color:#EFF0F3;height: 60rpx;width: 500rpx;border-radius: 50rpx;padding-left: 20rpx;" value="" />
+			<input@input="setSearch" v-model="searchVal" type="text" style="background-color:#EFF0F3;height: 60rpx;width: 500rpx;border-radius: 50rpx;padding-left: 20rpx;" value="" />
 			<view style="margin-left: 20rpx;" @click="showSearch">取消</view>
 		</view>
-		<view class="flexBox" v-for="(item,index) in 5"  style="height: 120rpx;border-bottom: 2rpx solid #EFF0F3;" @click="lookinfo"> 
-			<view style="font-size: 28rpx;color: #000000;width: 96%;">张全蛋</view>
+		<view class="flexBox" v-for="(item,index) in list"  style="height: 120rpx;border-bottom: 2rpx solid #EFF0F3;" @click="lookinfo(item)"> 
+			<view style="font-size: 28rpx;color: #000000;width: 96%;">{{item.realName}}</view>
 			<image style="width:16rpx;height:32rpx;" :src="$util.fileUrl('/heiyou.png')" mode=""></image>
 		</view>
 	</view>
 </template>
 
 <script>
+	
+	
+	import {
+		debounce
+	} from '@/utils/tools';
+	import {
+		employeelist
+	} from '@/apis/admin'
 	export default {
 		data() {
 			return {
-				search:false
+				search:false,
+				list:[],
+				page:1,
+				size:10,
+				id:"",
+				searchVal:''
 			}
 		},
+		onLoad(e) {
+			this.id= e.id
+			this.employeelist()
+		},
 		methods: {
+		 async	employeelist(){
+			 let data={
+				 shopId:this.id,
+				 page:this.page,
+				 size:this.size
+			 }
+			 const [err,res] = await employeelist(data)
+			 if(err) return 
+			 this.list=res.data.list
+		 },
 			showSearch(){
 				if(this.search){
 					this.search=false
@@ -36,18 +63,31 @@
 			},
 			addStaff(){
 				uni.navigateTo({
-					url:'./addstaff',
+					url:'./addstaff?id='+this.id,
+					animationDuration:200,
+					animationType:'pop-in'
+				}) 
+			},
+			lookinfo(e){
+				uni.navigateTo({
+					url:'./addstaffInfo?obj='+JSON.stringify(e)+'&id='+this.id,
 					animationDuration:200,
 					animationType:'pop-in'
 				})
 			},
-			lookinfo(){
-				uni.navigateTo({
-					url:'./addstaffInfo',
-					animationDuration:200,
-					animationType:'pop-in'
-				})
-			}
+			setSearch: debounce(async function() {
+				let data = {
+					page: this.page,
+					shopId:this.id,
+					size: this.size,
+					realName: this.searchVal
+				}
+				const [err, res] = await employeelist(data)
+				if (err) return
+				console.log(res)
+				 this.list=res.data.list
+			
+			}),
 		}
 	}
 </script>
