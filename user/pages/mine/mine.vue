@@ -1,8 +1,9 @@
 <template>
 	<view class="box" :style="{backgroundImage: 'url('+`${ossUrl}/mine/userbg.png`+')'}">
 		<view class="name-box">
-			<image class="avatar" :src="icon || `${ossUrl}/mine/touxiang.png`" mode="aspectFill"></image>
-			<view class="nickname" @click="$open('/pages/common/login')">{{nickname || username || '点击登陆'}}
+			<image class="avatar" :src="icon || `${ossUrl}/mine/touxiang.png`" mode="aspectFill" @click="headerTap">
+			</image>
+			<view class="nickname" @click="headerTap">{{nickname || username || '点击登陆'}}
 				<view class="arrow"></view>
 			</view>
 		</view>
@@ -20,7 +21,7 @@
 					<image class="icon" :src="`${ossUrl}/mine/youhui.png`"></image>
 					<view class="text">优惠券</view>
 				</view>
-				<view class="price">0<text>张</text></view>
+				<view class="price">{{couponCount}}<text>张</text></view>
 			</view>
 		</view>
 		<view class="flex-box function">
@@ -90,10 +91,15 @@
 			};
 		},
 		computed: {
-			// user 用户昵称
-			...mapState('user', ['icon', 'nickname', 'username'])
+			// user 头像，用户昵称，用户名，优惠券数量
+			...mapState('user', ['icon', 'nickname', 'username', 'couponCount'])
 		},
 		methods: {
+			// 点击头像
+			headerTap() {
+				if (this.$storage.get('token')) this.$open('/pages/mine/personalInformation')
+				else this.$open('/pages/common/login')
+			},
 			lookinfo() {
 				uni.navigateTo({
 					url: './news',
