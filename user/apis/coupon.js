@@ -1,7 +1,7 @@
 import request from '@/request'
 
 // 获取该用户可以使用的优惠券（按照优惠金额倒序排列）
-export const findIsUseCouponByUser = (data, loading = '') => {
+export const findIsUseCouponByUser = (data, loading = '') => { // 对接
 	return request({
 		url: 'coupon/findIsUseCouponByUser',
 		method: 'GET',
@@ -21,7 +21,7 @@ export const findNewCoupon = (data, loading = '') => { // 对接
 }
 
 // 领取单张优惠券
-export const getCouponById = (data, loading = '领取中') => {
+export const getCouponById = (data, loading = '领取中') => { // 对接
 	return request({
 		url: 'coupon/getCouponById',
 		method: 'GET',
@@ -31,7 +31,7 @@ export const getCouponById = (data, loading = '领取中') => {
 }
 
 // 一键领取该用户可以领取的新人券
-export const oneClickReceiveNewCoupons = (data, loading = '领取中') => {
+export const oneClickReceiveNewCoupons = (data, loading = '领取中') => { // 对接
 	return request({
 		url: 'coupon/oneClickReceiveNewCoupons',
 		method: 'GET',

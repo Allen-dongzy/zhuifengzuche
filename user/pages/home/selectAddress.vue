@@ -178,7 +178,7 @@
 				}
 			}
 		}
-		
+
 		.address-list {
 			@include box-w();
 			padding: 0 32rpx;

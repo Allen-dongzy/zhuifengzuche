@@ -1,7 +1,7 @@
 import request from '@/request'
 
-// 查询所有城市
-export const customerHomeBannerGetSpread = (data, loading = '') => {
+// 查询启用展示BANNER
+export const customerHomeBannerGetSpread = (data, loading = '') => { // 对接
 	return request({
 		url: 'customerHomeBanner/getSpread',
 		method: 'GET',

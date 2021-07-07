@@ -48,7 +48,7 @@
 						</view>
 						<view class="ul">
 							<view class="li current">
-								<image class="icon" :src="`${ossUrl}/common/location.png`"></image>重庆
+								<image class="icon" :src="`${ossUrl}/common/location.png`"></image>{{currentCity.name}}
 							</view>
 						</view>
 					</view>
@@ -61,17 +61,16 @@
 							</view>
 						</view>
 						<view class="ul">
-							<view class="li" v-for="(item, index) in 10" :key="index">重庆</view>
+							<view class="li" v-for="(item, index) in hotCity" :key="index">{{item.name}}</view>
 						</view>
 					</view>
 				</view>
 				<!-- 城市列表  -->
 				<view class="city-list">
-					<view class="list list-item" v-for="(item, key) of cities" :key="key" :id="key">
-						<view class="title">{{ key }}</view>
-						<view class="item" v-for="innerItem in item" :key="innerItem.cityId"
-							@click="selectCity(innerItem)">
-							{{ innerItem.city }}
+					<view class="list list-item" v-for="(item, index) of allCity" :key="index" :id="index">
+						<view class="title">{{ index }}</view>
+						<view class="item" v-for="(inner, sub) in item" :key="inner.id" @click="selectCity(inner)">
+							{{ inner.name }}
 						</view>
 					</view>
 				</view>
@@ -81,7 +80,8 @@
 			<view class="alphabet" @touchstart="touchStart" @touchend="touchEnd" @touchmove.stop="touchMove">
 				<view v-for="(item, index) in alphabet" :key="index" @touchstart="getLetter" @touchend="setLetter"
 					:id="item">
-					<view class="item" :class="{ active: currentLetter == item }">
+					<view class="item" :class="{ active: currentLetter == item }"
+						:style="[{'height':`${(windowHeight-90)/24}px`},{'line-height':`${(windowHeight-90)/24}px`}]">
 						{{ item == "area" ? "当前" : item == "hot" ? "热门" : item }}
 					</view>
 				</view>
@@ -91,8 +91,9 @@
 </template>
 
 <script>
-	import City from "@/static/city/city.json"
-
+	import {
+		mapState
+	} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -105,15 +106,9 @@
 				searchData: [], //搜索的数据
 				isClearBtn: false,
 
-				regionList: City.data.area, //区域列表,模拟数据请自行修改
+				// regionList: City.data.area, //区域列表,模拟数据请自行修改
 				cityId: null, //城市ID
-				cityName: null, //城市名
-				areaName: '东城区', //区域名,模拟数据请自行修改
 
-				hotcites: City.data.hotcity, //热门城市，模拟数据请自行修改
-				cities: City.data.cities, //城市列表,拟数据请自行修改
-
-				alphabet: City.data.alphabet, //字母列表
 				toIndex: "", //跳转的索引的字母
 				tipsLetter: "", //滑动显示字母
 				timer: null,
@@ -122,6 +117,12 @@
 				letterDetails: [],
 				currentLetter: "area" //默认选择hot
 			};
+		},
+		computed: {
+			// city 字母列表，当前城市列表，热门城市列表，全部城市列表
+			...mapState('city', ['alphabet', 'currentCity', 'hotCity', 'allCity']),
+			// app 窗口高度
+			...mapState('app', ['windowHeight'])
 		},
 		watch: {
 			// 城市搜索输入框
@@ -138,8 +139,8 @@
 				}
 				this.timer = setTimeout(() => {
 					const result = [];
-					for (let i in this.cities) {
-						this.cities[i].forEach(item => {
+					for (let i in this.allCity) {
+						this.allCity[i].forEach(item => {
 							if (
 								item.spell.includes(this.inputValue) ||
 								item.city.includes(this.inputValue)
@@ -159,9 +160,6 @@
 			isReach(val) {
 				this.searchFocus = val;
 			}
-		},
-		created() {
-			//真实数据请求...
 		},
 		methods: {
 			//列表滚动，和右边字母表对应
@@ -189,8 +187,6 @@
 					}
 				});
 			},
-
-
 			//搜索
 			searchChange(e) {
 				let {
@@ -198,27 +194,22 @@
 				} = e.detail;
 				this.inputValue = value;
 			},
-
 			//搜索结果列表数据
 			citySearchList(item) {
 				console.log('选择的城市：', item)
 			},
-
-
 			selectCity(item) {
 				console.log('选择的城市：', item)
-				//当前项目是需要选择到区域，所以选择城市后回到区县的地方
+				//当前项目是需要选择到区域，所以选择城市后回到当前的地方
 				this.toIndex = "area";
 				setTimeout(() => {
 					this.toIndex = "";
 				}, 1000)
 			},
-
 			//区域选择
 			selectRegion(item) {
 				console.log('选择的区域是：', item)
 			},
-
 			//触发开始
 			touchStart(e) {
 				// console.log(e);
@@ -266,18 +257,16 @@
 			setLetter() {
 				this.toIndex = this.tipsLetter;
 			},
-
 			//提示字母转换
 			letterTransform(letter) {
 				let str = "";
 				if (letter == "area") {
-					str = "区县";
+					str = "当前";
 				} else if (letter == "hot") {
 					str = "热门";
 				} else {
 					str = letter;
 				}
-
 				return str;
 			}
 		}
@@ -442,7 +431,7 @@
 				padding: 0 30rpx;
 				line-height: 64rpx;
 				margin-top: 30rpx;
-				margin-right: 30rpx;
+				margin-right: 20rpx;
 				background: #eff0f3;
 				border-radius: 128px;
 				font-size: 28rpx;
@@ -497,7 +486,7 @@
 	.alphabet {
 		position: fixed;
 		right: 0;
-		top: 120rpx;
+		top: 180rpx;
 		z-index: 9;
 		width: calc(750rpx - 680rpx);
 		text-align: center;
@@ -505,11 +494,6 @@
 		font-size: 24rpx;
 		font-weight: 700;
 		color: #B2B2B2;
-
-		.item {
-			height: 34rpx;
-			line-height: 34rpx;
-		}
 
 		.active {
 			color: #666;

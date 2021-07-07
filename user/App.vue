@@ -9,8 +9,15 @@
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
+			// app信息
 			this.setSystemInfo()
+			// 用户信息
 			this.getUserInfo()
+			// 城市
+			this.getCurrentCity()
+			this.getHotCity()
+			this.getAllCity()
+			// 更新
 			this.updateCheck()
 		},
 		onShow: function() {
@@ -24,6 +31,8 @@
 			...mapActions('app', ['setSystemInfo']),
 			// user 获取用户信息
 			...mapActions('user', ['getUserInfo']),
+			// city 获取所有城市，获取热门城市，获取当前城市
+			...mapActions('city', ['getAllCity', 'getHotCity', 'getCurrentCity']),
 			// 小程序更新检测
 			updateCheck() {
 				const updateManager = uni.getUpdateManager()

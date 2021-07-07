@@ -1,6 +1,7 @@
 import md5 from 'js-md5'
 import config from '@/request/config'
 import storage from '@/utils/storage'
+import store from '@/store'
 import {
 	open,
 	toast,
@@ -171,6 +172,7 @@ const codeManager = (res) => {
 		if (code === 401) open('/pages/common/login')
 	}
 	if (Status[code]) {
+		store.commit("user/clearInfo")
 		storage.remove('token')
 		toast(Status[code])
 	}

@@ -1,11 +1,13 @@
 <template>
 	<view class="home">
 		<uni-swiper-dot :info="swiperInfo" :current="current" field="content" mode="round" :dotsStyles="dotsStyles">
-			<swiper class="swiper" :autoplay="true" :interval="3000" :circular="true" @change="swiperChange">
+			<swiper v-if="swiperInfo.length>0" class="swiper" :autoplay="true" :interval="3000" :circular="true"
+				@change="swiperChange">
 				<swiper-item v-for="(item ,index) in swiperInfo" :key="index">
-					<image class="banner" :src="`${ossUrl}/home/cache-banner.png`" mode="aspectFill"></image>
+					<image class="banner" :src="item.content" mode="aspectFill"></image>
 				</swiper-item>
 			</swiper>
+			<view v-else class="banner-empty"></view>
 		</uni-swiper-dot>
 		<view class="card">
 			<view class="title-bar">
@@ -16,9 +18,9 @@
 				<text>异地还车</text>
 			</view>
 			<view class="block">
-				<view class="city" @click="$open('/pages/home/selectCity')">乐东黎大 族自治县</view>
+				<view class="city" @click="$open('/pages/home/selectCity')">{{takeCarCity || '选择城市'}}</view>
 				<image class="dot" :src="`${ossUrl}/home/dot.png`"></image>
-				<view class="address" @click="$open('/pages/home/selectAddress')">乐东黎大族自治县 乐东黎大族自治县</view>
+				<view class="address" @click="$open('/pages/home/selectAddress')">{{takeCarAddress || '选择地点'}}</view>
 				<evan-switch v-model="remoteSwitch" active-color="#5A7EFF"></evan-switch>
 			</view>
 			<view v-show="remoteSwitch" class="title-bar">
@@ -28,22 +30,35 @@
 				</view>
 			</view>
 			<view v-show="remoteSwitch" class="block">
-				<view class="city text-1" @click="$open('/pages/home/selectCity')">乐东黎大 族自治县</view>
+				<view class="city text-1" @click="$open('/pages/home/selectCity')">{{carAlsoCity || '选择城市'}}</view>
 				<image class="dot" :src="`${ossUrl}/home/dot.png`"></image>
-				<view class="address text-1" @click="$open('/pages/home/selectAddress')">乐东黎大族自治县 乐东黎大族自治县</view>
+				<view class="address text-1" @click="$open('/pages/home/selectAddress')">{{carAlsoAddress || '选择地点'}}
+				</view>
 			</view>
 			<view class="time-bar" @click="$open('/pages/home/selectTime')">
-				<view class="time start-time">
-					<view class="date">5月13日</view>
-					<view class="time">周四&nbsp;&nbsp;&nbsp;14:00</view>
+				<view class="time-box start-time">
+					<view class="date">{{takeCarDate || '选择日期'}}</view>
+					<view class="time" v-show="takeCarTime || takeCarDay">
+						<text v-show="takeCarDay">{{takeCarDay}}</text>
+						<text v-show="takeCarTime">{{takeCarTime}}</text>
+					</view>
+					<view class="time" v-show="!takeCarTime && !takeCarDay">
+						<text>选择时间</text>
+					</view>
 				</view>
 				<view class="line-bar">
-					<view class="date">2天</view>
+					<view class="date">{{totalDate || 0}}天</view>
 					<image class="interval" :src="`${ossUrl}/home/interval.png`"></image>
 				</view>
-				<view class="time end-time">
-					<view class="date">5月13日</view>
-					<view class="time">周四&nbsp;&nbsp;&nbsp;14:00</view>
+				<view class="time-box end-time">
+					<view class="date">{{carAlsoDate || '选择日期'}}</view>
+					<view class="time" v-show="carAlsoTime || carAlsoDay">
+						<text v-show="carAlsoDay">{{carAlsoDay}}</text>
+						<text v-show="carAlsoTime">{{carAlsoTime}}</text>
+					</view>
+					<view class="time" v-show="!carAlsoTime && !carAlsoDay">
+						<text>选择时间</text>
+					</view>
 				</view>
 			</view>
 			<view class="info">*异地还车调度费3元/公里；22:00-07:00取还车，将收取￥40/次夜间服务费</view>
@@ -56,7 +71,7 @@
 		<view class="notice-box" @click="$open('/pages/mine/coupon')">
 			<image class="notice-bg" :src="`${ossUrl}/home/notice.png`" mode="aspectFill"></image>
 			<view class="mask">
-				<view class="info">你有2张优惠券可领取 租车立省20元！</view>
+				<view class="info">立即领取租车优惠券! 租车立省20元!</view>
 				<image class="go" :src="`${ossUrl}/home/go.png`"></image>
 			</view>
 		</view>
@@ -111,12 +126,12 @@
 									<view class="info is-get">
 										<view class="price">￥<text>{{item.discountAmount}}</text></view>
 										<view class="description">
-											<view class="text">新用户专享</view>
+											<view class="text">{{item.couponTitle}}</view>
 											<view class="time">
 												到期时间：{{item.closeTime ? item.closeTime.split(' ')[0] : ''}}</view>
 										</view>
 									</view>
-									<view class="btn">
+									<view class="btn" @click="getCouponById(index)">
 										<image class="btn-bg" :src="`${ossUrl}/home/is-get-btn.png`"></image>
 										<view class="text">领取</view>
 									</view>
@@ -124,7 +139,7 @@
 							</view>
 						</view>
 					</scroll-view>
-					<view class="coupon-btn">一键领取</view>
+					<view class="coupon-btn" @click="oneClickReceiveNewCoupons">一键领取</view>
 					<image class="coupon-close" :src="`${ossUrl}/home/coupon-close.png`" @click="closeCouponPopup">
 					</image>
 				</view>
@@ -136,20 +151,22 @@
 <script>
 	import EvanSwitch from '@/components/evan-switch/evan-switch'
 	import {
-		findNewCoupon
+		findNewCoupon,
+		oneClickReceiveNewCoupons,
+		getCouponById
 	} from '@/apis/coupon'
+	import {
+		customerHomeBannerGetSpread
+	} from '@/apis/customerHomeBanner'
+	import {
+		throttle
+	} from '@/utils/tools'
 
 	export default {
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
-				swiperInfo: [{
-					src: ''
-				}, {
-					src: ''
-				}, {
-					src: ''
-				}], // 轮播数据
+				swiperInfo: [], // 轮播数据
 				dotsStyles: {
 					bottom: 40,
 					backgroundColor: '#dadada',
@@ -160,18 +177,36 @@
 				current: 0, // 轮播当前索引
 				remoteSwitch: false, // 是否开启异地还车
 				couponList: [], // 优惠券列表
+				takeCarCity: '', // 取车城市
+				takeCarAddress: '', // 取车地址
+				carAlsoCity: '', // 还车城市
+				carAlsoAddress: '', // 还车地址
+				takeCarDate: '', // 取车日期
+				takeCarDay: '', // 取车日是周几
+				takeCarTime: '', // 取车时间
+				carAlsoDate: '', // 还车日期
+				carAlsoDay: '', // 还车日是周几
+				carAlsoTime: '', // 还车时间
+				totalDate: '', // 总天数
 			}
 		},
 		components: {
 			EvanSwitch
 		},
 		onLoad() {
+			this.customerHomeBannerGetSpread()
 			if (this.$storage.get('token')) this.loginAfterRequest()
 		},
 		methods: {
 			// 登录之后的请求
 			loginAfterRequest() {
 				this.findNewCoupon()
+			},
+			// 查询轮播
+			async customerHomeBannerGetSpread() {
+				const [err, res] = await customerHomeBannerGetSpread()
+				if (err) return
+				this.swiperInfo = res.data
 			},
 			// 获取新人优惠券
 			async findNewCoupon() {
@@ -180,6 +215,23 @@
 				this.couponList = res.data.list
 				if (res.data.count > 0) this.openCouponPopup()
 			},
+			// 一键领取新人券
+			oneClickReceiveNewCoupons: throttle(async function() {
+				const [err, res] = await oneClickReceiveNewCoupons()
+				if (err) return
+				this.$toast('领取成功')
+				this.closeCouponPopup()
+			}),
+			// 领取优惠券
+			getCouponById: throttle(async function(index) {
+				const params = {
+					couponId: this.couponList[index].id
+				}
+				const [err, res] = await getCouponById(params)
+				if (err) return
+				this.$toast('领取成功')
+				this.couponList.splice(index, 1)
+			}),
 			// 轮播改变
 			swiperChange(e) {
 				this.current = e.detail.current;
@@ -220,6 +272,10 @@
 		.swiper,
 		.banner {
 			@include box(100%, 320rpx);
+		}
+
+		.banner-empty {
+			@include box(100%, 320rpx, #ddd);
 		}
 
 		.card {
@@ -290,14 +346,14 @@
 				}
 
 				.evan-switch {
-					transform: scaleX(0.8) scaleY(0.8) translateX(10rpx);
+					transform: scaleX(0.8) scaleY(0.8) translateX(15rpx) translateY(-15rpx);
 				}
 			}
 
 			.time-bar {
 				@include flex-row(space-between);
 
-				.time {
+				.time-box {
 					@include flex-col();
 
 					.date {
@@ -306,9 +362,18 @@
 					}
 
 					.time {
+						@include box-w();
+						padding: 0 6rpx;
+						@include flex-row(space-between);
 						@include font-set(24rpx, #999);
 						line-height: 34rpx;
 						margin-top: 6rpx;
+					}
+
+					&.end-time {
+						.time {
+							@include flex-row(flex-end);
+						}
 					}
 				}
 
