@@ -11,7 +11,7 @@ export const findIsUseCouponByUser = (data, loading = '') => {
 }
 
 // 获取用户可以领取的新人券
-export const findNewCoupon = (data, loading = '') => {
+export const findNewCoupon = (data, loading = '') => { // 对接
 	return request({
 		url: 'coupon/findNewCoupon',
 		method: 'GET',

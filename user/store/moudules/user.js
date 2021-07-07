@@ -25,26 +25,27 @@ const user = {
 		username: '', // 用户名
 	},
 	mutations: {
-		// 获取用户信息
-		ssoInfo(state, {
-			aliId,
-			birthday,
-			city,
-			couponCount,
-			email,
-			emergencyContactName,
-			emergencyContactPhone,
-			gender,
-			icon,
-			idCard,
-			isRealName,
-			job,
-			memberLevelId,
-			nickname,
-			phone,
-			realName,
-			username
-		}) {
+		// 设置用户信息
+		setUserInfo(state, info) {
+			const {
+				aliId,
+				birthday,
+				city,
+				couponCount,
+				email,
+				emergencyContactName,
+				emergencyContactPhone,
+				gender,
+				icon,
+				idCard,
+				isRealName,
+				job,
+				memberLevelId,
+				nickname,
+				phone,
+				realName,
+				username
+			} = info
 			if (aliId) state.aliId = aliId
 			if (birthday) state.birthday = birthday
 			if (city) state.city = city
@@ -62,30 +63,49 @@ const user = {
 			if (phone) state.phone = phone
 			if (realName) state.realName = realName
 			if (username) state.username = username
+			storage.set('userinfo', info)
 		},
 		// 清空用户信息
 		clearInfo(state) {
+			state.aliId = ''
+			state.birthday = ''
+			state.city = ''
+			state.couponCount = 0
+			state.email = ''
+			state.emergencyContactName = ''
+			state.emergencyContactPhone = ''
+			state.gender = 0
 			state.icon = ''
-			state.menus = []
-			state.roles = []
-			state.shopId = ''
-			state.username = ''
+			state.idCard = ''
+			state.isRealName = 0
+			state.job = ''
+			state.memberLevelId = ''
+			state.nickname = ''
+			state.phone = ''
+			state.realName = ''
+			state.usernam = ''
+			storage.remove('userinfo')
 		}
 	},
 	actions: {
 		// 获取用户信息
-		async ssoInfo({
+		async getUserInfo({
 			commit
 		}) {
 			if (!storage.get('token')) return
+			const userinfo = storage.get('userinfo')
+			if (userinfo && Object.keys(userinfo).length > 0) {
+				commit('setUserInfo', userinfo)
+				return
+			}
 			const [err, res] = await ssoInfo()
 			if (err) return
-			commit('ssoInfo', res.data)
+			commit('setUserInfo', res.data)
 		}
 	},
 	getter: {
 		// 获取用户信息
-		ssoInfo: (state) => {
+		getUserInfo: (state) => {
 			return state
 		}
 	}

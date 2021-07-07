@@ -64,7 +64,7 @@
 		},
 		methods: {
 			// user 获取用户信息
-			...mapActions('user', ['ssoInfo']),
+			...mapActions('user', ['getUserInfo']),
 			// 阅读协议
 			lookAgreement() {
 				this.agreementType = !this.agreementType
@@ -127,7 +127,7 @@
 				if (err) return
 				this.$storage.set('token', res.data.token)
 				this.$toast('登录成功')
-				this.ssoInfo()
+				this.getUserInfo()
 				setTimeout(() => {
 					this.$open('/pages/home/home', 3)
 				}, 500)

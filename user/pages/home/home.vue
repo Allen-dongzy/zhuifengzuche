@@ -102,17 +102,18 @@
 				<image class="bg" :src="`${ossUrl}/home/coupon-bg.png`"></image>
 				<view class="mask">
 					<image class="caption" :src="`${ossUrl}/home/coupon-title.png`"></image>
-					<view class="title">恭喜您，获得4张优惠券</view>
+					<view class="title">恭喜您，获得{{couponList.length}}张优惠券</view>
 					<scroll-view class="coupon-content" :scroll-y="true">
-						<view class="coupon-box" v-for="(item, index) in 6" :key="index">
+						<view class="coupon-box" v-for="(item, index) in couponList" :key="index">
 							<view class="coupon">
 								<image class="bg" :src="`${ossUrl}/home/is-get-bg.png`"></image>
 								<view class="mask">
 									<view class="info is-get">
-										<view class="price">￥<text>50</text></view>
+										<view class="price">￥<text>{{item.discountAmount}}</text></view>
 										<view class="description">
 											<view class="text">新用户专享</view>
-											<view class="time">到期时间：2021/05/27</view>
+											<view class="time">
+												到期时间：{{item.closeTime ? item.closeTime.split(' ')[0] : ''}}</view>
 										</view>
 									</view>
 									<view class="btn">
@@ -134,6 +135,9 @@
 
 <script>
 	import EvanSwitch from '@/components/evan-switch/evan-switch'
+	import {
+		findNewCoupon
+	} from '@/apis/coupon'
 
 	export default {
 		data() {
@@ -155,15 +159,27 @@
 				}, // 轮播样式
 				current: 0, // 轮播当前索引
 				remoteSwitch: false, // 是否开启异地还车
+				couponList: [], // 优惠券列表
 			}
 		},
 		components: {
 			EvanSwitch
 		},
 		onLoad() {
-			this.openCouponPopup()
+			if (this.$storage.get('token')) this.loginAfterRequest()
 		},
 		methods: {
+			// 登录之后的请求
+			loginAfterRequest() {
+				this.findNewCoupon()
+			},
+			// 获取新人优惠券
+			async findNewCoupon() {
+				const [err, res] = await findNewCoupon()
+				if (err) return
+				this.couponList = res.data.list
+				if (res.data.count > 0) this.openCouponPopup()
+			},
 			// 轮播改变
 			swiperChange(e) {
 				this.current = e.detail.current;
@@ -187,7 +203,7 @@
 			// 关闭领券弹窗
 			closeCouponPopup() {
 				this.$refs.couponPopup.close()
-			}
+			},
 		}
 	}
 </script>

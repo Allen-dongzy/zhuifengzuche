@@ -32,7 +32,8 @@
 
 <script>
 	import {
-		mapState
+		mapState,
+		mapMutations
 	} from 'vuex'
 	import {
 		perfectInformation
@@ -65,6 +66,8 @@
 			if (this.emergencyContactPhone) this.localEmergencyContactPhone = this.emergencyContactPhone
 		},
 		methods: {
+			// user 设置用户信息
+			...mapMutations('user', ['setUserInfo']),
 			// 完善信息
 			perfectInformation: throttle(async function() {
 				if (this.localIdCard && !isIdentity(this.localIdCard, this.$toast('请输入正确的身份证号'))) return
@@ -79,6 +82,7 @@
 				const [err, res] = await perfectInformation(params)
 				if (err) return
 				this.$toast('提交成功')
+				this.setUserInfo(params)
 				setTimeout(() => {
 					this.$close()
 				}, 500)
