@@ -62,16 +62,11 @@
 					<view class="conten">{{info.note || '暂无'}}</view>
 				</view>
 				<view class="allFlex" style="margin-top: 40rpx;">
-<<<<<<< HEAD
 					<view class="point" style="margin-left: 50%;"
 						@click="$open('/pages/Store/storePoint', {shopId: info.id})">送车点管理</view>
-					<view class="point" style="margin-left: 20rpx;" @click="$open('/pages/Store/staff')">员工管理</view>
-=======
-					<view class="point" style="margin-left: 50%;" @click="$open('/pages/Store/storePoint')">送车点管理</view>
-					<view class="point" style="margin-left: 20rpx;" @click="$open('/pages/Store/staff?id='+info.id)">员工管理</view>
->>>>>>> ad29ff6 (feat: add Staff management)
+					<view class="point" style="margin-left: 20rpx;" @click="$open('/pages/Store/staff?id='+info.id)">
+						员工管理</view>
 				</view>
-
 			</view>
 		</view>
 		<view style="font-size: 32rpx;color: #000000;width: 90%;margin: auto;margin-top: 40rpx;">评价（<text
