@@ -18,7 +18,9 @@
 				<text>异地还车</text>
 			</view>
 			<view class="block">
-				<view class="city" @click="$open('/pages/home/selectCity')">{{takeCarCity || '选择城市'}}</view>
+				<view class="city" @click="$open('/pages/home/selectCity', {cityMode: 'takeCar'})">
+					{{takeCarCity.shortName || '选择城市'}}
+				</view>
 				<image class="dot" :src="`${ossUrl}/home/dot.png`"></image>
 				<view class="address" @click="$open('/pages/home/selectAddress')">{{takeCarAddress || '选择地点'}}</view>
 				<evan-switch v-model="remoteSwitch" active-color="#5A7EFF"></evan-switch>
@@ -30,7 +32,9 @@
 				</view>
 			</view>
 			<view v-show="remoteSwitch" class="block">
-				<view class="city text-1" @click="$open('/pages/home/selectCity')">{{carAlsoCity || '选择城市'}}</view>
+				<view class="city text-1" @click="$open('/pages/home/selectCity', {cityMode: 'carAlso'})">
+					{{carAlsoCity.shortName || '选择城市'}}
+				</view>
 				<image class="dot" :src="`${ossUrl}/home/dot.png`"></image>
 				<view class="address text-1" @click="$open('/pages/home/selectAddress')">{{carAlsoAddress || '选择地点'}}
 				</view>
@@ -177,9 +181,9 @@
 				current: 0, // 轮播当前索引
 				remoteSwitch: false, // 是否开启异地还车
 				couponList: [], // 优惠券列表
-				takeCarCity: '', // 取车城市
+				takeCarCity: {}, // 取车城市
 				takeCarAddress: '', // 取车地址
-				carAlsoCity: '', // 还车城市
+				carAlsoCity: {}, // 还车城市
 				carAlsoAddress: '', // 还车地址
 				takeCarDate: '', // 取车日期
 				takeCarDay: '', // 取车日是周几
@@ -196,6 +200,7 @@
 		onLoad() {
 			this.customerHomeBannerGetSpread()
 			if (this.$storage.get('token')) this.loginAfterRequest()
+			this.eventListener()
 		},
 		methods: {
 			// 登录之后的请求
@@ -256,6 +261,31 @@
 			closeCouponPopup() {
 				this.$refs.couponPopup.close()
 			},
+			// 事件监听
+			eventListener() {
+				// 选择城市
+				uni.$on('checkCity', e => {
+					switch (e.cityMode) {
+						case 'takeCar':
+							this.takeCarCity = JSON.parse(e.city)
+							break
+						case 'carAlso':
+							this.carAlsoCity = JSON.parse(e.city)
+							break
+					}
+				})
+				// 选择地点
+				uni.$on('checkAddress', e => {
+					switch (e.cityMode) {
+						case 'takeCar':
+							this.takeCarCity = JSON.parse(e.city)
+							break
+						case 'carAlso':
+							this.carAlsoCity = JSON.parse(e.city)
+							break
+					}
+				})
+			}
 		}
 	}
 </script>

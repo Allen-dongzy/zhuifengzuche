@@ -79,7 +79,6 @@ const city = {
 		},
 		// 设置当前城市
 		setCurrentCity(state, currentCity) {
-			console.log(currentCity)
 			state.currentCity = currentCity
 			storage.set('currentCity', currentCity)
 		}
