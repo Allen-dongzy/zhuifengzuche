@@ -7,7 +7,8 @@
 	}, {
 		"path": "pages/order/order",
 		"style": {
-			"navigationBarTitleText": "订单列表"
+			"navigationBarTitleText": "订单列表",
+			"enablePullDownRefresh":true
 		}
 	}, {
 		"path": "pages/mine/mine",
@@ -137,7 +138,8 @@
 	}, {
 		"path": "pages/mine/violationRecord",
 		"style": {
-			"navigationBarTitleText": "违章记录"
+			"navigationBarTitleText": "违章记录",
+			 "enablePullDownRefresh": true
 		}
 	}, {
 		"path": "pages/mine/violationInfo",
