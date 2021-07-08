@@ -34,7 +34,7 @@ export const regionCityFindCityByLatLng = (data, loading = '') => { // 对接
 }
 
 // 查询城市下有送车点的的区域
-export const regionCityFindDeliveryArea = (data, loading = '') => {
+export const regionCityFindDeliveryArea = (data, loading = '') => { // 对接
 	return request({
 		url: 'regionCity/findDeliveryArea',
 		contentType: 'application/x-www-form-urlencoded',

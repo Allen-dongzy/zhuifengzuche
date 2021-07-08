@@ -122,7 +122,7 @@
 			}
 		},
 		computed: {
-			// city 字母列表，当前城市列表，热门城市列表，全部城市列表
+			// city 字母列表，当前城市，热门城市列表，全部城市列表
 			...mapState('city', ['alphabet', 'currentCity', 'hotCity', 'allCity']),
 			// app 窗口高度
 			...mapState('app', ['windowHeight'])

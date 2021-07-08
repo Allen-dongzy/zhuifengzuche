@@ -13,7 +13,7 @@
 			<view class="title-bar">
 				<view class="caption">
 					<view class="circle blue"></view>
-					<text>取还地点</text>
+					<text>{{remoteSwitch ? '取车地点' : '取还地点'}}</text>
 				</view>
 				<text>异地还车</text>
 			</view>
@@ -22,7 +22,9 @@
 					{{takeCarCity.shortName || '选择城市'}}
 				</view>
 				<image class="dot" :src="`${ossUrl}/home/dot.png`"></image>
-				<view class="address" @click="$open('/pages/home/selectAddress')">{{takeCarAddress || '选择地点'}}</view>
+				<view class="address" @click="goTakeCarAddress">
+					{{takeCarAddress.name || '选择地点'}}
+				</view>
 				<evan-switch v-model="remoteSwitch" active-color="#5A7EFF"></evan-switch>
 			</view>
 			<view v-show="remoteSwitch" class="title-bar">
@@ -36,17 +38,18 @@
 					{{carAlsoCity.shortName || '选择城市'}}
 				</view>
 				<image class="dot" :src="`${ossUrl}/home/dot.png`"></image>
-				<view class="address text-1" @click="$open('/pages/home/selectAddress')">{{carAlsoAddress || '选择地点'}}
+				<view class="address text-1" @click="goCarAlsoAddress">
+					{{carAlsoAddress.name || '选择地点'}}
 				</view>
 			</view>
 			<view class="time-bar" @click="$open('/pages/home/selectTime')">
 				<view class="time-box start-time">
-					<view class="date">{{takeCarDate || '选择日期'}}</view>
-					<view class="time" v-show="takeCarTime || takeCarDay">
-						<text v-show="takeCarDay">{{takeCarDay}}</text>
-						<text v-show="takeCarTime">{{takeCarTime}}</text>
+					<view class="date">{{takeCarDateShow || '选择日期'}}</view>
+					<view class="time" v-show="takeCarTimeShow || takeCarDayShow">
+						<text v-show="takeCarDayShow">{{takeCarDayShow}}</text>
+						<text v-show="takeCarTimeShow">{{takeCarTimeShow}}</text>
 					</view>
-					<view class="time" v-show="!takeCarTime && !takeCarDay">
+					<view class="time left" v-show="!takeCarTimeShow && !takeCarDayShow">
 						<text>选择时间</text>
 					</view>
 				</view>
@@ -55,12 +58,12 @@
 					<image class="interval" :src="`${ossUrl}/home/interval.png`"></image>
 				</view>
 				<view class="time-box end-time">
-					<view class="date">{{carAlsoDate || '选择日期'}}</view>
-					<view class="time" v-show="carAlsoTime || carAlsoDay">
-						<text v-show="carAlsoDay">{{carAlsoDay}}</text>
-						<text v-show="carAlsoTime">{{carAlsoTime}}</text>
+					<view class="date">{{carAlsoDateShow || '选择日期'}}</view>
+					<view class="time" v-show="carAlsoTimeShow || carAlsoDayShow">
+						<text v-show="carAlsoTimeShow">{{carAlsoTimeShow}}</text>
+						<text v-show="carAlsoDayShow">{{carAlsoDayShow}}</text>
 					</view>
-					<view class="time" v-show="!carAlsoTime && !carAlsoDay">
+					<view class="time right" v-show="!carAlsoTimeShow && !carAlsoDayShow">
 						<text>选择时间</text>
 					</view>
 				</view>
@@ -182,20 +185,34 @@
 				remoteSwitch: false, // 是否开启异地还车
 				couponList: [], // 优惠券列表
 				takeCarCity: {}, // 取车城市
-				takeCarAddress: '', // 取车地址
+				takeCarAddress: {}, // 取车地址
 				carAlsoCity: {}, // 还车城市
-				carAlsoAddress: '', // 还车地址
-				takeCarDate: '', // 取车日期
-				takeCarDay: '', // 取车日是周几
+				carAlsoAddress: {}, // 还车地址
+				takeCarDateShow: '', // 取车日期显示
+				takeCarDayShow: '', // 取车日是周几显示
+				takeCarTimeShow: '', // 取车时间显示
 				takeCarTime: '', // 取车时间
-				carAlsoDate: '', // 还车日期
-				carAlsoDay: '', // 还车日是周几
+				carAlsoDateShow: '', // 还车日期显示
+				carAlsoDayShow: '', // 还车日是周几显示
+				carAlsoTimeShow: '', // 还车时间显示
 				carAlsoTime: '', // 还车时间
 				totalDate: '', // 总天数
 			}
 		},
 		components: {
 			EvanSwitch
+		},
+		watch: {
+			// 监听异地取车开关
+			remoteSwitch(newVal) {
+				if (newVal) {
+					this.carAlsoCity = {}
+					this.carAlsoAddress = ''
+				} else {
+					this.carAlsoCity = this.takeCarCity
+					this.carAlsoAddress = this.takeCarAddress
+				}
+			}
 		},
 		onLoad() {
 			this.customerHomeBannerGetSpread()
@@ -245,6 +262,28 @@
 			carRental() {
 
 			},
+			// 选取取车地点
+			goTakeCarAddress() {
+				if (!this.takeCarCity || Object.keys(this.takeCarCity).length === 0) {
+					this.$toast('请先选择取车城市')
+					return
+				}
+				this.$open('/pages/home/selectAddress', {
+					city: JSON.stringify(this.takeCarCity),
+					addressMode: 'takeCar'
+				})
+			},
+			// 选取还车地点
+			goCarAlsoAddress() {
+				if (!this.carAlsoCity || Object.keys(this.carAlsoCity).length === 0) {
+					this.$toast('请先选择还车城市')
+					return
+				}
+				this.$open('/pages/home/selectAddress', {
+					city: JSON.stringify(this.carAlsoCity),
+					addressMode: 'carAlso'
+				})
+			},
 			// 打开流程弹窗
 			openProcessPopup() {
 				this.$refs.processPopup.open()
@@ -273,17 +312,31 @@
 							this.carAlsoCity = JSON.parse(e.city)
 							break
 					}
+					if (!this.remoteSwitch) this.carAlsoCity = this.takeCarCity
 				})
 				// 选择地点
 				uni.$on('checkAddress', e => {
-					switch (e.cityMode) {
+					switch (e.addressMode) {
 						case 'takeCar':
-							this.takeCarCity = JSON.parse(e.city)
+							this.takeCarAddress = JSON.parse(e.address)
 							break
 						case 'carAlso':
-							this.carAlsoCity = JSON.parse(e.city)
+							this.carAlsoAddress = JSON.parse(e.address)
 							break
 					}
+					if (!this.remoteSwitch) this.carAlsoAddress = this.takeCarAddress
+				})
+				// 选择时间
+				uni.$on('checkTime', e => {
+					this.takeCarDateShow = e.takeCarDateShow
+					this.takeCarDayShow = e.takeCarDayShow
+					this.takeCarTimeShow = e.takeCarTimeShow
+					this.takeCarTime = e.takeCarTime
+					this.carAlsoDateShow = e.carAlsoDateShow
+					this.carAlsoDayShow = e.carAlsoDayShow
+					this.carAlsoTimeShow = e.carAlsoTimeShow
+					this.carAlsoTime = e.carAlsoTime
+					this.totalDate = e.totalDate
 				})
 			}
 		}
@@ -384,20 +437,28 @@
 				@include flex-row(space-between);
 
 				.time-box {
-					@include flex-col();
-
-					.date {
+					@include flex-col() .date {
 						@include font-set(36rpx, #000, 700);
 						line-height: 48rpx;
 					}
 
 					.time {
 						@include box-w();
-						padding: 0 6rpx;
-						@include flex-row(space-between);
+						padding: 6rpx 0;
+						@include flex-row();
 						@include font-set(24rpx, #999);
 						line-height: 34rpx;
 						margin-top: 6rpx;
+
+						text~text {
+							margin-left: 12rpx;
+						}
+					}
+
+					&.start-time {
+						.time {
+							@include flex-row(flex-start);
+						}
 					}
 
 					&.end-time {
