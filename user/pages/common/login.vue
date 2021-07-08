@@ -62,7 +62,12 @@
 				t: null, // 计时器占位
 			}
 		},
+		mounted() {
+			this.setSystemInfo()
+		},
 		methods: {
+			// app 设置用户信息
+			...mapActions('app', ['setSystemInfo']),
 			// user 获取用户信息
 			...mapActions('user', ['getUserInfo']),
 			// 阅读协议
