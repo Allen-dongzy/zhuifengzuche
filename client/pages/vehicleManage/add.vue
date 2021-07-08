@@ -79,7 +79,7 @@
 					<template v-slot:dropdownbox>
 						<view class="box">
 							<view class="drop-item" v-for="(item, index) in seatList" :key="index"
-								@tap="checkSeat(index)">{{ item.text }}</view>
+								@tap="checkSeat(index)">{{ item.text }}座</view>
 						</view>
 					</template>
 				</tui-dropdown-list>
@@ -228,9 +228,9 @@
 		insertVehicleModel,
 		searchCarid
 	} from '@/apis/vehicleModel'
-
-
-
+	import {
+		mapState
+	} from 'vuex'
 	import {
 		uploadFiles
 	} from '@/apis/oss';
@@ -255,11 +255,11 @@
 				stallKey: false, // 排档开关
 				stall: '', // 排档
 				seatList: [{
-					text: '5座'
+					text: '5'
 				}, {
-					text: '7座'
+					text: '7'
 				}, {
-					text: '9座'
+					text: '9'
 				}], // 座位数列表
 				seatKey: false, // 座位开关
 				seat: '', // 座位
@@ -284,6 +284,10 @@
 				carId: '', //车型id
 
 			}
+		},
+		computed: {
+			// 门店id
+			...mapState('user', ['shopId'])
 		},
 		watch: {
 			price(newVal) {
@@ -517,7 +521,8 @@
 						protectionMoney: this.protectionMoney,
 						breakRulesMoney: this.breakRulesMoney,
 						weekExternal: this.weekExternal,
-						weekWithin: this.weekWithin
+						weekWithin: this.weekWithin,
+						memberShopId: this.shopId
 					}
 				} else {
 					var data = {
@@ -536,7 +541,8 @@
 						protectionMoney: this.protectionMoney,
 						breakRulesMoney: this.breakRulesMoney,
 						weekExternal: this.weekExternal,
-						weekWithin: this.weekWithin
+						weekWithin: this.weekWithin,
+						memberShopId: this.shopId
 					}
 				}
 

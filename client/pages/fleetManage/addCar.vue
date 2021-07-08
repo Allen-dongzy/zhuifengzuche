@@ -429,7 +429,7 @@
 				const [err, res] = await queryAll()
 				if (err) return
 				console.log(res)
-				this.list = res.data
+				this.list = res.data.list
 			},
 			//选择颜色
 			selectColor(e) {
