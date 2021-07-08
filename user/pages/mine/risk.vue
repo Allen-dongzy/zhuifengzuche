@@ -15,12 +15,12 @@
 				<view style="width: 10%;font-size: 30rpx;color: #999999;" @click="buyNum">取消</view>
 			</view>
 			<view style="margin-top: 30rpx;">
-				<view v-for="(item,index) in list" :key="index" class="selectBox">
-					<view v-if="item.status==true" class="noselectBox">
+				<view v-for="(item,index) in list" :key="index" class="selectBox" @click="select(index)">
+					<view v-if="item.status==false" class="noselectBox"> 
 						<view class="">{{item.num}}次</view>
 						<view class="">￥{{item.price}}</view>
 					</view>
-					<view v-if="item.status==false" class="acselectBox">
+					<view v-if="item.status==true" class="acselectBox">
 						<view class="">{{item.num}}次</view>
 						<view class="">￥{{item.price}}</view>
 					</view>
@@ -40,14 +40,21 @@
 </template>
 
 <script>
+	import{findQueryNum} from '@/apis/risk'
 	export default {
 		data() {
 			return {
-				list:[{num:'10次',price:'￥100',status:true},{num:'20次',price:'￥200',status:false},{num:'30次',price:'￥300',status:false},{num:'40次',price:'￥400',status:false},{num:'50次',price:'￥500',status:false},{num:'60次',price:'￥600',status:false},],
+				list:[{num:'10',price:'100',status:true},{num:'20',price:'190',status:false},{num:'30',price:'270',status:false},{num:'40',price:'340',status:false},{num:'50',price:'400',status:false},{num:'100',price:'500',status:false},],
 				puy:false
 			}
 		},
+		
 		methods: {
+		async	findQueryNum(){
+			 	const [err,res] = await findQueryNum()
+				 if(err) return
+				 console.log(res)
+			},
 			findOne(){
 				console.log('pp')
 				uni.navigateTo({
@@ -63,6 +70,12 @@
 					this.puy=true
 				}
 				
+			},
+			select(e){
+				for(let i=0;i<this.list.length;i++){
+					this.list[i].status=false
+				}
+				this.list[e].status=true
 			}
 		}
 	}

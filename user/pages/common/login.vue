@@ -55,7 +55,7 @@
 			return {
 				ossUrl: this.$ossUrl, // oss
 				agreementType: false, //协议切换
-				phone: '', // 手机号
+				phone: '17623178041', // 手机号
 				code: '', // 验证码
 				codeKey: true, // 请求验证码开关
 				countDown: 60, // 倒计时

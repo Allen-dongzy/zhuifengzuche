@@ -4,9 +4,9 @@
 			<image style="height: 92rpx;width: 92rpx;" :src="`${ossUrl}/common/cache-logo.png`" mode=""></image>
 			<view class="contnetBox">
 					<view class="name">[追风] · 官方客服电话</view>
-					<view class="phone">400620005</view>
+					<view class="phone">4006200005</view>
 			</view>
-			<image style="height: 44rpx;width: 44rpx;" :src="`${ossUrl}/common/phone-big.png`" mode=""></image>
+			<image style="height: 44rpx;width: 44rpx;" :src="`${ossUrl}/common/phone-big.png`" @click="call"></image>
 		</view>
 	</view>
 </template>
@@ -19,7 +19,21 @@
 			}
 		},
 		methods: {
-			
+			call(){
+				uni.makePhoneCall({
+					// 手机号
+					phoneNumber: '4006200005',
+					// 成功回调
+					success: (res) => {
+						console.log('调用成功!')
+					},
+					// 失败回调
+					fail: (res) => {
+						console.log('调用失败!')
+						this.call_phone(); //重复调用一次
+					}
+				});
+			}
 		}
 	}
 </script>
