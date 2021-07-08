@@ -336,6 +336,7 @@
 							this.carAlsoAddress = JSON.parse(e.address)
 							break
 					}
+					console.log(JSON.stringify(this.takeCarAddress))
 					if (!this.remoteSwitch) this.carAlsoAddress = this.takeCarAddress
 				})
 				// 选择时间

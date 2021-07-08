@@ -297,7 +297,8 @@
 			"path": "pages/mine/mine"
 		}, {
 			"name": "dzy", // dzy
-			"path": "pages/mine/mine"
+			"path": "pages/home/selectCar",
+			"query": "id=19"
 		}]
 	}
 }

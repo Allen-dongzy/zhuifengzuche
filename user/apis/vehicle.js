@@ -22,7 +22,7 @@ export const vehicleGetVehiclePrice = (data, loading = '') => {
 }
 
 // 查询分页列表
-export const vehiclePageQuery = (data, loading = '') => {
+export const vehiclePageQuery = (data, loading = '') => { // 对接
 	return request({
 		url: 'vehicle/pageQuery',
 		method: 'POST',
@@ -43,7 +43,7 @@ export const vehicleQueryVehicleBrands = (data, loading = '') => {
 }
 
 // 车辆类别列表
-export const vehicleQueryVehicleCategorys = (deliveryId, loading = '') => {
+export const vehicleQueryVehicleCategorys = (deliveryId, loading = '') => { // 对接
 	return request({
 		url: `vehicle/queryVehicleCategorys/${deliveryId}`,
 		contentType: 'application/x-www-form-urlencoded',

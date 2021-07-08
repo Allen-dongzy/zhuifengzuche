@@ -17,10 +17,10 @@
 			<scroll-view class="class" :scroll-y="true">
 				<view class="item" v-for="(item, index) in carClassList" :key="index" @click="tapClass(index)">
 					<view :class="['title', {'ac': index === acClass}]">{{item.name}}</view>
-					<view class="price">{{ index > 0 ? `￥${item.price}` : ''}}</view>
+					<view class="price">{{ item.price ? `￥${item.price}` : ''}}</view>
 				</view>
 			</scroll-view>
-			<scroll-view class="list" :scroll-y="true">
+			<scroll-view class="list" :scroll-y="true" @scrolltolower="scrollToBottom">
 				<view class="item" v-for="(item, index) in 10" :key="index" @click="$open('/pages/order/confirmOrder')">
 					<view class="card">
 						<image class="pic"
@@ -52,6 +52,7 @@
 						<view class="address" @click.stop="$open('/pages/home/store')">门店地址：<text>郑家院子东路8号</text></view>
 					</view>
 				</view>
+				<uni-load-more :status="dataStatus" />
 			</scroll-view>
 		</view>
 		<!-- 弹窗-品牌 -->
@@ -128,8 +129,12 @@
 		mapState
 	} from 'vuex'
 	import {
-		vehicleQueryVehicleCategorys
+		vehicleQueryVehicleCategorys,
+		vehiclePageQuery
 	} from '@/apis/vehicle'
+	import {
+		listManager
+	} from '@/utils/uni-tools'
 
 	export default {
 		data() {
@@ -147,6 +152,11 @@
 				acSeat: -1, // 选中的座位
 				takeCarAddress: {}, // 取车点信息
 				carClassList: [], // 租车类别列表 
+				carList: [], // 车辆列表
+				page: 1,
+				size: 10,
+				requestKey: true,
+				dataStatus: '', // more loading noMore noData
 			}
 		},
 		computed: {
@@ -154,7 +164,10 @@
 			...mapState('app', ['windowHeight'])
 		},
 		onLoad(e) {
-			this.takeCarAddress = JSON.parse(e.takeCarAddress)
+			if (e && e.takeCarAddress) this.takeCarAddress = JSON.parse(e.takeCarAddress)
+			if (e && e.id) this.takeCarAddress = {
+				id: e.id
+			}
 			this.vehicleQueryVehicleCategorys()
 		},
 		mounted() {
@@ -166,6 +179,44 @@
 				const [err, res] = await vehicleQueryVehicleCategorys(this.takeCarAddress.id)
 				if (err) return
 				this.carClassList = res.data
+				this.vehiclePageQuery()
+			},
+			// 触底加载
+			scrollToBottom() {
+				if (!this.requestKey) return
+				this.page++
+				this.vehiclePageQuery()
+			},
+			// 初始化
+			init() {
+				this.requestKey = true
+				this.page = 1
+				this.carList = []
+			},
+			// 获取车辆列表
+			async vehiclePageQuery() {
+				this.dataStatus = 'loading'
+				const params = {
+					page: this.page,
+					size: this.size,
+					categoryId: this.carClassList[this.acClass].id,
+					deliveryId: this.takeCarAddress.id
+				}
+				const [err, res] = await vehiclePageQuery(params)
+				if (err) {
+					this.requestKey = false
+					this.dataStatus = 'noData'
+					return
+				}
+				const {
+					requestKey,
+					dataStatus,
+					isRender
+				} = listManager(res.data.list, this.page, this.size)
+				this.requestKey = requestKey
+				this.dataStatus = dataStatus
+				if (!isRender) return
+				this.carList = [...this.carList, ...res.data.list]
 			},
 			// 获取搜索框高度
 			getSearchHeight() {
@@ -209,6 +260,8 @@
 			// 切换分类
 			tapClass(index) {
 				this.acClass = index
+				this.init()
+				this.vehiclePageQuery()
 			},
 			// 打开品牌模态框
 			openBrandModal() {
