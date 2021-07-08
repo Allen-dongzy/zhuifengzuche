@@ -1,52 +1,82 @@
 <template>
 	<view class="select-address">
 		<view class="search-bar">
-			<view v-show="!searchKey" class="input" @click="searchKey = true">
+			<view v-show="!searchKey" class="input" @click="toggleSearchBox">
 				<image class="icon-search" :src="`${ossUrl}/common/search.png`"></image>
-				<text>景点、地址寻找附件送车点</text>
+				<text>{{keyword || '景点、地址寻找附件送车点'}}</text>
 			</view>
 			<view v-show="searchKey" class="search-box">
 				<view class="search-content">
 					<image class="icon-search" :src="`${ossUrl}/common/search.png`"></image>
-					<input type="text" placeholder="景点、地址寻找附件送车点" v-model="keyword">
-					<image v-show="keyword" class="icon-delete" :src="`${ossUrl}/common/delete.png`"></image>
+					<input type="text" placeholder="景点、地址寻找附件送车点" v-model="keyword" @input="keywordChange">
+					<image v-show="keyword" class="icon-delete" :src="`${ossUrl}/common/delete.png`"
+						@click="clearKeyword"></image>
 				</view>
-				<view class="btn" @click="searchKey = false">取消</view>
+				<view class="btn" @click="toggleSearchBox">取消</view>
 			</view>
 		</view>
 		<view class="search-bar-mat"></view>
+		<!-- 筛选列表 -->
 		<view v-show="!searchKey" class="classify" :style="{height: `${windowHeight - searchHeight - 5}px`}">
 			<scroll-view class="class" :scroll-y="true">
-				<view :class="['item', {'ac': index === acIndex}]" v-for="(item, index) in 20" :key="index"
-					@click="tapClass(index)">常用送车点</view>
+				<view :class="['item', {'ac': index === acIndex}]" v-for="(item, index) in areaList" :key="index"
+					@click="tapClass(index)">{{item.name}}</view>
 			</scroll-view>
-			<scroll-view class="list" :scroll-y="true">
-				<view class="address-item" v-for="(item, index) in 20" :key="index">
-					<view class="caption">滨江路皇冠大道送车点</view>
-					<view class="description">滨江路皇冠大道送车点 <view class="arrow"></view>
+			<scroll-view class="list" :scroll-y="true" @scrolltolower="scrollToBottom">
+				<view class="address-item" v-for="(item, index) in carAddressList" :key="index"
+					@click="selectAddress(item)">
+					<view class="caption">{{item.name}}</view>
+					<view class="description">{{item.address}}
+						<view class="arrow"></view>
 					</view>
 				</view>
+				<uni-load-more :status="dataStatus" />
 			</scroll-view>
 		</view>
-		<view class="address-list">
-			<view class="address-item" v-for="(item, index) in 20" :key="index">
-				<view class="caption">滨江路皇冠大道送车点</view>
-				<view class="description">滨江路皇冠大道送车点 <view class="arrow"></view>
+		<!-- 搜索列表 -->
+		<view v-show="searchKey" class="address-list">
+			<view class="address-item" v-for="(item, index) in carAddressList" :key="index"
+				@click="selectAddress(item)">
+				<view class="caption">{{item.name}}</view>
+				<view class="description">{{item.address}}
+					<view class="arrow"></view>
 				</view>
 			</view>
 		</view>
+		<uni-load-more v-show="searchKey" :status="dataStatus" />
 	</view>
 </template>
 
 <script>
 	import {
-		mapState
+		mapState,
+		mapActions
 	} from 'vuex'
+	import {
+		regionCityFindDeliveryArea
+	} from '@/apis/regionCity'
+	import {
+		deliveryFindDeliveryPage
+	} from '@/apis/delivery'
+	import {
+		listManager
+	} from '@/utils/uni-tools'
+	import {
+		debounce
+	} from '@/utils/tools'
 
 	export default {
 		data() {
 			return {
 				ossUrl: this.$ossUrl,
+				city: {}, // 当前城市
+				areaList: [], // 区域列表
+				carAddressList: [], // 送/还车点列表
+				page: 1,
+				size: 10,
+				requestKey: true,
+				dataStatus: '', // more loading noMore noData
+				addressMode: '', // 地址模式
 				acIndex: 0, // 活动项
 				searchKey: false, // 搜索开关
 				searchHeight: 0, // 搜索框高度
@@ -55,12 +85,84 @@
 		},
 		computed: {
 			// 窗口高度
-			...mapState('app', ['windowHeight'])
+			...mapState('app', ['windowHeight']),
+			// city 当前城市
+			...mapState('city', ['currentCity']),
+		},
+		onLoad(e) {
+			this.addressMode = e.addressMode
+			this.city = JSON.parse(e.city)
+			this.regionCityFindDeliveryArea()
 		},
 		mounted() {
+			this.setSystemInfo()
 			this.getSearchHeight()
 		},
 		methods: {
+			// app 设置用户信息
+			...mapActions('app', ['setSystemInfo']),
+			// 根据城市获取送车点区域
+			async regionCityFindDeliveryArea() {
+				const params = {
+					cityCode: this.city.code
+				}
+				const [err, res] = await regionCityFindDeliveryArea(params)
+				if (err) return
+				this.areaList = res.data
+				this.deliveryFindDeliveryPage()
+			},
+			// 触底加载
+			scrollToBottom() {
+				if (!this.requestKey) return
+				this.page++
+				this.deliveryFindDeliveryPage()
+			},
+			// 切换搜索容器
+			toggleSearchBox() {
+				this.searchKey = !this.searchKey
+				this.init()
+				this.deliveryFindDeliveryPage()
+			},
+			// 关键词触发
+			keywordChange: debounce(function() {
+				this.init()
+				this.deliveryFindDeliveryPage()
+			}),
+			// 清除关键字
+			clearKeyword() {
+				this.keyword = ''
+				this.deliveryFindDeliveryPage()
+			},
+			// 初始化
+			init() {
+				this.page = 1
+				this.requestKey = true
+				this.carAddressList = []
+			},
+			// 获取详细送车点列表
+			async deliveryFindDeliveryPage() {
+				this.dataStatus = 'loading'
+				const params = {
+					page: this.page,
+					size: this.size,
+					cityCode: this.city.code,
+					areaCode: this.areaList[this.acIndex].areaCode,
+					search: this.keyword,
+					lat: this.areaList[this.acIndex].lat,
+					lon: this.areaList[this.acIndex].lng
+				}
+				const [err, res] = await deliveryFindDeliveryPage(params)
+				if (err) return
+				const {
+					requestKey,
+					dataStatus,
+					isRender
+				} = listManager(res.data.list, this.page, this.size)
+				this.requestKey = requestKey
+				this.dataStatus = dataStatus
+				if (!isRender) return
+				this.carAddressList = [...this.carAddressList, ...res.data.list]
+			},
 			// 获取搜索框高度
 			getSearchHeight() {
 				const query = uni.createSelectorQuery().in(this)
@@ -70,8 +172,17 @@
 			},
 			// 切换分类
 			tapClass(index) {
-				console.log(index)
 				this.acIndex = index
+				this.init()
+				this.deliveryFindDeliveryPage()
+			},
+			// 选择地址
+			selectAddress(item) {
+				uni.$emit('checkAddress', {
+					addressMode: this.addressMode,
+					address: JSON.stringify(item)
+				})
+				this.$close()
 			}
 		}
 	}

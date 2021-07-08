@@ -1,6 +1,6 @@
 <template>
 	<view class="select-city">
-		<t-city />
+		<t-city :cityMode="cityMode" />
 	</view>
 </template>
 
@@ -9,10 +9,15 @@
 
 	export default {
 		data() {
-			return {}
+			return {
+				cityMode: '', // 城市模式
+			}
 		},
 		components: {
 			TCity
+		},
+		onLoad(e) {
+			this.cityMode = e.cityMode
 		},
 		methods: {}
 	}

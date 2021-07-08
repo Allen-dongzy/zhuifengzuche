@@ -15,9 +15,9 @@
 		<view class="header-mat"></view>
 		<view v-show="!searchKey" class="classify" :style="{height: `${windowHeight - searchHeight - 14}px`}">
 			<scroll-view class="class" :scroll-y="true">
-				<view class="item" v-for="(item, index) in 20" :key="index" @click="tapClass(index)">
-					<view :class="['title', {'ac': index === acClass}]">历史选择</view>
-					<view class="price">{{ index > 0 ? '¥219' : ''}}</view>
+				<view class="item" v-for="(item, index) in carClassList" :key="index" @click="tapClass(index)">
+					<view :class="['title', {'ac': index === acClass}]">{{item.name}}</view>
+					<view class="price">{{ index > 0 ? `￥${item.price}` : ''}}</view>
 				</view>
 			</scroll-view>
 			<scroll-view class="list" :scroll-y="true">
@@ -127,6 +127,9 @@
 	import {
 		mapState
 	} from 'vuex'
+	import {
+		vehicleQueryVehicleCategorys
+	} from '@/apis/vehicle'
 
 	export default {
 		data() {
@@ -142,16 +145,28 @@
 				acGear: -1, // 选中的排档
 				seatStatus: false, // 座位状态
 				acSeat: -1, // 选中的座位
+				takeCarAddress: {}, // 取车点信息
+				carClassList: [], // 租车类别列表 
 			}
 		},
 		computed: {
 			// 窗口高度
 			...mapState('app', ['windowHeight'])
 		},
+		onLoad(e) {
+			this.takeCarAddress = JSON.parse(e.takeCarAddress)
+			this.vehicleQueryVehicleCategorys()
+		},
 		mounted() {
 			this.getSearchHeight()
 		},
 		methods: {
+			// 获取车辆类别
+			async vehicleQueryVehicleCategorys() {
+				const [err, res] = await vehicleQueryVehicleCategorys(this.takeCarAddress.id)
+				if (err) return
+				this.carClassList = res.data
+			},
 			// 获取搜索框高度
 			getSearchHeight() {
 				const query = uni.createSelectorQuery().in(this)

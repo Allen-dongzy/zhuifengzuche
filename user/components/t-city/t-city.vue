@@ -1,25 +1,25 @@
 <template>
 	<view class="container">
 		<!-- 城市搜索 -->
-		<view class="city-search-wrap" v-if="isReach">
+		<view class="city-search-wrap" v-if="searchMode">
 			<view class="search">
 				<view class="l-search">
 					<image class="icon-search" :src="`${ossUrl}/common/search.png`"></image>
-					<input class="input-search" type="text" :value="inputValue" placeholder="输入城市名或拼音"
+					<input class="input-search" type="text" :value="keyword" placeholder="输入城市名或拼音"
 						placeholder-class="default-style" placeholder-style="color:#8E8F97" :focus="searchFocus"
 						@input="searchChange" />
-					<image class="clear-input" :src="`${ossUrl}/common/delete.png`" v-if="isClearBtn"
-						@click="inputValue = ''"></image>
+					<image class="clear-input" :src="`${ossUrl}/common/delete.png`" v-if="showClearBtn"
+						@click="keyword = ''"></image>
 				</view>
-				<view class="r-cancel" open-type="navigateBack" delta="1" @click="isReach = false">
+				<view class="r-cancel" open-type="navigateBack" delta="1" @click="searchMode = false">
 					取消
 				</view>
 			</view>
 			<!-- 搜索列表  -->
-			<view class="reach-content" v-show="inputValue">
-				<block v-show="searchData.length">
-					<view class="li" v-for="item in searchData" :key="item.cityId" @click="citySearchList(item)">
-						{{ item.city }}
+			<view class="reach-content" v-show="keyword">
+				<block v-show="searchCityList.length">
+					<view class="li" v-for="item in searchCityList" :key="item.id" @click="citySearchList(item)">
+						{{ item.name }}
 					</view>
 				</block>
 				<view class="has-no-data" v-show="hasNoData">没有找到匹配数据~</view>
@@ -27,9 +27,9 @@
 		</view>
 
 		<!-- 城市列表 -->
-		<view v-show="!isReach">
+		<view v-show="!searchMode">
 			<view class="top-search">
-				<view class="item" @click="isReach = true">
+				<view class="item" @click="searchMode = true">
 					<image class="icon-search" :src="`${ossUrl}/common/search.png`"></image>
 					<text>输入城市名或拼音</text>
 				</view>
@@ -47,7 +47,7 @@
 							</view>
 						</view>
 						<view class="ul">
-							<view class="li current">
+							<view class="li current" @click="selectCity(currentCity)">
 								<image class="icon" :src="`${ossUrl}/common/location.png`"></image>{{currentCity.name}}
 							</view>
 						</view>
@@ -61,7 +61,8 @@
 							</view>
 						</view>
 						<view class="ul">
-							<view class="li" v-for="(item, index) in hotCity" :key="index">{{item.name}}</view>
+							<view class="li" v-for="(item, index) in hotCity" :key="index" @click="selectCity(item)">
+								{{item.name}}</view>
 						</view>
 					</view>
 				</view>
@@ -100,17 +101,10 @@
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
-				isIPX: null,
-				regionId: null, //区域ID
-				isToggle: true,
-				isReach: false,
-				inputValue: "",
-				searchData: [], //搜索的数据
-				isClearBtn: false,
-
-				// regionList: City.data.area, //区域列表,模拟数据请自行修改
-				cityId: null, //城市ID
-
+				searchMode: false, // 是否为搜索模式
+				keyword: "", // 城市搜索关键字
+				searchCityList: [], // 搜索的城市数据
+				showClearBtn: false, // 是否展示清除按钮
 				toIndex: "", //跳转的索引的字母
 				tipsLetter: "", //滑动显示字母
 				timer: null,
@@ -120,47 +114,45 @@
 				currentLetter: "area" //默认选择hot
 			};
 		},
+		props: {
+			// 选择城市的模式
+			cityMode: {
+				type: String,
+				required: true
+			}
+		},
 		computed: {
-			// city 字母列表，当前城市列表，热门城市列表，全部城市列表
+			// city 字母列表，当前城市，热门城市列表，全部城市列表
 			...mapState('city', ['alphabet', 'currentCity', 'hotCity', 'allCity']),
 			// app 窗口高度
 			...mapState('app', ['windowHeight'])
 		},
 		watch: {
 			// 城市搜索输入框
-			inputValue(newVal) {
-				this.isClearBtn = newVal ? true : false;
-
-				if (this.timer) {
-					clearTimeout(this.timer);
-				}
-
-				if (!this.inputValue) {
-					this.searchData = [];
-					return;
+			keyword(newVal) {
+				this.showClearBtn = newVal ? true : false;
+				if (this.timer) clearTimeout(this.timer)
+				if (!this.keyword) {
+					this.searchCityList = []
+					return
 				}
 				this.timer = setTimeout(() => {
-					const result = [];
-					for (let i in this.allCity) {
+					const result = []
+					for (const i in this.allCity) {
 						this.allCity[i].forEach(item => {
-							if (
-								item.spell.includes(this.inputValue) ||
-								item.city.includes(this.inputValue)
-							) {
-								result.push(item);
+							if (item.name.includes(this.keyword) || item.shortName.includes(this
+									.keyword)) {
+								result.push(item)
 							}
-						});
+						})
 					}
-					this.searchData = result;
-					if (this.searchData.length === 0) {
-						this.hasNoData = true;
-					} else {
-						this.hasNoData = false;
-					}
-				}, 500);
+					this.searchCityList = result
+					if (this.searchCityList.length === 0) this.hasNoData = true
+					else this.hasNoData = false
+				}, 500)
 			},
-			isReach(val) {
-				this.searchFocus = val;
+			searchMode(val) {
+				this.searchFocus = val
 			}
 		},
 		created() {
@@ -199,22 +191,23 @@
 			},
 			//搜索
 			searchChange(e) {
-				let {
-					value
-				} = e.detail;
-				this.inputValue = value;
+				this.keyword = e.detail.value;
 			},
-			//搜索结果列表数据
+			// 搜索结果列表选择
 			citySearchList(item) {
-				console.log('选择的城市：', item)
+				uni.$emit('checkCity', {
+					cityMode: this.cityMode,
+					city: JSON.stringify(item)
+				})
+				this.$close()
 			},
+			// 城市列表选择
 			selectCity(item) {
-				console.log('选择的城市：', item)
-				//当前项目是需要选择到区域，所以选择城市后回到当前的地方
-				this.toIndex = "area";
-				setTimeout(() => {
-					this.toIndex = "";
-				}, 1000)
+				uni.$emit('checkCity', {
+					cityMode: this.cityMode,
+					city: JSON.stringify(item)
+				})
+				this.$close()
 			},
 			//区域选择
 			selectRegion(item) {

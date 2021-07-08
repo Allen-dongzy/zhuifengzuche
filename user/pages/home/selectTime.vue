@@ -1,38 +1,46 @@
 <template>
-	<view class="select-time">
+	<view class="lease-time-selection">
 		<view class="header">
 			<view class="left">
-				<view class="caption">5月13日</view>
-				<view class="sub-caption">周四 14:00</view>
+				<view v-show="takeCarDateShow" class="caption">{{takeCarDateShow}}</view>
+				<view v-show="!takeCarDateShow" class="caption" @click="$toast('请选择取车日期')">选择日期</view>
+				<view v-show="takeCarDay || takeCarTime" class="sub-caption">
+					<text v-show="takeCarDay">{{takeCarDay}}</text><text v-show="takeCarTime">{{takeCarTime}}</text>
+				</view>
+				<view v-show="!takeCarDay && !takeCarTime" class="sub-caption" @click="$toast('请选择取车时间')">选择时间</view>
 			</view>
 			<view class="title">
 				<view class="left-arrow"></view>
-				<view class="info">共8天</view>
+				<view class="info">共{{totalDate}}天</view>
 				<view class="right-arrow"></view>
 			</view>
 			<view class="right">
-				<view class="caption">5月13日</view>
-				<view class="sub-caption">周四 14:00</view>
+				<view v-show="carAlsoDateShow" class="caption">{{carAlsoDateShow}}</view>
+				<view v-show="!carAlsoDateShow" class="caption" @click="$toast('请选择还车日期')">选择日期</view>
+				<view v-show="carAlsoDay || carAlsoTime" class="sub-caption">
+					<text v-show="carAlsoTime">{{carAlsoTime}}</text><text v-show="carAlsoDay">{{carAlsoDay}}</text>
+				</view>
+				<view v-show="!carAlsoDay && !carAlsoTime" class="sub-caption" @click="$toast('请选择还车时间')">选择时间</view>
 			</view>
 		</view>
-		<uni-calendar :insert="true" :showMonth="false" :start-date="'2021-6-1'" :end-date="'2021-6-30'" :range="true">
+		<uni-calendar :insert="true" :showMonth="false" :range="true" @change="calendarChange">
 		</uni-calendar>
-		<view class="date">2021年6月</view>
+		<view class="date"></view>
 		<view class="picker-box">
 			<view class="picker-item">
 				<view class="caption">取车时间</view>
-				<picker-view :value="takeCarTime" class="picker-view" @change="takeCarTimeChange">
+				<picker-view :value="takeCarTimeIndex" class="picker-view" @change="takeCarTimeIndexChange">
 					<picker-view-column>
-						<view :class="['item',{'ac': takeCarTime[0]===index}]" v-for="(item,index) in timeBox"
+						<view :class="['item',{'ac': takeCarTimeIndex[0]===index}]" v-for="(item,index) in timeBox"
 							:key="index">{{item}}</view>
 					</picker-view-column>
 				</picker-view>
 			</view>
 			<view class="picker-item">
 				<view class="caption">还车时间</view>
-				<picker-view :value="carAlsoTime" class="picker-view" @change="carAlsoTimeChange">
+				<picker-view :value="carAlsoTimeIndex" class="picker-view" @change="carAlsoTimeIndexChange">
 					<picker-view-column>
-						<view :class="['item',{'ac': carAlsoTime[0]===index}]" v-for="(item,index) in timeBox"
+						<view :class="['item',{'ac': carAlsoTimeIndex[0]===index}]" v-for="(item,index) in timeBox"
 							:key="index">{{item}}</view>
 					</picker-view-column>
 				</picker-view>
@@ -41,132 +49,181 @@
 
 		<view class="bottom-mat"></view>
 		<view class="bottom">
-			<view class="btn clear">清空</view>
-			<view class="btn confirm">确定</view>
+			<view class="btn clear" @click="clear">清空</view>
+			<view class="btn confirm" @click="confirm">确定</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import validator from 'crazy-validator'
+
 	export default {
 		data() {
 			return {
-				timeBox: ['00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00', '04:30',
+				timeBox: ['请选择', '00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00', '04:30',
 					'05:00', '05:30', '06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00',
 					'10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30',
 					'16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00',
 					'21:30', '22:00', '22:30', '23:00', '23:30'
 				],
-				takeCarTime: [1], // 取车时间下标
-				carAlsoTime: [1], // 还车时间下标
+				weekShow: ['', '周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+				takeCarTimeIndex: [0], // 取车时间下标
+				carAlsoTimeIndex: [0], // 还车时间下标
+				takeCarDate: '', // 取车日期显示
+				takeCarDay: '', // 取车日是周几显示
+				takeCarTime: '', // 取车时间显示
+				carAlsoDate: '', // 还车日期显示
+				carAlsoDay: '', // 还车日是周几显示
+				carAlsoTime: '', // 还车时间显示
+				totalDate: 0, // 总天数
+			}
+		},
+		watch: {
+			// 监听取车日期
+			takeCarDate(newVal) {
+				this.takeCarDay = this.weekShow[new Date(newVal).getDay()]
+			},
+			// 监听取车日期
+			carAlsoDate(newVal) {
+				this.carAlsoDay = this.weekShow[new Date(newVal).getDay()]
+			}
+		},
+		computed: {
+			// 取车日期展示
+			takeCarDateShow() {
+				const date = this.takeCarDate.split('-')
+				return parseInt(date[1]) && parseInt(date[2]) ? `${parseInt(date[1])}月${parseInt(date[2])}日` : ''
+			},
+			// 还车日期展示
+			carAlsoDateShow() {
+				const date = this.carAlsoDate.split('-')
+				return parseInt(date[1]) && parseInt(date[2]) ? `${parseInt(date[1])}月${parseInt(date[2])}日` : ''
 			}
 		},
 		methods: {
 			// 取车时间改变
-			takeCarTimeChange(e) {
-				this.$set(this.takeCarTime, 0, e.detail.value[0])
+			takeCarTimeIndexChange(e) {
+				this.$set(this.takeCarTimeIndex, 0, e.detail.value[0])
+				if (e.detail.value[0] === 0) {
+					this.takeCarTime = ''
+				} else {
+					this.takeCarTime = this.timeBox[e.detail.value[0]]
+				}
 			},
 			// 还车时间改变
-			carAlsoTimeChange(e) {
-				this.$set(this.carAlsoTime, 0, e.detail.value[0])
+			carAlsoTimeIndexChange(e) {
+				this.$set(this.carAlsoTimeIndex, 0, e.detail.value[0])
+				if (e.detail.value[0] === 0) {
+					this.carAlsoTime = ''
+				} else {
+					this.carAlsoTime = this.timeBox[e.detail.value[0]]
+				}
+			},
+			// 日历改变
+			calendarChange(e) {
+				if (e && e.range && e.range.before) this.takeCarDate = e.range.before
+				if (e && e.range && e.range.after) this.carAlsoDate = e.range.after
+				this.totalDate = e.range.data.length || 0
+			},
+			// 清空
+			clear() {
+				this.$open('/pages/home/selectTime', 1)
+			},
+			// 确定
+			confirm() {
+				const checkList = [{
+					value: this.takeCarDate,
+					rules: [{
+						type: 'required',
+						msg: '请选择取车日期'
+					}]
+				}, {
+					value: this.takeCarTime,
+					rules: [{
+						type: 'required',
+						msg: '请选择取车时间'
+					}]
+				}, {
+					value: this.carAlsoDate,
+					rules: [{
+						type: 'required',
+						msg: '请选择还车日期'
+					}]
+				}, {
+					value: this.carAlsoTime,
+					rules: [{
+						type: 'required',
+						msg: '请选择还车时间'
+					}]
+				}]
+				const checkRes = validator(checkList, this.$toast)
+				if (checkRes.status !== 1000) return
+				uni.$emit('checkTime', {
+					takeCarDateShow: `${this.takeCarDate.split('-')[1]}月${this.takeCarDate.split('-')[2]}日`,
+					takeCarDayShow: this.takeCarDay,
+					takeCarTimeShow: this.takeCarTime,
+					takeCarTime: `${this.takeCarDate} ${this.takeCarTime}`,
+					carAlsoDateShow: `${this.carAlsoDate.split('-')[1]}月${this.carAlsoDate.split('-')[2]}日`,
+					carAlsoDayShow: this.carAlsoDay,
+					carAlsoTimeShow: this.carAlsoTime,
+					carAlsoTime: `${this.carAlsoDate} ${this.carAlsoTime}`,
+					totalDate: this.totalDate
+				})
+				this.$close()
 			}
 		}
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	@import '@/static/scss/_mixin.scss';
 
-	.select-time {
+	.lease-time-selection {
 
-		.uni-calendar {
+		/deep/ .uni-calendar {
 			width: 700rpx;
 			margin: 0 auto;
 		}
 
-		.uni-calendar__header-btn-box,
-		.uni-calendar__backtoday {
-			display: none !important;
+		/deep/ .uni-calendar__header {
+			border-bottom: 0;
 		}
 
-		.uni-calendar__weeks:nth-of-type(1) {
-			position: relative;
-			top: -100rpx;
-		}
-
-		.uni-calendar__weeks {
-			position: relative;
-			top: -40rpx;
-		}
-
-		.uni-calendar__header {
-			position: relative;
-			top: 70rpx;
-			border-bottom: 0 !important;
-		}
-
-		.uni-calendar__header-text {
+		/deep/ .uni-calendar__header-text {
 			@include font-set(28rpx, #000, 700);
 		}
 
-		.uni-calendar__weeks-day {
-			border-bottom: 0 !important;
+		/deep/ .uni-calendar__weeks-day {
+			border-bottom: 0;
 
 			&>text {
 				@include font-set(24rpx, #000, 500);
 			}
 		}
 
-		.uni-calendar__weeks {
-			&~.uni-calendar__weeks {
-				margin-top: 20rpx;
-			}
+		/deep/ .uni-calendar-item--before-checked {
+			background-color: #5A7EFF;
 		}
 
-		.uni-calendar-item--before-checked {
-			background-color: rgba(90, 126, 255, 0.50) !important;
-			// border-radius: 66rpx;
-
-			.uni-calendar-item__weeks-box-item {
-				background-color: #5A7EFF !important;
-				// border-radius: 66rpx;
-			}
+		/deep/ .uni-calendar-item--after-checked {
+			background-color: #5A7EFF;
 		}
 
-		.uni-calendar-item--after-checked {
-			background-color: rgba(90, 126, 255, 0.50) !important;
-
-			.uni-calendar-item__weeks-box-item {
-				background-color: #5A7EFF !important;
-			}
-		}
-
-		.uni-calendar-item--multiple {
-			opacity: 1 !important;
-		}
-
-		.uni-calendar-item__weeks-lunar-text.uni-calendar-item--isDay-text.uni-calendar-item--multiple {
+		/deep/ .uni-calendar-item--multiple {
 			background-color: transparent;
 		}
 
-		.uni-calendar-item__weeks-box-text.uni-calendar-item--multiple {
-			background-color: transparent !important;
+		/deep/ .uni-calendar-item__weeks-box.uni-calendar-item--before-checked.uni-calendar-item--multiple {
+			background-color: #5A7EFF;
 		}
 
-		.uni-calendar-item__weeks-box.uni-calendar-item--before-checked.uni-calendar-item--multiple {
-			background-color: rgba(90, 126, 255, 0.50) !important;
-			border-top-right-radius: 0;
-			border-bottom-right-radius: 0;
+		/deep/ .uni-calendar-item__weeks-box.uni-calendar-item--after-checked.uni-calendar-item--multiple {
+			background-color: #5A7EFF;
 		}
 
-		.uni-calendar-item__weeks-box.uni-calendar-item--after-checked.uni-calendar-item--multiple {
-			background-color: rgba(90, 126, 255, 0.50) !important;
-			border-top-left-radius: 0;
-			border-bottom-left-radius: 0;
-		}
-
-		.uni-calendar-item__weeks-box.uni-calendar-item--multiple {
-			background-color: rgba(90, 126, 255, 0.50) !important;
+		/deep/ .uni-calendar-item__weeks-box.uni-calendar-item--multiple {
+			background-color: rgba(90, 126, 255, 0.50);
 		}
 
 		.header {
@@ -183,7 +240,21 @@
 				.sub-caption {
 					@include font-set(24rpx, #999);
 					line-height: 34rpx;
+
+					text {
+						&~text {
+							margin-left: 10rpx;
+						}
+					}
 				}
+			}
+
+			.left {
+				@include flex-col(center, flex-start);
+			}
+
+			.right {
+				@include flex-col(center, flex-end);
 			}
 
 			.title {
@@ -209,9 +280,7 @@
 		}
 
 		.date {
-			@include flex-center;
-			@include font-set(28rpx, #000, 700);
-			line-height: 40rpx;
+			margin-top: 30rpx;
 		}
 
 		.picker-box {
@@ -231,7 +300,6 @@
 					transition: all .5s;
 
 					&.ac {
-						font-size: 40rpx;
 						font-weight: 700;
 						color: #262743;
 					}
