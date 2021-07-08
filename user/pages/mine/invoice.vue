@@ -1,58 +1,78 @@
 <template>
 	<view class="">
-	<view class="box" @click="$open('/pages/mine/invoiceInfo')">
-		
-		<view class="flex">
-			<view class="flex" style="width: 96%;">
-				<view class="title">重庆市国土资源局</view>
-				<view class="tips">普票</view>
+		<view v-for="(item,index) in list" :key='index' class="box"
+			@click="$open('/pages/mine/invoiceInfo', {obj: JSON.stringify(item)})">
+			<view class="flex">
+				<view class="flex" style="width: 96%;">
+					<view class="title">{{item.title}}</view>
+					<view class="tips">普票</view>
+				</view>
+				<image style="height: 32rpx;width: 20rpx;" :src="`${ossUrl}/mine/huiyou.png`" mode=""></image>
 			</view>
-			<image style="height: 32rpx;width: 20rpx;" :src="`${ossUrl}/mine/huiyou.png`" mode=""></image>
+			<view class="num">{{item.taxNum}}</view>
 		</view>
-		<view class="num">954156294598929103485</view>
-	</view>
-	<button style=" color: white;
+		<button style=" color: white;
 		width: 90%;
 				margin: auto;
 				margin-top: 5vh;
 			    background-color: #5A7EFF;
 			    border-radius: 50px;
 			    font-size: 32rpx;
-			    height: 96rpx;line-height: 96rpx; " type="default" @click="$open('/pages/mine/invoiceInfo')">添加新抬头</button>		
+			    height: 96rpx;line-height: 96rpx; " type="default" @click="$open('/pages/mine/invoiceInfo')">添加新抬头</button>
 	</view>
 
 </template>
 
 <script>
+	import {
+		invoiceQueryByUser
+	} from '@/apis/invoice'
+
+
 	export default {
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
+				list: []
 			}
 		},
+		onLoad() {
+			this.invoiceQueryByUser()
+		},
 		methods: {
-			
+			async invoiceQueryByUser() {
+				let data = {
+
+				}
+				const [err, res] = await invoiceQueryByUser()
+				if (err) return
+				console.log(res)
+				this.list = res.data
+			}
 		}
 	}
 </script>
 
 <style>
-	.box{
+	.box {
 		width: 90%;
 		margin: auto;
 		padding: 20rpx 0rpx;
 		border-bottom: 2rpx solid #EFF0F3;
 	}
-	.flex{
+
+	.flex {
 		display: flex;
 		align-items: center;
 	}
-	.title{
+
+	.title {
 		color: #000000;
 		font-size: 28rpx;
-		
+
 	}
-	.tips{
+
+	.tips {
 		background-color: #5A7EFF;
 		width: 62rpx;
 		height: 34rpx;
@@ -63,7 +83,8 @@
 		line-height: 34rpx;
 		margin-left: 20rpx;
 	}
-	.num{
+
+	.num {
 		color: #999999;
 		font-size: 28rpx;
 		margin-top: 10rpx;
