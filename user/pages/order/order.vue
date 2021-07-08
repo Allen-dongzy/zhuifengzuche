@@ -73,15 +73,17 @@
 </template>
 
 <script>
-	import {rentalOrderPageQuery} from'@/apis/rentalOrder'
+	import {
+		rentalOrderPageQuery
+	} from '@/apis/rentalOrder'
 	export default {
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
 				acTab: 0, // 活跃的tab
 				status: 0,
-				page:1,
-				size:10
+				page: 1,
+				size: 10
 			}
 		},
 		computed: {},
@@ -89,20 +91,22 @@
 			this.getorderList(0)
 		},
 		methods: {
-		async	getorderList(e){
-				const [err,res] = await rentalOrderPageQuery()
-				if(err) return
+			async getorderList(e) {
+				const [err, res] = await rentalOrderPageQuery()
+				if (err) return
 				console.log(res)
-				if(res.data.list.length==0){
-					
-				}else{
-					this.list.push(res.data.list)
+				if (res.data.list.length == 0) {
+
+				} else {
+					for (let i = 0; i < res.data.list.length; i++) {
+						this.list.push(res.data.list[i])
+					}
 				}
 			},
 			// 切换tab
 			taptab(index) {
 				this.acTab = index
-			this.getorderList(index)
+				this.getorderList(index)
 			},
 			//下拉刷新
 			onPullDownRefresh() {

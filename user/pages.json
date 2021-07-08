@@ -53,7 +53,8 @@
 	}, {
 		"path": "pages/common/storeComment",
 		"style": {
-			"navigationBarTitleText": "查看评论"
+			"navigationBarTitleText": "查看评论",
+			"enablePullDownRefresh":true
 		}
 	}, {
 		"path": "pages/home/priceCalendar",
@@ -296,7 +297,7 @@
 		"current": 0,
 		"list": [{
 			"name": "wcy", // wcy
-			"path": "pages/mine/mine"
+			"path": "pages/home/home"
 		}, {
 			"name": "dzy", // dzy
 			"path": "pages/mine/mine"

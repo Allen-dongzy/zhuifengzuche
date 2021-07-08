@@ -1,11 +1,11 @@
 <template>
 	<view class="wind-store">
-		<view class="store-card" v-for="(item, index) in 5" :key="index">
+		<view class="store-card" v-for="(item, index) in list" :key="index">
 			<view class="head">
 				<view class="base-info">
 					<image class="logo" :src="`${ossUrl}/common/cache-logo.png`"></image>
 					<view class="title-box">
-						<view class="store-caption">郑家院子1号店</view>
+						<view class="store-caption">{{item.name}}</view>
 						<view class="star-box">
 							<image class="star" :src="`${ossUrl}/common/icon-star.png`" v-for="(item, index) in 4"
 								:key="index"></image>
@@ -13,60 +13,90 @@
 					</view>
 				</view>
 				<view class="btn-group">
-					<image class="btn" :src="`${ossUrl}/common/location-big.png`" @click="openMap"></image>
-					<image class="btn" :src="`${ossUrl}/common/phone-big.png`" @click="phoneCall"></image>
+					<image class="btn" :src="`${ossUrl}/common/location-big.png`" @click="openMap(item.lat,item.lon)"></image>
+					<image class="btn" :src="`${ossUrl}/common/phone-big.png`" @click="phoneCall(item.memberPhone)"></image>
 				</view>
 			</view>
 			<view class="info">
 				<view class="bar">
 					<image class="icon" :src="`${ossUrl}/common/icon-time.png`"></image>
-					<view class="description">营业时间：8:00-21:00</view>
+					<view class="description">营业时间：{{item.beginTime}}-{{item.endTime}}</view>
 				</view>
 				<view class="bar">
 					<image class="icon" :src="`${ossUrl}/home/icon-phone.png`"></image>
-					<view class="description">电话号码：<text @click="phoneCall">18888888888</text></view>
+					<view class="description">电话号码：<text @click="phoneCall(item.memberPhone)">{{item.memberPhone}}</text></view>
 				</view>
 				<view class="bar">
 					<image class="icon" :src="`${ossUrl}/home/icon-message.png`"></image>
-					<view class="description" @click="$open('/pages/common/storeComment')">评论：123条</view>
+					<view class="description" @click="$open('/pages/common/storeComment?id='+item.id)">评论：{{item.evaluationNumber}}条</view>
 					<view class="arrow" @click="$open('/pages/common/storeComment')"></view>
 				</view>
 				<view class="bar">
 					<image class="icon" :src="`${ossUrl}/common/icon-home-black.png`"></image>
-					<view class="description">门店地址：<text @click="openMap">郑家院子东路8号</text></view>
-				</view>
+					<view class="description">门店地址：<text @click="openMap(item.lat,item.lon)">{{item.memberAddress}}</text></view>
+				</view> 
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	// import {} from '../../apis/shop.js'
+	import {memberShopPageQuery} from '../../apis/memberShop.js'
 	export default {
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
+				page:1,
+				size:10,
+				list:[]
 			}
 		},
+		onLoad() {
+			this.memberShopPageQuery()
+		},
 		methods: {
+		async memberShopPageQuery(){
+			let data={
+				page:this.page,
+				size:this.size
+			}
+			const [err,res] = await memberShopPageQuery()
+			if(err) return
+			console.log(res.data.list)
+			 if(res.data.list.length==0){
+				 
+			 }else{
+				for (let i =0;i<res.data.list.length;i++) {
+					this.list.push(res.data.list[i])
+				}
+			 }
+		},
 			// 打电话
-			phoneCall() {
+			phoneCall(e) {
 				uni.makePhoneCall({
-					phoneNumber: '17623178041'
+					phoneNumber: e
 				})
 			},
 			// 打开地图
-			async openMap() {
+			async openMap(q,e) {
+				console.log(q)
+				console.log(e)
 				// 获取位置
-				const [err, res] = await await uni.getLocation({
-					type: 'gcj02'
-				})
-				const latitude = res.latitude
-				const longitude = res.longitude
-				// 打开位置
-				uni.openLocation({
-					latitude,
-					longitude
-				})
+				
+
+				
+				 uni.openLocation({
+				            latitude:parseFloat(q),
+				            longitude:parseFloat(e),
+				            success: function (e) {
+								console.log(e)
+				                console.log('success');
+				            },
+							fail:function(e){
+									console.log(e)
+							}
+				        });
 			}
 		}
 	}

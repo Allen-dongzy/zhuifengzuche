@@ -54,7 +54,9 @@
 				if (res.data.list.length == 0) {
 
 				} else {
-					this.list.push(res.data.list)
+					for (let i = 0; i < res.data.list.length; i++) {
+						this.list.push(res.data.list[i])
+					}
 				}
 				console.log(res)
 			},

@@ -23,15 +23,55 @@
 </template>
 
 <script>
+	import{shopEvaluatePageQueryById} from '../../apis/shop'
 	export default {
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
+				page:1,
+				size:10,
+				list:[],
+				id:''
 
 			}
 		},
+		onLoad(e) {
+			this.id=e.id
+			this.shopEvaluatePageQueryById()
+		},
 		methods: {
-
+			async shopEvaluatePageQueryById(){
+				let data={
+					memberShopId:this.id,
+					page:this.page,
+					size:this.size
+				}
+				const [err,res] = await shopEvaluatePageQueryById(data)
+				
+				if(err) return
+				 if(res.data.list.length==0){
+					 
+				 }else{
+					for (let i =0;i<res.data.list.length;i++) {
+						this.list.push(res.data.list[i])
+					}
+				 }
+			},
+			//下拉刷新
+			onPullDownRefresh() {
+				this.page = 1
+				this.size = 10
+				this.list = []
+				this.shopEvaluatePageQueryById()
+				setTimeout(function() {
+					uni.stopPullDownRefresh();
+				}, 1000);
+			},
+			onReachBottom(e) {
+				this.page = this.page + 1;
+				//一些事件
+				this.shopEvaluatePageQueryById()
+			},
 		}
 	}
 </script>
