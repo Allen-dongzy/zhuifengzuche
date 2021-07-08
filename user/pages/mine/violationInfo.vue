@@ -21,8 +21,9 @@
 				<view class="bigblackText">罚款：</view>
 				<view class="bigblackText" style="color:#FC3736;">¥188.00</view>
 				<view class="bigblackText" style="margin-left: 40rpx;">记分：</view>
-				<view class="bigblackText" style="color:#FC3736;">0</view> 
-				<image style="width:80rpx;height:40rpx;margin-left: 10%;" :src="`${ossUrl}/mine/yizhifu.png`" mode=""></image>
+				<view class="bigblackText" style="color:#FC3736;">0</view>
+				<image style="width:80rpx;height:40rpx;margin-left: 10%;" :src="`${ossUrl}/mine/yizhifu.png`" mode="">
+				</image>
 			</view>
 		</view>
 		<view class="grayLine" v-show="show==1"></view>
@@ -40,10 +41,10 @@
 			<view class="flexBox" style="padding: 20rpx 0rpx;">单据单号</view>
 			<view class="flexBox" style="color: #999999;font-size: 24rpx;">这里是备注信息这里是备注信息这里是备注信息这里是备注信息这里是备注信息</view>
 		</view>
-		
-		
-		
-		
+
+
+
+
 		<button v-show="show==1" style=" color: white;
 			width: 90%;
 					margin: auto;
@@ -60,47 +61,58 @@
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
-				show:1
+				show: 1
 			}
 		},
+		onLoad(e) {
+			this.breakRulesFindOneById(e.id)
+		},
 		methods: {
-			
+			async breakRulesFindOneById(e) {
+				const [err, res] = await breakRulesFindOneById(e)
+				if (err) return
+				console.log(res)
+			}
 		}
 	}
 </script>
 
 <style>
-	.box{
-		
+	.box {
+
 		width: 90%;
 		margin: auto;
 		margin-top: 30rpx;
 	}
-	.flexBox{
+
+	.flexBox {
 		display: flex;
 		align-items: center;
 		margin: 20rpx 0rpx;
 	}
-	.grayText{
+
+	.grayText {
 		color: #999999;
 		font-size: 28rpx;
 		width: 14%;
 	}
-	.blackText{
+
+	.blackText {
 		width: 86%;
 		text-align: right;
 		color: #000000;
 		font-size: 24rpx;
 	}
-	.bigblackText{
+
+	.bigblackText {
 		font-size: 28rpx;
 		color: #000000;
 	}
-	.grayLine{
+
+	.grayLine {
 		height: 20rpx;
 		width: 100%;
 		background-color: #EFF0F3;
-		margin-top:30rpx;
+		margin-top: 30rpx;
 	}
-	
 </style>

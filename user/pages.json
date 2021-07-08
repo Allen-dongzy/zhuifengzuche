@@ -7,7 +7,8 @@
 	}, {
 		"path": "pages/order/order",
 		"style": {
-			"navigationBarTitleText": "订单列表"
+			"navigationBarTitleText": "订单列表",
+			"enablePullDownRefresh":true
 		}
 	}, {
 		"path": "pages/mine/mine",
@@ -52,7 +53,8 @@
 	}, {
 		"path": "pages/common/storeComment",
 		"style": {
-			"navigationBarTitleText": "查看评论"
+			"navigationBarTitleText": "查看评论",
+			"enablePullDownRefresh":true
 		}
 	}, {
 		"path": "pages/home/priceCalendar",
@@ -137,7 +139,8 @@
 	}, {
 		"path": "pages/mine/violationRecord",
 		"style": {
-			"navigationBarTitleText": "违章记录"
+			"navigationBarTitleText": "违章记录",
+			 "enablePullDownRefresh": true
 		}
 	}, {
 		"path": "pages/mine/violationInfo",
@@ -294,7 +297,7 @@
 		"current": 0,
 		"list": [{
 			"name": "wcy", // wcy
-			"path": "pages/mine/mine"
+			"path": "pages/home/home"
 		}, {
 			"name": "dzy", // dzy
 			"path": "pages/home/selectCar",

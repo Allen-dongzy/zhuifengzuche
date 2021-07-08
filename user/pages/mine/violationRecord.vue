@@ -1,6 +1,6 @@
 <template>
 	<view class="">
-		<view class="box">
+		<view class="box" v-for="(item,index) in list" :key='index' @click="lookinfo(item.id)">
 			<view class="flexBox">
 				<view class="bigblackText" style="width: 28%;">渝A·5231B</view>
 				<view class="blackText" style="width:72%;color: #5A7EFF;">待支付</view>
@@ -23,27 +23,71 @@
 				<view class="bigblackText" style="margin-left: 40rpx;">记分：</view>
 				<view class="bigblackText" style="color:#FC3736;">0</view>
 			</view>
-			
+
 		</view>
 	</view>
 </template>
 
 <script>
+	import {
+		breakRulesPageNewQuery
+	} from '../../apis/breakRules'
 	export default {
 		data() {
 			return {
-				
+				page: 1,
+				size: 10,
+				list: []
 			}
 		},
+		onLoad() {
+			this.breakRulesPageNewQuery()
+		},
 		methods: {
-			
+			async breakRulesPageNewQuery() {
+				let data = {
+					page: this.page,
+					size: this.size
+				}
+				const [err, res] = await breakRulesPageNewQuery(data)
+				if (err) return
+				if (res.data.list.length == 0) {
+
+				} else {
+					for (let i = 0; i < res.data.list.length; i++) {
+						this.list.push(res.data.list[i])
+					}
+				}
+				console.log(res)
+			},
+			lookinfo(e) {
+				uni.navigateTo({
+					url: './violationInfo?id=' + e
+				})
+			},
+			//下拉刷新
+			onPullDownRefresh() {
+				this.page = 1
+				this.size = 10
+				this.list = []
+				this.breakRulesPageNewQuery()
+				setTimeout(function() {
+					uni.stopPullDownRefresh();
+				}, 1000);
+			},
+			onReachBottom(e) {
+				this.page = this.page + 1;
+				//一些事件
+				this.breakRulesPageNewQuery()
+			},
+
 		}
 	}
 </script>
 
 <style>
-	.box{
-		box-shadow: 0px 0px 0px 5rpx rgba(114,141,244,0.25);
+	.box {
+		box-shadow: 0px 0px 0px 5rpx rgba(114, 141, 244, 0.25);
 		width: 80%;
 		margin: auto;
 		border-radius: 20rpx;
@@ -51,25 +95,29 @@
 		padding: 30rpx;
 		margin-top: 30rpx;
 	}
-	.flexBox{
+
+	.flexBox {
 		display: flex;
 		align-items: center;
 		margin: 20rpx 0rpx;
 	}
-	.grayText{
+
+	.grayText {
 		color: #999999;
 		font-size: 28rpx;
 		width: 14%;
 	}
-	.blackText{
+
+	.blackText {
 		width: 86%;
 		text-align: right;
 		color: #000000;
 		font-size: 24rpx;
 	}
-	.bigblackText{
+
+	.bigblackText {
 		font-size: 28rpx;
 		color: #000000;
-		
+
 	}
 </style>

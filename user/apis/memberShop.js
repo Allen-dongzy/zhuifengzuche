@@ -4,9 +4,10 @@ import request from '@/request'
 export const memberShopPageQuery = (data, loading = '') => {
 	return request({
 		url: 'memberShop/pageQuery',
-		contentType: 'application/x-www-form-urlencoded',
+		contentType: 'application/json',
 		method: 'POST',
 		data,
 		loading
 	})
 }
+
