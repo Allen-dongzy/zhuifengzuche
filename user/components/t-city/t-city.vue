@@ -92,8 +92,10 @@
 
 <script>
 	import {
-		mapState
+		mapState,
+		mapActions
 	} from 'vuex'
+
 	export default {
 		data() {
 			return {
@@ -161,7 +163,15 @@
 				this.searchFocus = val;
 			}
 		},
+		created() {
+			// 城市
+			this.getCurrentCity()
+			this.getHotCity()
+			this.getAllCity()
+		},
 		methods: {
+			// city 获取所有城市，获取热门城市
+			...mapActions('city', ['getAllCity', 'getHotCity', 'getCurrentCity']),
 			//列表滚动，和右边字母表对应
 			scrollHandle(e) {
 				let view = uni.createSelectorQuery().in(this).selectAll(".list-item");
