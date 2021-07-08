@@ -294,7 +294,7 @@
 		"current": 0,
 		"list": [{
 			"name": "wcy", // wcy
-			"path": "pages/common/userAgreement"
+			"path": "pages/mine/mine"
 		}, {
 			"name": "dzy", // dzy
 			"path": "pages/mine/mine"
