@@ -28,19 +28,13 @@
 				</view>
 			</scroll-view>
 		</view>
-		<view class="address-list">
-			<view class="address-item" v-for="(item, index) in 20" :key="index">
-				<view class="caption">滨江路皇冠大道送车点</view>
-				<view class="description">滨江路皇冠大道送车点 <view class="arrow"></view>
-				</view>
-			</view>
-		</view>
 	</view>
 </template>
 
 <script>
 	import {
-		mapState
+		mapState,
+		mapActions
 	} from 'vuex'
 
 	export default {
@@ -58,9 +52,12 @@
 			...mapState('app', ['windowHeight'])
 		},
 		mounted() {
+			this.setSystemInfo()
 			this.getSearchHeight()
 		},
 		methods: {
+			// app 设置用户信息
+			...mapActions('app', ['setSystemInfo']),
 			// 获取搜索框高度
 			getSearchHeight() {
 				const query = uni.createSelectorQuery().in(this)
