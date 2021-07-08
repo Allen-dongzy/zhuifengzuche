@@ -48,6 +48,11 @@
 			<view class="text">{{item.name}}</view>
 			<image class="arrow" :src="`${ossUrl}/mine/huiyou.png`"></image>
 		</view>
+		<view v-show="$storage.get('token')" class="flex-box-left" @click="logout">
+			<image class="icon" :src="`${ossUrl}/mine/out.png`" mode="widthFix"></image>
+			<view class="text">退出登录</view>
+			<image class="arrow" :src="`${ossUrl}/mine/huiyou.png`"></image>
+		</view>
 	</view>
 </template>
 
@@ -56,9 +61,10 @@
 		open
 	} from '@/utils/uni-tools'
 	import {
-		mapState
+		mapState,
+		mapMutations
 	} from 'vuex'
-	
+
 	export default {
 		data() {
 			return {
@@ -83,10 +89,6 @@
 					name: '关于追风',
 					img: '/mine/about.png',
 					path: '/pages/mine/aboutMe'
-				}, {
-					name: '退出登录',
-					img: '/mine/out.png',
-					path: ''
 				}]
 			};
 		},
@@ -95,6 +97,8 @@
 			...mapState('user', ['icon', 'nickname', 'username', 'couponCount'])
 		},
 		methods: {
+			// user 清空用户信息
+			...mapMutations('user', ['clearInfo']),
 			// 点击头像
 			headerTap() {
 				if (this.$storage.get('token')) this.$open('/pages/mine/personalInformation')
@@ -122,7 +126,6 @@
 				})
 			},
 			selectOne(e) {
-				console.log(e)
 				uni.navigateTo({
 					url: e,
 					animationDuration: 200,
@@ -136,9 +139,14 @@
 					animationType: 'pop-in'
 				})
 			},
-			quit() {
-				// todo
-				open('/pages/home/home')
+			// 退出登录
+			logout() {
+				this.$showLoading('退出中')
+				this.clearInfo()
+				this.$storage.remove('token')
+				setTimeout(() => {
+					uni.hideLoading()
+				}, 500)
 			}
 		}
 	}

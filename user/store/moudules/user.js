@@ -83,8 +83,9 @@ const user = {
 			state.nickname = ''
 			state.phone = ''
 			state.realName = ''
-			state.usernam = ''
+			state.username = ''
 			storage.remove('userinfo')
+			console.log(111)
 		}
 	},
 	actions: {
