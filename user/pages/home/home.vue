@@ -72,7 +72,7 @@
 			<view class="toast" @click="openProcessPopup">
 				<image class="sesame" :src="`${ossUrl}/home/sesame.png`"></image>芝麻分达<text>550</text>即可享受押金双免租车 >
 			</view>
-			<view class="btn" @click="$open('/pages/home/selectCar')">立即租车</view>
+			<view class="btn" @click="carRental">立即租车</view>
 		</view>
 		<!-- go.png -->
 		<view class="notice-box" @click="$open('/pages/mine/coupon')">
@@ -168,6 +168,7 @@
 	import {
 		throttle
 	} from '@/utils/tools'
+	import validator from 'crazy-validator'
 
 	export default {
 		data() {
@@ -260,7 +261,18 @@
 			},
 			// 立即租车
 			carRental() {
-
+				const checkList = [{
+					value: this.takeCarAddress,
+					rules: [{
+						type: 'required',
+						msg: '请选择取车点'
+					}]
+				}]
+				const checkRes = validator(checkList, this.$toast)
+				if (checkRes.status !== 1000) return
+				this.$open('/pages/home/selectCar', {
+					takeCarAddress: JSON.stringify(this.takeCarAddress)
+				})
 			},
 			// 选取取车地点
 			goTakeCarAddress() {
