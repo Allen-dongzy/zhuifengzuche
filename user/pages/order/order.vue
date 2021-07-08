@@ -47,13 +47,19 @@
 					</view>
 					<view v-show="status >= 5" class="contact"></view>
 					<view class="btn-box">
-						<view v-show="status === 3" class="btn white" @click.stop="$open('/pages/order/renewal')">续租用车</view>
+						<view v-show="status === 3" class="btn white" @click.stop="$open('/pages/order/renewal')">续租用车
+						</view>
 						<view v-show="status === 0" class="btn blue">立即支付</view>
-						<view v-show="status === 2" class="btn blue" @click.stop="$open('/pages/common/goInspect')">查看车况</view>
-						<view v-show="status === 3" class="btn blue" @click.stop="$open('/pages/order/returnCar')">前往还车</view>
-						<view v-show="status === 4" class="btn blue" @click.stop="$open('/pages/order/changeCarDetail')">换车详情</view>
-						<view v-show="status === 5" class="btn blue" @click.stop="$open('/pages/order/evaluate')">评价</view>
-						<view v-show="status === 5 && false" class="btn blue" @click.stop="$open('/pages/common/storeComment')">查看评价</view>
+						<view v-show="status === 2" class="btn blue" @click.stop="$open('/pages/common/goInspect')">查看车况
+						</view>
+						<view v-show="status === 3" class="btn blue" @click.stop="$open('/pages/order/returnCar')">前往还车
+						</view>
+						<view v-show="status === 4" class="btn blue"
+							@click.stop="$open('/pages/order/changeCarDetail')">换车详情</view>
+						<view v-show="status === 5" class="btn blue" @click.stop="$open('/pages/order/evaluate')">评价
+						</view>
+						<view v-show="status === 5 && false" class="btn blue"
+							@click.stop="$open('/pages/common/storeComment')">查看评价</view>
 						<view v-show="status === 6" class="btn blue">再次预订</view>
 					</view>
 				</view>
@@ -67,20 +73,52 @@
 </template>
 
 <script>
+	import {rentalOrderPageQuery} from'@/apis/rentalOrder'
 	export default {
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
 				acTab: 0, // 活跃的tab
-				status: 0
+				status: 0,
+				page:1,
+				size:10
 			}
 		},
 		computed: {},
+		onLoad() {
+			this.getorderList(0)
+		},
 		methods: {
+		async	getorderList(e){
+				const [err,res] = await rentalOrderPageQuery()
+				if(err) return
+				console.log(res)
+				if(res.data.list.length==0){
+					
+				}else{
+					this.list.push(res.data.list)
+				}
+			},
 			// 切换tab
 			taptab(index) {
 				this.acTab = index
-			}
+			this.getorderList(index)
+			},
+			//下拉刷新
+			onPullDownRefresh() {
+				this.page = 1
+				this.size = 10
+				this.list = []
+				this.getorderList()
+				setTimeout(function() {
+					uni.stopPullDownRefresh();
+				}, 1000);
+			},
+			// 上拉加载
+			onReachBottom(e) {
+				this.page = this.page + 1;
+				this.getorderList()
+			},
 		}
 	}
 </script>
