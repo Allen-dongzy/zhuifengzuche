@@ -67,7 +67,7 @@
 					'16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00',
 					'21:30', '22:00', '22:30', '23:00', '23:30'
 				],
-				weekShow: ['', '周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+				weekShow: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
 				takeCarTimeIndex: [0], // 取车时间下标
 				carAlsoTimeIndex: [0], // 还车时间下标
 				takeCarDate: '', // 取车日期显示
@@ -82,10 +82,12 @@
 		watch: {
 			// 监听取车日期
 			takeCarDate(newVal) {
+				console.log(new Date(newVal).getDay())
 				this.takeCarDay = this.weekShow[new Date(newVal).getDay()]
 			},
 			// 监听取车日期
 			carAlsoDate(newVal) {
+				console.log(new Date(newVal).getDay())
 				this.carAlsoDay = this.weekShow[new Date(newVal).getDay()]
 			}
 		},
