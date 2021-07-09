@@ -76,7 +76,7 @@
 					<view class="bottom-mat"></view>
 					<view class="bottom">
 						<view class="btn clear" @click="carBrandsClear">清空</view>
-						<view class="btn confirm" @click="carBrandConfirm">确定</view>
+						<view class="btn confirm" @click="carBrandsConfirm">确定</view>
 					</view>
 				</view>
 			</view>
@@ -88,14 +88,14 @@
 					<view class="box">
 						<view class="caption">排档</view>
 						<view class="label-box">
-							<view :class="['label', {'ac': acGear === 0}]" @click="tapGear(0)">自动挡</view>
-							<view :class="['label', {'ac': acGear === 1}]" @click="tapGear(1)">手动挡</view>
+							<view :class="['label', {'ac': acGear === index}]" v-for="(item, index) in carGearsList"
+								:key="index" @click="tapGear(index)">{{item}}</view>
 						</view>
 					</view>
 					<view class="bottom-mat"></view>
 					<view class="bottom">
-						<view class="btn clear">清空</view>
-						<view class="btn confirm">确定</view>
+						<view class="btn clear" @click="carGearsClear">清空</view>
+						<view class="btn confirm" @click="carGearsConfirm">确定</view>
 					</view>
 				</view>
 			</view>
@@ -161,6 +161,7 @@
 				carClassList: [], // 租车类别列表 
 				carBrandList: [], // 租车品牌列表
 				carModelList: [], // 租车车型列表
+				carGearsList: ['自动挡', '手动挡'], // 租车排档列表
 				carList: [], // 车辆列表
 				page: 1,
 				size: 10,
@@ -201,7 +202,7 @@
 				this.vehicleQueryVehicleModels()
 			}),
 			// 车辆品牌筛选确定
-			carBrandConfirm: throttle(function() {
+			carBrandsConfirm: throttle(function() {
 				this.closeBrandModal()
 				this.init()
 				this.vehiclePageQuery()
@@ -252,10 +253,10 @@
 					deliveryId: this.takeCarAddress.id,
 					pickTime: this.takeCarTime,
 					returnTime: this.carAlsoTime,
-					brandId: this.acBranch >= 0 && this.acModel >= 0 ? this.carBrandList[this.acBranch].id : '',
-					vehicleModelId: this.acModel >= 0 ? this.carModelList[this.acModel].id : '',
-					gears: '',
-					capacity: ''
+					brandId: this.acBranch >= 0 && this.acModel >= 0 ? this.carBrandList[this.acBranch].id : null,
+					vehicleModelId: this.acModel >= 0 ? this.carModelList[this.acModel].id : null,
+					gears: this.acGear >= 0 ? this.carGearsList[this.acGear] : null,
+					capacity: null
 				}
 				const [err, res] = await vehiclePageQuery(params)
 				if (err) {
@@ -364,6 +365,17 @@
 				this.$refs.gearPopup.close()
 				this.gearStatus = false
 			},
+			// 清除排档
+			carGearsClear: throttle(function() {
+				this.acGear = -1
+				this.vehiclePageQuery()
+			}),
+			// 车辆排档筛选确定
+			carGearsConfirm: throttle(function() {
+				this.closeGearModal()
+				this.init()
+				this.vehiclePageQuery()
+			}),
 			// 切换排档
 			tapGear(index) {
 				this.acGear = index
