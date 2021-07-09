@@ -2,27 +2,30 @@
 	<view class="cost-detail">
 		<view class="price-bar">
 			<view class="title">
-				租金(￥188/日均)
+				租金(￥{{info.orderVehiclePrice.averagePrice}}/日均)
 			</view>
 			<view class="price">
-				￥<text>188</text>
+				￥<text>{{info.orderVehiclePrice.totalPrice}}</text>
 			</view>
 		</view>
 		<view class="calendar">
-			<view class="item" v-for="(item, index) in 14" :key="index">
-				<view class="date">16</view>
-				<view class="price">￥219</view>
+			<view class="item" v-for="(item, index) in info.orderVehiclePrice.datePriceList" :key="index">
+				<view class="date">{{item.time.slice(8,10)}}</view>
+				<view class="price">￥{{item.price}}</view>
 			</view>
 		</view>
 		<view class="list">
-			<view class="item-bar">
+			
+			<view class="item-bar" v-for="(item,index) in info.orderPriceList">
 				<view class="left">
-					<view class="caption">异地调用</view>
-					<view class="text">按取还车每公里3元计算</view>
+					<view class="caption">{{item.name}}</view>
+					<view class="text" v-show="item.name=='异地调度'">按取还车每公里3元计算</view>
+					<view class="text" v-show="item.name=='零散小时收费'">租车非整天时零散小时收取的超时小费</view>
+					<view class="text" v-show="item.name=='夜间取车费'">夜间取车费</view>
 				</view>
-				<view class="right">￥29</view>
+				<view class="right">￥{{item.price}}</view>
 			</view>
-			<view class="item-bar">
+<!-- 			<view class="item-bar">
 				<view class="left">
 					<view class="caption">零散小时收费</view>
 					<view class="text">租车非整天时零散小时收取的超时小费</view>
@@ -51,12 +54,12 @@
 			<view class="item-bar">
 				<view class="left">优惠券减免</view>
 				<view class="right">-￥29</view>
-			</view>
+			</view> -->
 		</view>
 		<view class="bottom-mat"></view>
 		<view class="bottom">
 			<view class="caption">总计</view>
-			<view class="price">￥<text>188.00</text></view>
+			<view class="price">￥<text>{{info.total}}</text></view>
 		</view>
 	</view>
 </template>
@@ -65,8 +68,10 @@
 	export default {
 		data() {
 			return {
-
+				info:''
 			}
+		},onLoad(e) {
+			this.info= JSON.parse(e.obj)
 		},
 		methods: {
 
