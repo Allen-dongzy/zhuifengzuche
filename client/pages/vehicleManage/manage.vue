@@ -48,8 +48,8 @@
 				</view>
 				<view class="flex flex-wrap statusList">
 					<view v-for="(item,index) in seatList" @click="selectSeat(index)">
-						<i v-if="item.status==false" class="flex-center">{{item.text}}</i>
-						<i v-else class="flex-center blue-i">{{item.text}}</i>
+						<i v-if="item.status==false" class="flex-center">{{item.text}}座</i>
+						<i v-else class="flex-center blue-i">{{item.text}}座</i>
 					</view>
 				</view>
 				<view class="flex status">
@@ -106,13 +106,13 @@
 				stallId: '', //排挡Id
 				brandList: [], //品牌数组
 				seatList: [{
-					text: '5座',
+					text: '5',
 					status: false
 				}, {
-					text: '7座',
+					text: '7',
 					status: false
 				}, {
-					text: '9座',
+					text: '9',
 					status: false
 				}], // 座位数列表
 				stallList: [{
@@ -169,10 +169,31 @@
 				const [err, res] = await vehicleModelPageQuery(data)
 				if (err) return
 				console.log(res)
-				this.list = res.data.list
+				// this.list = res.data.list
+				if (res.data.list.length == 0) {
+				
+				} else {
+					for (let i = 0; i < res.data.list.length; i++) {
+						this.list.push(res.data.list[i])
+					}
+				}
 
 			},
-
+			//下拉刷新
+			onPullDownRefresh() {
+				this.page = 1
+				this.size = 10
+				this.list = []
+				this.getlist()
+				setTimeout(function() {
+					uni.stopPullDownRefresh();
+				}, 1000);
+			}, 
+			// 上拉加载
+			onReachBottom(e) {
+				this.page = this.page + 1;
+				this.getlist()
+			},
 
 			// 切换头部
 			tapHeader() {

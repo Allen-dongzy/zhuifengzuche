@@ -194,8 +194,29 @@
 				const [err, res] = await vehiclePageQuery(data)
 				if (err) return
 				console.log(res)
-				this.list = res.data.list
+				if (res.data.list.length == 0) {
+				
+				} else {
+					for (let i = 0; i < res.data.list.length; i++) {
+						this.list.push(res.data.list[i])
+					}
+				}
 
+			},
+			//下拉刷新
+			onPullDownRefresh() {
+				this.page = 1
+				this.size = 10
+				this.list = []
+				this.getlist()
+				setTimeout(function() {
+					uni.stopPullDownRefresh();
+				}, 1000);
+			}, 
+			// 上拉加载
+			onReachBottom(e) {
+				this.page = this.page + 1;
+				this.getlist()
 			},
 			clear() {
 				for (let i = 0; i < this.carStatus.length; i++) {
