@@ -1,5 +1,24 @@
 <template>
 	<view class="add">
+		
+		<view class="flexBoxContent" v-show="roles[0].id==1">
+			<view class="title">门店</view>
+			<view class="selectBox" @click="">
+				<view style="width: 85%;">
+					<picker @change="selectStore" :value="indexStore" :range="list" :range-key="'name'"
+							class="pickerBox">
+							<label  class="pickerText">{{storeName!=''?storeName:'请选择'}}</label>
+						</picker>
+				</view>
+				<view style="width:10%;">
+					<image style="width:40rpx;height: 20rpx;transform: rotate(-90deg);"
+						:src="`${filePath}/vehicleManage/down-mini.png`"></image>
+				</view>
+			</view>
+		</view>
+		
+		
+		
 		<view class="header">
 			<view class="label"></view>
 			<text>填写车辆信息</text>
@@ -234,10 +253,16 @@
 	import {
 		uploadFiles
 	} from '@/apis/oss';
-
+	
+	import{memberShopPageQuery} from '../../apis/memberShop'
 	export default {
 		data() {
 			return {
+				storeShow:false,//门店显示或者隐藏
+				list:[],//门店列表
+				storeName:'',//门店值
+				indexStore:'',//门店角标
+				storeId:'',//门店id
 				filePath: config.filePath,
 				brandList: [], // 品牌列表
 				brandKey: false, // 品牌开关
@@ -282,12 +307,12 @@
 				weekExternal: '', //周末价格
 				weekWithin: '', //周内价格
 				carId: '', //车型id
-
 			}
 		},
 		computed: {
 			// 门店id
-			...mapState('user', ['shopId'])
+			...mapState('user', ['shopId']),
+			...mapState('user', ['roles'])
 		},
 		watch: {
 			price(newVal) {
@@ -304,7 +329,10 @@
 			this.getBrand()
 			this.getType()
 			this.outputVolume()
-			console.log(e.id)
+			this.getStore()
+			this.storeId=this.shopId
+			console.log(this.roles)
+			
 			if (e.id != undefined) {
 				this.searchCarid(e.id)
 				this.carId = e.id
@@ -313,6 +341,18 @@
 			}
 		},
 		methods: {
+			//获取门店
+			async getStore(){
+			  const [err,res] = await memberShopPageQuery()
+			  if (err) return
+			  this.list =res.data.list
+			},
+			//选择门店
+			selectStore(e){
+				this.indexStore = e.target.value //取其下标
+				this.storeName=this.list[this.indexStore].name
+				this.storeId=this.list[this.indexStore].id
+			},
 			delLabel(e) {
 				this.labelList.splice(e, 1)
 			},
@@ -522,7 +562,7 @@
 						breakRulesMoney: this.breakRulesMoney,
 						weekExternal: this.weekExternal,
 						weekWithin: this.weekWithin,
-						memberShopId: this.shopId
+						memberShopId: this.storeId
 					}
 				} else {
 					var data = {
@@ -542,7 +582,7 @@
 						breakRulesMoney: this.breakRulesMoney,
 						weekExternal: this.weekExternal,
 						weekWithin: this.weekWithin,
-						memberShopId: this.shopId
+						memberShopId: this.storeId
 					}
 				}
 
@@ -754,5 +794,49 @@
 				margin: 60rpx auto;
 			}
 		}
+	}
+	
+	
+	
+	
+	.flexBoxContent {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-top: 30rpx;
+		width: 90%;
+		margin: auto;
+		margin-bottom: 30rpx;
+	}
+	
+	.title {
+		color: black;
+		font-size: 28rpx;
+		width: 25%;
+		font-weight: 700;
+	}
+	.selectBox {
+		background-color: #EFF0F3;
+		width: 75%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		border-radius: 10rpx;
+		color: #999999;
+		font-size: 24rpx;
+	}
+	.pickerBox {
+		background-color: #EFF0F3;
+		color: #999999;
+		font-size: 24rpx;
+		height: 74rpx;
+		border-radius: 10rpx;
+	}
+	
+	.pickerText {
+		height: 74rpx;
+		line-height: 74rpx;
+		padding-left: 20rpx;
+		color: #999999;
 	}
 </style>
