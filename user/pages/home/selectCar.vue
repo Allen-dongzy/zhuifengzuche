@@ -62,8 +62,8 @@
 				<view class="brand-modal" @click.stop>
 					<view class="box">
 						<scroll-view class="brand-tab-list" :scroll-y="true">
-							<view :class="['item', {'ac': acBranch === index}]" v-for="(item, index) in 20" :key="index"
-								@click="tapBranch(index)">阿尔法罗密欧</view>
+							<view :class="['item', {'ac': acBranch === index}]" v-for="(item, index) in carBrandList"
+								:key="index" @click="tapBranch(index)">{{item.name}}</view>
 						</scroll-view>
 						<scroll-view class="brand-list" :scroll-y="true">
 							<view :class="['item', {'ac': acModel === index}]" v-for="(item, index) in 20" :key="index"
@@ -131,7 +131,9 @@
 	} from 'vuex'
 	import {
 		vehicleQueryVehicleCategorys,
-		vehiclePageQuery
+		vehiclePageQuery,
+		vehicleQueryVehicleBrands,
+		vehicleQueryVehicleModels
 	} from '@/apis/vehicle'
 	import {
 		listManager
@@ -153,6 +155,7 @@
 				acSeat: -1, // 选中的座位
 				takeCarAddress: {}, // 取车点信息
 				carClassList: [], // 租车类别列表 
+				carBrandList: [], // 租车品牌列表
 				carList: [], // 车辆列表
 				page: 1,
 				size: 10,
@@ -169,10 +172,11 @@
 		},
 		onLoad(e) {
 			if (e && e.takeCarAddress) this.takeCarAddress = JSON.parse(e.takeCarAddress)
-			if (e && e.takeCarTime) this.takeCarTime = e.takeCarTime
-			if (e && e.carAlsoTime) this.carAlsoTime = e.carAlsoTime
 			if (e && e.params) this.params = JSON.parse(e.params)
+			this.takeCarTime = this.params.takeCarTime
+			this.carAlsoTime = this.params.carAlsoTime
 			this.vehicleQueryVehicleCategorys()
+			this.vehicleQueryVehicleBrands()
 		},
 		mounted() {
 			this.getSearchHeight()
@@ -184,6 +188,19 @@
 				if (err) return
 				this.carClassList = res.data
 				this.vehiclePageQuery()
+			},
+			// 获取车辆品牌列表
+			async vehicleQueryVehicleBrands() {
+				const [err, res] = await vehicleQueryVehicleBrands()
+				if (err) return
+				this.carBrandList = res.data
+				this.vehicleQueryVehicleModels()
+			},
+			// 根据品牌获取车型列表
+			async vehicleQueryVehicleModels() {
+				const [err, res] = await vehicleQueryVehicleModels(this.takeCarAddress.id, this.carBrandList[this
+					.acBranch].id)
+				if (err) return
 			},
 			// 触底加载
 			scrollToBottom() {

@@ -32,7 +32,7 @@ export const vehiclePageQuery = (data, loading = '') => { // 对接
 }
 
 // 车辆品牌列表
-export const vehicleQueryVehicleBrands = (data, loading = '') => {
+export const vehicleQueryVehicleBrands = (data, loading = '') => { // 对接
 	return request({
 		url: 'vehicle/queryVehicleBrands',
 		contentType: 'application/x-www-form-urlencoded',
@@ -65,7 +65,7 @@ export const vehicleQueryVehicleModelRentList = (vehicleModelId, loading = '') =
 }
 
 // 根据门店id和品牌id查车型列表
-export const vehicleQueryVehicleModels = (deliveryId, brandId, loading = '') => {
+export const vehicleQueryVehicleModels = (deliveryId, brandId, loading = '') => { // 对接
 	return request({
 		url: `vehicle/queryVehicleModels/${deliveryId}/${brandId}`,
 		contentType: 'application/x-www-form-urlencoded',

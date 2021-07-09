@@ -286,17 +286,17 @@
 					takeCarDateShow: this.takeCarDateShow,
 					takeCarDayShow: this.takeCarDayShow,
 					takeCarTimeShow: this.takeCarTimeShow,
+					takeCarTime: this.takeCarTime,
 					carAlsoDateShow: this.carAlsoDateShow,
 					carAlsoDayShow: this.carAlsoDayShow,
 					carAlsoTimeShow: this.carAlsoTimeShow,
+					carAlsoTime: this.carAlsoTime,
 					totalDate: this.totalDate,
 					takeCarAddressId: this.takeCarAddress.id,
 					carAlsoAddressId: this.carAlsoAddress.id
 				}
 				this.$open('/pages/home/selectCar', {
 					takeCarAddress: JSON.stringify(this.takeCarAddress),
-					takeCarTime: this.takeCarTime,
-					carAlsoTime: this.carAlsoTime,
 					params: JSON.stringify(params)
 				})
 			},
