@@ -66,16 +66,16 @@
 								:key="index" @click="tapBranch(index)">{{item.name}}</view>
 						</scroll-view>
 						<scroll-view class="brand-list" :scroll-y="true">
-							<view :class="['item', {'ac': acModel === index}]" v-for="(item, index) in 20" :key="index"
-								@click="tapModel(index)">
-								<text>不限车型</text>
+							<view :class="['item', {'ac': acModel === index}]" v-for="(item, index) in carModelList"
+								:key="index" @click="tapModel(index)">
+								<text>{{item.vehicleModelName}}</text>
 								<image v-show="acModel === index" class="hook" :src="`${ossUrl}/home/hook.png`"></image>
 							</view>
 						</scroll-view>
 					</view>
 					<view class="bottom-mat"></view>
 					<view class="bottom">
-						<view class="btn clear">清空</view>
+						<view class="btn clear" @click="carBrandsInit()">清空</view>
 						<view class="btn confirm">确定</view>
 					</view>
 				</view>
@@ -156,6 +156,7 @@
 				takeCarAddress: {}, // 取车点信息
 				carClassList: [], // 租车类别列表 
 				carBrandList: [], // 租车品牌列表
+				carModelList: [], // 租车车型列表
 				carList: [], // 车辆列表
 				page: 1,
 				size: 10,
@@ -189,6 +190,11 @@
 				this.carClassList = res.data
 				this.vehiclePageQuery()
 			},
+			// 车辆品牌初始化
+			carBrandsInit() {
+				this.acBranch = 0
+				this.carModelInit()
+			},
 			// 获取车辆品牌列表
 			async vehicleQueryVehicleBrands() {
 				const [err, res] = await vehicleQueryVehicleBrands()
@@ -196,11 +202,17 @@
 				this.carBrandList = res.data
 				this.vehicleQueryVehicleModels()
 			},
+			// 车型列表初始化
+			carModelInit() {
+				this.acModel = -1
+				this.carModelList = []
+			},
 			// 根据品牌获取车型列表
 			async vehicleQueryVehicleModels() {
 				const [err, res] = await vehicleQueryVehicleModels(this.takeCarAddress.id, this.carBrandList[this
 					.acBranch].id)
 				if (err) return
+				this.carModelList = res.data
 			},
 			// 触底加载
 			scrollToBottom() {
@@ -312,6 +324,8 @@
 			// 切换品牌
 			tapBranch(index) {
 				this.acBranch = index
+				this.carModelInit()
+				this.vehicleQueryVehicleModels()
 			},
 			// 切换型号
 			tapModel(index) {
@@ -622,6 +636,10 @@
 
 							&.ac {
 								color: #5A7EFF;
+							}
+
+							text {
+								@include text-one;
 							}
 
 							.hook {

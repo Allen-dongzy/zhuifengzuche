@@ -67,7 +67,7 @@ export const vehicleQueryVehicleModelRentList = (vehicleModelId, loading = '') =
 // 根据门店id和品牌id查车型列表
 export const vehicleQueryVehicleModels = (deliveryId, brandId, loading = '') => { // 对接
 	return request({
-		url: `vehicle/queryVehicleModels/${deliveryId}/${brandId}`,
+		url: `vehicle/queryVehicleModels/${deliveryId}/${brandId}/`,
 		contentType: 'application/x-www-form-urlencoded',
 		method: 'POST',
 		data: {},
