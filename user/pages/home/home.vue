@@ -286,9 +286,11 @@
 					takeCarDateShow: this.takeCarDateShow,
 					takeCarDayShow: this.takeCarDayShow,
 					takeCarTimeShow: this.takeCarTimeShow,
+					takeCarTime: this.takeCarTime,
 					carAlsoDateShow: this.carAlsoDateShow,
 					carAlsoDayShow: this.carAlsoDayShow,
 					carAlsoTimeShow: this.carAlsoTimeShow,
+					carAlsoTime: this.carAlsoTime,
 					totalDate: this.totalDate,
 					takeCarAddressId: this.takeCarAddress.id,
 					carAlsoAddressId: this.carAlsoAddress.id
