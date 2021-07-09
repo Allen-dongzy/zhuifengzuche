@@ -13,7 +13,7 @@
 			<view class="name-box">
 				<view class="name">{{info.brandName}}</view>
 				<view class="label-box">
-					<view v-for="(item,index) in JSON.stringify(info.brandName)" class="label">{{item}}</view>
+					<view v-for="(item,index) in info.brandName" class="label">{{item}}</view>
 				</view>
 			</view>
 			<view class="params">大众 捷达丨自动 5座 2.0L</view>
@@ -277,6 +277,9 @@
 			if (err) return
 			console.log(res)
 				this.info=res.data
+				
+				this.info.clientVehicleVo.vehicleModelFiles= JSON.parse(this.info.clientVehicleVo.vehicleModelFiles)
+				this.info.clientVehicleVo.labels=JSON.parse(this.info.clientVehicleVo.labels)
 			},
 			//发票
 			async invoiceQueryByUser() {
