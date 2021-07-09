@@ -75,8 +75,8 @@
 					</view>
 					<view class="bottom-mat"></view>
 					<view class="bottom">
-						<view class="btn clear" @click="carBrandsInit()">清空</view>
-						<view class="btn confirm">确定</view>
+						<view class="btn clear" @click="carBrandsClear">清空</view>
+						<view class="btn confirm" @click="carBrandConfirm">确定</view>
 					</view>
 				</view>
 			</view>
@@ -138,6 +138,10 @@
 	import {
 		listManager
 	} from '@/utils/uni-tools'
+	import {
+		throttle
+	} from '@/utils/tools'
+	import validator from 'crazy-validator'
 
 	export default {
 		data() {
@@ -190,6 +194,18 @@
 				this.carClassList = res.data
 				this.vehiclePageQuery()
 			},
+			// 车辆品牌清空
+			carBrandsClear: throttle(function() {
+				if (this.acBranch === 0 && this.acModel === -1) return
+				this.carBrandsInit()
+				this.vehicleQueryVehicleModels()
+			}),
+			// 车辆品牌筛选确定
+			carBrandConfirm: throttle(function() {
+				this.closeBrandModal()
+				this.init()
+				this.vehiclePageQuery()
+			}),
 			// 车辆品牌初始化
 			carBrandsInit() {
 				this.acBranch = 0
@@ -235,7 +251,11 @@
 					categoryId: this.carClassList[this.acClass].id,
 					deliveryId: this.takeCarAddress.id,
 					pickTime: this.takeCarTime,
-					returnTime: this.carAlsoTime
+					returnTime: this.carAlsoTime,
+					brandId: this.acBranch >= 0 && this.acModel >= 0 ? this.carBrandList[this.acBranch].id : '',
+					vehicleModelId: this.acModel >= 0 ? this.carModelList[this.acModel].id : '',
+					gears: '',
+					capacity: ''
 				}
 				const [err, res] = await vehiclePageQuery(params)
 				if (err) {
@@ -305,11 +325,12 @@
 
 			},
 			// 切换分类
-			tapClass(index) {
+			tapClass: throttle(function(index) {
+				if (this.acClass === index) return
 				this.acClass = index
 				this.init()
 				this.vehiclePageQuery()
-			},
+			}),
 			// 打开品牌模态框
 			openBrandModal() {
 				this.$refs.brandPopup.open()
@@ -322,11 +343,12 @@
 				this.brandStatus = false
 			},
 			// 切换品牌
-			tapBranch(index) {
+			tapBranch: throttle(function(index) {
+				if (this.acBranch === index) return
 				this.acBranch = index
 				this.carModelInit()
 				this.vehicleQueryVehicleModels()
-			},
+			}),
 			// 切换型号
 			tapModel(index) {
 				this.acModel = index
