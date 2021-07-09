@@ -11,11 +11,9 @@
 		</uni-swiper-dot>
 		<view class="info-card">
 			<view class="name-box">
-				<view class="name">大众迈腾</view>
+				<view class="name">{{info.brandName}}</view>
 				<view class="label-box">
-					<view class="label">时尚</view>
-					<view class="label">省油</view>
-					<view class="label">舒适</view>
+					<view v-for="(item,index) in JSON.stringify(info.brandName)" class="label">{{item}}</view>
 				</view>
 			</view>
 			<view class="params">大众 捷达丨自动 5座 2.0L</view>
@@ -191,6 +189,7 @@
 
 <script>
 	import EvanSwitch from '@/components/evan-switch/evan-switch'
+	import {rentalOrderGenerateOrder} from '@/apis/rentalOrder'
 
 	import {
 		findIsUseCouponByUser
@@ -228,6 +227,7 @@
 				invoiceId:'',//发票Id
 				invoiceList: [], //发票list
 				couponId:'',//优惠券id
+				info:'',//获取页面信息
 			}
 		},
 		computed: {
@@ -235,6 +235,7 @@
 			bottomInfo() {
 				let info = ''
 				switch (this.acIndex) {
+				
 					case 0:
 						info = '身份证+驾照正副本；身份证有效期需1个月以上，驾龄3个月以上'
 						break
@@ -257,11 +258,26 @@
 		components: {
 			EvanSwitch
 		},
-		onLoad() {
+		onLoad(e) {
 			this.findIsUseCouponByUser()
 			this.invoiceQueryByUser()
+			this.rentalOrderGenerateOrder(e)
 		},
 		methods: {
+		async	rentalOrderGenerateOrder(e){
+				let data={
+					vehicleModelId:e.carModelId,
+					rentEndTime:e.carAlsoTime,
+					rentBeginTime:e.takeCarTime,
+					pickPlace:e.takeCarAddressId,
+					returnPlace:e.carAlsoAddressId,
+					orderSource:0
+				}
+			const [err,res] = await rentalOrderGenerateOrder(data)
+			if (err) return
+			console.log(res)
+				this.info=res.data
+			},
 			//发票
 			async invoiceQueryByUser() {
 				const [err, res] = await invoiceQueryByUser()
