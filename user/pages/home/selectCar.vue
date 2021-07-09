@@ -107,17 +107,14 @@
 					<view class="box">
 						<view class="caption">车辆配置</view>
 						<view class="label-box">
-							<view :class="['label', {'ac': acSeat === 0}]" @click="tapSeat(0)">2</view>
-							<view :class="['label', {'ac': acSeat === 1}]" @click="tapSeat(1)">5</view>
-							<view :class="['label', {'ac': acSeat === 2}]" @click="tapSeat(2)">6</view>
-							<view :class="['label', {'ac': acSeat === 3}]" @click="tapSeat(3)">7</view>
-							<view :class="['label', {'ac': acSeat === 4}]" @click="tapSeat(4)">9</view>
+							<view :class="['label', {'ac': acSeat === index}]" v-for="(item, index) in carSeatList"
+								:key="index" @click="tapSeat(index)">{{item}}</view>
 						</view>
 					</view>
 					<view class="bottom-mat"></view>
 					<view class="bottom">
-						<view class="btn clear">清空</view>
-						<view class="btn confirm">确定</view>
+						<view class="btn clear" @click="carSeatClear">清空</view>
+						<view class="btn confirm" @click="carSeatConfirm">确定</view>
 					</view>
 				</view>
 			</view>
@@ -162,6 +159,7 @@
 				carBrandList: [], // 租车品牌列表
 				carModelList: [], // 租车车型列表
 				carGearsList: ['自动挡', '手动挡'], // 租车排档列表
+				carSeatList: [2, 5, 6, 7, 9], // 租车座位列表
 				carList: [], // 车辆列表
 				page: 1,
 				size: 10,
@@ -256,7 +254,7 @@
 					brandId: this.acBranch >= 0 && this.acModel >= 0 ? this.carBrandList[this.acBranch].id : null,
 					vehicleModelId: this.acModel >= 0 ? this.carModelList[this.acModel].id : null,
 					gears: this.acGear >= 0 ? this.carGearsList[this.acGear] : null,
-					capacity: null
+					capacity: this.acSeat >= 0 ? this.carSeatList[this.acSeat] : null
 				}
 				const [err, res] = await vehiclePageQuery(params)
 				if (err) {
@@ -365,10 +363,13 @@
 				this.$refs.gearPopup.close()
 				this.gearStatus = false
 			},
+			// 切换排档
+			tapGear(index) {
+				this.acGear = index
+			},
 			// 清除排档
 			carGearsClear: throttle(function() {
 				this.acGear = -1
-				this.vehiclePageQuery()
 			}),
 			// 车辆排档筛选确定
 			carGearsConfirm: throttle(function() {
@@ -376,10 +377,6 @@
 				this.init()
 				this.vehiclePageQuery()
 			}),
-			// 切换排档
-			tapGear(index) {
-				this.acGear = index
-			},
 			// 打开座位模态框
 			openSeatModal() {
 				this.$refs.seatPopup.open()
@@ -394,7 +391,17 @@
 			// 切换座位
 			tapSeat(index) {
 				this.acSeat = index
-			}
+			},
+			// 清除座位数
+			carSeatClear: throttle(function() {
+				this.acSeat = -1
+			}),
+			// 车辆座位数筛选确定
+			carSeatConfirm: throttle(function() {
+				this.closeSeatModal()
+				this.init()
+				this.vehiclePageQuery()
+			})
 		}
 	}
 </script>
