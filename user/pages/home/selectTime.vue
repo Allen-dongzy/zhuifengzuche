@@ -82,12 +82,10 @@
 		watch: {
 			// 监听取车日期
 			takeCarDate(newVal) {
-				console.log(new Date(newVal).getDay())
 				this.takeCarDay = this.weekShow[new Date(newVal).getDay()]
 			},
 			// 监听取车日期
 			carAlsoDate(newVal) {
-				console.log(new Date(newVal).getDay())
 				this.carAlsoDay = this.weekShow[new Date(newVal).getDay()]
 			}
 		},
