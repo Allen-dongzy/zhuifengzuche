@@ -22,7 +22,7 @@
 								<view class="time">到期时间：{{item.closeTime ? item.closeTime.split(' ')[0] : ''}}</view>
 							</view>
 						</view>
-						<view class="btn" @click="getCouponById(index)">
+						<view class="btn" @click="getCouponById(item.id)">
 							<image class="btn-bg" v-show="type===0" :src="`${ossUrl}/home/is-get-btn.png`"></image>
 							<image class="btn-bg" v-show="type!==0" :src="`${ossUrl}/home/no-get-btn.png`"></image>
 							<view class="text" v-show="type==0">可使用</view>
@@ -71,9 +71,11 @@
 				size: 10,
 				requestKey: true,
 				dataStatus: '', // more loading noMore noData
+				selectType:'',//goods是确认订单跳转进来
 			}
 		},
-		onLoad() {
+		onLoad(e) {
+			this.selectType=e.selectType
 			this.findIsUseCouponByUser()
 		},
 		onReachBottom() {
@@ -109,15 +111,26 @@
 				this.couponList = [...this.couponList, ...res.data]
 			},
 			// 领取优惠券
-			getCouponById: throttle(async function(index) {
-				const params = {
-					couponId: this.couponList[index].id
-				}
-				const [err, res] = await getCouponById(params)
-				if (err) return
-				this.$toast('领取成功')
-				this.couponList.splice(index, 1)
-			})
+			getCouponById(e){
+				let pages = getCurrentPages(); //获取所有页面栈实例列表
+					let prevPage = pages[pages.length - 2]; //上一页页面实例
+					prevPage.$vm.couponId = e; //修改上一页data里面的tagIndex 参数值
+					uni.navigateBack({ //uni.navigateTo跳转的返回，默认1为返回上一级
+						delta: 1
+					});
+			}
+			// getCouponById: throttle(async function(index) {
+			// 	if(this.type=="goods"){
+					
+			// 	}
+			// 	const params = {
+			// 		couponId: this.couponList[index].id
+			// 	}
+			// 	const [err, res] = await getCouponById(params)
+			// 	if (err) return
+			// 	this.$toast('领取成功')
+			// 	this.couponList.splice(index, 1)
+			// })
 		}
 	}
 </script>

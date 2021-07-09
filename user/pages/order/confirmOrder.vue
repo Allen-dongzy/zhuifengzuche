@@ -72,14 +72,14 @@
 					<view :class="['circle', {'ac':isInsurance}]"></view>
 				</view>
 			</view>
-			<view class="item" @click="$open('/pages/mine/coupon')">
+			<view class="item" @click="$open('/pages/mine/coupon?selectType=goods')">
 				<view class="caption">
 					优惠券
 					<view class="label">已选推荐优惠</view>
 				</view>
 				<view class="right">
 					-
-					<view class="text">￥<text>60</text></view>
+					<view class="text">￥<text>{{confirm}}</text></view>
 					<view class="arrow"></view>
 				</view>
 			</view>
@@ -130,12 +130,14 @@
 					<evan-switch v-model="invoiceSwitch" active-color="#5A7EFF"></evan-switch>
 				</view>
 				<view class="list">
-					<view class="item" v-for="(item, index) in 3" :key="index">
+					<view class="item" v-for="(item, index) in invoiceList" :key="index" @click="selectInvoice(index)">
 						<view class="name">
-							重庆市国土资源局<view class="label">普票</view>
+							{{item.title}}
+							<view class="label">普票</view>
+							<view class="label" v-show="index==invoiceIndex" style="background-color: #FFA05B;">已选择</view>
 						</view>
 						<view class="number">
-							954156294598929103485
+							{{item.taxNum}}
 							<view class="arrow"></view>
 						</view>
 					</view>
@@ -190,6 +192,12 @@
 <script>
 	import EvanSwitch from '@/components/evan-switch/evan-switch'
 
+	import {
+		findIsUseCouponByUser
+	} from '@/apis/coupon'
+	import {
+		invoiceQueryByUser
+	} from '@/apis/invoice'
 	export default {
 		data() {
 			return {
@@ -215,6 +223,11 @@
 				rentFreeSwitch: false, // 是否开启免租
 				invoiceSwitch: false, // 是否开启发票
 				isInsurance: false, // 是否选择保险
+				confirm: '', //优惠券
+				invoiceIndex:0,//选择发票下标
+				invoiceId:'',//发票Id
+				invoiceList: [], //发票list
+				couponId:'',//优惠券id
 			}
 		},
 		computed: {
@@ -244,7 +257,32 @@
 		components: {
 			EvanSwitch
 		},
+		onLoad() {
+			this.findIsUseCouponByUser()
+			this.invoiceQueryByUser()
+		},
 		methods: {
+			//发票
+			async invoiceQueryByUser() {
+				const [err, res] = await invoiceQueryByUser()
+				if (err) return
+				console.log(res)
+				this.invoiceList = res.data
+				this.invoiceId=this.invoiceList[0].id
+			},
+			//选择发票
+			selectInvoice(e) {
+				this.invoiceIndex=e
+				this.invoiceId=this.invoiceList[e].id
+			},
+			//优惠券
+			async findIsUseCouponByUser() {
+				const [err, res] = await findIsUseCouponByUser()
+				if (err) return
+				console.log(res)
+				this.confirm = res.data[0].discountAmount
+			},
+
 			// 轮播改变
 			swiperChange(e) {
 				this.current = e.detail.current;
@@ -621,7 +659,7 @@
 				position: relative;
 				@include box-w();
 				padding: 40rpx 32rpx 20rpx;
-				
+
 				.bottom-info-mat {
 					height: 52rpx;
 				}
