@@ -47,6 +47,16 @@
 					<image class="btn" :src="`${ossUrl}/common/phone-big.png`" @click="phoneCall"></image>
 				</view>
 			</view>
+			<view v-show="yidiType==true" class="take-also">
+				<view class="address-box" @click="openMap">
+					<image class="home" :src="`${ossUrl}/common/icon-home-black.png`"></image>
+					<view class="address">门店地址：郑家院子东路8号</view>
+				</view>
+				<view class="btn-box">
+					<image class="btn" :src="`${ossUrl}/common/location-big.png`" @click="openMap"></image>
+					<image class="btn" :src="`${ossUrl}/common/phone-big.png`" @click="phoneCall"></image>
+				</view>
+			</view>
 			<view class="address-info">* 下单半小时内可免费取消</view>
 		</view>
 		<view class="sesame-box">
