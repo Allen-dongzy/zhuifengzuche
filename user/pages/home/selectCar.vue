@@ -293,7 +293,7 @@
 			},
 			// 切换tab
 			taptab(index) {
-				// 如果切换按钮不一致则判断老的弹窗是否关闭，若为关闭则关闭
+				// 如果切换按钮不一致则判断老的弹窗是否关闭，若未关闭则关闭
 				if (this.acTab !== index) {
 					switch (this.acTab) {
 						case 1:
