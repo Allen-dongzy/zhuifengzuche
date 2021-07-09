@@ -163,11 +163,11 @@
 					takeCarDateShow: `${this.takeCarDate.split('-')[1]}月${this.takeCarDate.split('-')[2]}日`,
 					takeCarDayShow: this.takeCarDay,
 					takeCarTimeShow: this.takeCarTime,
-					takeCarTime: `${this.takeCarDate} ${this.takeCarTime}`,
+					takeCarTime: `${this.takeCarDate} ${this.takeCarTime}:00`,
 					carAlsoDateShow: `${this.carAlsoDate.split('-')[1]}月${this.carAlsoDate.split('-')[2]}日`,
 					carAlsoDayShow: this.carAlsoDay,
 					carAlsoTimeShow: this.carAlsoTime,
-					carAlsoTime: `${this.carAlsoDate} ${this.carAlsoTime}`,
+					carAlsoTime: `${this.carAlsoDate} ${this.carAlsoTime}:00`,
 					totalDate: this.totalDate
 				})
 				this.$close()
