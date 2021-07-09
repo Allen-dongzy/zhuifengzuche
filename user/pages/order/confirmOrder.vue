@@ -1,38 +1,39 @@
 <template>
 	<view class="confirm-order">
-		<uni-swiper-dot :info="swiperInfo" :current="current" field="content" mode="round" :dotsStyles="dotsStyles">
+		<uni-swiper-dot :info="info.clientVehicleVo.vehicleModelFiles" :current="current" field="content" mode="round" :dotsStyles="dotsStyles">
 			<swiper class="swiper" :autoplay="true" :interval="3000" :circular="true" @change="swiperChange">
-				<swiper-item v-for="(item ,index) in swiperInfo" :key="index">
+				<swiper-item v-for="(item ,index) in info.clientVehicleVo.vehicleModelFiles" :key="index">
 					<image class="banner"
-						src="https://youjia-image.cdn.bcebos.com/seriesImage/158738183449412be5bb.png@!w_600_fp"
+						:src="item"
 						mode="aspectFill"></image>
 				</swiper-item>
 			</swiper>
 		</uni-swiper-dot>
 		<view class="info-card">
 			<view class="name-box">
-				<view class="name">{{info.brandName}}</view>
+				<view class="name">{{info.clientVehicleVo.brandName}}</view>
 				<view class="label-box">
-					<view v-for="(item,index) in info.brandName" class="label">{{item}}</view>
+					<view v-for="(item,index) in info.clientVehicleVo.labels" class="label">{{item}}</view>
 				</view>
 			</view>
-			<view class="params">大众 捷达丨自动 5座 2.0L</view>
+			<view class="params">{{info.clientVehicleVo.categoryName}}丨{{info.clientVehicleVo.gears}} {{info.clientVehicleVo.size}}座 {{info.clientVehicleVo.outputVolumeName}}</view>
 		</view>
 		<view class="lease">
 			<view class="caption">租期</view>
+
 			<view class="time">
 				<view class="left">
-					<view class="caption">5月13日</view>
-					<view class="sub-caption">周四 14:00</view>
+					<view class="caption">{{takeday}}</view>
+					<view class="sub-caption">{{takeweek}} {{taketime}}</view>
 				</view>
 				<view class="title">
 					<view class="left-arrow"></view>
-					<view class="info">共8天</view>
+					<view class="info">共{{totalDate}}天</view>
 					<view class="right-arrow"></view>
 				</view>
 				<view class="right">
-					<view class="caption">5月13日</view>
-					<view class="sub-caption">周四 14:00</view>
+					<view class="caption">{{backday}}</view>
+					<view class="sub-caption">{{backweek}} {{backtime}}</view>
 				</view>
 			</view>
 			<view class="caption">取还</view>
@@ -201,13 +202,7 @@
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
-				swiperInfo: [{
-					src: ''
-				}, {
-					src: ''
-				}, {
-					src: ''
-				}], // 轮播数据
+				swiperInfo: [], // 轮播数据
 				dotsStyles: {
 					bottom: 10,
 					backgroundColor: '#dadada',
@@ -228,6 +223,14 @@
 				invoiceList: [], //发票list
 				couponId:'',//优惠券id
 				info:'',//获取页面信息
+				yidiType:'' ,//判断是否异地
+				takeday:'',//取车日期
+				takeweek:'',//取车星期
+				taketime:'',//取车时间
+				backday:'',//还车日期
+				backweek:'',//还车星期
+				backtime:'',//还车时间
+				totalDate:''//相差时间
 			}
 		},
 		computed: {
@@ -259,9 +262,18 @@
 			EvanSwitch
 		},
 		onLoad(e) {
+			console.log(e)
 			this.findIsUseCouponByUser()
 			this.invoiceQueryByUser()
 			this.rentalOrderGenerateOrder(e)
+			this.takeday=e.takeCarDateShow
+			this.takeweek=e.takeCarDayShow
+			this.taketime=e.takeCarTimeShow
+			
+			this.backday=e.carAlsoDateShow
+			this.backweek=e.carAlsoDayShow
+			this.backtime=e.carAlsoTimeShow
+			this.totalDate=e.totalDate
 		},
 		methods: {
 		async	rentalOrderGenerateOrder(e){
@@ -280,6 +292,13 @@
 				
 				this.info.clientVehicleVo.vehicleModelFiles= JSON.parse(this.info.clientVehicleVo.vehicleModelFiles)
 				this.info.clientVehicleVo.labels=JSON.parse(this.info.clientVehicleVo.labels)
+				if(this.info.returnPlace.name===this.info.pickPlace.name){
+					this.yidiType=true
+				}else{
+					this.yidiType=false
+				}
+				
+				this.$forceUpdate()
 			},
 			//发票
 			async invoiceQueryByUser() {
