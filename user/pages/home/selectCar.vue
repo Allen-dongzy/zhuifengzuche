@@ -21,21 +21,21 @@
 				</view>
 			</scroll-view>
 			<scroll-view class="list" :scroll-y="true" @scrolltolower="scrollToBottom">
-				<view class="item" v-for="(item, index) in 10" :key="index" @click="$open('/pages/order/confirmOrder')">
+				<view class="item" v-for="(item, index) in carList" :key="index" @click="goDetail(index)">
 					<view class="card">
-						<image class="pic"
-							src="https://youjia-image.cdn.bcebos.com/seriesImage/158738183449412be5bb.png@!w_600_fp"
-							mode="aspectFill"></image>
+						<image class="pic" :src="item.vehicleModelFiles" mode="aspectFill"></image>
 						<view class="parameter-box">
 							<view class="title-bar">
-								<view class="caption">大众迈腾</view>
-								<view class="status">已租满</view>
+								<view class="caption">{{item.brandName}}</view>
+								<view class="status">{{item.isFull===1 ? '已租满': `还剩${item.rentableNum}辆`}}</view>
 							</view>
-							<view class="parameter">大众 捷达丨自动 5座 2.0L</view>
+							<view class="parameter">{{item.vehicleModelName}}丨{{item.gears}} {{item.capacity}}座
+								{{item.outputVolumeName}}
+							</view>
 							<view class="label-box">
-								<view class="label">时尚</view>
-								<view class="label">省油</view>
-								<view class="label">舒适</view>
+								<view class="label" v-for="(inner, sub) in item.labels.slice(0,3)" :key="sub">
+									{{inner}}
+								</view>
 							</view>
 						</view>
 					</view>
@@ -45,11 +45,12 @@
 							<text>价格日历</text>
 							<view class="arrow"></view>
 						</view>
-						<view class="price">￥<text>188/天</text></view>
+						<view class="price">￥<text>{{item.toDayPrice}}/天</text></view>
 					</view>
 					<view class="address-bar">
 						<image class="icon-home" :src="`${ossUrl}/home/icon-home.png`"></image>
-						<view class="address" @click.stop="$open('/pages/home/store')">门店地址：<text>郑家院子东路8号</text></view>
+						<view class="address" @click.stop="$open('/pages/home/store')">
+							门店地址：<text>{{item.memberShopAddress}}</text></view>
 					</view>
 				</view>
 				<uni-load-more :status="dataStatus" />
@@ -157,6 +158,9 @@
 				size: 10,
 				requestKey: true,
 				dataStatus: '', // more loading noMore noData
+				takeCarTime: '', // 租车时间
+				carAlsoTime: '', // 还车时间
+				params: {}, // 备用参数
 			}
 		},
 		computed: {
@@ -165,9 +169,9 @@
 		},
 		onLoad(e) {
 			if (e && e.takeCarAddress) this.takeCarAddress = JSON.parse(e.takeCarAddress)
-			if (e && e.id) this.takeCarAddress = {
-				id: e.id
-			}
+			if (e && e.takeCarTime) this.takeCarTime = e.takeCarTime
+			if (e && e.carAlsoTime) this.carAlsoTime = e.carAlsoTime
+			if (e && e.params) this.params = JSON.parse(e.params)
 			this.vehicleQueryVehicleCategorys()
 		},
 		mounted() {
@@ -200,7 +204,9 @@
 					page: this.page,
 					size: this.size,
 					categoryId: this.carClassList[this.acClass].id,
-					deliveryId: this.takeCarAddress.id
+					deliveryId: this.takeCarAddress.id,
+					pickTime: this.takeCarTime,
+					returnTime: this.carAlsoTime
 				}
 				const [err, res] = await vehiclePageQuery(params)
 				if (err) {
@@ -216,7 +222,19 @@
 				this.requestKey = requestKey
 				this.dataStatus = dataStatus
 				if (!isRender) return
+				res.data.list.forEach(item => {
+					if (typeof item.labels === 'string' && item.labels.startsWith('[') && item.labels.endsWith(
+							']')) item.labels = JSON.parse(item
+						.labels)
+					else item.labels = [item.labels]
+				})
 				this.carList = [...this.carList, ...res.data.list]
+			},
+			// 前往租车详情
+			goDetail(index) {
+				this.params.carModelId = this.carList[index].vehicleModelId
+				console.log(this.params)
+				this.$open('/pages/order/confirmOrder', this.params)
 			},
 			// 获取搜索框高度
 			getSearchHeight() {
@@ -392,7 +410,7 @@
 				padding-bottom: 50rpx;
 
 				.item {
-					@include box(100%, 310rpx);
+					@include box-w(100%);
 					padding: 30rpx 0 26rpx 20rpx;
 
 					&~.item {
@@ -403,7 +421,8 @@
 						@include flex-row();
 
 						.pic {
-							@include box(244rpx, 128rpx);
+							@include box(244rpx, 128rpx, #eee);
+							border-radius: 2px;
 						}
 
 						.parameter-box {
@@ -494,6 +513,7 @@
 						}
 
 						.address {
+							@include text-one;
 							@include font-set(24rpx, #999);
 							margin-left: 10rpx;
 

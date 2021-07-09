@@ -300,8 +300,7 @@
 			"path": "pages/order/confirmOrder"
 		}, {
 			"name": "dzy", // dzy
-			"path": "pages/home/selectCar",
-			"query": "id=19"
+			"path": "pages/home/home"
 		}]
 	}
 }

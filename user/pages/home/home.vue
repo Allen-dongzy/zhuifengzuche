@@ -267,11 +267,37 @@
 						type: 'required',
 						msg: '请选择取车点'
 					}]
+				}, {
+					value: this.carAlsoAddress,
+					rules: [{
+						type: 'required',
+						msg: '请选择还车点'
+					}]
+				}, {
+					value: this.totalDate,
+					rules: [{
+						type: 'required',
+						msg: '请选择租车日期与时间'
+					}]
 				}]
 				const checkRes = validator(checkList, this.$toast)
 				if (checkRes.status !== 1000) return
+				const params = {
+					takeCarDateShow: this.takeCarDateShow,
+					takeCarDayShow: this.takeCarDayShow,
+					takeCarTimeShow: this.takeCarTimeShow,
+					carAlsoDateShow: this.carAlsoDateShow,
+					carAlsoDayShow: this.carAlsoDayShow,
+					carAlsoTimeShow: this.carAlsoTimeShow,
+					totalDate: this.totalDate,
+					takeCarAddressId: this.takeCarAddress.id,
+					carAlsoAddressId: this.carAlsoAddress.id
+				}
 				this.$open('/pages/home/selectCar', {
-					takeCarAddress: JSON.stringify(this.takeCarAddress)
+					takeCarAddress: JSON.stringify(this.takeCarAddress),
+					takeCarTime: this.takeCarTime,
+					carAlsoTime: this.carAlsoTime,
+					params: JSON.stringify(params)
 				})
 			},
 			// 选取取车地点
