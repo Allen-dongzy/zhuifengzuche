@@ -169,13 +169,13 @@ const codeManager = (res) => {
 		const message = res.data.message
 		if (Object.prototype.toString.call(message) === '[object String]') Status[code] = message
 		returnResult = [res.data]
-		if (code === 401) open('/pages/common/login')
+		if (code === 401) {
+			store.commit("user/clearInfo")
+			storage.remove('token')
+			open('/pages/common/login')
+		}
 	}
-	if (Status[code]) {
-		store.commit("user/clearInfo")
-		storage.remove('token')
-		toast(Status[code])
-	}
+	if (Status[code]) toast(Status[code])
 	return returnResult
 }
 
