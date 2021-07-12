@@ -16,56 +16,82 @@
 		</view>
 		<view class="header-mat"></view>
 		<view class="list">
-			<view class="item" v-for="(item, index) in 5" :key="index" @click="$open('/pages/order/orderDetail')">
+			<view class="item" v-for="(item, index) in list" :key="index"
+				@click="$open('/pages/order/orderDetail', {id: item.id})">
 				<view class="item-header">
 					<view class="name-box">
-						<view class="name">大众 捷达郑家院子1号店</view>
-						<view v-show="status === 0" :class="['label-card', {'orange': status === 0}]">
+						<view class="name">{{item.carModelName}}</view>
+						<view v-show="item.orderStatus === 0"
+							:class="['label-card', {'orange': item.orderStatus === 0}]">
 							<view class="top"></view>
 							<view class="line"></view>
 							<view class="box">未支付</view>
 						</view>
 					</view>
-					<view class="price">￥<text>188.00</text></view>
+					<view class="price">￥<text>{{item.orderDeposit}}</text></view>
 				</view>
 				<view class="content">
 					<view class="status-box">
-						<view class="time">05-25至05-30</view>
+						<view class="time">
+							{{item.rentBeginTime.slice(0, 16)}}&nbsp;至&nbsp;{{item.rentEndTime.slice(0, 16)}}
+						</view>
 						<view
-							v-show="status === 1 || status === 2 || status === 3 || status === 4 || status === 5 || status === 6"
-							:class="['status', {'blue': status!==6}, {'red':status===6}] ">等待送车</view>
+							v-show="item.orderStatus === 1 || item.orderStatus === 2 || item.orderStatus === 3 || item.orderStatus === 4 || item.orderStatus === 100 || item.orderStatus === 101"
+							:class="['status', {'blue': item.orderStatus!==7}, {'red':item.orderStatus===101}] ">
+							{{item.orderStatus | orderStatusShow}}
+						</view>
 					</view>
-					<view class="address"><text v-show="false">取</text>恒大中渝广场送车点</view>
-					<view v-show="false" class="address"><text>还</text>恒大中渝广场送车点</view>
-					<view v-show="false" class="plate">渝A·5231B</view>
-					<view v-show="false" class="parameter">大众 捷达丨自动 5座 2.0L</view>
+					<view class="address">
+						<text v-show="item.pickPlace !== item.returnPlace">取</text>
+						<text v-show="item.pickPlace === item.returnPlace">取还</text>
+						{{item.pickPlace}}
+					</view>
+					<view v-show="item.pickPlace !== item.returnPlace" class="address">
+						<text>还</text>{{item.returnPlace}}
+					</view>
+					<view v-show="item.orderStatus === 100" class="info">违章押金未退还</view>
 				</view>
 				<view class="bottom">
-					<view v-show="status < 5" class="contact">
+					<view
+						v-show="item.orderStatus === 0 || item.orderStatus === 1 || item.orderStatus === 3 || item.orderStatus === 4"
+						class="contact" @click.stop="contactStore(index)">
 						<image class="phone" :src="`${ossUrl}/common/phone-big.png`"></image>
-						联系送车员
+						<view class="info">联系门店</view>
 					</view>
-					<view v-show="status >= 5" class="contact"></view>
+					<view v-show="item.orderStatus === 2" class="contact" @click.stop="contactSendCarPart(index)">
+						<image class="phone" :src="`${ossUrl}/common/phone-big.png`"></image>
+						<view class="info">联系送车员</view>
+					</view>
+					<view v-show="item.orderStatus >= 100" class="contact"></view>
 					<view class="btn-box">
-						<view v-show="status === 3" class="btn white" @click.stop="$open('/pages/order/renewal')">续租用车
+						<view v-show="item.orderStatus === 3" class="btn white"
+							@click.stop="$open('/pages/order/renewal')">
+							续租用车
 						</view>
-						<view v-show="status === 0" class="btn blue">立即支付</view>
-						<view v-show="status === 2" class="btn blue" @click.stop="$open('/pages/common/goInspect')">查看车况
+						<view v-show="item.orderStatus === 0" class="btn blue">立即支付</view>
+						<view v-show="item.orderStatus === 2" class="btn blue"
+							@click.stop="$open('/pages/common/goInspect')">查看车况
 						</view>
-						<view v-show="status === 3" class="btn blue" @click.stop="$open('/pages/order/returnCar')">前往还车
+						<view v-show="item.orderStatus === 3" class="btn blue"
+							@click.stop="$open('/pages/order/returnCar')">
+							前往还车
 						</view>
-						<view v-show="status === 4" class="btn blue"
+						<view v-show="item.orderStatus === 4" class="btn blue"
 							@click.stop="$open('/pages/order/changeCarDetail')">换车详情</view>
-						<view v-show="status === 5" class="btn blue" @click.stop="$open('/pages/order/evaluate')">评价
+						<view v-show="item.orderStatus === 100 && item.evaluateCount===0" class="btn blue"
+							@click.stop="$open('/pages/order/evaluate')">评价
 						</view>
-						<view v-show="status === 5 && false" class="btn blue"
+						<view v-show="item.orderStatus === 100 && item.evaluateCount>0" class="btn blue"
 							@click.stop="$open('/pages/common/storeComment')">查看评价</view>
-						<view v-show="status === 6" class="btn blue">再次预订</view>
+						<view v-show="item.orderStatus === 101" class="btn blue">再次预订</view>
 					</view>
 				</view>
 			</view>
 		</view>
-		<view class="empty">
+		<view v-show="dataStatus !== 'noData'">
+			<uni-load-more :status="dataStatus" />
+		</view>
+		<view v-show="dataStatus === 'noData'" class="empty">
 			<image class="bg" :src="`${ossUrl}/common/res-empty.png`"></image>
 			<view class="text">暂无订单</view>
 		</view>
@@ -76,53 +102,123 @@
 	import {
 		rentalOrderPageQuery
 	} from '@/apis/rentalOrder'
+	import {
+		listManager
+	} from '@/utils/uni-tools'
+
 	export default {
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
 				acTab: 0, // 活跃的tab
-				status: 0,
 				page: 1,
-				size: 10
+				size: 10,
+				dataStatus: '', // more laoding noMore noData
+				reqeuestKey: true,
+				list: []
 			}
 		},
-		computed: {},
+		filters: {
+			// 车状态显示
+			orderStatusShow(status) {
+				let info = ''
+				switch (status) {
+					case 1:
+						info = '等待送车'
+						break
+					case 2:
+						info = '正在送车'
+						break
+					case 3:
+						info = '租用中'
+						break
+					case 4:
+						info = '换车中'
+						break
+					case 100:
+						info = '已完成'
+						break
+					case 101:
+						info = '已取消'
+						break
+				}
+				return info
+			}
+		},
 		onLoad() {
-			this.getorderList(0)
+			this.getorderList()
+			this.eventListener()
+		},
+		onPullDownRefresh() {
+			this.init()
+			this.getorderList('refresh')
+		},
+		onReachBottom() {
+			if (!this.reqeuestKey) return
+			this.page++
+			this.getorderList()
 		},
 		methods: {
-			async getorderList(e) {
-				const [err, res] = await rentalOrderPageQuery()
-				if (err) return
-				console.log(res)
-				if (res.data.list.length == 0) {
-
-				} else {
-					for (let i = 0; i < res.data.list.length; i++) {
-						this.list.push(res.data.list[i])
-					}
+			// 初始化
+			init() {
+				this.reqeuestKey = true
+				this.page = 1
+				this.list = []
+			},
+			// 获取订单列表
+			async getorderList(refresh) {
+				this.dataStatus = 'loading'
+				const params = {
+					page: this.page,
+					size: this.size,
+					status: this.acTab
 				}
+				const [err, res] = await rentalOrderPageQuery(params)
+				if (refresh === 'refresh') uni.stopPullDownRefresh()
+				if (err) {
+					if (this.page > 1) this.dataStatus = 'noMore'
+					else if (this.page === 1) this.dataStatus = 'noData'
+					this.reqeuestKey = false
+					return
+				}
+				const {
+					requestKey,
+					dataStatus,
+					isRender
+				} = listManager(res.data.list, this.page, this.size)
+				this.reqeuestKey = requestKey
+				this.dataStatus = dataStatus
+				if (!isRender) return
+				this.list = [...this.list, ...res.data.list]
 			},
 			// 切换tab
 			taptab(index) {
+				if (this.acTab === index) return
 				this.acTab = index
-				this.getorderList(index)
-			},
-			//下拉刷新
-			onPullDownRefresh() {
-				this.page = 1
-				this.size = 10
-				this.list = []
-				this.getorderList()
-				setTimeout(function() {
-					uni.stopPullDownRefresh();
-				}, 1000);
-			},
-			// 上拉加载
-			onReachBottom(e) {
-				this.page = this.page + 1;
+				this.init()
 				this.getorderList()
 			},
+			// 联系门店
+			contactStore(index) {
+				this.phoneCall(this.list[index].memberPhone)
+			},
+			// 联系送车员
+			contactSendCarPart(index) {
+				this.phoneCall(this.list[index].startUserPhone)
+			},
+			// 打电话
+			phoneCall(phoneNumber) {
+				uni.makePhoneCall({
+					phoneNumber
+				})
+			},
+			// 监听事件
+			eventListener() {
+				uni.$on('orderRefresh', () => {
+					this.init()
+					this.getorderList()
+				})
+			}
 		}
 	}
 </script>
@@ -268,15 +364,9 @@
 						}
 					}
 
-					.plate {
+					.info {
 						@include font-set(28rpx, #000);
 						line-height: 40rpx;
-						margin-top: 12rpx;
-					}
-
-					.parameter {
-						@include font-set(24rpx, #999);
-						line-height: 34rpx;
 						margin-top: 12rpx;
 					}
 				}
