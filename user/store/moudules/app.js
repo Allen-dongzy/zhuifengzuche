@@ -1,14 +1,19 @@
+import {
+	getPlatform
+} from '@/utils/uni-tools'
+
 const app = {
 	namespaced: true,
 	state: {
 		statusBarHeight: 0, // 状态栏高度
 		windowWidth: 0, // 窗口宽度
 		windowHeight: 0, // 窗口高度
-		screenHeight: 0 // 屏幕高度
+		screenHeight: 0, // 屏幕高度
+		platform: null, // 平台
 	},
 	mutations: {
 		// 设置系统信息
-		setSystemInfo (state, {
+		setSystemInfo(state, {
 			statusBarHeight,
 			windowWidth,
 			windowHeight,
@@ -18,11 +23,15 @@ const app = {
 			if (windowWidth) state.windowWidth = windowWidth
 			if (windowHeight) state.windowHeight = windowHeight
 			if (screenHeight) state.screenHeight = screenHeight
+		},
+		// 设置平台
+		setPlatform(state) {
+			state.platform = getPlatform()
 		}
 	},
 	actions: {
 		// 获取并设置系统信息
-		setSystemInfo ({
+		setSystemInfo({
 			commit
 		}) {
 			const res = uni.getSystemInfoSync()

@@ -274,6 +274,69 @@ const clearCache = () => {
 	}
 }
 
+// 获取平台
+const getPlatform = () => {
+	// 平台
+	let platform = null
+
+	// app端
+	// #ifdef APP-PLUS
+	platform = 'app'
+	// #endif
+
+	// app-nvue端
+	// #ifdef APP-PLUS-NVUE
+	platform = 'nvue'
+	// #endif
+
+	// 网页端
+	// #ifdef H5
+	platform = 'h5'
+	// #endif
+
+	// 微信小程序端
+	// #ifdef MP-WEIXIN
+	platform = 'weixin'
+	// #endif
+
+	// 支付宝小程序端
+	// #ifdef MP-ALIPAY
+	platform = 'zhifubao'
+	// #endif
+
+	// 百度小程序端
+	// #ifdef MP-BAIDU
+	platform = 'baidu'
+	// #endif
+
+	// 头条小程序端
+	// #ifdef MP-TOUTIAO
+	platform = 'toutiao'
+	// #endif
+
+	// qq小程序端
+	// #ifdef MP-QQ
+	platform = 'qq'
+	// #endif
+
+	// 360小程序端
+	// #ifdef MP-360
+	platform = '360'
+	// #endif
+
+	// 快应用联盟端
+	// #ifdef QUICKAPP-WEBVIEW-UNION
+	platform = 'quickAppUnion'
+	// #endif
+
+	// 快应用华为端
+	// #ifdef QUICKAPP-WEBVIEW-HUAWEI
+	platform = 'quickAppHuawei'
+	// #endif
+
+	return platform
+}
+
 // 挂载uni小工具
 Vue.prototype.$open = open
 Vue.prototype.$close = close
@@ -295,4 +358,5 @@ export {
 	listManager, // 列表公共处理
 	getVersion, // 获取app版本号
 	clearCache, // 清除缓存
+	getPlatform // 获取具体的平台
 }
