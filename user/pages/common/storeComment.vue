@@ -30,6 +30,10 @@
 	import {
 		listManager
 	} from '@/utils/uni-tools'
+	import {
+		mapState
+	} from 'vuex'
+
 	export default {
 		data() {
 			return {
@@ -42,6 +46,10 @@
 				dataStatus: '', // more loading noMore noData
 				id: ''
 			}
+		},
+		computed: {
+			// app 平台
+			...mapState('app', ['platform'])
 		},
 		onLoad(e) {
 			if (e && e.id) this.id = e.id

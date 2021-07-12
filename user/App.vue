@@ -1,6 +1,7 @@
 <script>
 	import {
-		mapActions
+		mapActions,
+		mapMutations
 	} from 'vuex'
 	import {
 		showModal
@@ -11,6 +12,8 @@
 			console.log('App Launch')
 			// app信息
 			this.setSystemInfo()
+			// 设置app所处平台
+			this.setPlatform()
 			// 用户信息
 			this.getUserInfo()
 			// 更新
@@ -25,6 +28,8 @@
 		methods: {
 			// app 获取并设置系统信息
 			...mapActions('app', ['setSystemInfo']),
+			// app 设置平台
+			...mapMutations('app', ['setPlatform']),
 			// user 获取用户信息
 			...mapActions('user', ['getUserInfo']),
 			// 小程序更新检测
