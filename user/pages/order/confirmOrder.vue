@@ -38,23 +38,23 @@
 			</view>
 			<view class="caption">取还</view>
 			<view class="take-also">
-				<view class="address-box" @click="openMap">
+				<view class="address-box" >
 					<image class="home" :src="`${ossUrl}/common/icon-home-black.png`"></image>
-					<view class="address">门店地址：郑家院子东路8号</view>
+					<view class="address">门店地址：{{info.pickPlace.name}}</view>
 				</view>
 				<view class="btn-box">
-					<image class="btn" :src="`${ossUrl}/common/location-big.png`" @click="openMap"></image>
-					<image class="btn" :src="`${ossUrl}/common/phone-big.png`" @click="phoneCall"></image>
+					<image class="btn" :src="`${ossUrl}/common/location-big.png`" @click="openMap(info.pickPlace.lat,info.pickPlace.lon)"></image>
+					<!-- <image class="btn" :src="`${ossUrl}/common/phone-big.png`" @click="phoneCall"></image> -->
 				</view>
 			</view>
 			<view v-show="yidiType==true" class="take-also">
-				<view class="address-box" @click="openMap">
+				<view class="address-box" >
 					<image class="home" :src="`${ossUrl}/common/icon-home-black.png`"></image>
-					<view class="address">门店地址：郑家院子东路8号</view>
+					<view class="address">门店地址：{{info.returnPlace.name}}</view>
 				</view>
 				<view class="btn-box">
-					<image class="btn" :src="`${ossUrl}/common/location-big.png`" @click="openMap"></image>
-					<image class="btn" :src="`${ossUrl}/common/phone-big.png`" @click="phoneCall"></image>
+					<image class="btn" :src="`${ossUrl}/common/location-big.png`" @click="openMap(info.returnPlace.lat,info.returnPlace.lon)"></image>
+					<!-- <image class="btn" :src="`${ossUrl}/common/phone-big.png`" @click="phoneCall"></image> -->
 				</view>
 			</view>
 			<view class="address-info">* 下单半小时内可免费取消</view>
@@ -77,7 +77,7 @@
 					<view class="bottom">添加一份无忧保障，添一份安心</view>
 				</view>
 				<view class="right" @click="selInsurance">
-					<view class="text">￥<text>60</text></view>
+					<view class="text">￥<text>{{info.orderPriceInfo.insuranceMoney	}}</text></view>
 					<view :class="['circle', {'ac':isInsurance}]"></view>
 				</view>
 			</view>
@@ -161,10 +161,10 @@
 		<view class="bottom-mat"></view>
 		<view class="bottom">
 			<view class="price-info">
-				总计<view class="price">￥<text>188.00</text></view>
+				总计<view class="price">￥<text>{{info.orderPriceInfo.total}}</text></view>
 			</view>
 			<view class="func-box">
-				<view class="detail" @click="$open('/pages/order/costDetail')">
+				<view class="detail" @click="$open('/pages/order/costDetail?obj='+JSON.stringify(info.orderPriceInfo))">
 					费用明细<view class="arrow"></view>
 				</view>
 				<view class="btn">立即预定</view>
@@ -303,9 +303,9 @@
 				this.info.clientVehicleVo.vehicleModelFiles= JSON.parse(this.info.clientVehicleVo.vehicleModelFiles)
 				this.info.clientVehicleVo.labels=JSON.parse(this.info.clientVehicleVo.labels)
 				if(this.info.returnPlace.name===this.info.pickPlace.name){
-					this.yidiType=true
-				}else{
 					this.yidiType=false
+				}else{
+					this.yidiType=true
 				}
 				
 				this.$forceUpdate()
