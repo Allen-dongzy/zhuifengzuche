@@ -1,77 +1,91 @@
 <template>
 	<view class="store-comment">
-		<view class="title">评价(<text>123</text>条)</view>
+		<view class="title">评价(<text>{{total}}</text>条)</view>
 		<view class="list">
-			<view class="item" v-for="(item, index) in 10" :key="index">
+			<view class="item" v-for="(item, index) in list" :key="index">
 				<view class="info">
 					<image class="pic"
 						src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fcdn.duitang.com%2Fuploads%2Fitem%2F201307%2F03%2F20130703071814_c2Jwj.jpeg&refer=http%3A%2F%2Fcdn.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1626835660&t=ddb718654293d40cf17d7ba2c12682ed"
 						mode="aspectFill"></image>
 					<view class="description">
-						<view class="caption">隔壁老*</view>
+						<view class="caption">{{item.customInfoName}}</view>
 						<view class="star-box">
-							<image class="star" :src="`${ossUrl}/common/icon-star.png`" v-for="(inner, sub) in 3"
-								:key="sub"></image>
+							<image v-for="(inner, sub) in item.starCode" :key="sub" class="star"
+								:src="`${ossUrl}/common/icon-star.png`"></image>
 						</view>
 					</view>
-					<view class="time">2021-05-18</view>
+					<view class="time">{{item.createTime ? item.createTime.split(' ')[0] : ''}}</view>
 				</view>
-				<view class="commit">服务特别好，牛逼plus!</view>
+				<view class="commit">{{item.evaluationDetails}}</view>
 			</view>
 		</view>
+		<uni-load-more :status="dataStatus" />
 	</view>
 </template>
 
 <script>
-	import{shopEvaluatePageQueryById} from '../../apis/shop'
+	import {
+		shopEvaluatePageQueryById
+	} from '../../apis/shop'
+	import {
+		listManager
+	} from '@/utils/uni-tools'
 	export default {
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
-				page:1,
-				size:10,
-				list:[],
-				id:''
-
+				page: 1,
+				size: 10,
+				list: [],
+				requestKey: true,
+				total: 0,
+				dataStatus: '', // more loading noMore noData
+				id: ''
 			}
 		},
 		onLoad(e) {
-			this.id=e.id
+			if (e && e.id) this.id = e.id
+			this.shopEvaluatePageQueryById()
+		},
+		//下拉刷新
+		onPullDownRefresh() {
+			this.init()
+			this.shopEvaluatePageQueryById('refresh')
+		},
+		onReachBottom(e) {
+			if (!this.requestKey) return
+			this.page++
 			this.shopEvaluatePageQueryById()
 		},
 		methods: {
-			async shopEvaluatePageQueryById(){
-				let data={
-					memberShopId:this.id,
-					page:this.page,
-					size:this.size
-				}
-				const [err,res] = await shopEvaluatePageQueryById(data)
-				
-				if(err) return
-				 if(res.data.list.length==0){
-					 
-				 }else{
-					for (let i =0;i<res.data.list.length;i++) {
-						this.list.push(res.data.list[i])
-					}
-				 }
-			},
-			//下拉刷新
-			onPullDownRefresh() {
+			// 初始化
+			init() {
 				this.page = 1
-				this.size = 10
-				this.list = []
-				this.shopEvaluatePageQueryById()
-				setTimeout(function() {
-					uni.stopPullDownRefresh();
-				}, 1000);
+				this.requestKey = true
+				this.lsit = []
 			},
-			onReachBottom(e) {
-				this.page = this.page + 1;
-				//一些事件
-				this.shopEvaluatePageQueryById()
-			},
+			// 请求列表
+			async shopEvaluatePageQueryById(refresh) {
+				this.dataStatus = 'loading'
+				let data = {
+					memberShopId: this.id,
+					page: this.page,
+					size: this.size
+				}
+				const [err, res] = await shopEvaluatePageQueryById(data)
+				if (refresh === 'refresh') uni.stopPullDownRefresh()
+				if (err) return
+				this.total = res.total
+				const {
+					requestKey,
+					dataStatus,
+					isRender
+				} = listManager(res.data.list, this.page, this.size)
+				this.requestKey = requestKey
+				this.dataStatus = dataStatus
+				if (!isRender) return
+				this.list = [...this.list, ...res.data.list]
+			}
 		}
 	}
 </script>
@@ -93,7 +107,8 @@
 				@include flex-col();
 				padding-top: 48rpx;
 				padding-bottom: 48rpx;
-				& ~ .item {
+
+				&~.item {
 					border-top: 1px solid #EFF0F3;
 				}
 
