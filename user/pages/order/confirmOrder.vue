@@ -1,11 +1,10 @@
 <template>
 	<view class="confirm-order">
-		<uni-swiper-dot :info="info.clientVehicleVo.vehicleModelFiles" :current="current" field="content" mode="round" :dotsStyles="dotsStyles">
+		<uni-swiper-dot :info="info.clientVehicleVo.vehicleModelFiles" :current="current" field="content" mode="round"
+			:dotsStyles="dotsStyles">
 			<swiper class="swiper" :autoplay="true" :interval="3000" :circular="true" @change="swiperChange">
 				<swiper-item v-for="(item ,index) in info.clientVehicleVo.vehicleModelFiles" :key="index">
-					<image class="banner"
-						:src="item"
-						mode="aspectFill"></image>
+					<image class="banner" :src="item" mode="aspectFill"></image>
 				</swiper-item>
 			</swiper>
 		</uni-swiper-dot>
@@ -16,7 +15,8 @@
 					<view v-for="(item,index) in info.clientVehicleVo.labels" class="label">{{item}}</view>
 				</view>
 			</view>
-			<view class="params">{{info.clientVehicleVo.categoryName}}丨{{info.clientVehicleVo.gears}} {{info.clientVehicleVo.size}}座 {{info.clientVehicleVo.outputVolumeName}}</view>
+			<view class="params">{{info.clientVehicleVo.categoryName}}丨{{info.clientVehicleVo.gears}}
+				{{info.clientVehicleVo.size}}座 {{info.clientVehicleVo.outputVolumeName}}</view>
 		</view>
 		<view class="lease">
 			<view class="caption">租期</view>
@@ -38,22 +38,24 @@
 			</view>
 			<view class="caption">取还</view>
 			<view class="take-also">
-				<view class="address-box" >
+				<view class="address-box">
 					<image class="home" :src="`${ossUrl}/common/icon-home-black.png`"></image>
 					<view class="address">门店地址：{{info.pickPlace.name}}</view>
 				</view>
 				<view class="btn-box">
-					<image class="btn" :src="`${ossUrl}/common/location-big.png`" @click="openMap(info.pickPlace.lat,info.pickPlace.lon)"></image>
+					<image class="btn" :src="`${ossUrl}/common/location-big.png`"
+						@click="openMap(info.pickPlace.lat,info.pickPlace.lon)"></image>
 					<!-- <image class="btn" :src="`${ossUrl}/common/phone-big.png`" @click="phoneCall"></image> -->
 				</view>
 			</view>
 			<view v-show="yidiType==true" class="take-also">
-				<view class="address-box" >
+				<view class="address-box">
 					<image class="home" :src="`${ossUrl}/common/icon-home-black.png`"></image>
 					<view class="address">门店地址：{{info.returnPlace.name}}</view>
 				</view>
 				<view class="btn-box">
-					<image class="btn" :src="`${ossUrl}/common/location-big.png`" @click="openMap(info.returnPlace.lat,info.returnPlace.lon)"></image>
+					<image class="btn" :src="`${ossUrl}/common/location-big.png`"
+						@click="openMap(info.returnPlace.lat,info.returnPlace.lon)"></image>
 					<!-- <image class="btn" :src="`${ossUrl}/common/phone-big.png`" @click="phoneCall"></image> -->
 				</view>
 			</view>
@@ -77,8 +79,8 @@
 					<view class="bottom">添加一份无忧保障，添一份安心</view>
 				</view>
 				<view class="right" @click="selInsurance">
-					<view class="text">￥<text>{{info.orderPriceInfo.insuranceMoney	}}</text></view>
-					<view :class="['circle', {'ac':isInsurance}]"></view>
+					<view class="text">￥<text>{{info.orderPriceInfo.insuranceMoney }}</text></view>
+					<view :class="['circle', {'ac':isInsurance}]" ></view>
 				</view>
 			</view>
 			<view class="item" @click="$open('/pages/mine/coupon?selectType=goods')">
@@ -94,7 +96,7 @@
 			</view>
 			<view class="item vertical">
 				<view class="top">备注</view>
-				<input type="text" placeholder="填写备注信息..." placeholder-class="input">
+				<input type="text" v-model="remark" placeholder="填写备注信息..." placeholder-class="input">
 			</view>
 		</view>
 		<view class="tab-box">
@@ -143,7 +145,8 @@
 						<view class="name">
 							{{item.title}}
 							<view class="label">普票</view>
-							<view class="label" v-show="index==invoiceIndex" style="background-color: #FFA05B;">已选择</view>
+							<view class="label" v-show="index==invoiceIndex" style="background-color: #FFA05B;">已选择
+							</view>
 						</view>
 						<view class="number">
 							{{item.taxNum}}
@@ -167,7 +170,7 @@
 				<view class="detail" @click="$open('/pages/order/costDetail?obj='+JSON.stringify(info.orderPriceInfo))">
 					费用明细<view class="arrow"></view>
 				</view>
-				<view class="btn">立即预定</view>
+				<view class="btn" @click="sure()">立即预定</view>
 			</view>
 		</view>
 		<!-- 弹窗-流程 -->
@@ -200,7 +203,10 @@
 
 <script>
 	import EvanSwitch from '@/components/evan-switch/evan-switch'
-	import {rentalOrderGenerateOrder} from '@/apis/rentalOrder'
+	import {
+		rentalOrderGenerateOrder,
+		rentalOrderCreateOrders
+	} from '@/apis/rentalOrder'
 
 	import {
 		findIsUseCouponByUser
@@ -227,20 +233,26 @@
 				rentFreeSwitch: false, // 是否开启免租
 				invoiceSwitch: false, // 是否开启发票
 				isInsurance: false, // 是否选择保险
+				isInsuranceId:0,//0是否 1是买
 				confirm: '', //优惠券
-				invoiceIndex:0,//选择发票下标
-				invoiceId:'',//发票Id
+				invoiceIndex: 0, //选择发票下标
+				invoiceId: '', //发票Id
 				invoiceList: [], //发票list
-				couponId:'',//优惠券id
-				info:'',//获取页面信息
-				yidiType:'' ,//判断是否异地
-				takeday:'',//取车日期
-				takeweek:'',//取车星期
-				taketime:'',//取车时间
-				backday:'',//还车日期
-				backweek:'',//还车星期
-				backtime:'',//还车时间
-				totalDate:''//相差时间
+				couponId: '', //优惠券id
+				info: '', //获取页面信息
+				yidiType: '', //判断是否异地
+				takeday: '', //取车日期
+				takeweek: '', //取车星期
+				taketime: '', //取车时间
+				takeId:'',//取车地点id
+				backday: '', //还车日期
+				backweek: '', //还车星期
+				backtime: '', //还车时间
+				backId:'',//还车地点id
+				totalDate: '',//相差时间
+				carId:'',//车型id
+				remark:'',//备注
+				yudingInfo:'',//时间 地点
 			}
 		},
 		computed: {
@@ -248,7 +260,7 @@
 			bottomInfo() {
 				let info = ''
 				switch (this.acIndex) {
-				
+
 					case 0:
 						info = '身份证+驾照正副本；身份证有效期需1个月以上，驾龄3个月以上'
 						break
@@ -273,41 +285,46 @@
 		},
 		onLoad(e) {
 			console.log(e)
+			this.yudingInfo=e
+			this.carId=e.carModelId
+			this.takeId=e.takeCarAddressId
+			this.backId=e.carAlsoAddressId
 			this.findIsUseCouponByUser()
 			this.invoiceQueryByUser()
 			this.rentalOrderGenerateOrder(e)
-			this.takeday=e.takeCarDateShow
-			this.takeweek=e.takeCarDayShow
-			this.taketime=e.takeCarTimeShow
-			
-			this.backday=e.carAlsoDateShow
-			this.backweek=e.carAlsoDayShow
-			this.backtime=e.carAlsoTimeShow
-			this.totalDate=e.totalDate
+			this.takeday = e.takeCarDateShow
+			this.takeweek = e.takeCarDayShow
+			this.taketime = e.takeCarTimeShow
+
+			this.backday = e.carAlsoDateShow
+			this.backweek = e.carAlsoDayShow
+			this.backtime = e.carAlsoTimeShow
+			this.totalDate = e.totalDate
 		},
 		methods: {
-		async	rentalOrderGenerateOrder(e){
-				let data={
-					vehicleModelId:e.carModelId,
-					rentEndTime:e.carAlsoTime,
-					rentBeginTime:e.takeCarTime,
-					pickPlace:e.takeCarAddressId,
-					returnPlace:e.carAlsoAddressId,
-					orderSource:0
-				}
-			const [err,res] = await rentalOrderGenerateOrder(data)
-			if (err) return
-			console.log(res)
-				this.info=res.data
+			async rentalOrderGenerateOrder(e) {
 				
-				this.info.clientVehicleVo.vehicleModelFiles= JSON.parse(this.info.clientVehicleVo.vehicleModelFiles)
-				this.info.clientVehicleVo.labels=JSON.parse(this.info.clientVehicleVo.labels)
-				if(this.info.returnPlace.name===this.info.pickPlace.name){
-					this.yidiType=false
-				}else{
-					this.yidiType=true
+				let data = {
+					vehicleModelId: e.carModelId,
+					rentEndTime: e.carAlsoTime,
+					rentBeginTime: e.takeCarTime,
+					pickPlace: e.takeCarAddressId,
+					returnPlace: e.carAlsoAddressId,
+					orderSource: 0
 				}
-				
+				const [err, res] = await rentalOrderGenerateOrder(data)
+				if (err) return
+				console.log(res)
+				this.info = res.data
+
+				this.info.clientVehicleVo.vehicleModelFiles = JSON.parse(this.info.clientVehicleVo.vehicleModelFiles)
+				this.info.clientVehicleVo.labels = JSON.parse(this.info.clientVehicleVo.labels)
+				if (this.info.returnPlace.name === this.info.pickPlace.name) {
+					this.yidiType = false
+				} else {
+					this.yidiType = true
+				}
+
 				this.$forceUpdate()
 			},
 			//发票
@@ -316,12 +333,12 @@
 				if (err) return
 				console.log(res)
 				this.invoiceList = res.data
-				this.invoiceId=this.invoiceList[0].id
+				this.invoiceId = this.invoiceList[0].id
 			},
 			//选择发票
 			selectInvoice(e) {
-				this.invoiceIndex=e
-				this.invoiceId=this.invoiceList[e].id
+				this.invoiceIndex = e
+				this.invoiceId = this.invoiceList[e].id
 			},
 			//优惠券
 			async findIsUseCouponByUser() {
@@ -374,6 +391,40 @@
 			// 选择保险
 			selInsurance() {
 				this.isInsurance = !this.isInsurance
+			},
+		async	sure(){
+			
+				console.log(this.carId)
+				console.log(this.couponId)
+				console.log(this.invoiceId)
+				console.log(this.isInsurance)
+				console.log(this.takeId)
+				console.log(this.backId)
+				console.log(this.remark)
+				console.log(this.yudingInfo)
+				
+				if(this.isInsurance){
+					this.isInsuranceId=1
+				}else{
+					this.isInsuranceId=0
+				}
+			
+				let data={
+					couponId:this.couponId,
+					invoiceId:this.invoiceId,
+					isInsurance:this.isInsuranceId,
+					orderSource: 0,
+					pickPlace:this.takeId,
+					returnPlace:this.backId,
+					remark:this.remark,
+					rentBeginTime:this.yudingInfo.takeCarTime,
+					rentEndTime:this.yudingInfo.carAlsoTime,
+					vehicleModelId:this.carId
+				}
+			const [err,res] = await rentalOrderCreateOrders(data)
+			if(err) return 
+			console.log(res) 
+			
 			}
 		}
 	}
