@@ -1,7 +1,7 @@
 import request from '@/request'
 
 // 车况概览-添加备注
-export const vehicleAddRemarks = (data, loading = '提交中') => {
+export const vehicleAddRemarks = (data, loading = '提交中') => { // 对接
 	return request({
 		url: 'vehicle/addRemarks',
 		contentType: 'application/x-www-form-urlencoded',
@@ -76,7 +76,7 @@ export const vehicleQueryVehicleModels = (deliveryId, brandId, loading = '') => 
 }
 
 // 车况概览
-export const vehicleVehiclePreview = (vehicleId, orderId, loading = '') => {
+export const vehicleVehiclePreview = (vehicleId, orderId, loading = '') => { // 对接
 	return request({
 		url: `vehicle/vehiclePreview/${vehicleId}/${orderId}`,
 		contentType: 'application/x-www-form-urlencoded',
