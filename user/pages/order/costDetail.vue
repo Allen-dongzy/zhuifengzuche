@@ -8,53 +8,26 @@
 				￥<text>{{info.orderVehiclePrice.totalPrice}}</text>
 			</view>
 		</view>
-		<view class="calendar">
+		<view class="calendar" v-if="info.orderVehiclePrice && info.orderVehiclePrice.datePriceList">
 			<view class="item" v-for="(item, index) in info.orderVehiclePrice.datePriceList" :key="index">
 				<view class="date">{{item.time.slice(8,10)}}</view>
 				<view class="price">￥{{item.price}}</view>
 			</view>
 		</view>
 		<view class="list">
-			
-			<view class="item-bar" v-for="(item,index) in info.orderPriceList">
+
+			<view class="item-bar" v-for="(item,index) in info.orderPriceList" :key="index">
 				<view class="left">
 					<view class="caption">{{item.name}}</view>
 					<view class="text" v-show="item.name=='异地调度'">按取还车每公里3元计算</view>
 					<view class="text" v-show="item.name=='零散小时收费'">租车非整天时零散小时收取的超时小费</view>
 					<view class="text" v-show="item.name=='夜间取车费'">夜间取车费</view>
+					<view class="text" v-show="item.name=='夜间还车费'">夜间还车费</view>
 				</view>
-				<view class="right">￥{{item.price}}</view>
-			</view>
-<!-- 			<view class="item-bar">
-				<view class="left">
-					<view class="caption">零散小时收费</view>
-					<view class="text">租车非整天时零散小时收取的超时小费</view>
+				<view class="right">
+					￥{{item.price.toString().startsWith('-') ? `-${item.price.toString().slice(1)}` : item.price}}
 				</view>
-				<view class="right">￥29</view>
 			</view>
-			<view class="item-bar">
-				<view class="left">
-					<view class="caption">夜间取车费</view>
-					<view class="text">夜间取车费</view>
-				</view>
-				<view class="right">￥29</view>
-			</view>
-			<view class="item-bar">
-				<view class="left">驾无忧保障</view>
-				<view class="right">￥29</view>
-			</view>
-			<view class="item-bar">
-				<view class="left">基本保障费</view>
-				<view class="right">￥29</view>
-			</view>
-			<view class="item-bar">
-				<view class="left">车辆整备费</view>
-				<view class="right">￥29</view>
-			</view>
-			<view class="item-bar">
-				<view class="left">优惠券减免</view>
-				<view class="right">-￥29</view>
-			</view> -->
 		</view>
 		<view class="bottom-mat"></view>
 		<view class="bottom">
@@ -68,10 +41,11 @@
 	export default {
 		data() {
 			return {
-				info:''
+				info: ''
 			}
-		},onLoad(e) {
-			this.info= JSON.parse(e.obj)
+		},
+		onLoad(e) {
+			this.info = JSON.parse(e.obj)
 		},
 		methods: {
 
@@ -153,7 +127,7 @@
 				}
 			}
 		}
-		
+
 		.bottom-mat {
 			height: 166rpx;
 		}
