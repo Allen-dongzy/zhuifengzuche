@@ -300,7 +300,7 @@
 			"path": "pages/order/order" 
 		}, {
 			"name": "dzy", // dzy
-			"path": "pages/home/home"
+			"path": "pages/common/goInspect"
 		}]
 	}
 }
