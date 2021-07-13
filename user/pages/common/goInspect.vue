@@ -4,98 +4,74 @@
 			<view class="flexBox" style="padding: 30rpx 0rpx;">
 				<view class="buleLine"></view>
 				<view class="blackText" style="width: 15%;margin-left: 2%;">车牌号</view>
-				<view class="blackText" style="color: #5A7EFF;">渝a111111</view>
+				<view class="blackText" style="color: #5A7EFF;">{{carNumber}}</view>
 			</view>
 		</view>
 		<view class="flexBox">
 			<view style="width: 50%;" class="flexBox">
-				<image style="width: 40rpx;height: 40rpx;" :src="`${ossUrl}/common/km.png`" mode=""></image>
+				<image style="width: 40rpx;height: 40rpx;" :src="`${ossUrl}/common/km.png`"></image>
 				<view style="color: #5A7EFF;margin-left: 10rpx;">当前里程</view>
 			</view>
 			<view style="width: 50%;" class="flexBox">
-				<image style="width: 40rpx;height: 40rpx;" :src="`${ossUrl}/common/you.png`" mode=""></image>
+				<image style="width: 40rpx;height: 40rpx;" :src="`${ossUrl}/common/you.png`"></image>
 				<view style="color: #5A7EFF;margin-left: 10rpx;">当前油量</view>
 			</view>
 		</view>
 		<!-- 数值 -->
 		<view class="flexBox">
 			<view class="flexBox" style="width: 50%;">
-				<view style="font-size: 50rpx;font-weight: bold;">36900</view>
+				<view style="font-size: 50rpx;font-weight: bold;">{{mileage}}</view>
 				<view style="margin: 10rpx 0rpx 0rpx 10rpx;">km ></view>
 			</view>
 			<view class="flexBox" style="width: 50%;">
-				<view style="font-size: 50rpx;font-weight: bold;">2</view>
-				<view style="margin: 10rpx 0rpx 0rpx 10rpx;">/5 ></view>
+				<view style="font-size: 50rpx;font-weight: bold;">{{oil}}</view>
+				<view style="margin: 10rpx 0rpx 0rpx 10rpx;"> ></view>
 			</view>
 		</view>
-
 		<!-- 各项信息详情 -->
-		<view v-for="(item,index) in list" class="">
+		<view v-for="(item, index) in goodsList" :key="index">
 			<view class="grayLine"></view>
 			<view class="flexBox" style="padding: 10rpx 0rpx 30rpx 0rpx;">
 				<view class="blackText" style="width: 79%;">{{item.name}}</view>
-				<view class="ok">确认完好</view>
-				<image style="width: 32rpx;height: 16rpx;margin-left: 10rpx;" :src="`${ossUrl}/common/xiangshang.png`"
-					mode=""></image>
+				<view v-show="item.condition" class="ok">确认完好</view>
 			</view>
-
-			<view class="">
+			<view>
 				<view class="line"></view>
-				<view class="flexBox" v-for="(itemy,index) in item.item" :key='index'>
-					<view class="blackText">{{itemy.name}}<text class="garyText">({{itemy.ohterName}})</text> </view>
-					<view v-if='itemy.status===""' style="display: flex;align-items: center;width: 29%;">
-						<view class="selectOk">完好</view>
-						<view class="selectNo">损坏</view>
+				<view class="flexBox" v-for="(inner, sub) in item.children" :key='sub'>
+					<view class="blackText">{{inner.name}}<text class="garyText">({{itemy.description}})</text> </view>
+					<view style="display: flex;align-items: center;width: 29%;">
+						<view :class="['selectOk', {'statusOk': inner.condition===0}]">完好</view>
+						<view v-show="inner.condition===0" class="selectNo">损坏</view>
+						<view v-show="inner.condition===1" class="selectNo statusOk"
+							@click="previewImgs([inner.image])">查看图片</view>
 					</view>
-					<view v-if="itemy.status===0" style="display: flex;align-items: center;width: 29%;">
-						<view class="statusOk">完好</view>
-						<view class="selectNo">损坏</view>
-					</view>
-					<view v-if="itemy.status===1" style="display: flex;align-items: center;width: 29%;">
-						<view class="selectOk">完好</view>
-						<view class="lookImg">查看图片</view>
-					</view>
-
 				</view>
 			</view>
 		</view>
-
 		<view class="grayLine"></view>
 		<view style="width: 94%;margin: auto;margin-top: 40rpx;">
 			<view class="blackText" style="width: 10%;">备注</view>
 			<view class="garyText">这是备注</view>
 			<view style="display: inline-block;width: 21%;margin: 20rpx 2%;position: relative;"
 				v-for="(item,index) in imgList">
-				
-					<image style="width:160rpx;height:160rpx;" :src="`${ossUrl}/common/guanxi.png`" mode=""></image>
-				
-			
+				<image style="width:160rpx;height:160rpx;" :src="`${ossUrl}/common/guanxi.png`"></image>
 			</view>
 		</view>
-		
-		
-		
-		
 		<view class="flexBox">
-			
-			
-			
 			<view class="blackText" style="width: 20%;">添加备注</view>
-			<!-- <view class="garyText">请添加备注&上传车辆其他的照片</view> -->
 		</view>
 		<textarea value="" placeholder="请输入备注信息"
 			style="padding: 20rpx;width:85%;margin: auto;background-color: #EFF0F3;height:220rpx;border-radius: 20rpx;margin-top: 30rpx;" />
-
 		<view style="width: 92%;margin: auto;padding-bottom: 20rpx;border-bottom: 2rpx solid #EFF0F3;">
 			<view style="display: inline-block;width: 21%;margin: 20rpx 2%;position: relative;"
 				v-for="(item,index) in imgList">
 				<view v-if="index==(imgList.length-1)">
-					<image style="width:160rpx;height:160rpx;" :src="`${ossUrl}/common/guanxi.png`" mode=""></image>
-				</view> 
+					<image style="width:160rpx;height:160rpx;" :src="`${ossUrl}/common/guanxi.png`"></image>
+				</view>
 				<view v-else>
-					<image style="width:160rpx;height:160rpx;" :src="`${ossUrl}/common/guanxi.png`" mode=""></image>
+					<image style="width:160rpx;height:160rpx;" :src="`${ossUrl}/common/guanxi.png`"></image>
 					<image style="width:36rpx;height:36rpx;position: absolute;top:-10rpx;right: -25rpx;"
-						:src="`${ossUrl}/common/lancha.png`"  mode=""></image>
+						:src="`${ossUrl}/common/lancha.png`"></image>
 				</view>
 			</view>
 		</view>
@@ -106,36 +82,11 @@
 				    border-radius: 50px;
 				    font-size: 32rpx;
 				    height: 96rpx;line-height: 96rpx;" type="default">完成</button>
-
-		<!-- 里程弹窗 -->
-		<view class="Mask" v-show="mileage==true"></view>
-		<view class="box1" v-show="mileage==true">
-			<view class="blackText">当前里程数</view>
-			<input type="text" value="" placeholder="请输入里程数"
-				style="background-color: #EFF0F3;height:74rpx;width: 100%;border-radius: 10rpx;padding-left: 20rpx;margin-top: 20rpx;" />
-			<view class="flexBox" style="width: 100%;">
-				<view class="lanbox">取消</view>
-				<view class="lanbox1" style="margin-left: 57%;">确定</view>
-			</view>
-		</view>
-		<!-- 油量弹窗 -->
-		<view class="Mask" v-show="Oil==true"></view>
-		<view class="box1" v-show="Oil==true">
-			<view class="blackText">当前油量</view>
-			<slider value="5" @change="sliderChange" backgroundColor="#EFF0F3" block-size="16"
-				:activeColor="sliderColor" step="0.5" min="0" max="10" show-value />
-			<view class="flexBox" style="width: 100%;">
-				<view class="lanbox">取消</view>
-				<view class="lanbox1" style="margin-left: 57%;">确定</view>
-			</view>
-		</view>
-
-		<!--  -->
 		<view class="Mask" v-show="imgshow==true"></view>
 		<view class="box1" v-show="imgshow==true">
 			<view class="blackText">请上传图片</view>
 			<image style="width:80%;height:350rpx;margin-left: 10%;margin-top: 30rpx;"
-				:src="`${ossUrl}/common/guanxi.png`" mode=""></image>
+				:src="`${ossUrl}/common/guanxi.png`"></image>
 			<view class="flexBox" style="width: 100%;">
 				<view class="lanbox">取消</view>
 				<view class="lanbox1" style="margin-left: 57%;">确定</view>
@@ -146,50 +97,61 @@
 </template>
 
 <script>
+	import {
+		vehicleVehiclePreview,
+		vehicleAddRemarks
+	} from '@/apis/vehicle'
+	import {
+		throttle
+	} from '@/utils/tools'
+	import {
+		previewImgs
+	} from '@/utils/uni-tools'
+
 	export default {
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
-				list: [{
-					name: '外观',
-					item: [{
-						name: '前部',
-						ohterName: '前杠/机盖',
-						status: ""
-					}, {
-						name: '中部',
-						ohterName: '前后翼子板/车门',
-						status: 0
-					}, {
-						name: '后部',
-						ohterName: '后杠/后备箱盖',
-						status: 1
-					}]
-				}, {
-					name: '车身配件',
-					item: [{
-						name: '后视镜/雨刮器',
-						ohterName: '',
-						status: ""
-					}, {
-						name: '轮胎/轮圈',
-						ohterName: '',
-						status: 0
-					}, {
-						name: '车灯',
-						ohterName: '前后大灯/转向灯/雾灯',
-						status: 1
-					}]
-				}],
-
-				imgList: [1, 1, 1, 1],
-				sliderColor: '#5A7EFF',
-				mileage: false,
-				Oil: false,
-				imgshow: false,
+				orderId: '', // 订单id
+				vehicleId: '', // 车型id
+				carNumber: '', // 车牌号
+				goodsList: [], // 车辆物件
+				mileage: '', // 当前里程
+				oil: '', // 当前油量
+				remarksList: [] // 车辆检验备注
 			}
 		},
+		onLoad(e) {
+			if (e && e.orderId) this.orderId = e.orderId
+			if (e && e.vehicleId) this.vehicleId = e.vehicleId
+			this.vehicleVehiclePreview()
+		},
 		methods: {
+			// 获取信息
+			async vehicleVehiclePreview() {
+				const [err, res] = await vehicleVehiclePreview(this.vehicleId, this.orderId)
+				if (err) return
+				this.carNumber = res.data.carNumber
+				this.goodsList = res.data.goodsList
+				this.mileage = res.data.mileage
+				this.oil = res.data.oil
+				this.remarksList = res.data.remarksList
+			},
+			// 添加备注
+			vehicleAddRemarks: throttle(async function() {
+				const params = {
+					image: JSON.stringify(this.imgList),
+					orderId: this.orderId,
+					remarks: this.remarks,
+					type: 0
+				}
+				const [err, res] = await vehicleAddRemarks(params)
+				if (err) return
+				this.$toast('操作成功')
+				setTimeout(() => {
+					this.$close()
+				}, 500)
+			}),
 			sliderChange(e) {
 				console.log('value 发生变化：' + e.detail.value)
 				if (e.detail.value < 1) {
