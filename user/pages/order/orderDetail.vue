@@ -14,7 +14,8 @@
 						@click="rentalOrderCancelOrderByUserGet">
 						取消订单</view>
 					<view v-if="info.orderStatus===0" class="btn blue">立即支付</view>
-					<view v-if="info.orderStatus===2" class="btn white" @click="$open('/pages/common/goInspect')">查看车况
+					<view v-if="info.orderStatus===2" class="btn white"
+						@click="$open('/pages/common/goInspect', {orderId: info.id, vehicleId: info.vehicleId})">查看车况
 					</view>
 				</view>
 				<view v-show="info.orderStatus===0 || info.orderStatus===1" class="contact" @click="contactStore">
@@ -271,7 +272,6 @@
 				const [err, res] = await rentalOrderOrderInfo(params)
 				if (err) return
 				this.info = res.data
-				this.info.orderStatus = 101
 				const rentBeginTime = this.timeFormat(this.info.rentBeginTime)
 				this.info.takeCarDateShow = rentBeginTime[0]
 				this.info.takeCarDayShow = rentBeginTime[1]
