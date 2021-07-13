@@ -317,9 +317,9 @@
 				return returnArr
 			},
 			// 刷新
-			refresh() {
+			refresh: throttle(function() {
 				this.rentalOrderOrderInfo(this.info.id)
-			},
+			}),
 			// 联系门店
 			contactStore() {
 				this.phoneCall(this.info.memberPhone)

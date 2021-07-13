@@ -62,7 +62,8 @@
 						</view>
 						<view class="ul">
 							<view class="li" v-for="(item, index) in hotCity" :key="index" @click="selectCity(item)">
-								{{item.name}}</view>
+								{{item.name}}
+							</view>
 						</view>
 					</view>
 				</view>
@@ -82,7 +83,7 @@
 				<view v-for="(item, index) in alphabet" :key="index" @touchstart="getLetter" @touchend="setLetter"
 					:id="item">
 					<view class="item" :class="{ active: currentLetter == item }"
-						:style="[{'height':`${(windowHeight-90)/24}px`},{'line-height':`${(windowHeight-90)/24}px`}]">
+						:style="[{'height':`${(windowHeight-90)/alphabetLength}px`},{'line-height':`${(windowHeight-90)/alphabetLength}px`}]">
 						{{ item == "area" ? "当前" : item == "hot" ? "热门" : item }}
 					</view>
 				</view>
@@ -125,7 +126,13 @@
 			// city 字母列表，当前城市，热门城市列表，全部城市列表
 			...mapState('city', ['alphabet', 'currentCity', 'hotCity', 'allCity']),
 			// app 窗口高度
-			...mapState('app', ['windowHeight'])
+			...mapState('app', ['windowHeight']),
+			// 字母数量
+			alphabetLength() {
+				const keys = Object.keys(this.allCity)
+				const noEmptyList = keys.filter(key => this.allCity[key].length > 0)
+				return noEmptyList.length + 2 // 加上“当前”和“热门”
+			}
 		},
 		watch: {
 			// 城市搜索输入框
@@ -489,7 +496,7 @@
 	.alphabet {
 		position: fixed;
 		right: 0;
-		top: 180rpx;
+		top: 108rpx;
 		z-index: 9;
 		width: calc(750rpx - 680rpx);
 		text-align: center;

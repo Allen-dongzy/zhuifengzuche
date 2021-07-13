@@ -38,23 +38,22 @@
 			<view>
 				<view class="line"></view>
 				<view class="flexBox" v-for="(inner, sub) in item.children" :key='sub'>
-					<view class="blackText">{{inner.name}}<text class="garyText">({{itemy.description}})</text> </view>
+					<view class="blackText">{{inner.name}}<text class="garyText">({{inner.description}})</text> </view>
 					<view style="display: flex;align-items: center;width: 29%;">
 						<view :class="['selectOk', {'statusOk': inner.condition===0}]">完好</view>
-						<view v-show="inner.condition===0" class="selectNo">损坏</view>
-						<view v-show="inner.condition===1" class="selectNo statusOk"
+						<view v-show="!inner.condition" class="selectNo">损坏</view>
+						<view v-show="inner.condition && inner.condition===1" class="selectNo statusOk"
 							@click="previewImgs([inner.image])">查看图片</view>
 					</view>
 				</view>
 			</view>
 		</view>
 		<view class="grayLine"></view>
-		<view style="width: 94%;margin: auto;margin-top: 40rpx;">
+		<view style="width: 90%;margin: auto;margin-top: 40rpx;" v-for="(item, index) in remarksList" :key="index">
 			<view class="blackText" style="width: 10%;">备注</view>
-			<view class="garyText">这是备注</view>
-			<view style="display: inline-block;width: 21%;margin: 20rpx 2%;position: relative;"
-				v-for="(item,index) in imgList">
-				<image style="width:160rpx;height:160rpx;" :src="`${ossUrl}/common/guanxi.png`"></image>
+			<view class="garyText">{{item.remarks}}</view>
+			<view class="img-box" v-for="(inner, sub) in JSON.parse(item.image)" :key="sub">
+				<image style="width:160rpx;height:160rpx;" :src="inner"></image>
 			</view>
 		</view>
 		<view class="flexBox">
@@ -64,7 +63,7 @@
 			style="padding: 20rpx;width:85%;margin: auto;background-color: #EFF0F3;height:220rpx;border-radius: 20rpx;margin-top: 30rpx;" />
 		<view style="width: 92%;margin: auto;padding-bottom: 20rpx;border-bottom: 2rpx solid #EFF0F3;">
 			<view style="display: inline-block;width: 21%;margin: 20rpx 2%;position: relative;"
-				v-for="(item,index) in imgList">
+				v-for="(item,index) in imgList" :key="index">
 				<view v-if="index==(imgList.length-1)">
 					<image style="width:160rpx;height:160rpx;" :src="`${ossUrl}/common/guanxi.png`"></image>
 				</view>
@@ -165,7 +164,7 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
 	.box {
 		width: 100%;
 		background-color: #EFF0F3;
@@ -202,6 +201,7 @@
 	.garyText {
 		font-size: 20rpx;
 		color: #999999;
+		margin-top: 10rpx;
 	}
 
 	.grayLine {
@@ -295,5 +295,15 @@
 		border-radius: 10rpx;
 		color: white;
 		background-color: #5A7EFF;
+	}
+
+	.img-box {
+		display: inline-block;
+		margin: 20rpx 0;
+		position: relative;
+		
+		image ~ image {
+			margin-left: 20rpx;
+		}
 	}
 </style>

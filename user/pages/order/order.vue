@@ -357,6 +357,11 @@
 					.address {
 						@include font-set(28rpx, #000);
 						line-height: 28rpx;
+						margin-top: 6rpx;
+
+						&~.address {
+							margin-top: 10rpx;
+						}
 
 						text {
 							color: #5A7EFF;
