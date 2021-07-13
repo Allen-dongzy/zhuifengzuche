@@ -2,10 +2,10 @@
 	<view class="order-pay">
 		<view class="info">
 			<view class="caption">实付租金</view>
-			<view class="price">￥<text>60</text></view>
+			<view class="price">￥<text>{{price}}</text></view>
 		</view>
 		<view class="toast">*取车时支付租车押金￥5000，可以取车时申请免押</view>
-		<view class="btn">支&#32;付</view>
+		<view class="btn" @click="pay">支&#32;付</view>
 	</view>
 </template>
 
@@ -13,11 +13,19 @@
 	export default {
 		data() {
 			return {
-
+				price:''
 			}
 		},
+		onLoad(e) {
+		console.log(e.price)
+		this.price=e.price
+		},
 		methods: {
-
+			pay(){
+				uni.reLaunch({
+					url:'./order'
+				})
+			}
 		}
 	}
 </script>

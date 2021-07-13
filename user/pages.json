@@ -297,7 +297,7 @@
 		"current": 0,
 		"list": [{
 			"name": "wcy", // wcy
-			"path": "pages/order/confirmOrder"
+			"path": "pages/order/order" 
 		}, {
 			"name": "dzy", // dzy
 			"path": "pages/home/home"

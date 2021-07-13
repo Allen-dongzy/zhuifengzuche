@@ -40,20 +40,20 @@
 				</view>
 			</scroll-view>
 		</view>
-		<view class="flex-center flex-wrap panelList" @click="lookinfo">
-			<view class="panel">
+		<view class="flex-center flex-wrap panelList" >
+			<view class="panel" v-for="(item,index) in orderList" :key="index" @click="lookinfo(index)">
 				<view class="header">
 					<view class="flex titlePanel">
-						<p class="title">渝A·5231B</p>
+						<p class="title">{{item.vehicleNumber}}</p>
 						<view class="flex-center status" v-show="tabCheck==0 || tabCheck==3">
 							<image :src="$util.fileUrl('/paid_label@2x.png')"></image>
 							<p>已支付</p>
 						</view>
 					</view>
-					<p class="name">租客姓名</p>
+					<p class="name">{{item.memberRealName}}</p>
 					<view class="flex price">
 						<p class="icon">¥</p>
-						<p class="text">188.00</p>
+						<p class="text">{{item.orderDeposit}}</p>
 					</view>
 				</view>
 				<view class="flex-center line">
@@ -61,52 +61,52 @@
 				</view>
 				<view class="content">
 					<view class="flex titlePanel">
-						<p class="name">大众迈腾</p>
+						<p class="name">{{item.carModel}}</p>
 						<view class="flex radioCheck">
 							<p>异地还车</p>
-							<switch @change.stop="radioChange" class="switch" :class="(radio?'checked':'')"
+							<switch disabled="true"  @change.stop="radioChange" class="switch" :class="(radio?'checked':'')"
 								:checked="(radio?true:false)"></switch>
 						</view>
 					</view>
 					<view class="flex timeText">
 						<text class="cuIcon-countdown"></text>
-						<p>05-25 14:48 至 05-30 14:48</p>
+						<p>{{item.rentBeginTime}} 至 {{item.rentEndTime}}</p>
 					</view>
-					<view class="flex location">
+					<view class="flex location" v-show="radio==true">
 						<i></i>
 						<p class="type">取</p>
-						<p class="text">郑家院子东路8号</p>
+						<p class="text">{{item.pickPlace}}</p>
 					</view>
-					<view class="flex location">
+					<view class="flex location" v-show="radio==true">
 						<i></i>
 						<p class="type">还</p>
-						<p class="text">郑家院子东路8号</p>
+						<p class="text">{{item.returnPlace}}</p>
 					</view>
-					<view class="flex location">
+					<view class="flex location" v-show="radio==false">
 						<i></i>
 						<p class="type">取还</p>
-						<p class="text">郑家院子东路8号</p>
+						<p class="text">{{item.pickPlace}}</p>
 					</view>
-					<p class="dateText" v-show="tabCheck<2">距离送车1天6小时12分</p>
-					<p class="dateText" v-show="tabCheck==2">待处理违章3条</p>
+					<p class="dateText" v-show="tabCheck<2">{{item.countdown}}</p>
+					<p class="dateText" v-show="tabCheck==2">{{item.breakRulesString}}</p>
 					<view class="flex submit">
-						<view class="flex phone">
+						<view class="flex phone" @click.stop="call(item.memberPhone)">
 							<image :src="$util.fileUrl('/phone@2x.png')"></image>
 							<p>联系客户</p>
 						</view>
 						<view class="flex">
-							<button type="default" v-show="tabCheck==0" class="flex-center btn"
-								@tap.stop="toHomeLevel('/pages/home/goInspect')">出车检验</button>
+							<button type="default" v-show="tabCheck==0" class="flex-center btn"  
+								@tap.stop="toHomeLevel1('/pages/home/goInspect?obj=',item)">出车检验</button>
 							<button type="default" v-show="tabCheck==0" class="flex-center btn"
 								style="margin-left: 20rpx;"
-								@tap.stop="toHomeLevel('/pages/home/deliverCar')">交付车辆</button>
+								@tap.stop="toHomeLevel1('/pages/home/deliverCar')">交付车辆</button>
 							<button type="default" v-show="tabCheck==1" class="flex-center btn"
-								@tap.stop="toHomeLevel('/pages/home/deliverCar')">交车情况</button>
+								@tap.stop="toHomeLevel1('/pages/home/deliverCar')">交车情况</button>
 							<button type="default" v-show="tabCheck==1" class="flex-center btn"
 								style="margin-left: 20rpx;"
-								@tap.stop="toHomeLevel('/pages/home/inspectionCollect')">检验收车</button>
+								@tap.stop="toHomeLevel1('/pages/home/inspectionCollect')">检验收车</button>
 							<button type="default" v-show="tabCheck==2" class="flex-center btn"
-								@tap.stop="toHomeLevel('/pages/home/inspectionCollect')">收车详情</button>
+								@tap.stop="toHomeLevel1('/pages/home/inspectionCollect')">收车详情</button>
 							<button type="default" v-show="tabCheck==2" class="flex-center btn bg-btn">退还押金</button>
 						</view>
 					</view>
@@ -122,7 +122,8 @@
 
 <script>
 	import {
-		getOrderStatus
+		getOrderStatus,
+		getOrderPageList
 	} from '@/apis/rentalOrder';
 
 	export default {
@@ -166,12 +167,16 @@
 				tabCheck: 0,
 				tabList: [],
 				radio: false,
-				orderSize: false
+				orderSize: false,
+				page: 1,
+				size: 10,
+				orderList:[],
+				status: 1, //0=未支付,1=等待送车,2=送车中,3=租用中,4=换车中,5=待收车,100=已完成,101=已取消,6=审核中
 			};
 		},
 		onLoad() {
 			this.getlist()
-
+			this.getOrderList()
 		},
 		methods: {
 
@@ -192,8 +197,29 @@
 				res.data[0].check = true
 				this.tabList = res.data
 			},
-
-
+			async getOrderList() {
+				let data = {
+					page: this.page,
+					size: this.size,
+					status: this.status
+				}
+				const [err, res] = await getOrderPageList(data)
+				if (err) return
+				console.log(res.data.list.length)
+				if(res.data.list.length==0){
+					
+				}else{
+					for(let i=0;i<res.data.list.length;i++){
+						this.orderList.push(res.data.list[i])
+						if(res.data.list[i].pickPlace==res.data.list[i].returnPlace){
+							this.radio=false
+						}else{
+							this.radio=true
+						}
+						this.$forceUpdate()
+					}
+				}
+			},
 
 			/**
 			 * 状态切换
@@ -202,6 +228,9 @@
 				this.tabList[this.tabCheck].check = false;
 				this.tabList[index].check = true;
 				this.tabCheck = index;
+				this.status = this.tabList[index].id
+				this.orderList=[]
+				this.getOrderList()
 			},
 			/**
 			 * 开关选择
@@ -210,7 +239,7 @@
 			radioChange(e) {
 				this.radio = e.detail.value
 			},
-			toHomeLevel(e) {
+			toHomeLevel(e,q) {
 				console.log(e)
 				uni.navigateTo({
 					url: e,
@@ -218,11 +247,36 @@
 					animationDuration: 200
 				})
 			},
-			lookinfo() {
+			toHomeLevel1(e,q) {
+				console.log(e)
 				uni.navigateTo({
-					url: './orderInfo',
+					url: e+JSON.stringify(q),
+					animationType: 'pop-in',
+					animationDuration: 200
+				})
+			},
+			lookinfo(e) {
+				// if(this.status==1){
+					
+				// }else if(this.status==101){
+					
+				// }else if(this.status==5){
+					
+				// }else if(this.status==100){
+					
+				// }else if(this.status==0){
+					
+				// }
+				
+				uni.navigateTo({
+					url: './orderInfo?id='+this.orderList[e].id+'&type='+this.status,
 					animationDuration: 200,
 					animationType: 'pop-in'
+				})
+			},
+			call(e){
+				uni.makePhoneCall({
+					phoneNumber: e
 				})
 			}
 		}

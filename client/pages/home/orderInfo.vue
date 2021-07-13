@@ -1,15 +1,19 @@
 <template>
 	<view class="">
-		<view class="title">距离送车1天6小时12分</view>
+		<view v-if="type==0" class="title"></view>
+		<view v-if="type==101" class="title"></view>
+		<view v-if="type==1" class="title">{{info.countdown}}</view>
+		<view v-if="type==5" class="title">{{info.countdown}}</view>
+		<view v-if="type==100" class="title">{{info.countdown}}</view>
 			<!-- 待支付 没有这句话   已取消 没有这句话     已完成 违章押金已收取21天      待收车 距离收车1天6小时12分     待送车 距离送车1天6小时12分 -->
 		<!-- 关于车 -->
 		<view class="box">
 			<view class="flexBox">
-				<view class="carName">渝A·5231B</view>
+				<view class="carName">{{info.vehicleNumber}}</view>
 				<image style="width: 80rpx;height: 40rpx;" :src="$util.fileUrl('/yizhifu.png')" mode=""></image>
 			</view>
 			<view class="flexBox" style="border-bottom:2rpx dashed #999999;padding-bottom: 30rpx;">
-				<view class="carType">大众 捷达丨自动 5座 2.0L</view>
+				<view class="carType">{{info.modelName}}</view>
 				<image v-show="carShow==false" style="width: 30rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxia.png')"
 					@click="getcarInfo" mode=""></image>
 				<image v-show="carShow==true" style="width: 30rpx;height: 20rpx;"
@@ -18,64 +22,77 @@
 			<view v-show="carShow==true" style="border-bottom:2rpx dashed #999999;padding-bottom: 30rpx;">
 				<view class="flexBox">
 					<view class="moreTitle">车身颜色</view>
-					<view class="moreContent">白色</view>
+					<view class="moreContent">{{info.vehicleColour}}</view>
 				</view>
 				<view class="flexBox">
 					<view class="moreTitle">燃烧型号</view>
-					<view class="moreContent">92号</view>
+					<view class="moreContent">{{info.model}}</view>
 				</view>
 			</view>
 			<view class="flexBox">
 				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/time.png')" mode=""></image>
-				<view class="">05-25 14:48至05-30 14:48</view>
+				<view class="">{{info.rentBeginTime}}至{{info.rentEndTime}}</view>
 			</view>
-			<view class="flexBox">
+			
+			<view class="flexBox" v-if="info.endDeliveryName==info.startDeliveryName">
 				<view class="getset">取还</view>
 				<view class="address">郑家院子追风1店</view>
 				<view class="otherBack">异地还车</view>
-				<switch @change="radioChange" class="switch" :class="(radio?'checked':'')"
+				<switch  disabled="true" class="switch" :class="(radio?'checked':'')"
 					:checked="(radio?true:false)"></switch>
 			</view>
+			
+			<view v-else>
+				<view class="flexBox" >
+					<view class="getset">取</view>
+					<view class="address">{{info.startDeliveryName}}</view>
+				</view>
+				<view class="flexBox">
+					<view class="getset">还</view>
+					<view class="address">{{info.endDeliveryName}}</view>
+				</view>
+			</view>
+			
 		</view>
 		<!-- 关于人 -->
 		<view class="box">
 			<view class="flexBox">
-				<view class="carName">王小名</view>
+				<view class="carName">{{info.userRealName}}</view>
 				<image v-show="peopleShow==false" style="width: 30rpx;height: 20rpx;"
 					:src="$util.fileUrl('/xiangxia.png')" @click="getpeopleInfo" mode=""></image>
 				<image v-show="peopleShow==true" style="width: 30rpx;height: 20rpx;"
 					:src="$util.fileUrl('/xiangshang.png')" @click="getpeopleInfo" mode=""></image>
 			</view>
 			<view class="flexBox">
-				<view class="moreContent" style="text-align: left;">联系电话</view>
-				<view class="moreContent" style="color:#5A7EFF ;" @click="phone">13333333333</view>
+				<view class="moreContent" style="text-align: left;" @click="call(info.userPhone)">联系电话</view>
+				<view class="moreContent" style="color:#5A7EFF ;" @click="phone">{{info.userPhone}}</view>
 			</view>
 			<view v-show="peopleShow==true">
 				<view class="flexBox">
 					<view class="moreContent" style="text-align: left;">身份证号码</view>
-					<view class="moreContent">222222222222222222</view>
+					<view class="moreContent">{{info.userIdCard}}</view>
 				</view>
 				<view class="flexBox">
 					<view class="moreContent" style="text-align: left;">紧急联系人</view>
-					<view class="moreContent">张三</view>
+					<view class="moreContent">{{info.userEmergencyContactName}}</view>
 				</view>
 				<view class="flexBox" style="border-bottom:2rpx dashed #999999;padding-bottom: 30rpx;">
 					<view class="moreContent" style="text-align: left;">紧急联系人</view>
-					<view class="moreContent" style="color:#5A7EFF ;" @click="phone">13333333333</view>
+					<view class="moreContent" style="color:#5A7EFF ;" @click="phone">{{info.userEmergencyContactPhone}}</view>
 				</view>
 				<view class="flexBox">
 					<view class="moreContent" style="text-align: left;width: 43%;">违章</view>
-					<view class="moreContent" style="width: 55%;">6次 累计30分 罚款200元</view>
+					<view class="moreContent" style="width: 55%;">{{info.breakRulesString}}</view>
 					<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode=""></image>
 				</view>
 				<view class="flexBox">
 					<view class="moreContent" style="text-align: left;width: 43%;">事故</view>
-					<view class="moreContent" style="width: 55%;">轻微0次 中等1次 严重0次</view>
+					<view class="moreContent" style="width: 55%;">{{info.accidentString}}</view>
 					<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode=""></image>
 				</view>
 				<view class="flexBox">
 					<view class="moreContent" style="text-align: left;width: 43%;">其他</view>
-					<view class="moreContent" style="width: 55%;">3条</view>
+					<view class="moreContent" style="width: 55%;">{{info.otherString}}</view>
 					<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode=""></image>
 				</view>
 			</view>
@@ -85,7 +102,8 @@
 		<view class="box">
 			<view class="flexBox">
 				<view class="moreTitle">租金押金</view>
-				<view class="moreTitle" style="width: 15%;">未免押</view>
+				<view class="moreTitle" style="width: 15%;" v-if="info.depositType==1">未免押</view>
+				<view class="moreTitle" style="width: 15%;" v-else>全额免押</view>
 				<view class="moreContent" style="width: 20%;text-align: center;">¥60</view>
 				<view class="moreContent" style="width: 15%;color: #5A7EFF;">已支付</view>
 			</view>
@@ -101,46 +119,11 @@
 					:src="$util.fileUrl('/xiangxia.png')" @click="getmoneyInfo" mode=""></image>
 			</view>
 			<view v-show="moneyShow==true" style="border-top:2rpx dashed #999999;margin-top: 20rpx;">
-				<view class="flexBox" >
-					<view class="moreTitle">租金</view>
-					<view class="moreContent">¥60</view>
+				<view class="flexBox" v-for="(item,index) in info.orderPriceList" :key='index'>
+					<view class="moreTitle">{{item.name}}</view>
+					<view class="moreContent">¥{{item.price}}</view>
 				</view>
-				<view class="flexBox" >
-					<view class="moreTitle">异地调度费</view>
-					<view class="moreContent">¥60</view>
-				</view>
-				<view class="flexBox" >
-					<view class="moreTitle">零散小时费</view>
-					<view class="moreContent">¥60</view>
-				</view>
-				<view class="flexBox" >
-					<view class="moreTitle">夜间取车费</view>
-					<view class="moreContent">¥60</view>
-				</view>
-				<view class="flexBox" >
-					<view class="moreTitle">夜间取车费</view>
-					<view class="moreContent">¥60</view>
-				</view>
-				<view class="flexBox" >
-					<view class="moreTitle">驾无忧保障</view>
-					<view class="moreContent">¥60</view>
-				</view>
-				<view class="flexBox" >
-					<view class="moreTitle">基本保障费</view>
-					<view class="moreContent">¥60</view>
-				</view>
-				<view class="flexBox" >
-					<view class="moreTitle">手续费</view>
-					<view class="moreContent">¥60</view>
-				</view>
-				<view class="flexBox" >
-					<view class="moreTitle">优惠券减免</view>
-					<view class="moreContent">¥60</view>
-				</view>
-				<view class="flexBox" >
-					<view class="moreTitle">补收差价</view>
-					<view class="moreContent">¥60</view>
-				</view>
+
 				<view class="flexBox">
 					<view class="moreContent" style="width: 93%;color: #5A7EFF;">收起明细</view>
 					<image style="width: 30rpx;height: 20rpx;margin-left: 10rpx;"
@@ -150,79 +133,83 @@
 		</view>
 		
 		<!-- 关于发票 -->
-		<view class="box">
+		<view class="box" >
 			<view class="flexBox">
 				<view class="moreTitle">发票抬头</view>
-				<view class="moreTitle" style="width: 43%;text-align: right;">需要</view>
+				<view class="moreTitle" style="width: 43%;text-align: right;" v-if="info.isInvoice==1">需要</view>
+				<view class="moreTitle" style="width: 43%;text-align: right;" v-else>不需要</view>
 				<image v-show="invoiceShow==false" style="width: 30rpx;height: 20rpx;margin-left: 10rpx;"
 					:src="$util.fileUrl('/xiangxia.png')" @click="getinvoiceInfo" mode=""></image>
 				<image v-show="invoiceShow==true" style="width: 30rpx;height: 20rpx;margin-left: 10rpx;"
 					:src="$util.fileUrl('/xiangshang.png')" @click="getinvoiceInfo" mode=""></image>
 			</view>
-			<view v-show="invoiceShow==true">
-				<view class="flexBox" style="border-top:2rpx dashed #EFF0F3;padding-top: 30rpx;">
-					<view class="moreTitle">发票抬头</view>
-					<view class="moreContent">这里是发票抬头</view>
-				</view>
-				<view class="flexBox" >
-					<view class="moreTitle">税号</view>
-					<view class="moreContent">544564896164669</view>
-				</view>
-				<view class="flexBox" >
-					<view class="moreTitle">银行账号</view>
-					<view class="moreContent">544564896164669</view>
-				</view>
-				<view class="flexBox" >
-					<view class="moreTitle">开户行</view>
-					<view class="moreContent">中国银行江北嘴支行</view>
-				</view>
-				<view class="flexBox" >
-					<view class="moreTitle">注册地址</view>
-					<view class="moreContent">这里是注册地址</view>
-				</view>
-				<view class="flexBox" >
-					<view class="moreTitle">电话</view>
-					<view class="moreContent">023-66666666</view>
-				</view>
-				<view class="flexBox" >
-					<view class="moreTitle">邮箱</view>
-					<view class="moreContent">666666@qq.com</view>
-				</view>
-				<view class="flexBox" style="border-bottom:2rpx dashed #EFF0F3;padding-bottom: 30rpx;">
-					<view class="moreTitle">发票类型</view>
-					<view class="moreContent">普票</view>
+			<view v-show="info.isInvoice==1" >
+				<view  v-show="invoiceShow==true">
+					<view class="flexBox" style="border-top:2rpx dashed #EFF0F3;padding-top: 30rpx;">
+						<view class="moreTitle">发票抬头</view>
+						<view class="moreContent">{{info.invoiceTitle}}</view>
+					</view>
+					<view class="flexBox" >
+						<view class="moreTitle">税号</view>
+						<view class="moreContent">{{info.invoiceTaxNum}}</view>
+					</view>
+					<view class="flexBox" >
+						<view class="moreTitle">银行账号</view>
+						<view class="moreContent">{{info.invoiceBankNum}}</view>
+					</view>
+					<view class="flexBox" >
+						<view class="moreTitle">开户行</view>
+						<view class="moreContent">{{info.invoiceOpeningBank}}</view>
+					</view>
+					<view class="flexBox" >
+						<view class="moreTitle">注册地址</view>
+						<view class="moreContent">{{info.invoiceRegisteredAddress}}</view>
+					</view>
+					<view class="flexBox" >
+						<view class="moreTitle" @click="call(info.invoicePhone)">电话</view>
+						<view class="moreContent">{{info.invoicePhone}}</view>
+					</view>
+					<view class="flexBox" >
+						<view class="moreTitle">邮箱</view>
+						<view class="moreContent">{{info.invoiceMailbox}}</view>
+					</view>
+					<view class="flexBox" style="border-bottom:2rpx dashed #EFF0F3;padding-bottom: 30rpx;">
+						<view class="moreTitle">发票类型</view>
+						<view class="moreContent">{{info.invoiceType}}</view>
+					</view>
 				</view>
 			</view>
 			<view class="flexBox">
 				<view class="moreTitle">订单号</view>
-				<view class="moreContent">544564896164669</view>
+				<view class="moreContent">{{info.orderSn}}</view>
 			</view>
 			<view class="flexBox">
 				<view class="moreTitle">订单来源</view>
-				<view class="moreContent">微信小程序</view>
+				<view v-if="info.orderSource==0" class="moreContent">微信小程序</view>
+				<view v-if="info.orderSource==1" class="moreContent">支付宝小程序</view>
 			</view>
 			<view class="flexBox">
 				<view class="moreTitle">下单时间</view>
-				<view class="moreContent" style="width:56%">2021/05/31 18:51</view>
+				<view class="moreContent" style="width:56%">{{info.createTime}}</view>
 				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode=""></image>
 			</view>
 			<view class="flexBox">
 				<view class="moreTitle">所属门店</view>
-				<view class="moreContent">郑家院子1号店</view>
+				<view class="moreContent">{{info.memberShopName}}</view>
 			</view>
 		</view>
 		<!-- 备注-->
 		<view class="box">
 			<view class="moreTitle">备注：</view>
-			<textarea style="border-radius: 10rpx;height: 200rpx;padding-bottom: 20rpx;" value="" placeholder="请输入备注信息" />
+			<textarea style="border-radius: 10rpx;height: 200rpx;padding-bottom: 20rpx;" :value="info.orderRemark" placeholder="请输入备注信息"  disabled="true" />
 		</view>
 		<!-- 换车 -->
-			<view class="flexBox">
+			<view class="flexBox" v-show="type==5 || type==1">
 				<image style="width: 40rpx;height: 40rpx;margin-left: 80%;"
 					:src="$util.fileUrl('/huanche.png')" @click="getmoneyInfo" mode=""></image>
 				<view class="moreContent" style="width: 10%;color: #5A7EFF;" @click="changeCar">换车</view>
 			</view>
-			<view class="flexBox" >
+			<view class="flexBox" v-show="type==100">
 				<view class="moreContent" style="width: 20%;color: #5A7EFF;margin-left: 55%;">查看违章</view>
 				<view class="moreContent" style="width: 20%;color: #5A7EFF;">添加违章</view>
 			</view>
@@ -230,20 +217,23 @@
 		<view class="flexBox" style="width: 90%;margin: 60rpx auto 30rpx auto;">
 			<image style="width: 32rpx;height: 32rpx;"
 				:src="$util.fileUrl('/phone@2x.png')" @click="getmoneyInfo" mode=""></image>
-			<view style="color: #FFA05B;font-size: 24rpx;margin-left: 10rpx;margin-right: 38%;">联系客户</view>
-			<view class="lanbox">交车情况</view>
-			<view class="lanbox">收车情况</view>
-			<view class="lanbox">结算佣金</view>
-			<view class="lanbox">出车检验</view>
-			<view class="lanbox">检验收车</view>
-			<view class="lanbox">交付车辆</view>
-			<view class="lanbox1">退还押金</view>
-			<!-- 待支付 按钮都不要    已取消 按钮都不要    已完成 结算 收车 退还      待收车 交车 检验     待送车 出车 交付-->
+			<view style="color: #FFA05B;font-size: 24rpx;margin-left: 10rpx;">联系客户</view>
+			<view style="width: 75%;display: flex;align-items: center;justify-content: flex-end;">
+				<view v-show="type==5" class="lanbox">交车情况</view>
+				<view v-show="type==100" class="lanbox">收车情况</view>
+				<view v-show="type==100" class="lanbox">结算佣金</view>
+				<view v-show="type==1" class="lanbox" @click="goInspect()">出车检验</view>
+				<view v-show="type==5 " class="lanbox">检验收车</view>
+				<view v-show="type==1" class="lanbox">交付车辆</view>
+				<view v-show="type==100" class="lanbox1">退还押金</view>
+			</view>
+			<!-- 待支付 按钮都不要    已取消 按钮都不要    已完成  100 结算 收车 退还      待收车 5 交车 检验       待送车 1 出车 交付-->
 		</view>
 	</view>
 </template>
 
 <script>
+	import {orderInfo} from '@/apis/rentalOrder'
 	export default {
 		data() {
 			return {
@@ -251,9 +241,25 @@
 				peopleShow: false, //显示人的其他信息
 				moneyShow: false, //显示钱的其他信息
 				invoiceShow:false,//显示发票信息
+				info:'',
+				type:'',//订单类型
 			}
 		},
+		onLoad(e) {
+			console.log(e)
+			this.orderInfo(e.id)
+			this.type=e.type
+		},
 		methods: {
+		 async orderInfo(e){
+			 let data={
+				 orderId:e
+			 }
+			 const [err,res] = await orderInfo(data)
+			  if(err) return
+			  console.log(res)
+			  this.info=res.data
+		 },
 			getcarInfo() {
 				if (this.carShow) {
 					this.carShow = false
@@ -292,6 +298,16 @@
 					url:'./changeCar',
 					animationDuration:200,
 					animationType:'pop-in'
+				})
+			},
+			call(e){
+				uni.makePhoneCall({
+					phoneNumber: e
+				})
+			},
+			goInspect(){
+				uni.navigateTo({
+					url:'./goInspect?obj='+JSON.stringify(this.info)
 				})
 			}
 		}
@@ -409,6 +425,9 @@
 		padding: 10rpx 15rpx;
 		border-radius: 10rpx;
 		color: #5A7EFF;
+		margin-left: 5%;
+		width: 26%;
+		text-align: center;
 	}
 	.lanbox1{
 		font-size:24rpx;
@@ -416,5 +435,8 @@
 		border-radius: 10rpx;
 		color: white;
 		background-color: #5A7EFF;
+		margin-left: 5%;
+		width: 26%;
+		text-align: center;
 	}
 </style>

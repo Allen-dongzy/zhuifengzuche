@@ -50,7 +50,7 @@ export const queryGoods = (vehicleId, orderId, loading = '修改中') => {
 		url: `vehicleCheck/queryGoods/${vehicleId}/${orderId}`,
 		contentType: 'application/x-www-form-urlencoded',
 		method: 'POST',
-		data,
+		data:{},
 		loading
 	})
 }

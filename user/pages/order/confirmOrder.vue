@@ -16,7 +16,8 @@
 				</view>
 			</view>
 			<view class="params">{{info.clientVehicleVo.categoryName}}丨{{info.clientVehicleVo.gears}}
-				{{info.clientVehicleVo.size}}座 {{info.clientVehicleVo.outputVolumeName}}</view>
+				{{info.clientVehicleVo.size}}座 {{info.clientVehicleVo.outputVolumeName}}
+			</view>
 		</view>
 		<view class="lease">
 			<view class="caption">租期</view>
@@ -80,7 +81,7 @@
 				</view>
 				<view class="right" @click="selInsurance">
 					<view class="text">￥<text>{{info.orderPriceInfo.insuranceMoney }}</text></view>
-					<view :class="['circle', {'ac':isInsurance}]" ></view>
+					<view :class="['circle', {'ac':isInsurance}]"></view>
 				</view>
 			</view>
 			<view class="item" @click="$open('/pages/mine/coupon?selectType=goods')">
@@ -214,6 +215,10 @@
 	import {
 		invoiceQueryByUser
 	} from '@/apis/invoice'
+
+	import {
+		mapState
+	} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -233,7 +238,7 @@
 				rentFreeSwitch: false, // 是否开启免租
 				invoiceSwitch: false, // 是否开启发票
 				isInsurance: false, // 是否选择保险
-				isInsuranceId:0,//0是否 1是买
+				isInsuranceId: 0, //0是否 1是买
 				confirm: '', //优惠券
 				invoiceIndex: 0, //选择发票下标
 				invoiceId: '', //发票Id
@@ -244,15 +249,15 @@
 				takeday: '', //取车日期
 				takeweek: '', //取车星期
 				taketime: '', //取车时间
-				takeId:'',//取车地点id
+				takeId: '', //取车地点id
 				backday: '', //还车日期
 				backweek: '', //还车星期
 				backtime: '', //还车时间
-				backId:'',//还车地点id
-				totalDate: '',//相差时间
-				carId:'',//车型id
-				remark:'',//备注
-				yudingInfo:'',//时间 地点
+				backId: '', //还车地点id
+				totalDate: '', //相差时间
+				carId: '', //车型id
+				remark: '', //备注
+				yudingInfo: '', //时间 地点
 			}
 		},
 		computed: {
@@ -278,17 +283,18 @@
 						break
 				}
 				return info
-			}
+			},
+			...mapState('app',['platform'])
 		},
 		components: {
 			EvanSwitch
 		},
 		onLoad(e) {
 			console.log(e)
-			this.yudingInfo=e
-			this.carId=e.carModelId
-			this.takeId=e.takeCarAddressId
-			this.backId=e.carAlsoAddressId
+			this.yudingInfo = e
+			this.carId = e.carModelId
+			this.takeId = e.takeCarAddressId
+			this.backId = e.carAlsoAddressId
 			this.findIsUseCouponByUser()
 			this.invoiceQueryByUser()
 			this.rentalOrderGenerateOrder(e)
@@ -303,7 +309,7 @@
 		},
 		methods: {
 			async rentalOrderGenerateOrder(e) {
-				
+
 				let data = {
 					vehicleModelId: e.carModelId,
 					rentEndTime: e.carAlsoTime,
@@ -346,6 +352,7 @@
 				if (err) return
 				console.log(res)
 				this.confirm = res.data[0].discountAmount
+				this.couponId=res.data[0].id
 			},
 
 			// 轮播改变
@@ -377,23 +384,31 @@
 				const latitude = res.latitude
 				const longitude = res.longitude
 				// 打开位置
+			
 				uni.openLocation({
 					latitude,
 					longitude
 				})
 			},
 			// 打电话
-			phoneCall() {
-				uni.makePhoneCall({
-					phoneNumber: '17623178041'
-				})
-			},
+			// phoneCall() {
+			// 	uni.makePhoneCall({
+			// 		phoneNumber: '17623178041'
+			// 	})
+			// },
 			// 选择保险
 			selInsurance() {
 				this.isInsurance = !this.isInsurance
+				if(this.isInsurance==true){
+					this.info.orderPriceInfo.total=Number(this.info.orderPriceInfo.insuranceMoney)+Number(this.info.orderPriceInfo.total)
+				}else{
+					this.info.orderPriceInfo.total=Number(this.info.orderPriceInfo.total)-Number(this.info.orderPriceInfo.insuranceMoney)
+				}
+				
+				this.$forceUpdate()
 			},
-		async	sure(){
-			
+			async sure() {
+
 				console.log(this.carId)
 				console.log(this.couponId)
 				console.log(this.invoiceId)
@@ -402,29 +417,49 @@
 				console.log(this.backId)
 				console.log(this.remark)
 				console.log(this.yudingInfo)
-				
-				if(this.isInsurance){
-					this.isInsuranceId=1
+				console.log(this.selStatus)
+				if(this.selStatus==false){
+					this.$toast("请同意用户协议");
+					 return false;
+				}
+				if (this.isInsurance) {
+					this.isInsuranceId = 1
+				} else {
+					this.isInsuranceId = 0
+				}
+				if(this.invoiceSwitch){
+					var data = {
+						couponId: this.couponId,
+						invoiceId: this.invoiceId,
+						isInsurance: this.isInsuranceId,
+						orderSource: 0,
+						pickPlace: this.takeId,
+						returnPlace: this.backId,
+						remark: this.remark,
+						rentBeginTime: this.yudingInfo.takeCarTime,
+						rentEndTime: this.yudingInfo.carAlsoTime,
+						vehicleModelId: this.carId
+					}
 				}else{
-					this.isInsuranceId=0
+					var data = {
+						couponId: this.couponId,
+						isInsurance: this.isInsuranceId,
+						orderSource: 0,
+						pickPlace: this.takeId,
+						returnPlace: this.backId,
+						remark: this.remark,
+						rentBeginTime: this.yudingInfo.takeCarTime,
+						rentEndTime: this.yudingInfo.carAlsoTime,
+						vehicleModelId: this.carId
+					}
 				}
-			
-				let data={
-					couponId:this.couponId,
-					invoiceId:this.invoiceId,
-					isInsurance:this.isInsuranceId,
-					orderSource: 0,
-					pickPlace:this.takeId,
-					returnPlace:this.backId,
-					remark:this.remark,
-					rentBeginTime:this.yudingInfo.takeCarTime,
-					rentEndTime:this.yudingInfo.carAlsoTime,
-					vehicleModelId:this.carId
-				}
-			const [err,res] = await rentalOrderCreateOrders(data)
-			if(err) return 
-			console.log(res) 
-			
+
+				const [err, res] = await rentalOrderCreateOrders(data)
+				if (err) return
+				console.log(res)
+				uni.navigateTo({
+					url:'./orderPay?price='+this.info.orderPriceInfo.total
+				})
 			}
 		}
 	}
