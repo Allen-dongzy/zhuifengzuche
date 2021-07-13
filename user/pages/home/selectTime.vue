@@ -159,15 +159,28 @@
 				}]
 				const checkRes = validator(checkList, this.$toast)
 				if (checkRes.status !== 1000) return
+				const takeCarTime = `${this.takeCarDate} ${this.takeCarTime}:00`
+				const carAlsoTime = `${this.carAlsoDate} ${this.carAlsoTime}:00`
+				const takeCarTimeStamp = new Date(takeCarTime).getTime()
+				const carAlsoTimeStamp = new Date(carAlsoTime).getTime()
+				const currentTimeStamp = Date.now()
+				if (takeCarTimeStamp < currentTimeStamp) {
+					this.$toast('开始时间不能小于当前时间！')
+					return
+				}
+				if (takeCarTimeStamp > carAlsoTimeStamp) {
+					this.$toast('开始时间不能大于结束时间！')
+					return
+				}
 				uni.$emit('checkTime', {
 					takeCarDateShow: `${this.takeCarDate.split('-')[1]}月${this.takeCarDate.split('-')[2]}日`,
 					takeCarDayShow: this.takeCarDay,
 					takeCarTimeShow: this.takeCarTime,
-					takeCarTime: `${this.takeCarDate} ${this.takeCarTime}:00`,
+					takeCarTime,
 					carAlsoDateShow: `${this.carAlsoDate.split('-')[1]}月${this.carAlsoDate.split('-')[2]}日`,
 					carAlsoDayShow: this.carAlsoDay,
 					carAlsoTimeShow: this.carAlsoTime,
-					carAlsoTime: `${this.carAlsoDate} ${this.carAlsoTime}:00`,
+					carAlsoTime,
 					totalDate: this.totalDate
 				})
 				this.$close()
