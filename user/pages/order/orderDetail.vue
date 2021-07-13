@@ -19,7 +19,7 @@
 				</view>
 				<view v-show="info.orderStatus===0 || info.orderStatus===1" class="contact" @click="contactStore">
 					<image class="phone" :src="`${ossUrl}/common/phone-big.png`"></image>
-					联系店面
+					联系门店
 				</view>
 				<view v-show="info.orderStatus===2" class="contact" @click="contactSendCarPart">
 					<image class="phone" :src="`${ossUrl}/common/phone-big.png`"></image>
@@ -27,31 +27,34 @@
 				</view>
 			</view>
 		</view>
-		<view v-show="info.orderStatus===3 || info.orderStatus===4 || info.orderStatus===5 || info.orderStatus===6"
+		<view v-show="info.orderStatus===3 || info.orderStatus===4 || info.orderStatus===100 || info.orderStatus===101"
 			class="top-panel-2">
 			<view class="top">
 				<image class="bg" :src="`${ossUrl}/order/order-bg.png`"></image>
 				<view class="mask">
-					<view class="caption">租用中</view>
-					<view class="toast">剩余用车时间<text>6小时14分</text>请在约定时间内归还</view>
+					<view class="caption">{{statusShow}}</view>
+					<view v-show="info.orderStatus===3" class="toast">{{info.countdown}}</view>
+					<view v-show="info.orderStatus===4" class="toast">请前往换车详情页面完成换车</view>
+					<view v-show="info.orderStatus===100" class="toast">感谢您对追风租车的信任，期待再次光临</view>
+					<view v-show="info.orderStatus===101" class="toast">您的订单已取消，感谢你使用追风租车</view>
 				</view>
 			</view>
 			<view v-show="info.orderStatus===3" class="menu">
 				<view class="menu-box">
 					<view class="header">
 						<image class="icon" :src="`${ossUrl}/order/exclamation.png`"></image>
-						<view class="caption">还车时租车押金将转￥3000为违章押金，无违章30天后退还。</view>
+						<view class="caption">{{info.breakRulesString}}</view>
 					</view>
 					<view class="btn-box">
-						<view class="btn white">联系门店</view>
-						<view class="btn white" @click="$open('/pages/order/renewal')">续租用车</view>
-						<view class="btn blue" @click="$open('/pages/order/returnCar')">前往还车</view>
+						<view class="btn white" @click="contactStore">联系门店</view>
+						<view class="btn white" @click="$open('/pages/order/renewal', {id: info.id})">续租用车</view>
+						<view class="btn blue" @click="$open('/pages/order/returnCar', {id: info.id})">前往还车</view>
 					</view>
 				</view>
 			</view>
 		</view>
 		<view class="order-card"
-			:class="{'radius': info.orderStatus===4 || info.orderStatus===5 || info.orderStatus===6}">
+			:class="{'radius': info.orderStatus===4 || info.orderStatus===100 || info.orderStatus===101}">
 			<view class="info">
 				<image class="picture" :src="info.vehicleModelFiles" mode="aspectFill"></image>
 				<view class="description">
@@ -147,9 +150,11 @@
 				<view class="left">支付方式</view>
 				<view class="right">{{info.paymentType}}</view>
 			</view>
-			<view v-show="info.orderStatus===3" class="order-item" @click="$open('/pages/order/depositReceived')">
+			<view v-show="info.orderStatus===3" class="order-item"
+				@click="$open('/pages/order/depositReceived', {payTheVoucherRentalCarDeposit: info.payTheVoucherRentalCarDeposit, paymentVoucherHandler: info.paymentVoucherHandler, paymentVoucherTransactionTime: info.paymentVoucherTransactionTime})">
 				<view class="left">支付凭证</view>
-				<view class="right">预收冻结￥500<view class="arrow"></view>
+				<view class="right">预收冻结￥{{info.payTheVoucherRentalCarDeposit}}
+					<view class="arrow"></view>
 				</view>
 			</view>
 			<view class="order-item">
@@ -161,23 +166,27 @@
 			</view>
 		</view>
 
-		<view v-show="info.orderStatus===4 || info.orderStatus===5 || info.orderStatus===6" class="bottom-bar">
+		<view v-show="info.orderStatus===4 || info.orderStatus===100 || info.orderStatus===101" class="bottom-bar">
 			<view class="left">
 				<image v-show="info.orderStatus===4" class="icon" :src="`${ossUrl}/order/smile.png`"></image>
 				<image v-show="info.orderStatus!==4" class="icon" :src="`${ossUrl}/order/price.png`"></image>
-				追风租车祝您生活愉快
+				<text v-show="info.orderStatus===4">追风租车祝您生活愉快</text>
+				<text v-show="info.orderStatus===100">违押金未退还</text>
+				<text v-show="info.orderStatus===101">半小时内免费取消，金额已原路退回</text>
 			</view>
 			<view class="right">
-				<view v-show="info.orderStatus===5 || info.orderStatus===6" class="contact">
+				<view v-show="info.orderStatus===100 || info.orderStatus===101" class="contact" @click="contactStore">
 					<image class="phone" :src="`${ossUrl}/common/phone-big.png`"></image>
 					联系门店
 				</view>
-				<view v-show="info.orderStatus===4 || info.orderStatus===5" class="btn-box">
-					<view v-show="info.orderStatus===4" class="btn white">联系送车员</view>
-					<view v-show="info.orderStatus===4" class="btn blue" @click="$open('/pages/order/changeCarDetail')">
+				<view v-show="info.orderStatus===4 || info.orderStatus===100" class="btn-box">
+					<view v-show="info.orderStatus===4" class="btn white" @click="contactSendCarPart">联系送车员</view>
+					<view v-show="info.orderStatus===4" class="btn blue"
+						@click="$open('/pages/order/changeCarDetail', {id: info.id})">
 						换车详情
 					</view>
-					<view v-show="info.orderStatus===5" class="btn blue" @click="$open('/pages/order/evaluate')">评价订单
+					<view v-show="info.orderStatus===100" class="btn blue"
+						@click="$open('/pages/order/evaluate', {id: info.id})">评价订单
 					</view>
 				</view>
 			</view>
@@ -234,6 +243,18 @@
 					case 2:
 						info = '正在送车'
 						break
+					case 3:
+						info = '租用中'
+						break
+					case 4:
+						info = '换车中'
+						break
+					case 100:
+						info = '订单已完成'
+						break
+					case 101:
+						info = '订单已取消'
+						break
 				}
 				return info
 			}
@@ -250,7 +271,7 @@
 				const [err, res] = await rentalOrderOrderInfo(params)
 				if (err) return
 				this.info = res.data
-				this.info.orderStatus = 2
+				this.info.orderStatus = 101
 				const rentBeginTime = this.timeFormat(this.info.rentBeginTime)
 				this.info.takeCarDateShow = rentBeginTime[0]
 				this.info.takeCarDayShow = rentBeginTime[1]
