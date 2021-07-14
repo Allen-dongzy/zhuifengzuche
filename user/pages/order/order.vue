@@ -64,13 +64,14 @@
 					</view>
 					<view v-show="item.orderStatus >= 100" class="contact"></view>
 					<view class="btn-box">
+						<view v-show="item.orderStatus === 0" class="btn blue">立即支付</view>
+						<view v-show="item.orderStatus === 2" class="btn blue"
+							@click.stop="$open('/pages/common/goInspect', {orderId: item.id, vehicleId: item.vehicleId})">
+							查看车况
+						</view>
 						<view v-show="item.orderStatus === 3" class="btn white"
 							@click.stop="$open('/pages/order/renewal')">
 							续租用车
-						</view>
-						<view v-show="item.orderStatus === 0" class="btn blue">立即支付</view>
-						<view v-show="item.orderStatus === 2" class="btn blue"
-							@click.stop="$open('/pages/common/goInspect')">查看车况
 						</view>
 						<view v-show="item.orderStatus === 3" class="btn blue"
 							@click.stop="$open('/pages/order/returnCar')">

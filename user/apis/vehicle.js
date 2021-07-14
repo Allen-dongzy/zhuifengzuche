@@ -11,6 +11,16 @@ export const vehicleAddRemarks = (data, loading = '提交中') => { // 对接
 	})
 }
 
+// 租赁合同
+export const vehicleGetVehicleCertificatess = (data, loading = '') => { // 对接
+	return request({
+		url: 'vehicle/getVehicleCertificates',
+		method: 'GET',
+		data,
+		loading
+	})
+}
+
 // 根据租车时间获取该车的租金
 export const vehicleGetVehiclePrice = (data, loading = '') => {
 	return request({
@@ -71,6 +81,16 @@ export const vehicleQueryVehicleModels = (deliveryId, brandId, loading = '') => 
 		contentType: 'application/x-www-form-urlencoded',
 		method: 'POST',
 		data: {},
+		loading
+	})
+}
+
+// 租赁合同-签名
+export const vehicleUpdateVehicleCertificates = (data, loading = '') => { // 对接
+	return request({
+		url: 'vehicle/updateVehicleCertificates',
+		method: 'GET',
+		data,
 		loading
 	})
 }

@@ -25,7 +25,7 @@
 			</view>
 			<view class="flexBox" style="width: 50%;">
 				<view style="font-size: 50rpx;font-weight: bold;">{{oil}}</view>
-				<view style="margin: 10rpx 0rpx 0rpx 10rpx;"> ></view>
+				<view style="margin: 10rpx 0rpx 0rpx 10rpx;"> /10 ></view>
 			</view>
 		</view>
 		<!-- 各项信息详情 -->
@@ -42,8 +42,8 @@
 					<view style="display: flex;align-items: center;width: 29%;">
 						<view :class="['selectOk', {'statusOk': inner.condition===0}]">完好</view>
 						<view v-show="!inner.condition" class="selectNo">损坏</view>
-						<view v-show="inner.condition && inner.condition===1" class="selectNo statusOk"
-							@click="previewImgs([inner.image])">查看图片</view>
+						<view v-show="inner.condition && inner.condition===1" class="lookImg"
+							@click="previewPics([inner.image])">查看图片</view>
 					</view>
 				</view>
 			</view>
@@ -52,25 +52,30 @@
 		<view style="width: 90%;margin: auto;margin-top: 40rpx;" v-for="(item, index) in remarksList" :key="index">
 			<view class="blackText" style="width: 10%;">备注</view>
 			<view class="garyText">{{item.remarks}}</view>
-			<view class="img-box" v-for="(inner, sub) in JSON.parse(item.image)" :key="sub">
-				<image style="width:160rpx;height:160rpx;" :src="inner"></image>
+			<view class="img-box" v-for="(inner, sub) in JSON.parse(item.image)" :key="sub"
+				@click="previewPics(JSON.parse(item.image), sub)">
+				<image style="width:160rpx;height:160rpx;" :src="inner" mode="aspectFill"></image>
 			</view>
 		</view>
 		<view class="flexBox">
 			<view class="blackText" style="width: 20%;">添加备注</view>
 		</view>
 		<textarea value="" placeholder="请输入备注信息"
-			style="padding: 20rpx;width:85%;margin: auto;background-color: #EFF0F3;height:220rpx;border-radius: 20rpx;margin-top: 30rpx;" />
+			style="padding: 20rpx;width:85%;margin: auto;background-color: #EFF0F3;height:220rpx;border-radius: 20rpx;margin-top: 30rpx;"
+			v-model="remarks" />
 		<view style="width: 92%;margin: auto;padding-bottom: 20rpx;border-bottom: 2rpx solid #EFF0F3;">
 			<view style="display: inline-block;width: 21%;margin: 20rpx 2%;position: relative;"
-				v-for="(item,index) in imgList" :key="index">
-				<view v-if="index==(imgList.length-1)">
-					<image style="width:160rpx;height:160rpx;" :src="`${ossUrl}/common/guanxi.png`"></image>
-				</view>
-				<view v-else>
-					<image style="width:160rpx;height:160rpx;" :src="`${ossUrl}/common/guanxi.png`"></image>
+				v-for="(item, index) in imgList" :key="index">
+				<view>
+					<image style="width:160rpx;height:160rpx;" :src="item" mode="aspectFill"></image>
 					<image style="width:36rpx;height:36rpx;position: absolute;top:-10rpx;right: -25rpx;"
-						:src="`${ossUrl}/common/lancha.png`"></image>
+						:src="`${ossUrl}/common/lancha.png`" @click="removePic(index)"></image>
+				</view>
+			</view>
+			<view v-if="imgList.length<3" style="display: inline-block;width: 21%;margin: 20rpx 2%;position: relative;"
+				@click="choosePics">
+				<view>
+					<image style="width:160rpx;height:160rpx;" :src="`${ossUrl}/common/guanxi.png`"></image>
 				</view>
 			</view>
 		</view>
@@ -80,7 +85,7 @@
 				    background-color: #5A7EFF;
 				    border-radius: 50px;
 				    font-size: 32rpx;
-				    height: 96rpx;line-height: 96rpx;" type="default">完成</button>
+				    height: 96rpx;line-height: 96rpx;" type="default" @click="vehicleAddRemarks">完成</button>
 		<view class="Mask" v-show="imgshow==true"></view>
 		<view class="box1" v-show="imgshow==true">
 			<view class="blackText">请上传图片</view>
@@ -101,10 +106,14 @@
 		vehicleAddRemarks
 	} from '@/apis/vehicle'
 	import {
+		uploadFiles
+	} from '@/apis/oss'
+	import {
 		throttle
 	} from '@/utils/tools'
 	import {
-		previewImgs
+		previewImgs,
+		chooseImgs
 	} from '@/utils/uni-tools'
 
 	export default {
@@ -117,7 +126,9 @@
 				goodsList: [], // 车辆物件
 				mileage: '', // 当前里程
 				oil: '', // 当前油量
-				remarksList: [] // 车辆检验备注
+				remarks: '', // 备注
+				remarksList: [], // 车辆检验备注
+				imgList: [], // 图片列表
 			}
 		},
 		onLoad(e) {
@@ -136,10 +147,27 @@
 				this.oil = res.data.oil
 				this.remarksList = res.data.remarksList
 			},
+			// 预览图片
+			previewPics(urls, index = 0) {
+				previewImgs(urls, index)
+			},
+			// 选择图片
+			async choosePics() {
+				const [err, res] = await chooseImgs(3 - this.imgList.length)
+				if (err) return
+				const [uploadErr, uploadRes] = await uploadFiles(res)
+				if (uploadErr) return
+				this.imgList = [...this.imgList, ...uploadRes]
+			},
+			// 删除图片
+			removePic(index) {
+				this.imgList.splice(index, 1)
+			},
 			// 添加备注
 			vehicleAddRemarks: throttle(async function() {
 				const params = {
 					image: JSON.stringify(this.imgList),
+					vehicleId: this.vehicleId,
 					orderId: this.orderId,
 					remarks: this.remarks,
 					type: 0
@@ -148,7 +176,10 @@
 				if (err) return
 				this.$toast('操作成功')
 				setTimeout(() => {
-					this.$close()
+					this.$open('/pages/common/contract', {
+						vehicleId: this.vehicleId,
+						orderId: this.orderId
+					})
 				}, 500)
 			}),
 			sliderChange(e) {
@@ -301,8 +332,8 @@
 		display: inline-block;
 		margin: 20rpx 0;
 		position: relative;
-		
-		image ~ image {
+
+		&~.img-box {
 			margin-left: 20rpx;
 		}
 	}

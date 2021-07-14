@@ -326,7 +326,7 @@
 			},
 			// 联系送车员
 			contactSendCarPart() {
-				this.phoneCall(this.info.songcheyuan)
+				this.phoneCall(this.info.startUserPhone)
 			},
 			// 打电话
 			phoneCall(phoneNumber) {
