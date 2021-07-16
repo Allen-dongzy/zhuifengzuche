@@ -19,7 +19,7 @@ const Status = {
 	403: '该操作被禁止！',
 	404: '未找到资源！',
 	500: '操作异常',
-	503: '操作失败',
+	503: '暂无响应',
 	999: '未知的状态'
 }
 
@@ -160,7 +160,7 @@ const commAfter = params => {
 
 // 状态管理
 const codeManager = (res) => {
-	const code = parseInt(res.data.code)
+	const code = parseInt(res.data.code || res.data.status)
 	// 通信合集
 	let returnResult = []
 	//返回状态
