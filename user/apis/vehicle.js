@@ -85,6 +85,17 @@ export const vehicleQueryVehicleModels = (deliveryId, brandId, loading = '') => 
 	})
 }
 
+// 车辆租赁计划列表
+export const vehicleQuerySelectRentalPlanList = (vehicleId, loading = '') => { // 对接
+	return request({
+		url: `vehicle/selectRentalPlanList/${vehicleId}`,
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'POST',
+		data: {},
+		loading
+	})
+}
+
 // 租赁合同-签名
 export const vehicleUpdateVehicleCertificates = (data, loading = '') => { // 对接
 	return request({

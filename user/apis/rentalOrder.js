@@ -64,3 +64,25 @@ export const rentalOrderPageQuery = (data, loading = '') => { // 对接
 		loading
 	})
 }
+
+// 续租用车检查
+export const rentalOrderRenewCarRentalPriceCheck = (data, loading = '检测中') => { // 对接
+	return request({
+		url: 'rentalOrder/renewCarRentalPriceCheck',
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'POST',
+		data,
+		loading
+	})
+}
+
+// 续租用车费用计算
+export const rentalOrderRenewCarRentalPriceGet = (data, loading = '') => { // 对接
+	return request({
+		url: 'rentalOrder/renewCarRentalPriceGet',
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'POST',
+		data,
+		loading
+	})
+}

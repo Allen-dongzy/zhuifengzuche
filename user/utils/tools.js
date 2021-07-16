@@ -26,6 +26,9 @@ const toDate = timestamp => {
 // 计算现在到指定未来时间点的时间戳时间差
 const getDifference = timeData => {
 	if (!timeData.Y || !timeData.M || !timeData.D) return false
+	timeData.h = timeData.h || '00'
+	timeData.m = timeData.m || '00'
+	timeData.s = timeData.s || '00'
 	const now = new Date().getTime()
 	const future = new Date(timeData.Y, timeData.M - 1, timeData.D, timeData.h, timeData.m, timeData.s).getTime()
 	const difference = future - now
@@ -101,7 +104,7 @@ const setClipboard = text => {
 
 		// input自带的select()方法在苹果端无法进行选择，所以需要自己去写一个类似的方法
 		// 选择文本。createTextRange(setSelectionRange)是input方法
-		function selectText (textbox, startIndex, stopIndex) {
+		function selectText(textbox, startIndex, stopIndex) {
 			if (textbox.createTextRange) { //ie
 				const range = textbox.createTextRange()
 				range.collapse(true)
@@ -119,7 +122,7 @@ const setClipboard = text => {
 // 防抖
 const debounce = (callback, delay = 600) => {
 	let timer // 闭包存定时器状态
-	return function () {
+	return function() {
 		let args = arguments // 携带的参数
 		if (timer) clearTimeout(timer) // 清除定时器
 		timer = setTimeout(() => { // 回调
@@ -132,7 +135,7 @@ const debounce = (callback, delay = 600) => {
 const throttle = (callback, delay = 1000) => {
 	let isFirst = true
 	let start = Date.now() // 闭包存起始时间
-	return function () {
+	return function() {
 		let args = arguments // 携带的参数
 		if (isFirst) { // 第一次触发
 			callback.apply(this, args)

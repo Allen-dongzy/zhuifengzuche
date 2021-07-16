@@ -32,6 +32,9 @@
 
 <script>
 	import Handwriting from "../../components/xgf-e-signature/e-signature.js"
+	import {
+		uploadFiles
+	} from '@/apis/oss'
 
 	let that = ''
 
@@ -107,8 +110,10 @@
 				that.handwriting.uploadScaleEnd(event)
 			},
 			subCanvas() {
-				that.handwriting.saveCanvas().then(res => {
-					that.img_src = res
+				that.handwriting.saveCanvas().then(async res => {
+					const [uploadErr, uploadRes] = await uploadFiles([res])
+					if (uploadErr) return
+					that.img_src = uploadRes[0]
 					uni.$emit('refreshSign', {
 						sign: that.img_src
 					})

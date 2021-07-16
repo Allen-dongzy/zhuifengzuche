@@ -40,9 +40,6 @@
 
 <script>
 	import {
-		uploadFiles
-	} from '@/apis/oss'
-	import {
 		vehicleGetVehicleCertificatess,
 		vehicleUpdateVehicleCertificates
 	} from '@/apis/vehicle'
@@ -54,6 +51,7 @@
 		data() {
 			return {
 				img: '', // 合同
+				id: '', // 合同id
 				orderId: '', // 订单id
 				vehicleId: '' // 车辆id
 			}
@@ -73,11 +71,13 @@
 				}
 				const [err, res] = await vehicleGetVehicleCertificatess(params)
 				if (err) return
-
+				if (res.data.contract) this.img = res.data.contract
+				this.id = res.data.id
 			},
 			// 上传合同
 			vehicleUpdateVehicleCertificates: throttle(async function() {
 				const params = {
+					id: this.id,
 					orderId: this.orderId,
 					vehicleId: this.vehicleId,
 					contract: this.img
@@ -92,9 +92,8 @@
 			// 监听函数
 			eventListenter() {
 				// 监听合同
-				uni.$on('refreshSign', async e => {
-					const [err, res] = await uploadFiles([e.sign])
-					this.img = res[0]
+				uni.$on('refreshSign', e => {
+					this.img = e.sign
 				})
 			}
 		}

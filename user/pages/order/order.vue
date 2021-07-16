@@ -70,7 +70,7 @@
 							查看车况
 						</view>
 						<view v-show="item.orderStatus === 3" class="btn white"
-							@click.stop="$open('/pages/order/renewal')">
+							@click.stop="rentalOrderRenewCarRentalPriceCheck(index)">
 							续租用车
 						</view>
 						<view v-show="item.orderStatus === 3" class="btn blue"
@@ -101,11 +101,15 @@
 
 <script>
 	import {
-		rentalOrderPageQuery
+		rentalOrderPageQuery,
+		rentalOrderRenewCarRentalPriceCheck
 	} from '@/apis/rentalOrder'
 	import {
 		listManager
 	} from '@/utils/uni-tools'
+	import {
+		throttle
+	} from '@/utils/tools'
 
 	export default {
 		data() {
@@ -199,6 +203,18 @@
 				this.init()
 				this.getorderList()
 			},
+			// 续租用车
+			rentalOrderRenewCarRentalPriceCheck: throttle(async function(index) {
+				const params = {
+					orderId: this.list[index].id
+				}
+				const [err, res] = await rentalOrderRenewCarRentalPriceCheck(params)
+				if (err) return
+				this.$open('/pages/order/renewal', {
+					orderId: this.list[index].id,
+					vehicleId: this.list[index].vehicleId
+				})
+			}),
 			// 联系门店
 			contactStore(index) {
 				this.phoneCall(this.list[index].memberPhone)
