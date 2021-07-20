@@ -8,27 +8,31 @@
 			<!-- 待支付 没有这句话   已取消 没有这句话     已完成 违章押金已收取21天      待收车 距离收车1天6小时12分     待送车 距离送车1天6小时12分 -->
 		<!-- 关于车 -->
 		<view class="box">
-			<view class="flexBox">
-				<view class="carName">{{info.vehicleNumber}}</view>
-				<image style="width: 80rpx;height: 40rpx;" :src="$util.fileUrl('/yizhifu.png')" mode=""></image>
-			</view>
-			<view class="flexBox" style="border-bottom:2rpx dashed #999999;padding-bottom: 30rpx;">
-				<view class="carType">{{info.modelName}}</view>
-				<image v-show="carShow==false" style="width: 30rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxia.png')"
-					@click="getcarInfo" mode=""></image>
-				<image v-show="carShow==true" style="width: 30rpx;height: 20rpx;"
-					:src="$util.fileUrl('/xiangshang.png')" @click="getcarInfo" mode=""></image>
-			</view>
-			<view v-show="carShow==true" style="border-bottom:2rpx dashed #999999;padding-bottom: 30rpx;">
+			<view v-for="(item,index) in info.adminOrderVehicleInfoVoList" :key="index">
 				<view class="flexBox">
-					<view class="moreTitle">车身颜色</view>
-					<view class="moreContent">{{info.vehicleColour}}</view>
+					<view class="carName">{{item.vehicleNumber}}</view>
+					<image style="width: 80rpx;height: 40rpx;" :src="$util.fileUrl('/yizhifu.png')" mode=""></image>
 				</view>
-				<view class="flexBox">
-					<view class="moreTitle">燃烧型号</view>
-					<view class="moreContent">{{info.model}}</view>
+				<view class="flexBox" style="border-bottom:2rpx dashed #999999;padding-bottom: 30rpx;">
+					<view class="carType">{{item.modelName}}</view>
+					<image v-show="carShow==false" style="width: 30rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxia.png')"
+						@click="getcarInfo" mode=""></image>
+					<image v-show="carShow==true" style="width: 30rpx;height: 20rpx;"
+						:src="$util.fileUrl('/xiangshang.png')" @click="getcarInfo" mode=""></image>
+				</view>
+				<view v-show="carShow==true" style="border-bottom:2rpx dashed #999999;padding-bottom: 30rpx;">
+					<view class="flexBox">
+						<view class="moreTitle">车身颜色</view>
+						<view class="moreContent">{{item.vehicleColour}}</view>
+					</view>
+					<view class="flexBox">
+						<view class="moreTitle">燃烧型号</view>
+						<view class="moreContent">{{item.model}}</view>
+					</view>
 				</view>
 			</view>
+			
+			
 			<view class="flexBox">
 				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/time.png')" mode=""></image>
 				<view class="">{{info.rentBeginTime}}至{{info.rentEndTime}}</view>
@@ -222,9 +226,9 @@
 				<view v-show="type==5" class="lanbox">交车情况</view>
 				<view v-show="type==100" class="lanbox">收车情况</view>
 				<view v-show="type==100" class="lanbox">结算佣金</view>
-				<view v-show="type==1" class="lanbox" @click="goInspect()">出车检验</view>
+				<view v-show="type==1" class="lanbox" :disabled="item.isCarTest==false"  @click="goInspect()">出车检验</view>
 				<view v-show="type==5 " class="lanbox">检验收车</view>
-				<view v-show="type==1" class="lanbox">交付车辆</view>
+				<view :disabled="info.isVehicleCertificates==false"  v-show="type==1" class="lanbox">交付车辆</view>
 				<view v-show="type==100" class="lanbox1">退还押金</view>
 			</view>
 			<!-- 待支付 按钮都不要    已取消 按钮都不要    已完成  100 结算 收车 退还      待收车 5 交车 检验       待送车 1 出车 交付-->
@@ -306,8 +310,14 @@
 				})
 			},
 			goInspect(){
+				let data ={
+					order:this.info.id,
+					carnum:this.info.adminOrderVehicleInfoVoList[0].vehicleNumber,
+					vehicleId:this.info.adminOrderVehicleInfoVoList[0].vehicleId,
+				}
+				
 				uni.navigateTo({
-					url:'./goInspect?obj='+JSON.stringify(this.info)
+					url:'./goInspect?obj='+JSON.stringify(data)
 				})
 			}
 		}

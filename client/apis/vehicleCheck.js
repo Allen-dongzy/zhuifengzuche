@@ -1,10 +1,10 @@
 import request from '@/request'
 
 // 出车检验-点击完成
-export const addOrderDelivery = (data, loading = '检验中') => {
+export const addaddRecord = (data, loading = '检验中') => {
 	return request({
-		url: 'vehicleCheck/addOrderDelivery',
-		contentType: 'application/x-www-form-urlencoded',
+		url: 'vehicleCheck/addRecord',
+		contentType: 'application/json',
 		method: 'POST',
 		data,
 		loading
@@ -12,15 +12,15 @@ export const addOrderDelivery = (data, loading = '检验中') => {
 }
 
 // 记录车辆检验
-export const addRecord = (data, loading = '记录中') => {
-	return request({
-		url: 'vehicleCheck/addRecord',
-		contentType: 'application/x-www-form-urlencoded',
-		method: 'POST',
-		data,
-		loading
-	})
-}
+// export const addRecord = (data, loading = '记录中') => {
+// 	return request({
+// 		url: 'vehicleCheck/addRecord',
+// 		contentType: 'application/x-www-form-urlencoded',
+// 		method: 'POST',
+// 		data,
+// 		loading
+// 	})
+// }
 
 // 记录检验备注
 export const addRemarks = (data, loading = '记录中') => {

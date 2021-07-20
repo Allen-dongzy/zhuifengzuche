@@ -85,7 +85,7 @@
 				idCard1: '',
 				idCard2: '',
 				idCard3: '',
-				companyName: '追风',
+				companyName: '',
 				obj: {}
 			}
 		},
@@ -113,6 +113,20 @@
 			},
 
 			next() {
+				if(this.idCard1==""){
+					this.$toast('请上传身份证正面')
+					return false;
+				}else if(this.idCard2==""){
+					this.$toast('请上传身份证背面')
+					return false;
+				}else if(this.idCard3==""){
+					this.$toast('请上传营业执照')
+					return false;
+				}else if(this.companyName==""){
+					this.$toast('请输入公司名字')
+					return false;
+				}
+				
 				this.obj.idCardBack = this.idCard1
 				this.obj.idCardFront = this.idCard2
 				this.obj.businessLicense = this.idCard3

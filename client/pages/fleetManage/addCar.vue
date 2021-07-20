@@ -249,10 +249,10 @@
 			@click="next">新增</button>
 
 
-
+<!-- //颜色弹窗 -->
 		<uni-popup ref="popup" type="center">
-			<view style="background-color: #F1F1F1;width: 450rpx;height: 400rpx;border-radius: 20rpx;padding: 20rpx;">
-				<view v-for="(item,index) in colorList" style="display: inline-block;margin-right: 20rpx;"
+			<view style="background-color: #F1F1F1;width: 510rpx;height: 400rpx;border-radius: 20rpx;padding: 20rpx;">
+				<view v-for="(item,index) in colorList" style="display: inline-block;margin: 2rpx 30rpx;"
 					@click="selectColor(index)">
 					<view style="display: flex;justify-content: center;align-items: center;">
 						<view class="">{{item.name}}</view>
@@ -292,12 +292,6 @@
 				}, {
 					name: '异常',
 					id: 2
-				}, {
-					name: '租赁中',
-					id: 3
-				}, {
-					name: '预留中',
-					id: 4
 				}], //状态list
 				index: 0,
 				index1: 0,
@@ -314,9 +308,33 @@
 				colorList: [{
 					name: '黑色',
 					color: '#000000'
-				}, {
+				},{
+					name: '白色',
+					color: '#FFFFFF'
+				},{
 					name: '红色',
-					color: '#ff0e14'
+					color: '#D9001B'
+				},{
+					name: '蓝色',
+					color: '#02A7F0'
+				},{
+					name: '黄色',
+					color: '#FFFF00'
+				},{
+					name: '橙色',
+					color: '#F59A23'
+				},{
+					name: '绿色',
+					color: '#03BF16'
+				},{
+					name: '紫色',
+					color: '#8080FF'
+				},{
+					name: '灰色',
+					color: '#EFF0F3'
+				},{
+					name: '棕色',
+					color: '#962323'
 				}],
 
 				carNum: '', //车牌号

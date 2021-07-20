@@ -219,6 +219,38 @@
 			},
 			async next() {
 
+			if(this.storeName==""){
+				this.$toast('请输入店名称')
+				return false;
+			}else if(this.address==""){
+					this.$toast('请输入地址')
+					return false;
+			}else if(this.storePhone==""){
+					this.$toast('请输入门店电话')
+					return false;
+			}else if(this.selectStar==""){
+					this.$toast('请选择开始时间')
+					return false;
+			}else if(this.selectEnd==""){
+					this.$toast('请选择结束时间')
+					return false;
+			}else if(this.longitude==""){
+					this.$toast('请输入经度')
+					return false;
+			}else if(this.latitude==""){
+					this.$toast('请输入纬度')
+					return false;
+			}else if(this.storeImg==""){
+					this.$toast('请输入门店图片')
+					return false;
+			}else if(this.corporationName==""){
+					this.$toast('请输入法人名字')
+					return false;
+			}else if(this.corporationNamePhone==""){
+					this.$toast('请输入法人名字电话')
+					return false;
+			}
+
 				this.obj.provinceCode = this.selectProvince
 				this.obj.cityCode = this.selectCity
 				this.obj.areaCode = this.selectArea
@@ -236,11 +268,14 @@
 				this.obj.inStorePicture = this.idCard2
 				this.obj.outdoorPictures = this.idCard3
 				this.obj.accountOpeningPermit = this.idCard4
-
+				
 				const [err, res] = await shopOwnerRegister(this.obj)
 				if (err) return
 				console.log(res)
-				open('/pages/login/login', 2)
+				this.$toast('注册成功')
+				 setTimeout(() => {
+					 open('/pages/login/login', 2)
+				 },500)
 			},
 			selectShen: function(e) {
 				console.log('picker发送选择改变，携带值为', e.target.value)

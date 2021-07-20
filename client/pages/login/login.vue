@@ -36,7 +36,7 @@
 			<view class="textTitle" style="color: #007AFF;" @click="forget">忘记密码？</view>
 			<view style="width: 86%;margin: auto;height: 96rpx;">
 				<button style="color: #007AFF;background-color: white;border: 2rpx solid #007AFF;"
-					@click="login()">登陆</button>
+					@click="login()">登录</button>
 			</view>
 			<view class="selectBox">
 				<view style="width: 32rpx;height: 32rpx;" @click="selectbox">
@@ -45,7 +45,7 @@
 					<image v-show="selectType==true" style="height: 100%;width: 100%;"
 						:src="$util.fileUrl('/quanxian1.png')" mode=""></image>
 				</view>
-				<view style="color: #262743;">已阅读并同意追风租车的<text style="color: #5A7EFF;">《用户协议》</text> </view>
+				<view style="color: #262743;">已阅读并同意追风租车的<text style="color: #5A7EFF;" @click="agreement">《用户协议》</text> </view>
 			</view>
 		</view>
 
@@ -67,8 +67,8 @@
 	export default {
 		data() {
 			return {
-				accountText: '手机号未注册！', //手机号码校验提示语句
-				passwordText: '密码错误！', //密码校验提示语句
+				accountText: '', //手机号码校验提示语句
+				passwordText: '', //密码校验提示语句
 				selectType: false, //协议切换
 				showpass: true, //密码眼睛切换 false 关闭  true开启
 				password: '', //密码
@@ -102,7 +102,11 @@
 					animationDuration: 200,
 				})
 			},
-
+			agreement(){
+			uni.navigateTo({
+				url:'./agreement'
+			})	
+			},
 
 			login: throttle(async function() {
 				var that = this;
@@ -112,6 +116,14 @@
 						icon: 'none'
 					})
 				} else {
+					if(this.phone==""){
+						this.$toast('请输入手机号')
+						return false;
+					}else if(this.password==""){
+						this.$toast('请输入密码')
+						return false;
+					}
+					
 					const params = {
 						username: that.phone,
 						loginType: 1,

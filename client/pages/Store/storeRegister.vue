@@ -12,18 +12,19 @@
 			<view class="item">
 				<view class="caption">营业执照</view>
 				<view class="pic-box">
-					<image class="pic-big"
+					<image @click="previewPic([info.businessLicense])" class="pic-big"
 						:src="info.businessLicense"
 						mode="aspectFill"></image>
+					
 				</view>
 			</view>
 			<view class="item">
 				<view class="caption">法人身份证照片</view>
 				<view class="pic-box">
-					<image class="pic-big"
+					<image @click="previewPic([info.idCardFront])" class="pic-big"
 						:src="info.idCardFront"
 						mode="aspectFill"></image>
-					<image class="pic-big"
+					<image @click="previewPic([info.idCardBack])" class="pic-big"
 						:src="info.idCardBack"
 						mode="aspectFill"></image>
 				</view>
@@ -31,7 +32,7 @@
 			<view class="item">
 				<view class="caption">门店图片-门头照片</view>
 				<view class="pic-box">
-					<image class="pic"
+					<image @click="previewPic([info.doorHeadPicture])" class="pic"
 						:src="info.doorHeadPicture"
 						mode="aspectFill"></image>
 				</view>
@@ -39,7 +40,7 @@
 			<view class="item">
 				<view class="caption">门店图片-店内照片</view>
 				<view class="pic-box">
-					<image class="pic"
+					<image @click="previewPic([info.inStorePicture])"  class="pic"
 						:src="info.inStorePicture"
 						mode="aspectFill"></image>
 				</view>
@@ -47,7 +48,7 @@
 			<view class="item">
 				<view class="caption">门店图片-店铺室外照片</view>
 				<view class="pic-box">
-					<image class="pic"
+					<image  @click="previewPic([info.outdoorPictures])" class="pic"
 						:src="info.outdoorPictures"
 						mode="aspectFill"></image>
 				</view>
@@ -55,7 +56,7 @@
 			<view class="item">
 				<view class="caption">对公账户开户许可证</view>
 				<view class="pic-box">
-					<image class="pic"
+					<image @click="previewPic([info.accountOpeningPermit])" class="pic"
 						:src="info.accountOpeningPermit"
 						mode="aspectFill"></image>
 				</view>
@@ -70,7 +71,8 @@
 
 <script>
 	import {
-		showModal
+		showModal,
+		previewImgs
 	} from '@/utils/uni-tools'
 	import {
 		merchantRegistrationInformation,
@@ -91,6 +93,10 @@
 			console.log(e)
 		},
 		methods: {
+			// 预览图片
+			previewPic(e) {
+				previewImgs(e)
+			},
 		 async	getInfo(e){
 				const [err,res] = await merchantRegistrationInformation(e)
 				if (err) return

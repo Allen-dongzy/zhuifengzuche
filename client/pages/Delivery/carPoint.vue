@@ -3,7 +3,8 @@
 		<view class="topNav" v-if="search==false">
 			<view class="add" @click="add">新增+</view>
 			<view class="title" @click="select">筛选</view>
-			<image style="height:25rpx;width: 35rpx;margin-right: 30rpx;" @click="select" :src="$util.fileUrl('/xiangxia.png')" mode="">
+			<image style="height:25rpx;width: 35rpx;margin-right: 30rpx;" @click="select"
+				:src="$util.fileUrl('/xiangxia.png')" mode="">
 			</image>
 			<view class="title" @click="showSearch">搜索</view>
 			<image style="height: 28rpx;width: 28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode=""
@@ -24,8 +25,8 @@
 			<view class="topNav" style="margin-bottom: 0rpx;">
 				<view class="add">新增+</view>
 				<view class="title" @click="select">筛选</view>
-				<image style="height:25rpx;width: 35rpx;margin-right: 30rpx;" @click="select" :src="$util.fileUrl('/xiangxia.png')"
-					mode=""></image>
+				<image style="height:25rpx;width: 35rpx;margin-right: 30rpx;" @click="select"
+					:src="$util.fileUrl('/xiangxia.png')" mode=""></image>
 				<view class="title">搜索</view>
 				<image style="height: 28rpx;width: 28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode=""></image>
 			</view>
@@ -98,7 +99,7 @@
 				size: 10,
 				cityId: '', //城市id
 				areaId: '', //区域id
-				searchVal:'',//输入内容
+				searchVal: '', //输入内容
 			}
 		},
 		onLoad() {
@@ -179,7 +180,7 @@
 				if (err) return
 				console.log(res)
 				this.list = res.data.list
-			
+
 			}),
 			add() {
 				uni.navigateTo({
@@ -214,7 +215,7 @@
 				this.areaId = this.areaList[e].areaCode
 				this.$forceUpdate()
 			},
-			clear(){
+			clear() {
 				for (let i = 0; i < this.areaList.length; i++) {
 					this.areaList[i].status = false
 				}
@@ -226,18 +227,18 @@
 				this.areaId = ""
 				this.cityId = ""
 			},
-		async	sure(){
+			async sure() {
 				let data = {
 					page: this.page,
 					size: this.size,
-					areaCode:this.areaId,
-					cityCode:this.cityId
+					areaCode: this.areaId,
+					cityCode: this.cityId
 				}
 				const [err, res] = await deliveryPageQuery(data)
 				if (err) return
 				console.log(res)
 				this.list = res.data.list
-				if(this.list.length==0){
+				if (this.list.length == 0) {
 					this.$toast("暂无数据")
 				}
 				this.select()
@@ -359,6 +360,8 @@
 		color: #000000;
 		font-size: 26rpx;
 		border-right: 2rpx solid #5A7EFF;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.rightBox {

@@ -246,7 +246,7 @@
 		{
 			"path": "pages/fleetManage/addCar",
 			"style": {
-				"navigationBarTitleText": "添加车辆"
+				"navigationBarTitleText": "车辆设置"
 			}
 		},
 		{
@@ -338,7 +338,7 @@
 		{
 			"path": "pages/vehicleManage/add",
 			"style": {
-				"navigationBarTibtleText": "添加车型"
+				"navigationBarTibtleText": "车型设置"
 			}
 		},
 		{
@@ -371,6 +371,11 @@
 			"path": "pages/customerRecords/selectCart",
 			"style": {
 				"navigationBarTitleText": "选择车辆"
+			}
+		}, {
+			"path": "pages/login/agreement",
+			"style": {
+				"navigationBarTitleText": "用户协议"
 			}
 		}
 	],

@@ -26,7 +26,7 @@
 						<p class="oil" v-show="item.oil!=null">油量：62%</p>
 						<p class="car">车龄：{{item.carAge}}</p>
 					</view>
-					<view class="flex-center line">
+					<view class="flex-center line" v-show="item.vehicleStatus==3">
 						<i></i>
 					</view>
 					<p class="name" v-show="item.vehicleStatus==3">使用人：张全蛋</p>

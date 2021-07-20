@@ -18,23 +18,23 @@
 
 
 			<view class="fromTitel">姓名</view>
-			<input class="inpBox" v-model="name" type="text" placeholder="请填写姓名" />
+			<input class="inpBox" v-model="name" maxlength="10" type="text" placeholder="请填写姓名" />
 
 
 
 			<view class="fromTitel">身份证号码 </view>
-			<input class="inpBox" v-model="idCard" type="text" placeholder="请填写身份证号码" />
+			<input class="inpBox" v-model="idCard" maxlength="18" type="text" placeholder="请填写身份证号码" />
 
 
 
 			<view class="fromTitel">手机号</view>
-			<input class="inpBox" v-model="phone" type="text" placeholder="请填写手机号码" />
+			<input class="inpBox" v-model="phone" maxlength="11" type="text" placeholder="请填写手机号码" />
 
 
 
 			<view class="fromTitel">验证码</view>
 			<view class="moreInpbox">
-				<view style="width: 78%;"><input v-model="code" class="inpBox" style="width: 100%;" type="text"
+				<view style="width: 78%;"><input v-model="code" maxlength="6" class="inpBox" style="width: 100%;" type="text"
 						placeholder="请填写验证码" />
 				</view>
 				<view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"
@@ -44,13 +44,13 @@
 
 
 			<view class="fromTitel">邮箱</view>
-			<input class="inpBox" v-model="email" type="text" placeholder="请填写邮箱" />
+			<input class="inpBox" v-model="email" maxlength="50" type="text" placeholder="请填写邮箱" />
 
 
 
 			<view class="fromTitel">密码</view>
 			<view class="moreInpbox">
-				<view style="width: 90%;"><input v-model="password" :type="inpType" class="inpBox" style="width: 95%;"
+				<view style="width: 90%;"><input v-model="password" maxlength="20" :type="inpType" class="inpBox" style="width: 95%;"
 						placeholder="请填写密码" /></view>
 				<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
 				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
@@ -62,7 +62,7 @@
 
 
 			<view class="fromTitel">推荐码 </view>
-			<input class="inpBox" v-model="recommendCode" type="text" placeholder="请填写推荐码" />
+			<input class="inpBox" v-model="recommendCode" maxlength="10" type="text" placeholder="请填写推荐码" />
 
 
 			<button style=" color: white;
@@ -72,8 +72,6 @@
 			    border-radius: 50px;
 			    font-size: 32rpx;
 			    height: 96rpx;line-height: 96rpx;" type="default" @click="adminCheckRegister()">下一步</button>
-
-
 		</view>
 	</view>
 </template>
@@ -95,13 +93,13 @@
 
 				showpass: false, //密码眼睛切换 false 关闭  true开启
 				inpType: 'password', //切换密码框type
-				name: '王长宇', //姓名
-				idCard: '500228199609126559', //身份证号码
-				phone: '17623178041', //手机号码
+				name: '', //姓名
+				idCard: '', //身份证号码
+				phone: '', //手机号码
 				code: '', //验证码
-				email: '617208375@qq.com', //邮箱
-				password: '1234567', //密码
-				recommendCode: 'CIALYQ', //推荐码
+				email: '', //邮箱
+				password: '', //密码
+				recommendCode: '', //推荐码
 
 
 				time: '获取验证码', //倒计时
@@ -150,6 +148,29 @@
 			}),
 
 			adminCheckRegister: throttle(async function() {
+				if (this.name == "") {
+					this.$toast('请填写姓名号码')
+					return false;
+				} else if (this.idCard == "") {
+					this.$toast('请填写身份证号码')
+					return false;
+				} else if (this.phone == "") {
+					this.$toast('请填写手机号')
+					return false;
+				} else if (this.code == "") {
+					this.$toast('请填写验证码')
+					return false;
+				} else if (this.email == "") {
+					this.$toast('请填写邮箱')
+					return false;
+				} else if (this.password == "") {
+					this.$toast('请填写密码')
+					return false;
+				} else if (this.recommendCode == "") {
+					this.$toast('请填写邀请码')
+					return false;
+				}
+
 				const params = {
 					code: this.code,
 					email: this.email,

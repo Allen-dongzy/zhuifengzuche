@@ -26,7 +26,7 @@
 			</view>
 		</view>
 		<uni-load-more :status="dataStatus" />
-		<view class="cu-modal drawer-modal justify-end" catchtouchmove='true'
+		<view class="cu-modal drawer-modal justify-end" bindtouchmove='true'
 			:class="(modalName=='DrawerModalR'?'show':'')" @click="hideModal">
 			<view class="cu-dialog basis-lg" @click.stop="">
 				<view class="flex status">

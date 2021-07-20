@@ -50,7 +50,7 @@
 				<tui-dropdown-list :show="classesKey" :top="80" height="200">
 					<template v-slot:selectionbox>
 						<view class="info" @tap="classesKey ? closeSelBox('classes') :openSelBox('classes')">
-							<text>{{ classes ? classes :'请选择品牌'}}</text>
+							<text>{{ classes ? classes :'请选择类别'}}</text>
 							<image class="icon" :src="`${filePath}/vehicleManage/down-mini.png`"></image>
 						</view>
 					</template>
@@ -206,7 +206,9 @@
 				<view class="square" @click="reduce(2)">-10%</view>
 				<view class="square" @click="reduce(1)">-1</view>
 				<!-- 	<view class="input">50</view> -->
-				<input class="input" type="text" v-model="price" />
+				<input class="input" v-if="weekType==1" type="text" v-model="weekExternal" />
+				<input class="input" v-else type="text" v-model="weekWithin" />
+				
 				<view class="square" @click="add(1)">+1</view>
 				<view class="square" @click="add(2)">+10%</view>
 			</view>
@@ -245,6 +247,7 @@
 	import {
 		outputVolume,
 		insertVehicleModel,
+		vehicleModelUpdate,
 		searchCarid
 	} from '@/apis/vehicleModel'
 	import {
@@ -280,7 +283,11 @@
 				stallKey: false, // 排档开关
 				stall: '', // 排档
 				seatList: [{
+					text: '2'
+				},{
 					text: '5'
+				},{
+					text: '6'
 				}, {
 					text: '7'
 				}, {
@@ -304,8 +311,8 @@
 				model: '', //燃油型号
 				vehicleModel: '', //车型
 				weekType: 1, //1周末价格 2周内价格
-				weekExternal: '', //周末价格
-				weekWithin: '', //周内价格
+				weekExternal: "", //周末价格
+				weekWithin: "", //周内价格
 				carId: '', //车型id
 			}
 		},
@@ -461,30 +468,56 @@
 				}
 			},
 			reduce(e) {
-				if (this.price > 1) {
-					if (e == 1) {
-
-						this.price--;
-
-					} else {
-						this.price = this.price - this.price * 0.1
+				if(this.weekType==1){
+					if (this.weekExternal > 1) {
+						if (e == 1) {
+							this.weekExternal --;			
+						} else {
+							this.weekExternal = parseFloat(this.weekExternal) - parseFloat(this.weekExternal) * 0.1
+						}
 					}
+					this.weekExternal = parseFloat(this.weekExternal).toFixed(2)
+				}else{
+					
+					if (this.weekWithin > 1) {
+						if (e == 1) {
+			
+							this.weekWithin--;
+					
+						} else {
+							this.weekWithin = parseFloat(this.weekWithin) - parseFloat(this.weekWithin) * 0.1
+						}
+					}
+				this.weekWithin = parseFloat(this.weekWithin).toFixed(2)
+					
 				}
-				this.price = this.price.toFixed(2)
 			},
 			add(e) {
-				if (this.price > 0) {
-					this.price = parseFloat(this.price)
-					if (e == 1) {
-
-						this.price++;
-
-					} else {
-						this.price = this.price + this.price * 0.1
+				if(this.weekType==2){
+					if (this.weekWithin > 0) {
+						this.weekWithin = parseFloat(this.weekWithin)
+						if (e == 1) {
+					
+							this.weekWithin++;
+					
+						} else {
+							this.weekWithin = this.weekWithin + this.weekWithin * 0.1
+						}
 					}
+					this.weekWithin = this.weekWithin.toFixed(2)
+				}else{
+					if (this.weekExternal > 0) {
+						this.weekExternal = parseFloat(this.weekExternal)
+						if (e == 1) {
+					
+							this.weekExternal++;
+					
+						} else {
+							this.weekExternal = this.weekExternal + this.weekExternal * 0.1
+						}
+					}
+					this.weekExternal = this.weekExternal.toFixed(2)
 				}
-				console.log(this.price)
-				this.price = this.price.toFixed(2)
 			},
 			// 打开选择
 			openSelBox(selName) {
@@ -564,6 +597,12 @@
 						weekWithin: this.weekWithin,
 						memberShopId: this.storeId
 					}
+					const [err, res] = await insertVehicleModel(data)
+					if (err) return
+					console.log(res)
+					uni.navigateBack({
+						delta: 1
+					})
 				} else {
 					var data = {
 						id: this.carId,
@@ -584,15 +623,13 @@
 						weekWithin: this.weekWithin,
 						memberShopId: this.storeId
 					}
+					const [err, res] = await vehicleModelUpdate(data)
+					if (err) return
+					console.log(res)
+					uni.navigateBack({
+						delta: 1
+					})
 				}
-
-
-				const [err, res] = await insertVehicleModel(data)
-				if (err) return
-				console.log(res)
-				uni.navigateBack({
-					delta: 1
-				})
 			},
 		}
 	}
@@ -680,7 +717,7 @@
 					padding: 39rpx;
 					border: 1px solid #ddd;
 					border-top: 0;
-					height: 400rpx;
+					height: 250rpx;
 					overflow-y: auto;
 
 					.drop-item {

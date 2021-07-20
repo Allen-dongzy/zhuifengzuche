@@ -68,7 +68,7 @@
 		</view>
 		<view class="flexBoxContent" style="margin-top: 280rpx;">
 			<view style="width: 22%;text-align: left;">具体地址:</view>
-			<input class="inpBox" type="text" v-model="address" placeholder="请输入地图经度" />
+			<input class="inpBox" type="text" v-model="address" placeholder="请输入地图具体位置" />
 		</view>
 		<view class="flexBoxContent">
 			<view style="width: 22%;text-align: left;">地图经度</view>

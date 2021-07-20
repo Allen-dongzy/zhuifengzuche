@@ -25,7 +25,7 @@
 					<p v-show="carInfo.vehicleStatus==2">异常</p>
 					<p v-show="carInfo.vehicleStatus==3">租赁中</p>
 					<p v-show="carInfo.vehicleStatus==4">预留中</p>
-					<text class="cuIcon-right"></text>
+					<!-- <text class="cuIcon-right"></text> -->
 				</view>
 			</view>
 		</view>
@@ -174,7 +174,7 @@
 					<view v-show="item.planStatus==3" class="frameTitle">预留</view>
 					<view v-show="item.planStatus==4" class="frameTitle">客户使用</view>
 					<view v-show="item.planStatus==5" class="frameTitle">证件过期</view>
-					<view class="frameTime">{{item.planStartTime}}{{item.planEndTime}}</view>
+					<view class="frameTime">{{item.planStartTime.slice(0,16)}}至{{item.planEndTime.slice(0,16)}}</view>
 				</view>
 			</view>
 			<button class="reserve" type="default" @click="lookopen">预留</button>
@@ -257,7 +257,7 @@
 					<view style="width: 50%;text-align: right;">当前选择日期:{{dayTime}}</view>
 				</view>
 
-				<slider style="margin-bottom: 0px;" :value="sliderVal" activeColor="#5A7EFF" block-size="20" step="2"
+				<slider style="margin-bottom: 0px;" :value="sliderVal" activeColor="#5A7EFF" block-size="20" step="1"
 					@change="sliderChange" min="0" max="24" show-value />
 
 				<view style="display: flex;justify-content: center; align-items: center;padding: 60rpx 0rpx;">
@@ -283,6 +283,7 @@
 		vehicleSelectRentalPlanList,
 		vehiclePlanInsert
 	} from '@/apis/vehicle'
+	
 	export default {
 		data() {
 			return {
@@ -353,6 +354,7 @@
 				}
 				const [err, res] = await vehiclePlanInsert(data)
 				if (err) return
+				this.$toast("预留成功")
 				console.log(res)
 			},
 			selectReserve(e) {
@@ -363,7 +365,12 @@
 					this.reserveTitle[i].status = false
 				}
 				this.reserveTitle[e].status = true
-				this.dayTime = ""
+				if(e==0){
+					this.dayTime = this.dayTime1
+				
+				}else{
+					this.dayTime = this.dayTime2
+				}
 				this.sliderVal=0
 				// this.$forceUpdate()
 			},
