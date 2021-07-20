@@ -1,11 +1,21 @@
 import request from '@/request'
 
 // 车况概览-添加备注
-export const vehicleAddRemarks = (data, loading = '提交中') => {
+export const vehicleAddRemarks = (data, loading = '提交中') => { // 对接
 	return request({
 		url: 'vehicle/addRemarks',
 		contentType: 'application/x-www-form-urlencoded',
 		method: 'POST',
+		data,
+		loading
+	})
+}
+
+// 租赁合同
+export const vehicleGetVehicleCertificatess = (data, loading = '') => { // 对接
+	return request({
+		url: 'vehicle/getVehicleCertificates',
+		method: 'GET',
 		data,
 		loading
 	})
@@ -75,8 +85,29 @@ export const vehicleQueryVehicleModels = (deliveryId, brandId, loading = '') => 
 	})
 }
 
+// 车辆租赁计划列表
+export const vehicleQuerySelectRentalPlanList = (vehicleId, loading = '') => { // 对接
+	return request({
+		url: `vehicle/selectRentalPlanList/${vehicleId}`,
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'POST',
+		data: {},
+		loading
+	})
+}
+
+// 租赁合同-签名
+export const vehicleUpdateVehicleCertificates = (data, loading = '') => { // 对接
+	return request({
+		url: 'vehicle/updateVehicleCertificates',
+		method: 'GET',
+		data,
+		loading
+	})
+}
+
 // 车况概览
-export const vehicleVehiclePreview = (vehicleId, orderId, loading = '') => {
+export const vehicleVehiclePreview = (vehicleId, orderId, loading = '') => { // 对接
 	return request({
 		url: `vehicle/vehiclePreview/${vehicleId}/${orderId}`,
 		contentType: 'application/x-www-form-urlencoded',

@@ -15,9 +15,13 @@
             <view @tap="subCanvas">签名</view> -->
 
 
-			<button @tap="retDraw" style=" color:#B2B2B2;width:300rpx;margin: auto; border: 2rpx solid #B2B2B2; border-radius: 50px;font-size: 32rpx; height: 96rpx;line-height: 96rpx; " type="default">清除</button>
+			<button @tap="retDraw"
+				style=" color:#B2B2B2;width:300rpx;margin: auto; border: 2rpx solid #B2B2B2; border-radius: 50px;font-size: 32rpx; height: 96rpx;line-height: 96rpx; "
+				type="default">清除</button>
 
-			<button  @tap="subCanvas" style=" color: white;width:300rpx;margin: auto;background-color: #5A7EFF;border-radius: 50px;font-size: 32rpx;height: 96rpx;line-height: 96rpx; " type="default" >保存</button>
+			<button @tap="subCanvas"
+				style=" color: white;width:300rpx;margin: auto;background-color: #5A7EFF;border-radius: 50px;font-size: 32rpx;height: 96rpx;line-height: 96rpx; "
+				type="default">保存</button>
 
 
 
@@ -28,6 +32,9 @@
 
 <script>
 	import Handwriting from "../../components/xgf-e-signature/e-signature.js"
+	import {
+		uploadFiles
+	} from '@/apis/oss'
 
 	let that = ''
 
@@ -103,18 +110,14 @@
 				that.handwriting.uploadScaleEnd(event)
 			},
 			subCanvas() {
-				that.handwriting.saveCanvas().then(res => {
-
-					that.img_src = res
-		var pages = getCurrentPages();
-					var page = pages[pages.length - 2];
-					
-					 page.$vm.img=that.img_src
-							
-					uni.navigateBack({
-						 delta: 1
+				that.handwriting.saveCanvas().then(async res => {
+					const [uploadErr, uploadRes] = await uploadFiles([res])
+					if (uploadErr) return
+					that.img_src = uploadRes[0]
+					uni.$emit('refreshSign', {
+						sign: that.img_src
 					})
-
+					this.$close()
 				}).catch(err => {
 					console.log(err);
 				});

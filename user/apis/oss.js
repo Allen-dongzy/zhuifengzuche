@@ -10,7 +10,7 @@ export const uploadFiles = async tempFilePaths => {
 				header: {
 					'Content-Type': 'multipart/form-data'
 				},
-				url: `${config.host}/${config.apiKeyword}/oss/uploadImage`, //上传接口
+				url: `${config.host}/lots-admin/oss/uploadImage`, //上传接口
 				filePath: tempFilePaths[i],
 				name: 'img',
 				success: (res) => {

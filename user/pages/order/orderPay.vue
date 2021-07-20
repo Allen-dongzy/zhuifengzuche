@@ -13,17 +13,34 @@
 	export default {
 		data() {
 			return {
-				price:''
+				price: ''
 			}
 		},
 		onLoad(e) {
-		console.log(e.price)
-		this.price=e.price
+			console.log(e.price)
+			this.price = e.price
 		},
 		methods: {
-			pay(){
+			// 微信平台是否有登录能力
+			async isLoginFunc() {
+				let returnRes = ''
+				const [err, res] = await uni.getProvider({
+					service: 'oauth'
+				})
+				if (res && ~res.provider.indexOf('weixin')) returnRes = 'weixin'
+				return returnRes
+			},
+			// 支付
+			async pay() {
+				const providerRes = await this.isLoginFunc()
+				if (providerRes !== 'weixin') return
+				const [err, res] = await uni.login({
+					provider: 'weixin'
+				})
+				if (err) return
+				console.log(res.code)
 				uni.reLaunch({
-					url:'./order'
+					url: './order'
 				})
 			}
 		}

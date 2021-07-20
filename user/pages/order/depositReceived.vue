@@ -4,15 +4,15 @@
 		<view class="group">
 			<view class="item">
 				<view class="caption">租车押金</view>
-				<view class="value">￥60</view>
+				<view class="value">￥{{payTheVoucherRentalCarDeposit}}</view>
 			</view>
 			<view class="item">
 				<view class="caption">交易时间</view>
-				<view class="value">2021-05-26 11:01</view>
+				<view class="value">{{payTheVoucherRentalCarDeposit}}</view>
 			</view>
 			<view class="item">
 				<view class="caption">经办人</view>
-				<view class="value">王小明</view>
+				<view class="value">{{paymentVoucherHandler}}</view>
 			</view>
 		</view>
 		<view v-show="false" class="bar"></view>
@@ -34,7 +34,15 @@
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
+				payTheVoucherRentalCarDeposit: '',
+				paymentVoucherHandler: '',
+				paymentVoucherTransactionTime: ''
 			}
+		},
+		onLoad(e) {
+			if (e && e.payTheVoucherRentalCarDeposit) this.payTheVoucherRentalCarDeposit = e.payTheVoucherRentalCarDeposit
+			if (e && e.paymentVoucherHandler) this.paymentVoucherHandler = e.paymentVoucherHandler
+			if (e && e.paymentVoucherTransactionTime) this.paymentVoucherTransactionTime = e.paymentVoucherTransactionTime
 		}
 	}
 </script>

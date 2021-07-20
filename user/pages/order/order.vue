@@ -64,13 +64,14 @@
 					</view>
 					<view v-show="item.orderStatus >= 100" class="contact"></view>
 					<view class="btn-box">
-						<view v-show="item.orderStatus === 3" class="btn white"
-							@click.stop="$open('/pages/order/renewal')">
-							续租用车
-						</view>
 						<view v-show="item.orderStatus === 0" class="btn blue">立即支付</view>
 						<view v-show="item.orderStatus === 2" class="btn blue"
-							@click.stop="$open('/pages/common/goInspect')">查看车况
+							@click.stop="$open('/pages/common/goInspect', {orderId: item.id, vehicleId: item.vehicleId})">
+							查看车况
+						</view>
+						<view v-show="item.orderStatus === 3" class="btn white"
+							@click.stop="rentalOrderRenewCarRentalPriceCheck(index)">
+							续租用车
 						</view>
 						<view v-show="item.orderStatus === 3" class="btn blue"
 							@click.stop="$open('/pages/order/returnCar')">
@@ -100,11 +101,15 @@
 
 <script>
 	import {
-		rentalOrderPageQuery
+		rentalOrderPageQuery,
+		rentalOrderRenewCarRentalPriceCheck
 	} from '@/apis/rentalOrder'
 	import {
 		listManager
 	} from '@/utils/uni-tools'
+	import {
+		throttle
+	} from '@/utils/tools'
 
 	export default {
 		data() {
@@ -198,6 +203,18 @@
 				this.init()
 				this.getorderList()
 			},
+			// 续租用车
+			rentalOrderRenewCarRentalPriceCheck: throttle(async function(index) {
+				const params = {
+					orderId: this.list[index].id
+				}
+				const [err, res] = await rentalOrderRenewCarRentalPriceCheck(params)
+				if (err) return
+				this.$open('/pages/order/renewal', {
+					orderId: this.list[index].id,
+					vehicleId: this.list[index].vehicleId
+				})
+			}),
 			// 联系门店
 			contactStore(index) {
 				this.phoneCall(this.list[index].memberPhone)
@@ -357,6 +374,11 @@
 					.address {
 						@include font-set(28rpx, #000);
 						line-height: 28rpx;
+						margin-top: 6rpx;
+
+						&~.address {
+							margin-top: 10rpx;
+						}
 
 						text {
 							color: #5A7EFF;
