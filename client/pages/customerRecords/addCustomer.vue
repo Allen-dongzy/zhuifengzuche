@@ -1,21 +1,23 @@
 <template>
 	<view>
 		<view class="box">
-			<view class="flexBoxContent">
-				<view class="title">门店</view>
-				<view class="selectBox" @click="">
-					<view style="width: 85%;">
-						<view class="pickerBox">
-							<label v-if="true" class="pickerText">{{cartName || '请选择门店'}}</label>
-							<label v-else class="pickerText"></label>
-						</view>
-					</view>
-					<view style="width:10%;">
-						<image style="width:40rpx;height: 20rpx;transform: rotate(-90deg);"
-							:src="$util.fileUrl('/xiangxiahui.png')"></image>
-					</view>
-				</view>
+			
+	<view class="flexBoxContent" v-show="roles[0].id==1">
+		<view class="title">门店</view>
+		<view class="selectBox" @click="">
+			<view style="width: 85%;">
+				<picker @change="selectStore" :value="indexStore" :range="list" :range-key="'name'"
+						class="pickerBox">
+						<label  class="pickerText">{{storeName!=''?storeName:'请选择'}}</label>
+					</picker>
 			</view>
+			<view style="width:10%;">
+				<image style="width:40rpx;height: 20rpx;transform: rotate(-90deg);"
+					:src="`${filePath}/vehicleManage/down-mini.png`"></image>
+			</view>
+		</view>
+	</view>
+			
 			<view class="flexBox">
 				<view class="title">客户名称</view>
 				<view class="item">
@@ -100,7 +102,8 @@
 		mapState
 	} from 'vuex'
 	import validator from 'crazy-validator'
-
+import{memberShopPageQuery} from '../../apis/memberShop'
+	import config from '@/common/js/config'
 	export default {
 		data() {
 			return {
@@ -114,16 +117,40 @@
 				cartId: '', // 选中车辆id
 				cartName: '', // 选中车辆名称
 				picBox: [], // 图片
+				list:[],//门店列表
+				storeName:'',//门店值
+				indexStore:'',//门店角标
+				storeId:'',//门店id
+				filePath: config.filePath,
+				
 			}
 		},
 		computed: {
 			//  user模式 门店id
-			...mapState('user', ['shopId'])
+			...mapState('user', ['shopId','roles'])
+			
+			
 		},
 		onLoad() {
 			this.eventListener()
+				this.getStore()
+			console.log(this.roles)
 		},
 		methods: {
+			
+			//获取门店
+			async getStore(){
+			  const [err,res] = await memberShopPageQuery()
+			  if (err) return
+			  this.list =res.data.list
+			},
+			//选择门店
+			selectStore(e){
+				this.indexStore = e.target.value //取其下标
+				this.storeName=this.list[this.indexStore].name
+				this.storeId=this.list[this.indexStore].id
+			},
+			
 			// 前往选择时间
 			goTime() {
 				this.$open('/pages/customerRecords/leaseTimeSelection')
@@ -182,7 +209,7 @@
 				const checkRes = validator(checkList, this.$toast)
 				if (checkRes.status !== 1000) return
 				const params = {
-					shopId: this.shopId,
+					shopId: this.storeId,
 					name: this.name,
 					idCard: this.idCard,
 					phone: this.phone,

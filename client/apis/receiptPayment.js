@@ -14,7 +14,7 @@ export const receiptPaymentAudit = (data, loading = '发送中') => {
 // 查询详情
 export const findOneById = (id, loading = '') => {
 	return request({
-		url: `findOneById/${id}`,
+		url: `receiptPayment/findOneById/${id}`,
 		contentType: 'application/x-www-form-urlencoded',
 		method: 'POST',
 		data: {},
@@ -23,12 +23,12 @@ export const findOneById = (id, loading = '') => {
 }
 
 // 分页查询收付款列表
-export const receiptPaymentPageQuery = (id, loading = '') => {
+export const receiptPaymentPageQuery = (data, loading = '') => {
 	return request({
 		url: 'receiptPayment/pageQuery',
 		contentType: 'application/json',
 		method: 'POST',
-		data: {},
+		data,
 		loading
 	})
 }

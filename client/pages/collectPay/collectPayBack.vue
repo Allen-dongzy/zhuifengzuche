@@ -1,36 +1,37 @@
 <template>
 	<view class="">
-		<view class="flexbox">
+		<view class="flexbox" v-if="info.platform==1">
 			<view class="titleLeft">日期</view>
-			<view class="titleRight">2021-06-02</view>
+			<view class="titleRight">{{info.localDate.slice(0,10)}}</view>
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">平台</view>
-			<view class="titleRight">追风租车</view>
+			<view v-show="info.platform==0" class="titleRight">追风租车</view>
+			<view v-show="info.platform==1" class="titleRight">其他租车OTA</view>
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">项目</view>
-			<view class="titleRight">大方租车</view>
+			<view class="titleRight">{{info.projectName}}</view>
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">车牌号</view>
-			<view class="titleRight">渝A·533333</view>
+			<view class="titleRight">{{info.carNumber}}</view>
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">店员</view>
-			<view class="titleRight">张全蛋</view>
+			<view class="titleRight">{{info.staffName}}</view>
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">金额(元)</view>
-			<view class="titleRight">¥800 ></view>
+			<view class="titleRight">¥{{info.money}}</view>
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">付款人</view>
-			<view class="titleRight">张全蛋</view>
+			<view class="titleRight">{{info.payer}}</view>
 		</view>
 		<view class="flexbox" style="border-bottom: 0rpx;">
 			<view class="titleLeft">备注</view>
-			<view class="titleRight">这是上次欠的800</view>
+			<view class="titleRight">{{info.remarks}}</view>
 		</view>
 		<view class="garyLine"></view>
 		<view class="flexbox" style="border-bottom: 0rpx;">
@@ -69,23 +70,38 @@
 					line-height: 96rpx;
 				    height: 96rpx;" type="default" @click="next">确认收款</button>
 
-		<view class="btn-box">
+<!-- 		<view class="btn-box" v-show="info.examineStatus==2">
 			<view class="btn reject">拒绝</view>
 			<view class="btn confirm">通过</view>
-		</view>
+		</view> -->
 
 	</view>
 </template>
 
 <script>
+	import {
+		findOneById
+	} from '@/apis/receiptPayment'
 	export default {
 		data() {
 			return {
-				money: false
+				money: false,
+				info:''
 			}
 		},
+		onLoad(e) {
+			console.log(e)
+			console.log(JSON.parse(e.obj))
+			this.id = JSON.parse(e.obj).id
+			this.findOneById()
+		},
 		methods: {
-
+			async findOneById() {
+				const [err, res] = await findOneById(this.id)
+				if (err) return
+				this.info = res.data
+				this.info.image = JSON.parse(res.data.image)
+			},
 		}
 	}
 </script>
