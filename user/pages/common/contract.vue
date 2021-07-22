@@ -71,6 +71,14 @@
 				}
 				const [err, res] = await vehicleGetVehicleCertificatess(params)
 				if (err) return
+				console.log(res)
+				console.log(err)
+				if (res.code === 500) {
+					setTimeout(() => {
+						this.$close()
+					}, 500)
+					return
+				}
 				if (res.data.contract) this.img = res.data.contract
 				this.id = res.data.id
 			},
@@ -83,6 +91,7 @@
 					contract: this.img
 				}
 				const [err, res] = await vehicleUpdateVehicleCertificates(params)
+				console.log(111)
 				if (err) return
 				this.$toast('提交成功')
 				setTimeout(() => {

@@ -6,34 +6,86 @@
 		<view class="list">
 			<view class="item">
 				<view class="name">姓名</view>
-				<input type="text" placeholder="填写姓名" placeholder-class="place-input" />
+				<input v-model="localRealName" type="text" placeholder="填写姓名" placeholder-class="place-input" />
 			</view>
 			<view class="item">
 				<view class="name">身份证号</view>
-				<input type="text" placeholder="填写身份证号" placeholder-class="place-input" />
+				<input v-model="localIdCard" type="text" placeholder="填写身份证号" placeholder-class="place-input" />
 			</view>
 			<view class="item">
 				<view class="name">紧急联系人</view>
-				<input type="text" placeholder="填写紧急联系人" placeholder-class="place-input" />
+				<input v-model="localEmergencyContactName" type="text" placeholder="填写紧急联系人"
+					placeholder-class="place-input" />
 			</view>
 			<view class="item">
 				<view class="name">紧急联系人联系方式</view>
-				<input type="text" placeholder="填写紧急联系人联系方式" placeholder-class="place-input" />
+				<input v-model="localEmergencyContactPhone" type="text" placeholder="填写紧急联系人联系方式"
+					placeholder-class="place-input" />
 			</view>
 		</view>
-		<view class="btn">确&#32;定</view>
+		<view class="btn" @click="perfectInformation">确&#32;定</view>
 	</view>
 </template>
 
 <script>
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
+	import {
+		perfectInformation
+	} from '@/apis/sso'
+	import {
+		throttle
+	} from '@/utils/tools'
+	import {
+		isIdentity,
+		isPhone
+	} from 'crazy-validator'
+
 	export default {
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
+				localRealName: '', // 真实姓名
+				localIdCard: '', // 身份证
+				localEmergencyContactName: '', // 紧急联系人
+				localEmergencyContactPhone: '' // 紧急联系人电话
 			}
 		},
+		computed: {
+			// user 真实姓名，身份证，紧急联系人，紧急联系人电话
+			...mapState('user', ['realName', 'idCard', 'emergencyContactName', 'emergencyContactPhone'])
+		},
+		onLoad() {
+			if (this.realName) this.localRealName = this.realName
+			if (this.idCard) this.localIdCard = this.idCard
+			if (this.emergencyContactName) this.localEmergencyContactName = this.emergencyContactName
+			if (this.emergencyContactPhone) this.localEmergencyContactPhone = this.emergencyContactPhone
+		},
 		methods: {
-
+			// user 设置用户信息
+			...mapMutations('user', ['setUserInfo']),
+			// 完善信息
+			perfectInformation: throttle(async function() {
+				if (this.localIdCard && !isIdentity(this.localIdCard, this.$toast('请输入正确的身份证号'))) return
+				if (this.localEmergencyContactPhone && !isPhone(this.localEmergencyContactPhone, this.$toast(
+						'请输入正确的手机号'))) return
+				const params = {
+					realName: this.localRealName,
+					idCard: this.localIdCard,
+					emergencyContactName: this.localEmergencyContactName,
+					emergencyContactPhone: this.localEmergencyContactPhone
+				}
+				const [err, res] = await perfectInformation(params)
+				if (err) return
+				this.$toast('提交成功')
+				this.setUserInfo(params)
+				uni.$emit('detailRefresh')
+				setTimeout(() => {
+					this.$close()
+				}, 500)
+			})
 		}
 	}
 </script>
