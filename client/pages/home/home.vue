@@ -1,9 +1,9 @@
 <template>
 	<view class="home">
 		<view class="flex-center tabList">
-			<swiper class="swiperIcon" indicator-dots :indicator-color="indicatorColor"
-				:indicator-active-color="indicatorActiveColor">
-				<swiper-item class="flex flex-wrap swiperItem">
+			<swiper class="swiperIcon" :indicator-dots="false" :indicator-color="indicatorColor"
+				:indicator-active-color="indicatorActiveColor" >
+				<swiper-item class="flex flex-wrap swiperItem" >
 					<view v-for="(item,index) in swiperIcon" :key="index" class="flex-center flex-direction iconPanel"
 						@click="toHomeLevel(item.url)">
 						<image :src="$util.fileUrl(item.path)" lazy-load></image>
@@ -95,11 +95,11 @@
 							<p>联系客户</p>
 						</view>
 						<view class="flex">
-							<button type="default" v-show="tabCheck==0" class="flex-center btn"  
+							<button :disabled="item.isCarTest==false" type="default" v-show="tabCheck==0" class="flex-center btn"  
 								@tap.stop="toHomeLevel1('/pages/home/goInspect?obj=',item)">出车检验</button>
-							<button type="default" v-show="tabCheck==0" class="flex-center btn"
+							<button type="default" :disabled="item.isVehicleCertificates==true" v-show="tabCheck==0" class="flex-center btn"
 								style="margin-left: 20rpx;"
-								@tap.stop="toHomeLevel1('/pages/home/deliverCar')">交付车辆</button>
+								@tap.stop="toHomeLevel1('/pages/home/deliverCar?obj=',item)">交付车辆</button>
 							<button type="default" v-show="tabCheck==1" class="flex-center btn"
 								@tap.stop="toHomeLevel1('/pages/home/deliverCar')">交车情况</button>
 							<button type="default" v-show="tabCheck==1" class="flex-center btn"
@@ -248,26 +248,20 @@
 				})
 			},
 			toHomeLevel1(e,q) {
+				console.log(JSON.stringify(q))
 				console.log(e)
+				let data ={
+					order:q.id,
+					carnum:q.vehicleNumber,
+					vehicleId:q.vehicleId
+				}
 				uni.navigateTo({
-					url: e+JSON.stringify(q),
+					url: e+JSON.stringify(data),
 					animationType: 'pop-in',
 					animationDuration: 200
 				})
 			},
-			lookinfo(e) {
-				// if(this.status==1){
-					
-				// }else if(this.status==101){
-					
-				// }else if(this.status==5){
-					
-				// }else if(this.status==100){
-					
-				// }else if(this.status==0){
-					
-				// }
-				
+			lookinfo(e) {				
 				uni.navigateTo({
 					url: './orderInfo?id='+this.orderList[e].id+'&type='+this.status,
 					animationDuration: 200,

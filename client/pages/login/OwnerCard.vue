@@ -145,6 +145,38 @@
 		methods: {
 
 			async adminCarOwnersRegister() {
+				if(this.indexStar==""){
+					this.$toast('请选择发证时间')
+					return false;
+				}else if(this.indexCreat==""){
+					this.$toast('请选择注册时间')
+					return false;
+				}else if(this.idCard1==""){
+					this.$toast('请选择身份证正面')
+					return false;
+				}else if(this.idCard2==""){
+					this.$toast('请选择身份证背面')
+					return false;
+				}else if(this.idCard3==""){
+					this.$toast('请选择行驶证正面')
+					return false;
+				}else if(this.idCard4==""){
+					this.$toast('请选择行驶证背面')
+					return false;
+				}else if(this.carNum==""){
+					this.$toast('请输入车牌号')
+					return false;
+				}else if(this.carType==""){
+					this.$toast('请输入车品牌型号')
+					return false;
+				}else if(this.vehicleIdentificationCode==""){
+					this.$toast('请输入车辆识别码')
+					return false;
+				}else if(this.engineNumber==""){
+					this.$toast('请输入发动机号码')
+					return false;
+				}
+			
 			
 				this.obj.releaseDate = this.indexStar+" 00:00:00"
 				this.obj.registrationDate = this.indexCreat+" 00:00:00"

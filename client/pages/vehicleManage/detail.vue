@@ -9,7 +9,7 @@
 		</swiper>
 		<view class="goods-info">
 			<view class="caption">{{obj.brandName}}{{obj.categoryName}}</view>
-			<view class="description">{{obj.brandName}}/{{obj.gears}}/{{obj.capacity}}/{{obj.outputVolumeName}}/{{obj.model}}</view>
+			<view class="description">{{obj.brandName}}/{{obj.gears}}/{{obj.capacity}}座/{{obj.outputVolumeName}}/{{obj.model}}</view>
 			<view class="label-box">
 				<view class="label">{{obj.categoryName}}</view>
 				<view class="" v-for="(item,index) in obj.labels" style="margin: 0rpx 10rpx;">
@@ -34,7 +34,7 @@
 				<!-- 	<view class="price">￥1000</view> -->
 				</view>
 				<view class="item">
-					<view class="caption">押金</view>
+					<view class="caption">租车押金</view>
 					<view class="price">￥{{obj.rentalMoney}}</view>
 				</view>
 				<view class="item">
@@ -216,7 +216,7 @@
 				@include flex-center;
 				border-radius: 52rpx;
 				letter-spacing: 20rpx;
-				margin: 60rpx auto;
+				margin: 60rpx auto 120rpx auto;
 			}
 		}
 

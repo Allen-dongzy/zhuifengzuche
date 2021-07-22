@@ -29,7 +29,7 @@
 			<view :class="['label', {'ac': total>0}]">{{ total }}</view>
 			<view class="arrow"></view>
 		</view>
-		<view v-show="$storage.get('token')" class="goout" @click="adminLogout">退出登陆</view>
+		<view v-show="$storage.get('token')" class="goout" @click="adminLogout">退出登录</view>
 	</view>
 </template>
 

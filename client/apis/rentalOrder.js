@@ -31,3 +31,27 @@ export const orderInfo = (data, loading = '等待中') => {
 		loading
 	})
 }
+
+
+//交付车辆
+export const deliveryVehicleSave = (data, loading = '等待中') => {
+	return request({
+		url: "rentalOrder/deliveryVehicleSave",
+		contentType:'application/json',
+		method: 'POST',  
+		data,
+		loading
+	})
+}
+
+//交付车辆查询
+export const deliveryVehicleGet = (data, loading = '等待中') => {
+	return request({
+		url: "rentalOrder/deliveryVehicleGet",
+		contentType:'application/x-www-form-urlencoded',
+		method: 'POST',  
+		data,
+		loading
+	})
+}
+

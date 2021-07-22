@@ -30,7 +30,7 @@
 					<p class="oil" v-show="item.oil!=null">油量：62%</p>
 					<p class="car">车龄：{{item.carAge}}</p>
 				</view>
-				<view class="flex-center line">
+				<view v-show="item.vehicleStatus==3" class="flex-center line">
 					<i></i>
 				</view>
 				<p class="name" v-show="item.vehicleStatus==3">使用人：张全蛋</p>
@@ -45,7 +45,7 @@
 			</view>
 		</view>
 
-		<view class="cu-modal drawer-modal justify-end" catchtouchmove='true'
+		<view class="cu-modal drawer-modal justify-end" bindtouchmove='true'
 			:class="(modalName=='DrawerModalR'?'show':'')" @click="hideModal">
 			<view class="cu-dialog basis-lg" @click.stop="">
 				<view class="flex status">
@@ -135,9 +135,13 @@
 			}
 		},
 		onLoad() {
-			this.getlist() //车list
+			
 			this.getType() //车类型
 			this.getBrand() //车品牌
+		},
+		onShow() {
+			this.list=[]
+			this.getlist() //车list
 		},
 		methods: {
 			//选择车状态

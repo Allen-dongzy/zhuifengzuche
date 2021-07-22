@@ -6,27 +6,40 @@
 		</view>
 		<view class="flexBox" style="margin-top: 30rpx;">
 			<image style="width:40rpx;height: 40rpx;" :src="$util.fileUrl('/othermoney.png')" mode=""></image>
-			<view style="margin-left: 2%;color: #5A7EFF;font-size: 28rpx;">添加收款</view>
+			<view style="margin-left: 2%;color: #5A7EFF;font-size: 28rpx;" @click="priceShow=true">添加收款</view>
 		</view>
 		<!-- 收费弹窗 -->
 
 		<view class="Mask" v-show="priceShow==true"></view>
 		<view class="box1" v-show="priceShow==true">
 			<view class="blackText" style="padding: 20rpx 0rpx;">款项选择</view>
-
 			<picker @change="cityPicker" :value="cityIndex" :range="cityList" :range-key="'name'" class="pickerBox">
 				<label v-if="!log1" class="pickerText">请选择</label>
 				<label v-else class="pickerText">{{cityList[cityIndex].name}}</label>
 			</picker>
 			<view class="blackText" style="padding: 20rpx 0rpx;">金额</view>
-			<input type="text" value="" placeholder="请输入里程数"
+			<input type="text"  v-model="selectPrice" placeholder="请输入金额"
 				style="background-color: #EFF0F3;height:74rpx;width: 100%;border-radius: 10rpx;padding-left: 20rpx;margin-bottom: 30rpx;" />
 			<view class="flexBox" style="width: 100%;">
-				<view class="lanbox">取消</view>
-				<view class="lanbox1" style="margin-left: 57%;">确定</view>
+				<view class="lanbox" @click="priceShow=false">取消</view>
+				<view class="lanbox1" style="margin-left: 57%;" @click="sure()">确定</view>
 			</view>
 		</view>
-
+		
+		<!-- <button type="default" @click="getMoney()">发起收款</button> -->
+					
+					
+					<view  style=" color: white;
+					width: 80%;
+					margin: 20rpx auto;
+				    background-color: #5A7EFF;
+				    border-radius: 50px;
+					z-index: -1;
+				    font-size: 32rpx;
+					text-align: center;
+				    height: 96rpx;line-height: 96rpx;" @click="getMoney()">
+					发起收款
+					</view>
 
 	</view>
 </template>
@@ -35,33 +48,49 @@
 	export default {
 		data() {
 			return {
-				list: [{
-					name: '款项1',
-					price: '10'
-				}, {
-					name: '款项1',
-					price: '10'
-				}],
-				priceShow: true,
+				list: [],
+				priceShow: false,
 				log1: false,
 
 				cityList: [{
-					name: '重庆'
+					name: '车辆租金'
 				}, {
-					name: '成都'
+					name: '驾无忧代收'
 				}, {
-					name: '深圳'
+					name: '夜间服务费'
+				}, {
+					name: '其他'
 				}],
 				cityIndex: '',
-
+				selectName:'',
+				selectPrice:'',
+				orderId:'',
 			}
+		},
+		onLoad(e) {
+			console.log(e.orderId)
+			this.orderId=e.orderId
 		},
 		methods: {
 			cityPicker: function(e) {
 				this.log1 = true
 				this.cityIndex = e.target.value //取其下标
-
+				this.selectName=this.cityList[this.cityIndex].name
 			},
+			sure(){
+				this.list.push({name:this.selectName,price:this.selectPrice})
+				this.priceShow=false
+			},
+			getMoney(){
+				console.log('ppp')
+				var allprice=Number()
+				for(let i=0;i<this.list.length;i++){
+					allprice+=Number(this.list[i].price)
+				}
+				uni.navigateTo({
+					url:'./payCode?orderId='+this.orderId+'&price='+allprice+'&type='+1
+				})
+			}
 		}
 	}
 </script>
@@ -113,9 +142,10 @@
 		position: absolute;
 		padding: 20rpx 40rpx;
 		background-color: white;
-		top: 0px;
+		top: 30vh;
 		left: 10%;
 		border-radius: 20rpx;
+		z-index: 99;
 	}
 
 	.lanbox {

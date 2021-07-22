@@ -8,8 +8,8 @@
 			 <view class="whitebg">
 				 <view style="width: 90%;margin: auto;padding: 30rpx 0rpx;">已收取</view>
 				 <view class="inpbox">
-				 	<view style="width: 50%;text-align: left;font-size: 28rpx;">项目名称</view>
-					<view style="width: 50%;text-align: right;font-size: 40rpx;color:#FC3736 ;">¥5000</view>
+				 	<view style="width: 50%;text-align: left;font-size: 28rpx;">收取金额</view>
+					<view style="width: 50%;text-align: right;font-size: 40rpx;color:#FC3736 ;">¥{{price}}</view>
 				 </view>
 			 </view>
 		</view>
@@ -20,7 +20,7 @@
 					    background-color: #5A7EFF;
 					    border-radius: 50px;
 					    font-size: 32rpx;
-					    height: 96rpx;line-height: 96rpx;" type="default" >关闭</button>
+					    height: 96rpx;line-height: 96rpx;" type="default" @click="close">关闭</button>
 	</view>
 </template>
 
@@ -28,11 +28,26 @@
 	export default {
 		data() {
 			return {
-				
+				price:'',
+				type:''
 			}
 		},
+		onLoad(e) {
+			this.price=e.price
+			this.type=e.type
+		},
 		methods: {
-			
+			close(){
+				if(this.type==1){
+					uni.navigateBack({
+						delta:3
+					})
+				}else{
+					uni.navigateBack({
+						delta:2
+					})
+				}
+			}
 		}
 	}
 </script>

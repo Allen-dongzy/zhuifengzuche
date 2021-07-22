@@ -101,6 +101,19 @@
 		methods: {
 
 			updatePassword: throttle(async function() {
+				if(this.code==""){
+					this.$toast('请输入验证码')
+					return false;
+				}else if(this.phone==""){
+					this.$toast('请输入手机号')
+					return false;
+				}else if(this.password1==""){
+					this.$toast('请输入密码')
+					return false;
+				}else if(this.password2==""){
+					this.$toast('请输入确认密码')
+					return false;
+				}
 				const params = {
 					code: this.code,
 					username: this.phone,

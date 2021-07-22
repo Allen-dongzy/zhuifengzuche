@@ -29,6 +29,7 @@
 				{{item.brandName}}{{item.name}}{{item.categoryName}}
 			</view>
 		</view>
+		
 		<view class="cu-modal drawer-modal justify-end" catchtouchmove='true'
 			:class="(modalName=='DrawerModalR'?'show':'')" @click="hideModal">
 			<view class="cu-dialog basis-lg" @click.stop="">
@@ -70,6 +71,8 @@
 				</view>
 			</view>
 		</view>
+		
+		
 	</view>
 </template>
 
@@ -106,7 +109,13 @@
 				stallId: '', //排挡Id
 				brandList: [], //品牌数组
 				seatList: [{
+					text: '2',
+					status: false
+				},{
 					text: '5',
+					status: false
+				},{
+					text: '6',
 					status: false
 				}, {
 					text: '7',
@@ -132,6 +141,7 @@
 
 		},
 		onShow() {
+			this.list=[]
 			this.getlist()
 			this.getBrand()
 		},
@@ -180,15 +190,15 @@
 
 			},
 			//下拉刷新
-			onPullDownRefresh() {
-				this.page = 1
-				this.size = 10
-				this.list = []
-				this.getlist()
-				setTimeout(function() {
-					uni.stopPullDownRefresh();
-				}, 1000);
-			}, 
+			// onPullDownRefresh() {
+			// 	this.page = 1
+			// 	this.size = 10
+			// 	this.list = []
+			// 	this.getlist()
+			// 	setTimeout(function() {
+			// 		uni.stopPullDownRefresh();
+			// 	}, 1000);
+			// }, 
 			// 上拉加载
 			onReachBottom(e) {
 				this.page = this.page + 1;

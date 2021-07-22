@@ -41,13 +41,17 @@
 		},
 		methods: {
 			async del() {
-				const [err, res] = await deliveryDelete({
-					id: this.obj.id
-				})
-				if (err) true
-				uni.navigateBack({
-					delta: 1
-				})
+				
+				const [err, res] = await this.$showModal({content:'是否要删除该数据？'})
+				if (res === 'confirm'){
+					const [err1, res1] = await deliveryDelete({
+						id: this.obj.id
+					})
+					if (err1) true
+					uni.navigateBack({
+						delta: 1
+					})
+				}
 			},
 			edit() {
 				uni.navigateTo({
