@@ -255,7 +255,8 @@
 	}, {
 		"path": "pages/order/returnCar",
 		"style": {
-			"navigationBarTitleText": "前往还车"
+			"navigationBarTitleText": "前往还车",
+			"enablePullDownRefresh": true
 		}
 	}, {
 		"path": "pages/mine/aboutMe",
@@ -305,7 +306,7 @@
 			"path": "pages/order/order"
 		}, {
 			"name": "dzy", // dzy
-			"path": "pages/mine/pay"
+			"path": "pages/common/contract"
 		}]
 	}
 }

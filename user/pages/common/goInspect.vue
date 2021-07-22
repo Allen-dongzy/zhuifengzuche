@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="go-inspect">
 		<view class="box">
 			<view class="flexBox" style="padding: 30rpx 0rpx;">
 				<view class="buleLine"></view>
@@ -57,13 +57,14 @@
 				<image style="width:160rpx;height:160rpx;" :src="inner" mode="aspectFill"></image>
 			</view>
 		</view>
-		<view class="flexBox">
+		<view v-show="mode==='edit'" class="flexBox">
 			<view class="blackText" style="width: 20%;">添加备注</view>
 		</view>
-		<textarea value="" placeholder="请输入备注信息"
+		<textarea v-show="mode==='edit'" value="" placeholder="请输入备注信息"
 			style="padding: 20rpx;width:85%;margin: auto;background-color: #EFF0F3;height:220rpx;border-radius: 20rpx;margin-top: 30rpx;"
 			v-model="remarks" />
-		<view style="width: 92%;margin: auto;padding-bottom: 20rpx;border-bottom: 2rpx solid #EFF0F3;">
+		<view v-show="mode==='edit'"
+			style="width: 92%;margin: auto;padding-bottom: 20rpx;border-bottom: 2rpx solid #EFF0F3;">
 			<view style="display: inline-block;width: 21%;margin: 20rpx 2%;position: relative;"
 				v-for="(item, index) in imgList" :key="index">
 				<view>
@@ -79,24 +80,13 @@
 				</view>
 			</view>
 		</view>
-		<button style=" color: white;
+		<button v-show="mode==='edit'" style=" color: white;
 			width: 80%;
 					margin: 20rpx auto;
 				    background-color: #5A7EFF;
 				    border-radius: 50px;
 				    font-size: 32rpx;
 				    height: 96rpx;line-height: 96rpx;" type="default" @click="vehicleAddRemarks">完成</button>
-		<view class="Mask" v-show="imgshow==true"></view>
-		<view class="box1" v-show="imgshow==true">
-			<view class="blackText">请上传图片</view>
-			<image style="width:80%;height:350rpx;margin-left: 10%;margin-top: 30rpx;"
-				:src="`${ossUrl}/common/guanxi.png`"></image>
-			<view class="flexBox" style="width: 100%;">
-				<view class="lanbox">取消</view>
-				<view class="lanbox1" style="margin-left: 57%;">确定</view>
-			</view>
-		</view>
-
 	</view>
 </template>
 
@@ -120,6 +110,7 @@
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
+				mode: '', // 模式 edit:编辑模式 readonly:只读模式
 				orderId: '', // 订单id
 				vehicleId: '', // 车型id
 				carNumber: '', // 车牌号
@@ -134,6 +125,7 @@
 		onLoad(e) {
 			if (e && e.orderId) this.orderId = e.orderId
 			if (e && e.vehicleId) this.vehicleId = e.vehicleId
+			if (e && e.mode) this.mode = e.mode
 			this.vehicleVehiclePreview()
 		},
 		methods: {
@@ -177,6 +169,7 @@
 				this.$toast('操作成功')
 				setTimeout(() => {
 					this.$open('/pages/common/contract', {
+						mode: 'edit',
 						vehicleId: this.vehicleId,
 						orderId: this.orderId
 					})
@@ -196,6 +189,10 @@
 </script>
 
 <style lang="scss">
+	.go-inspect {
+		padding-bottom: 50rpx;
+	}
+
 	.box {
 		width: 100%;
 		background-color: #EFF0F3;
