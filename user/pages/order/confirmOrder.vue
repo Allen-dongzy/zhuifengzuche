@@ -284,45 +284,41 @@
 				}
 				return info
 			},
-			...mapState('app',['platform'])
+			...mapState('app', ['platform'])
 		},
 		components: {
 			EvanSwitch
 		},
 		onLoad(e) {
-			console.log(e)
 			this.yudingInfo = e
 			this.carId = e.carModelId
 			this.takeId = e.takeCarAddressId
 			this.backId = e.carAlsoAddressId
-			this.findIsUseCouponByUser()
-			this.invoiceQueryByUser()
-			this.rentalOrderGenerateOrder(e)
 			this.takeday = e.takeCarDateShow
 			this.takeweek = e.takeCarDayShow
 			this.taketime = e.takeCarTimeShow
-
 			this.backday = e.carAlsoDateShow
 			this.backweek = e.carAlsoDayShow
 			this.backtime = e.carAlsoTimeShow
 			this.totalDate = e.totalDate
+			this.findIsUseCouponByUser()
+			this.invoiceQueryByUser()
+			this.rentalOrderGenerateOrder(e)
+			this.eventListener()
 		},
 		methods: {
 			async rentalOrderGenerateOrder(e) {
-
 				let data = {
-					vehicleModelId: e.carModelId,
-					rentEndTime: e.carAlsoTime,
-					rentBeginTime: e.takeCarTime,
-					pickPlace: e.takeCarAddressId,
-					returnPlace: e.carAlsoAddressId,
+					vehicleModelId: this.yudingInfo.carModelId,
+					rentEndTime: this.yudingInfo.carAlsoTime,
+					rentBeginTime: this.yudingInfo.takeCarTime,
+					pickPlace: this.yudingInfo.takeCarAddressId,
+					returnPlace: this.yudingInfo.carAlsoAddressId,
 					orderSource: 0
 				}
 				const [err, res] = await rentalOrderGenerateOrder(data)
 				if (err) return
-				console.log(res)
 				this.info = res.data
-
 				this.info.clientVehicleVo.vehicleModelFiles = JSON.parse(this.info.clientVehicleVo.vehicleModelFiles)
 				this.info.clientVehicleVo.labels = JSON.parse(this.info.clientVehicleVo.labels)
 				if (this.info.returnPlace.name === this.info.pickPlace.name) {
@@ -330,15 +326,14 @@
 				} else {
 					this.yidiType = true
 				}
-
 				this.$forceUpdate()
 			},
 			//发票
 			async invoiceQueryByUser() {
 				const [err, res] = await invoiceQueryByUser()
 				if (err) return
-				console.log(res)
 				this.invoiceList = res.data
+				if (!this.invoiceList[0] || !this.invoiceList[0].id) return
 				this.invoiceId = this.invoiceList[0].id
 			},
 			//选择发票
@@ -350,9 +345,9 @@
 			async findIsUseCouponByUser() {
 				const [err, res] = await findIsUseCouponByUser()
 				if (err) return
-				console.log(res)
+				if (!res.data || res.data.length === 0) return
 				this.confirm = res.data[0].discountAmount
-				this.couponId=res.data[0].id
+				this.couponId = res.data[0].id
 			},
 
 			// 轮播改变
@@ -384,50 +379,42 @@
 				const latitude = res.latitude
 				const longitude = res.longitude
 				// 打开位置
-			
 				uni.openLocation({
 					latitude,
 					longitude
 				})
 			},
-			// 打电话
-			// phoneCall() {
-			// 	uni.makePhoneCall({
-			// 		phoneNumber: '17623178041'
-			// 	})
-			// },
 			// 选择保险
 			selInsurance() {
 				this.isInsurance = !this.isInsurance
-				if(this.isInsurance==true){
-					this.info.orderPriceInfo.total=Number(this.info.orderPriceInfo.insuranceMoney)+Number(this.info.orderPriceInfo.total)
-				}else{
-					this.info.orderPriceInfo.total=Number(this.info.orderPriceInfo.total)-Number(this.info.orderPriceInfo.insuranceMoney)
+				if (this.isInsurance == true) {
+					this.info.orderPriceInfo.total = Number(this.info.orderPriceInfo.insuranceMoney) + Number(this.info
+						.orderPriceInfo.total)
+				} else {
+					this.info.orderPriceInfo.total = Number(this.info.orderPriceInfo.total) - Number(this.info
+						.orderPriceInfo.insuranceMoney)
 				}
-				
+
 				this.$forceUpdate()
 			},
 			async sure() {
-
-				console.log(this.carId)
-				console.log(this.couponId)
-				console.log(this.invoiceId)
-				console.log(this.isInsurance)
-				console.log(this.takeId)
-				console.log(this.backId)
-				console.log(this.remark)
-				console.log(this.yudingInfo)
-				console.log(this.selStatus)
-				if(this.selStatus==false){
+				if (this.selStatus == false) {
 					this.$toast("请同意用户协议");
-					 return false;
+					return false;
 				}
 				if (this.isInsurance) {
 					this.isInsuranceId = 1
 				} else {
 					this.isInsuranceId = 0
 				}
-				if(this.invoiceSwitch){
+				if (!this.info.orderPriceInfo.isRealName) {
+					this.$toast('您未实名认证，请先去完善个人信息！')
+					setTimeout(() => {
+						this.$open('/pages/order/perfectInformation')
+					}, 500)
+					return
+				}
+				if (this.invoiceSwitch) {
 					var data = {
 						couponId: this.couponId,
 						invoiceId: this.invoiceId,
@@ -440,7 +427,7 @@
 						rentEndTime: this.yudingInfo.carAlsoTime,
 						vehicleModelId: this.carId
 					}
-				}else{
+				} else {
 					var data = {
 						couponId: this.couponId,
 						isInsurance: this.isInsuranceId,
@@ -453,12 +440,16 @@
 						vehicleModelId: this.carId
 					}
 				}
-
 				const [err, res] = await rentalOrderCreateOrders(data)
 				if (err) return
-				console.log(res)
 				uni.navigateTo({
-					url:'./orderPay?price='+this.info.orderPriceInfo.total
+					url: './orderPay?price=' + this.info.orderPriceInfo.total
+				})
+			},
+			// 监听时间
+			eventListener() {
+				uni.$on('detailRefresh', () => {
+					this.rentalOrderGenerateOrder()
 				})
 			}
 		}

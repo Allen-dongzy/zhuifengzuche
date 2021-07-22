@@ -9,15 +9,15 @@
 		</view>
 		<view class="all-box">
 			<view>
-				<view class="flex-box item" @click="wallet">
+				<view class="flex-box item">
 					<image class="icon" :src="`${ossUrl}/mine/yue.png`"></image>
 					<view class="text">余额</view>
 				</view>
 				<view class="price">0.00<text>元</text></view>
 			</view>
 			<view class="line"></view>
-			<view>
-				<view class="flex-box item" @click="coupon">
+			<view @click="coupon">
+				<view class="flex-box item">
 					<image class="icon" :src="`${ossUrl}/mine/youhui.png`"></image>
 					<view class="text">优惠券</view>
 				</view>
@@ -33,11 +33,11 @@
 				<image class="icon" :src="`${ossUrl}/mine/weizhang.png`"></image>
 				<view class="gray-text">违章记录</view>
 			</view>
-			<view class="flex-box-one" @click="$open('/pages/mine/pay')">
+			<view class="flex-box-one" @click="$open('/pages/mine/pay', {type: 1})">
 				<image class="icon" :src="`${ossUrl}/mine/fukuan.png`"></image>
 				<view class="gray-text">付款</view>
 			</view>
-			<view class="flex-box-one" @click="$open('/pages/mine/pay')">
+			<view class="flex-box-one" @click="$open('/pages/mine/pay', {type: 0})">
 				<image class="icon" :src="`${ossUrl}/mine/shoukuan.png`"></image>
 				<view class="gray-text">收款</view>
 			</view>

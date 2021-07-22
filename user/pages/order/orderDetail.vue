@@ -13,7 +13,7 @@
 					<view v-if="info.orderStatus===0 || info.orderStatus===1 || info.orderStatus===2" class="btn white"
 						@click="rentalOrderCancelOrderByUserGet">
 						取消订单</view>
-					<view v-if="info.orderStatus===0" class="btn blue">立即支付</view>
+					<view v-if="info.orderStatus===0" class="btn blue" @click="getCodeByWxCode">立即支付</view>
 					<view v-if="info.orderStatus===2" class="btn white"
 						@click="$open('/pages/common/goInspect', {orderId: info.id, vehicleId: info.vehicleId})">查看车况
 					</view>
@@ -48,7 +48,7 @@
 					</view>
 					<view class="btn-box">
 						<view class="btn white" @click="contactStore">联系门店</view>
-						<view class="btn white" @click="$open('/pages/order/renewal', {id: info.id})">续租用车</view>
+						<view class="btn white" @click="rentalOrderRenewCarRentalPriceCheck">续租用车</view>
 						<view class="btn blue" @click="$open('/pages/order/returnCar', {id: info.id})">前往还车</view>
 					</view>
 				</view>
@@ -212,8 +212,15 @@
 	import {
 		rentalOrderOrderInfo,
 		rentalOrderCancelOrderByUser,
-		rentalOrderCancelOrderByUserGet
+		rentalOrderCancelOrderByUserGet,
+		rentalOrderRenewCarRentalPriceCheck
 	} from '@/apis/rentalOrder'
+	import {
+		getCodeByWxCode
+	} from '@/apis/sso'
+	import {
+		paymentPrecreate
+	} from '@/apis/payment'
 	import {
 		throttle
 	} from '@/utils/tools'
@@ -262,6 +269,7 @@
 		},
 		onLoad(e) {
 			if (e && e.id) this.rentalOrderOrderInfo(e.id)
+			this.eventListener()
 		},
 		methods: {
 			// 请求订单详情
@@ -281,6 +289,19 @@
 				this.info.carAlsoDayShow = rentEndTime[1]
 				this.info.carAlsoTimeShow = rentEndTime[2]
 			},
+			// 续租用车
+			rentalOrderRenewCarRentalPriceCheck: throttle(async function(index) {
+				const params = {
+					orderId: this.info.id
+				}
+				const [err, res] = await rentalOrderRenewCarRentalPriceCheck(params)
+				if (err) return
+				this.$open('/pages/order/renewal', {
+					orderId: this.info.id,
+					vehicleId: this.info.vehicleId,
+					mode: 'orderDetail'
+				})
+			}),
 			// 取消订单
 			rentalOrderCancelOrderByUser: throttle(async function() {
 				const params = {
@@ -307,6 +328,47 @@
 				if (btnRes !== 0) return
 				this.rentalOrderCancelOrderByUser()
 			}),
+			// 授权
+			getCodeByWxCode: throttle(async function() {
+				const [loginErr, loginRes] = await uni.login({
+					provider: 'weixin'
+				})
+				if (loginErr) return
+				const params = {
+					code: loginRes.code,
+					loginType: 1
+				}
+				const [err, res] = await getCodeByWxCode(params)
+				if (err) return
+				this.paymentPrecreate(res.data.openid)
+			}),
+			// 发起支付
+			async paymentPrecreate(openId) {
+				const params = {
+					reflect: this.info.reflect,
+					orderId: this.info.id,
+					payerUid: openId,
+					payway: '3',
+					subPayway: '4',
+					subject: '租车定金',
+					// totalAmount: this.info.orderDeposit
+					totalAmount: 0.01
+				}
+				const [err, res] = await paymentPrecreate(params)
+				if (err) return
+				this.pay(res.data.wapPayRequest)
+			},
+			// 支付
+			async pay(wapPayRequest) {
+				const [err, res] = await uni.requestPayment({
+					provider: 'wxpay',
+					...wapPayRequest
+				})
+				if (err) return
+				this.$toast('租车成功！')
+				this.init()
+				this.getorderList()
+			},
 			// 时间转日期时间周几
 			timeFormat(timeStr) {
 				const timeObj = new Date(timeStr)
@@ -341,6 +403,13 @@
 			// 关闭时间模态框
 			closeTimePopup() {
 				this.$refs.timePopup.close()
+			},
+			// 监听函数
+			eventListener() {
+				uni.$on('orderDetailRefresh', () => {
+					this.refresh()
+					uni.$emit('orderRefresh')
+				})
 			}
 		}
 	}

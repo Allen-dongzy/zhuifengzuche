@@ -51,7 +51,7 @@
 						:class="['colorDay', {'ac': acDate === index}, {'white': index%7===0 || (index+1)%7===0}, {'orange': item.planStatus===2}, {'green': item.planStatus===0}, {'gray': item.planStatus!==0&&item.planStatus!==2}]"
 						@click="selDate(index)">
 						<view class="date">{{item.planEndTime | dateFormat}}</view>
-						<view class="price">￥{{item.money}}</view>
+						<view class="price">￥{{item.money || 0}}</view>
 					</view>
 				</view>
 			</view>
@@ -81,7 +81,6 @@
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
-				day: '10时30分',
 				acDate: -1, // 选中的日期
 				dateList: [], // 日期列表
 				vehicleId: '', // 车辆id
@@ -96,6 +95,7 @@
 				lastEndTime: '', // 上一次租车结束时间
 				priceList: [], // 费用列表
 				reflect: {}, // 付费回调
+				mode: '', // 模式
 			}
 		},
 		computed: {
@@ -127,6 +127,7 @@
 		onLoad(e) {
 			if (e && e.orderId) this.orderId = e.orderId
 			if (e && e.vehicleId) this.vehicleId = e.vehicleId
+			if (e && e.mode) this.mode = e.mode
 			this.vehicleQuerySelectRentalPlanList()
 		},
 		methods: {
@@ -215,7 +216,8 @@
 					payway: '3',
 					subPayway: '4',
 					subject: '续租',
-					totalAmount: this.totalPrice
+					// totalAmount: this.totalPrice
+					totalAmount: 0.01
 				}
 				const [err, res] = await paymentPrecreate(params)
 				if (err) return
@@ -227,11 +229,13 @@
 					provider: 'wxpay',
 					...wapPayRequest
 				})
-				if (err) {
-					console.log('fail:' + JSON.stringify(err))
-					return
-				}
-				console.log('success:' + JSON.stringify(res))
+				if (err) return
+				this.$toast('续租成功！')
+				if (this.mode === 'order') uni.$emit('orderRefresh')
+				if (this.mode === 'orderDetail') uni.$emit('orderDetailRefresh')
+				setTimeout(() => {
+					this.$close()
+				}, 500)
 			},
 			// 获取当前日期
 			getDate(type) {

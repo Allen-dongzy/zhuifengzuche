@@ -85,7 +85,6 @@ const user = {
 			state.realName = ''
 			state.username = ''
 			storage.remove('userinfo')
-			console.log(111)
 		}
 	},
 	actions: {

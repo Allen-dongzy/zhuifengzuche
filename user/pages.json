@@ -150,22 +150,22 @@
 	}, {
 		"path": "pages/mine/goPay",
 		"style": {
-			"navigationBarTitleText": "发起付款"
+			"navigationBarTitleText": ""
 		}
 	}, {
 		"path": "pages/mine/pay",
 		"style": {
-			"navigationBarTitleText": "付款"
+			"navigationBarTitleText": ""
 		}
 	}, {
 		"path": "pages/mine/paySuccess",
 		"style": {
-			"navigationBarTitleText": "付款成功"
+			"navigationBarTitleText": ""
 		}
 	}, {
 		"path": "pages/mine/payInfo",
 		"style": {
-			"navigationBarTitleText": "付款详情"
+			"navigationBarTitleText": ""
 		}
 	}, {
 		"path": "pages/mine/risk",
@@ -305,7 +305,7 @@
 			"path": "pages/order/order"
 		}, {
 			"name": "dzy", // dzy
-			"path": "pages/order/useCarSuccess"
+			"path": "pages/mine/pay"
 		}]
 	}
 }

@@ -64,7 +64,8 @@
 					</view>
 					<view v-show="item.orderStatus >= 100" class="contact"></view>
 					<view class="btn-box">
-						<view v-show="item.orderStatus === 0" class="btn blue">立即支付</view>
+						<view v-show="item.orderStatus === 0" class="btn blue" @click.stop="getCodeByWxCode(index)">立即支付
+						</view>
 						<view v-show="item.orderStatus === 2" class="btn blue"
 							@click.stop="$open('/pages/common/goInspect', {orderId: item.id, vehicleId: item.vehicleId})">
 							查看车况
@@ -84,7 +85,8 @@
 						</view>
 						<view v-show="item.orderStatus === 100 && item.evaluateCount>0" class="btn blue"
 							@click.stop="$open('/pages/common/storeComment')">查看评价</view>
-						<view v-show="item.orderStatus === 101" class="btn blue">再次预订</view>
+						<view v-show="item.orderStatus === 101" class="btn blue"
+							@click.stop="$open('/pages/home/home', 3)">再次预订</view>
 					</view>
 				</view>
 			</view>
@@ -110,6 +112,12 @@
 	import {
 		throttle
 	} from '@/utils/tools'
+	import {
+		getCodeByWxCode
+	} from '@/apis/sso'
+	import {
+		paymentPrecreate
+	} from '@/apis/payment'
 
 	export default {
 		data() {
@@ -212,9 +220,51 @@
 				if (err) return
 				this.$open('/pages/order/renewal', {
 					orderId: this.list[index].id,
-					vehicleId: this.list[index].vehicleId
+					vehicleId: this.list[index].vehicleId,
+					mode: 'order'
 				})
 			}),
+			// 授权
+			getCodeByWxCode: throttle(async function(index) {
+				const [loginErr, loginRes] = await uni.login({
+					provider: 'weixin'
+				})
+				if (loginErr) return
+				const params = {
+					code: loginRes.code,
+					loginType: 1
+				}
+				const [err, res] = await getCodeByWxCode(params)
+				if (err) return
+				this.paymentPrecreate(res.data.openid, index)
+			}),
+			// 发起支付
+			async paymentPrecreate(openId, index) {
+				const params = {
+					reflect: this.list[index].reflect,
+					orderId: this.list[index].id,
+					payerUid: openId,
+					payway: '3',
+					subPayway: '4',
+					subject: '租车定金',
+					// totalAmount: this.list[index].orderDeposit
+					totalAmount: 0.01
+				}
+				const [err, res] = await paymentPrecreate(params)
+				if (err) return
+				this.pay(res.data.wapPayRequest)
+			},
+			// 支付
+			async pay(wapPayRequest) {
+				const [err, res] = await uni.requestPayment({
+					provider: 'wxpay',
+					...wapPayRequest
+				})
+				if (err) return
+				this.$toast('租车成功！')
+				this.init()
+				this.getorderList()
+			},
 			// 联系门店
 			contactStore(index) {
 				this.phoneCall(this.list[index].memberPhone)
@@ -229,6 +279,7 @@
 					phoneNumber
 				})
 			},
+
 			// 监听事件
 			eventListener() {
 				uni.$on('orderRefresh', () => {
