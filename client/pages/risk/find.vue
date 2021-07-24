@@ -1,8 +1,8 @@
 <template>
 	<view style="padding-top: 40rpx;">
-		<view class="box" ><input class="inpBox" type="text" v-model="name" placeholder="请输入您的姓名" /> </view>
-		<view class="box"><input class="inpBox" type="text" v-model="phone" placeholder="请输入您的手机号" /> </view>
-		<view class="box"><input class="inpBox" type="text" v-model="identityNum" placeholder="请输入您的身份证号" /> </view>
+		<view class="box" ><input class="inpBox" type="text" v-model="name" placeholder="请输入查询对象的姓名" /> </view>
+		<view class="box"><input class="inpBox" type="text" v-model="phone" placeholder="请输入查询对象的手机号" /> </view>
+		<view class="box"><input class="inpBox" type="text" v-model="identityNum" placeholder="请输入查询对象的身份证号" /> </view>
 		<view class="find" @click="findOne">查询</view>
 	</view>
 </template>

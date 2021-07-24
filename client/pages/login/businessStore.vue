@@ -163,18 +163,18 @@
 				selectArea: '', //选择的区 
 				selectStar: '', //选择的开始时间
 				selectEnd: '', //选择的结束时间
-				storeName: '追风', //门店名字
-				address: '民安大道', //门店地址
-				storePhone: '15870463592', //门店电话
-				longitude: '106.52908', //经度
-				latitude: '29.608926', //纬度
+				storeName: '', //门店名字
+				address: '', //门店地址
+				storePhone: '', //门店电话
+				longitude: '', //经度
+				latitude: '', //纬度
 				storeImg: '', //门店照片
 				idCard1: '', //门店图片-门头照片
 				idCard2: '', //门店图片-店内照片
 				idCard3: '', //门店图片-店铺室外照片
 				idCard4: '', //对公账户开户许可证
-				corporationName: '张三', //法人姓名
-				corporationNamePhone: '15870463592', //法人电话
+				corporationName: '', //法人姓名
+				corporationNamePhone: '', //法人电话
 			}
 		},
 		onLoad() {

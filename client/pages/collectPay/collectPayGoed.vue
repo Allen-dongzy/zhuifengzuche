@@ -1,6 +1,6 @@
 <template>
 	<view class="">
-		<view class="flexbox">
+		<view class="flexbox" v-show="info.platform==1">
 			<view class="titleLeft">日期</view>
 			<view class="titleRight">{{info.localDate}}</view>
 		</view>

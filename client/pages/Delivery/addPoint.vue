@@ -67,8 +67,8 @@
 			</view>
 		</view>
 		<view class="flexBoxContent" style="margin-top: 280rpx;">
-			<view style="width: 22%;text-align: left;">具体地址:</view>
-			<input class="inpBox" type="text" v-model="address" placeholder="请输入地图具体位置" />
+			<view style="width: 22%;text-align: left;">请输入具体地址</view>
+			<input class="inpBox" type="text" v-model="address" placeholder="请输入具体地址" />
 		</view>
 		<view class="flexBoxContent">
 			<view style="width: 22%;text-align: left;">地图经度</view>
@@ -236,7 +236,6 @@
 				if (err || res.code !== 200) return
 				console.log(res.data)
 				this.provinceList = res.data
-
 			},
 			//市
 			async allFindCityList(e, q) {
@@ -273,6 +272,8 @@
 					.code)
 				this.log1 = false
 				this.log2 = false
+				this.selectCityName=""
+				this.selectAreaName=""
 				this.$forceUpdate()
 			},
 			//选择市
@@ -284,6 +285,7 @@
 				this.selectCityName = this.cityList[this.cityIndex].name
 				this.allFindAreasList(this.cityList[this.cityIndex].name, this.cityList[this.cityIndex].code)
 				this.log2 = false
+				this.selectAreaName=""
 			},
 			//选择区
 			selectQu: function(e) {

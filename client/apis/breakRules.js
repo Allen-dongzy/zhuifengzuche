@@ -32,3 +32,14 @@ export const breakRulesPageNewQuery = (data, loading = '') => {
 		loading
 	})
 }
+//编辑
+export const breakRulesUpdate = (data, loading = '') => {
+	return request({
+		url: 'breakRules/update',
+		contentType: 'application/json',
+		method: 'POST',
+		data,
+		loading
+	})
+}
+

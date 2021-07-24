@@ -23,7 +23,7 @@
 					<view class="label"></view>
 					<text>车辆数量</text>
 				</view>
-				<view class="nums">
+				<view class="nums" @click="lookMore">
 					<text>{{obj.vehicleNumber}}</text>
 					<image class="arrow" :src="`${filePath}/vehicleManage/right.png`"></image>
 				</view>
@@ -81,7 +81,10 @@
 		onLoad(e) {
 			console.log(e)
 			this.id=e.id
-			this.searchCarid(e.id)
+			
+		},
+		onShow() {
+				this.searchCarid(this.id)
 		},
 		methods: {
 			async  searchCarid(e){
@@ -94,6 +97,11 @@
 			eidt(){
 				uni.navigateTo({
 					url:"./add?id="+this.id
+				})
+			},
+			lookMore(){
+				uni.navigateTo({
+					url:'../fleetManage/fleetManageSearch?id='+this.obj.id
 				})
 			}
 		}

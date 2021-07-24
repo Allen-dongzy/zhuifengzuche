@@ -99,14 +99,14 @@
 								@tap.stop="toHomeLevel1('/pages/home/goInspect?obj=',item)">出车检验</button>
 							<button type="default" :disabled="item.isVehicleCertificates==true" v-show="tabCheck==0" class="flex-center btn"
 								style="margin-left: 20rpx;"
-								@tap.stop="toHomeLevel1('/pages/home/deliverCar?obj=',item)">交付车辆</button>
+								@tap.stop="toHomeLevel1('/pages/home/deliverCar?type=1&obj=',item)">交付车辆</button>
 							<button type="default" v-show="tabCheck==1" class="flex-center btn"
-								@tap.stop="toHomeLevel1('/pages/home/deliverCar')">交车情况</button>
+								@tap.stop="toHomeLevel1('/pages/home/deliverCar?type=2&obj=',item)">交车情况</button>
 							<button type="default" v-show="tabCheck==1" class="flex-center btn"
 								style="margin-left: 20rpx;"
-								@tap.stop="toHomeLevel1('/pages/home/inspectionCollect')">检验收车</button>
+								@tap.stop="toHomeLevel1('/pages/home/inspectionCollect?obj=',item)" :disabled="item.isPaymentIllegalDeposit==1">检验收车</button>
 							<button type="default" v-show="tabCheck==2" class="flex-center btn"
-								@tap.stop="toHomeLevel1('/pages/home/inspectionCollect')">收车详情</button>
+								@tap.stop="toHomeLevel1('/pages/home/inspectionCollectInfo?obj=',item)" >收车详情</button>
 							<button type="default" v-show="tabCheck==2" class="flex-center btn bg-btn">退还押金</button>
 						</view>
 					</view>
@@ -255,6 +255,7 @@
 					carnum:q.vehicleNumber,
 					vehicleId:q.vehicleId
 				}
+				console.log(data)
 				uni.navigateTo({
 					url: e+JSON.stringify(data),
 					animationType: 'pop-in',

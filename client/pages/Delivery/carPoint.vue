@@ -103,6 +103,9 @@
 			}
 		},
 		onLoad() {
+	
+		},
+		onShow() {
 			this.deliveryPageQuery()
 			this.allFindCityList()
 		},

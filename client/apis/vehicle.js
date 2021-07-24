@@ -97,3 +97,36 @@ export const vehicleQueryAll = (data, loading = '') => { // 对接
 		loading
 	})
 }
+
+// 检验收车
+export const backCar = (data, loading = '') => { // 对接
+	return request({
+		url: `return/vehicle/${data}`,
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'GET',
+		data:{},
+		loading
+	})
+}
+
+// 结算
+export const settlement = (data, loading = '') => { // 对接
+	return request({
+		url: 'return/vehicle',
+		contentType: 'application/json',
+		method: 'POST',
+		data,
+		loading
+	})
+}
+
+// 结算
+export const dataEcho = (data, loading = '') => { // 对接
+	return request({
+		url: `return/vehicle/dataEcho/${data}`,
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'GET',
+		data:{},
+		loading
+	})
+}
