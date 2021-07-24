@@ -54,7 +54,6 @@
 			<view class="item col">
 				<view class="title">备注消息</view>
 				<view class="flexBox" style="color: #999999;font-size: 24rpx;">{{info.remarks}}</view>
-				{{info.rulesUrls}}
 			</view>
 		</view>
 		<view class="btn-mat" v-show="!info.payStatus"></view>
