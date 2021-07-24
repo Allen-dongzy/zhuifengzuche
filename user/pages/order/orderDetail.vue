@@ -61,7 +61,7 @@
 		<view class="order-card"
 			:class="{'radius': info.orderStatus===4 || info.orderStatus===100 || info.orderStatus===101}">
 			<view class="info">
-				<image class="picture" :src="info.vehicleModelFiles" mode="aspectFill"></image>
+				<image class="picture" :src="info.vehicleModelFiles | jsonFormat" mode="aspectFill"></image>
 				<view class="description">
 					<view class="name">{{info.modelName}}</view>
 					<view class="params">{{info.modelTypeName}}</view>
@@ -280,6 +280,11 @@
 						break
 				}
 				return info
+			}
+		},
+		filters: {
+			jsonFormat(str) {
+				return JSON.parse(str)[0]
 			}
 		},
 		onLoad(e) {
