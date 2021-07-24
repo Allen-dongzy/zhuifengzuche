@@ -36,7 +36,7 @@
 							{{item.rentBeginTime.slice(0, 16)}}&nbsp;至&nbsp;{{item.rentEndTime.slice(0, 16)}}
 						</view>
 						<view
-							v-show="item.orderStatus === 1 || item.orderStatus === 2 || item.orderStatus === 3 || item.orderStatus === 4 || item.orderStatus === 100 || item.orderStatus === 101"
+							v-show="item.orderStatus === 1 || item.orderStatus === 2 || item.orderStatus === 3 || item.orderStatus === 4 || item.orderStatus === 5 || item.orderStatus === 100 || item.orderStatus === 101"
 							:class="['status', {'blue': item.orderStatus!==7}, {'red':item.orderStatus===101}] ">
 							{{item.orderStatus | orderStatusShow}}
 						</view>
@@ -53,7 +53,7 @@
 				</view>
 				<view class="bottom">
 					<view
-						v-show="item.orderStatus === 0 || item.orderStatus === 1 || item.orderStatus === 3 || item.orderStatus === 4"
+						v-show="item.orderStatus === 0 || item.orderStatus === 1 || item.orderStatus === 3 || item.orderStatus === 4 || item.orderStatus === 5"
 						class="contact" @click.stop="contactStore(index)">
 						<image class="phone" :src="`${ossUrl}/common/phone-big.png`"></image>
 						<view class="info">联系门店</view>
@@ -67,24 +67,26 @@
 						<view v-show="item.orderStatus === 0" class="btn blue" @click.stop="getCodeByWxCode(index)">立即支付
 						</view>
 						<view v-show="item.orderStatus === 2" class="btn blue"
-							@click.stop="$open('/pages/common/goInspect', {orderId: item.id, vehicleId: item.vehicleId})">
+							@click.stop="$open('/pages/common/goInspect', {mode:'edit', orderId: item.id, vehicleId: item.vehicleId})">
 							查看车况
 						</view>
 						<view v-show="item.orderStatus === 3" class="btn white"
 							@click.stop="rentalOrderRenewCarRentalPriceCheck(index)">
 							续租用车
 						</view>
-						<view v-show="item.orderStatus === 3" class="btn blue"
-							@click.stop="$open('/pages/order/returnCar')">
+						<view v-show="item.orderStatus === 3 || item.orderStatus === 5" class="btn blue"
+							@click.stop="returnCar(index)">
 							前往还车
 						</view>
 						<view v-show="item.orderStatus === 4" class="btn blue"
 							@click.stop="$open('/pages/order/changeCarDetail')">换车详情</view>
 						<view v-show="item.orderStatus === 100 && item.evaluateCount===0" class="btn blue"
-							@click.stop="$open('/pages/order/evaluate')">评价
+							@click.stop="$open('/pages/order/evaluate', {from:'order', orderId: item.id, memberShopId: item.memberShopId})">
+							评价
 						</view>
 						<view v-show="item.orderStatus === 100 && item.evaluateCount>0" class="btn blue"
-							@click.stop="$open('/pages/common/storeComment')">查看评价</view>
+							@click.stop="$open('/pages/common/storeComment', {orderId: item.id, id: item.memberShopId})">
+							查看评价</view>
 						<view v-show="item.orderStatus === 101" class="btn blue"
 							@click.stop="$open('/pages/home/home', 3)">再次预订</view>
 					</view>
@@ -107,7 +109,8 @@
 		rentalOrderRenewCarRentalPriceCheck
 	} from '@/apis/rentalOrder'
 	import {
-		listManager
+		listManager,
+		showModal
 	} from '@/utils/uni-tools'
 	import {
 		throttle
@@ -147,6 +150,9 @@
 						break
 					case 4:
 						info = '换车中'
+						break
+					case 5:
+						info = '租用中'
 						break
 					case 100:
 						info = '已完成'
@@ -279,7 +285,21 @@
 					phoneNumber
 				})
 			},
-
+			// 还车
+			async returnCar(index) {
+				if (this.list[index].orderStatus === 3) {
+					const [err, res] = await showModal({
+						content: '是否确定还车？'
+					})
+					if (res !== 'confirm') return
+				}
+				this.$open('/pages/order/returnCar', {
+					from: "order",
+					orderStatus: this.list[index].orderStatus,
+					orderId: this.list[index].id,
+					vehicleId: this.list[index].vehicleId
+				})
+			},
 			// 监听事件
 			eventListener() {
 				uni.$on('orderRefresh', () => {

@@ -23,7 +23,7 @@
 			<scroll-view class="list" :scroll-y="true" @scrolltolower="scrollToBottom">
 				<view class="item" v-for="(item, index) in carList" :key="index" @click="goDetail(index)">
 					<view class="card">
-						<image class="pic" :src="item.vehicleModelFiles" mode="aspectFill"></image>
+						<image class="pic" :src="item.vehicleModelFiles | jsonFormat" mode="aspectFill"></image>
 						<view class="parameter-box">
 							<view class="title-bar">
 								<view class="caption">{{item.brandName}}</view>
@@ -173,6 +173,11 @@
 		computed: {
 			// 窗口高度
 			...mapState('app', ['windowHeight'])
+		},
+		filters: {
+			jsonFormat(str) {
+				return JSON.parse(str)[0]
+			}
 		},
 		onLoad(e) {
 			if (e && e.takeCarAddress) this.takeCarAddress = JSON.parse(e.takeCarAddress)

@@ -1,104 +1,197 @@
 <template>
 	<view class="">
-		<view class="box" v-show="show==1">
+		<view class="box">
 			<view class="flexBox">
-				<view class="bigblackText" style="width: 28%;">渝A·5231B</view>
-				<view class="blackText" style="width:72%;color: #999999;">查看订单 > </view>
+				<view class="bigblackText" style="width: 28%;">{{info.carNumber}}</view>
+				<view class="blackText" style="width:72%;color: #999999;"
+					@click="$open('/pages/order/orderDetail', {id: info.orderId})">查看订单 <view class="arrow"></view>
+				</view>
+			</view>
+			<view class="flexBox">
+				<view class="grayText">{{info.brandName}}</view>
 			</view>
 			<view class="flexBox">
 				<view class="grayText">违法：</view>
-				<view class="blackText">不按规定停车</view>
+				<view class="blackText">{{info.rulesName}}</view>
 			</view>
 			<view class="flexBox">
 				<view class="grayText">地点：</view>
-				<view class="blackText">重庆市渝北区民安大道五四路</view>
+				<view class="blackText">{{info.rulesAddress}}</view>
+			</view>
+			<view class="flexBox">
+				<view class="grayText">时间：</view>
+				<view class="blackText">{{info.rulesTime}}</view>
 			</view>
 			<view class="flexBox" style="padding-bottom: 40rpx;border-bottom: 2rpx dashed #999999;">
-				<view class="grayText">时间：</view>
-				<view class="blackText">2021-06-01 14:18</view>
+				<view class="grayText">采集机关：</view>
+				<view class="blackText">{{info.gatherOffice}}</view>
 			</view>
-			<view class="flexBox" style="margin-top: 40rpx;">
-				<view class="bigblackText">罚款：</view>
-				<view class="bigblackText" style="color:#FC3736;">¥188.00</view>
-				<view class="bigblackText" style="margin-left: 40rpx;">记分：</view>
-				<view class="bigblackText" style="color:#FC3736;">0</view>
-				<image style="width:80rpx;height:40rpx;margin-left: 10%;" :src="`${ossUrl}/mine/yizhifu.png`" mode="">
-				</image>
-			</view>
-		</view>
-		<view class="grayLine" v-show="show==1"></view>
-		<view class="box" v-show="show==2">
-			<view class="flexBox" style="border-bottom: 2rpx solid #EFF0F3;padding: 30rpx 0rpx;">
-				<view class="">单据单号</view>
-				<view class="grayText" style="width: 80%;text-align: right;">5556986997645634</view>
-			</view>
-			<view class="flexBox" style="border-bottom: 2rpx solid #EFF0F3;padding: 30rpx 0rpx;">
-				<view class="">单据照片</view>
-				<view class="grayText" style="width: 80%;text-align: right;">
-					<image style="width:200rpx;height:120rpx;" :src="`${ossUrl}/mine/yizhifu.png`" mode=""></image>
+			<view class="flexBox" style="margin-top:30rpx;">
+				<view class="block">
+					<view class="bigblackText">罚款：</view>
+					<view class="bigblackText" style="color:#FC3736;">¥{{info.rulesMoney}}</view>
+					<view class="bigblackText" style="margin-left: 40rpx;">记分：</view>
+					<view class="bigblackText" style="color:#FC3736;">{{info.rulesScore}}</view>
+				</view>
+				<view v-show="info.payStatus" class="block">
+					<image style="width:80rpx;height:40rpx;" :src="`${ossUrl}/mine/yizhifu.png`"></image>
 				</view>
 			</view>
-			<view class="flexBox" style="padding: 20rpx 0rpx;">单据单号</view>
-			<view class="flexBox" style="color: #999999;font-size: 24rpx;">这里是备注信息这里是备注信息这里是备注信息这里是备注信息这里是备注信息</view>
 		</view>
-
-
-
-
-		<button v-show="show==1" style=" color: white;
-			width: 90%;
-					margin: auto;
-					margin-top: 10vh;
-				    background-color: #5A7EFF;
-				    border-radius: 50px;
-				    font-size: 32rpx;
-				    height: 96rpx;line-height: 96rpx; " type="default">去支付</button>
+		<view class="grayLine"></view>
+		<view v-show="info.payStatus" class="box">
+			<view class="item">
+				<view class="title">单据单号</view>
+				<view class="grayText" style="width: 80%;text-align: right;">{{info.rulesNo}}</view>
+			</view>
+			<view class="item">
+				<view class="title">单据照片</view>
+				<view class="grayText" style="width: 80%;text-align: right;">
+					<image style="width:200rpx;height:120rpx;background-color: #eee;" :src="info.rulesUrls"
+						mode="aspectFill" @click="previewPics([info.rulesUrls])"></image>
+				</view>
+			</view>
+			<view class="item col">
+				<view class="title">备注消息</view>
+				<view class="flexBox" style="color: #999999;font-size: 24rpx;">{{info.remarks}}</view>
+			</view>
+		</view>
+		<view class="btn-mat" v-show="!info.payStatus"></view>
+		<view class="btn-mask" v-show="!info.payStatus">
+			<view class="btn" @click="getCodeByWxCode">去支付</view>
+		</view>
 	</view>
 </template>
 
 <script>
+	import {
+		breakRulesFindOneById
+	} from '@/apis/breakRules'
+	import {
+		getCodeByWxCode
+	} from '@/apis/sso'
+	import {
+		paymentPrecreate
+	} from '@/apis/payment'
+	import {
+		previewImgs
+	} from '@/utils/uni-tools'
+	import {
+		throttle
+	} from '@/utils/tools'
+
 	export default {
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
-				show: 1
+				id: '',
+				info: {}
 			}
 		},
 		onLoad(e) {
-			this.breakRulesFindOneById(e.id)
+			if (e && e.id) this.id = e.id
+			this.breakRulesFindOneById()
 		},
 		methods: {
-			async breakRulesFindOneById(e) {
-				const [err, res] = await breakRulesFindOneById(e)
+			// 获取违章详情
+			async breakRulesFindOneById() {
+				const [err, res] = await breakRulesFindOneById(this.id)
 				if (err) return
-				console.log(res)
+				this.info = res.data
+			},
+			// 预览图片
+			previewPics(urls, index = 0) {
+				previewImgs(urls, index = 0)
+			},
+			// 授权
+			getCodeByWxCode: throttle(async function() {
+				const [loginErr, loginRes] = await uni.login({
+					provider: 'weixin'
+				})
+				if (loginErr) return
+				const params = {
+					code: loginRes.code,
+					loginType: 1
+				}
+				const [err, res] = await getCodeByWxCode(params)
+				if (err) return
+				this.paymentPrecreate(res.data.openid)
+			}),
+			// 发起支付
+			async paymentPrecreate(openId) {
+				const params = {
+					reflect: this.info.reflect,
+					orderId: this.info.reflect.orderId,
+					payerUid: openId,
+					payway: '3',
+					subPayway: '4',
+					subject: '违章罚款',
+					totalAmount: this.info.rulesMoney
+				}
+				const [err, res] = await paymentPrecreate(params)
+				if (err) return
+				this.pay(res.data.wapPayRequest)
+			},
+			// 支付
+			async pay(wapPayRequest) {
+				const [err, res] = await uni.requestPayment({
+					provider: 'wxpay',
+					...wapPayRequest
+				})
+				if (err) return
+				this.$toast('支付成功！')
+				this.breakRulesFindOneById()
 			}
 		}
 	}
 </script>
 
-<style>
+<style lang="scss">
 	.box {
-
 		width: 90%;
 		margin: auto;
 		margin-top: 30rpx;
 	}
 
+	.arrow {
+		width: 14rpx;
+		height: 14rpx;
+		border: 1px solid #999999;
+		border-left: 0;
+		border-bottom: 0;
+		transform: rotate(45deg);
+		margin-top: 8rpx;
+		margin-left: 8rpx;
+	}
+
 	.flexBox {
 		display: flex;
+		justify-content: space-between;
 		align-items: center;
 		margin: 20rpx 0rpx;
+
+		.block {
+			display: flex;
+		}
+	}
+
+	.title {
+		font-size: 28rpx;
+		color: #000;
+		line-height: 40rpx;
+		font-weight: 700;
 	}
 
 	.grayText {
 		color: #999999;
 		font-size: 28rpx;
-		width: 14%;
+		width: 25%;
 	}
 
 	.blackText {
-		width: 86%;
+		display: flex;
+		justify-content: flex-end;
+		width: 75%;
 		text-align: right;
 		color: #000000;
 		font-size: 24rpx;
@@ -114,5 +207,51 @@
 		width: 100%;
 		background-color: #EFF0F3;
 		margin-top: 30rpx;
+	}
+
+	.item {
+		padding: 30rpx 0;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		&~.item {
+			border-top: 1px solid #eee;
+		}
+
+		&.col {
+			flex-direction: column;
+			justify-content: center;
+			align-items: flex-start;
+		}
+	}
+
+	.btn-mat {
+		height: 200rpx;
+	}
+
+	.btn-mask {
+		position: fixed;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 9;
+		width: 100%;
+		height: 200rpx;
+		background-color: #fff;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.btn {
+		color: white;
+		width: 90%;
+		background-color: #5A7EFF;
+		border-radius: 50px;
+		font-size: 32rpx;
+		height: 96rpx;
+		line-height: 96rpx;
+		text-align: center;
 	}
 </style>

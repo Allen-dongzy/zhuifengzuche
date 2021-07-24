@@ -15,7 +15,8 @@
 						取消订单</view>
 					<view v-if="info.orderStatus===0" class="btn blue" @click="getCodeByWxCode">立即支付</view>
 					<view v-if="info.orderStatus===2" class="btn white"
-						@click="$open('/pages/common/goInspect', {orderId: info.id, vehicleId: info.vehicleId})">查看车况
+						@click="$open('/pages/common/goInspect', {mode:'edit', orderId: info.id, vehicleId: info.vehicleId})">
+						查看车况
 					</view>
 				</view>
 				<view v-show="info.orderStatus===0 || info.orderStatus===1" class="contact" @click="contactStore">
@@ -28,19 +29,20 @@
 				</view>
 			</view>
 		</view>
-		<view v-show="info.orderStatus===3 || info.orderStatus===4 || info.orderStatus===100 || info.orderStatus===101"
+		<view
+			v-show="info.orderStatus===3 || info.orderStatus===4 || info.orderStatus===5 || info.orderStatus===100 || info.orderStatus===101"
 			class="top-panel-2">
 			<view class="top">
 				<image class="bg" :src="`${ossUrl}/order/order-bg.png`"></image>
 				<view class="mask">
 					<view class="caption">{{statusShow}}</view>
-					<view v-show="info.orderStatus===3" class="toast">{{info.countdown}}</view>
+					<view v-show="info.orderStatus===3 || info.orderStatus===5" class="toast">{{info.countdown}}</view>
 					<view v-show="info.orderStatus===4" class="toast">请前往换车详情页面完成换车</view>
 					<view v-show="info.orderStatus===100" class="toast">感谢您对追风租车的信任，期待再次光临</view>
 					<view v-show="info.orderStatus===101" class="toast">您的订单已取消，感谢你使用追风租车</view>
 				</view>
 			</view>
-			<view v-show="info.orderStatus===3" class="menu">
+			<view v-show="info.orderStatus===3 || info.orderStatus===5" class="menu">
 				<view class="menu-box">
 					<view class="header">
 						<image class="icon" :src="`${ossUrl}/order/exclamation.png`"></image>
@@ -48,8 +50,10 @@
 					</view>
 					<view class="btn-box">
 						<view class="btn white" @click="contactStore">联系门店</view>
-						<view class="btn white" @click="rentalOrderRenewCarRentalPriceCheck">续租用车</view>
-						<view class="btn blue" @click="$open('/pages/order/returnCar', {id: info.id})">前往还车</view>
+						<view v-show="info.orderStatus===3" class="btn white"
+							@click="rentalOrderRenewCarRentalPriceCheck">续租用车</view>
+						<view class="btn blue" @click="returnCar">前往还车
+						</view>
 					</view>
 				</view>
 			</view>
@@ -57,7 +61,7 @@
 		<view class="order-card"
 			:class="{'radius': info.orderStatus===4 || info.orderStatus===100 || info.orderStatus===101}">
 			<view class="info">
-				<image class="picture" :src="info.vehicleModelFiles" mode="aspectFill"></image>
+				<image class="picture" :src="info.vehicleModelFiles | jsonFormat" mode="aspectFill"></image>
 				<view class="description">
 					<view class="name">{{info.modelName}}</view>
 					<view class="params">{{info.modelTypeName}}</view>
@@ -151,7 +155,7 @@
 				<view class="left">支付方式</view>
 				<view class="right">{{info.paymentType}}</view>
 			</view>
-			<view v-show="info.orderStatus===3" class="order-item"
+			<view v-show="info.orderStatus===3 || info.orderStatus===5" class="order-item"
 				@click="$open('/pages/order/depositReceived', {payTheVoucherRentalCarDeposit: info.payTheVoucherRentalCarDeposit, paymentVoucherHandler: info.paymentVoucherHandler, paymentVoucherTransactionTime: info.paymentVoucherTransactionTime})">
 				<view class="left">支付凭证</view>
 				<view class="right">预收冻结￥{{info.payTheVoucherRentalCarDeposit}}
@@ -186,8 +190,13 @@
 						@click="$open('/pages/order/changeCarDetail', {id: info.id})">
 						换车详情
 					</view>
-					<view v-show="info.orderStatus===100" class="btn blue"
-						@click="$open('/pages/order/evaluate', {id: info.id})">评价订单
+					<view v-show="info.orderStatus===100 && info.evaluateCount===0" class="btn blue"
+						@click="$open('/pages/order/evaluate', {from:'orderDetail', orderId: info.id, memberShopId: info.memberShopId})">
+						评价订单
+					</view>
+					<view v-show="info.orderStatus===100 && info.evaluateCount>0" class="btn blue"
+						@click="$open('/pages/common/storeComment', {orderId: info.id, id: info.memberShopId})">
+						查看评价
 					</view>
 				</view>
 			</view>
@@ -224,6 +233,9 @@
 	import {
 		throttle
 	} from '@/utils/tools'
+	import {
+		showModal
+	} from '@/utils/uni-tools'
 
 	export default {
 		data() {
@@ -257,6 +269,9 @@
 					case 4:
 						info = '换车中'
 						break
+					case 5:
+						info = '租用中'
+						break
 					case 100:
 						info = '订单已完成'
 						break
@@ -265,6 +280,11 @@
 						break
 				}
 				return info
+			}
+		},
+		filters: {
+			jsonFormat(str) {
+				return JSON.parse(str)[0]
 			}
 		},
 		onLoad(e) {
@@ -403,6 +423,21 @@
 			// 关闭时间模态框
 			closeTimePopup() {
 				this.$refs.timePopup.close()
+			},
+			// 还车
+			async returnCar() {
+				if (this.info.orderStatus === 3) {
+					const [err, res] = await showModal({
+						content: '是否确定还车？'
+					})
+					if (res !== 'confirm') return
+				}
+				this.$open('/pages/order/returnCar', {
+					from: "orderDetail",
+					orderStatus: this.info.orderStatus,
+					orderId: this.info.id,
+					vehicleId: this.info.vehicleId
+				})
 			},
 			// 监听函数
 			eventListener() {

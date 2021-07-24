@@ -1,6 +1,6 @@
 <template>
 	<view class="">
-		<view class="box" v-for="(item,index) in list" :key='index' @click="lookinfo(item.id)">
+		<view class="box" v-for="(item, index) in list" :key='index' @click="$open('./violationInfo', {id: item.id})">
 			<view class="flexBox">
 				<view class="bigblackText" style="width: 28%;">{{item.carNumber}}</view>
 				<view class="blackText" style="width:72%;color: #5A7EFF;">{{item.payStatus | statuFilter}}</view>
@@ -60,6 +60,19 @@
 				return statusBox[payStatus]
 			}
 		},
+		onPullDownRefresh() {
+			this.page = 1
+			this.size = 10
+			this.list = []
+			this.breakRulesPageNewQuery()
+			setTimeout(function() {
+				uni.stopPullDownRefresh();
+			}, 1000);
+		},
+		onReachBottom(e) {
+			this.page++
+			this.breakRulesPageNewQuery()
+		},
 		methods: {
 			// 违章记录分页
 			async breakRulesPageNewQuery() {
@@ -78,28 +91,7 @@
 				this.dataStatus = dataStatus
 				if (!isRender) return
 				this.list = [...this.list, ...res.data.list]
-			},
-			lookinfo(e) {
-				uni.navigateTo({
-					url: './violationInfo?id=' + e
-				})
-			},
-			//下拉刷新
-			onPullDownRefresh() {
-				this.page = 1
-				this.size = 10
-				this.list = []
-				this.breakRulesPageNewQuery()
-				setTimeout(function() {
-					uni.stopPullDownRefresh();
-				}, 1000);
-			},
-			onReachBottom(e) {
-				this.page = this.page + 1;
-				//一些事件
-				this.breakRulesPageNewQuery()
-			},
-
+			}
 		}
 	}
 </script>
