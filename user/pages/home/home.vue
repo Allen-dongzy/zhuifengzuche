@@ -3,7 +3,7 @@
 		<uni-swiper-dot :info="swiperInfo" :current="current" field="content" mode="round" :dotsStyles="dotsStyles">
 			<swiper v-if="swiperInfo.length>0" class="swiper" :autoplay="true" :interval="3000" :circular="true"
 				@change="swiperChange">
-				<swiper-item v-for="(item ,index) in swiperInfo" :key="index">
+				<swiper-item v-for="(item ,index) in swiperInfo" :key="index" @click="$open('/pages/home/newbie')">
 					<image class="banner" :src="item.content" mode="aspectFill"></image>
 				</swiper-item>
 			</swiper>

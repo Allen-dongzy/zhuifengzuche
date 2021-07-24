@@ -190,8 +190,13 @@
 						@click="$open('/pages/order/changeCarDetail', {id: info.id})">
 						换车详情
 					</view>
-					<view v-show="info.orderStatus===100" class="btn blue"
-						@click="$open('/pages/order/evaluate', {id: info.id})">评价订单
+					<view v-show="info.orderStatus===100 && info.evaluateCount===0" class="btn blue"
+						@click="$open('/pages/order/evaluate', {from:'orderDetail', orderId: info.id, memberShopId: info.memberShopId})">
+						评价订单
+					</view>
+					<view v-show="info.orderStatus===100 && info.evaluateCount>0" class="btn blue"
+						@click="$open('/pages/common/storeComment', {id: info.memberShopId})">
+						查看评价
 					</view>
 				</view>
 			</view>

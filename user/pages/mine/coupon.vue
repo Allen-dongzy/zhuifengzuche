@@ -65,17 +65,17 @@
 					name: '已过期',
 					status: 2
 				}],
-				type: '', // 筛选条件
+				type: 0, // 筛选条件
 				couponList: [], // 优惠券列表
 				page: 1,
 				size: 10,
 				requestKey: true,
 				dataStatus: '', // more loading noMore noData
-				selectType:'',//goods是确认订单跳转进来
+				selectType: '', //goods是确认订单跳转进来
 			}
 		},
 		onLoad(e) {
-			this.selectType=e.selectType
+			this.selectType = e.selectType
 			this.findIsUseCouponByUser()
 		},
 		onReachBottom() {
@@ -111,26 +111,14 @@
 				this.couponList = [...this.couponList, ...res.data]
 			},
 			// 领取优惠券
-			getCouponById(e){
+			getCouponById(e) {
 				let pages = getCurrentPages(); //获取所有页面栈实例列表
-					let prevPage = pages[pages.length - 2]; //上一页页面实例
-					prevPage.$vm.couponId = e; //修改上一页data里面的tagIndex 参数值
-					uni.navigateBack({ //uni.navigateTo跳转的返回，默认1为返回上一级
-						delta: 1
-					});
+				let prevPage = pages[pages.length - 2]; //上一页页面实例
+				prevPage.$vm.couponId = e; //修改上一页data里面的tagIndex 参数值
+				uni.navigateBack({ //uni.navigateTo跳转的返回，默认1为返回上一级
+					delta: 1
+				});
 			}
-			// getCouponById: throttle(async function(index) {
-			// 	if(this.type=="goods"){
-					
-			// 	}
-			// 	const params = {
-			// 		couponId: this.couponList[index].id
-			// 	}
-			// 	const [err, res] = await getCouponById(params)
-			// 	if (err) return
-			// 	this.$toast('领取成功')
-			// 	this.couponList.splice(index, 1)
-			// })
 		}
 	}
 </script>

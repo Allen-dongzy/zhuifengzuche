@@ -273,6 +273,11 @@
 		"style": {
 			"navigationBarTitleText": "用车成功"
 		}
+	}, {
+		"path": "pages/home/newbie",
+		"style": {
+			"navigationBarTitleText": "新人优惠"
+		}
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -306,7 +311,7 @@
 			"path": "pages/order/order"
 		}, {
 			"name": "dzy", // dzy
-			"path": "pages/common/contract"
+			"path": "pages/common/storeComment"
 		}]
 	}
 }

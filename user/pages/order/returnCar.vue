@@ -25,11 +25,11 @@
 			</view>
 		</view>
 		<view class="grayLine"></view>
-		<view v-show="!info.paymentMethod" class="box" style="margin-top: 100rpx;">
+		<view v-show="!info.isPaymentIllegalDeposit" class="box" style="margin-top: 100rpx;">
 			<view class="wait">等待追风小子验车</view>
 			<view class="wait">验车后将根据油量、综合车况等补缴或退还金额</view>
 		</view>
-		<view v-show="info.paymentMethod" class="box">
+		<view v-show="info.isPaymentIllegalDeposit" class="box">
 			<view class="flexBox" style="border-bottom: 2rpx solid #EFF0F3;padding: 30rpx 0rpx;">
 				<view class="leftBox">超时费</view>
 				<view class="rightBox">¥{{info.overtimeFee}}</view>
@@ -51,27 +51,27 @@
 				<view class="rightBox">¥{{info.otherFee}}</view>
 			</view>
 		</view>
-		<view v-show="info.paymentMethod" class="grayLine"></view>
-		<view v-show="info.paymentMethod" class="flexBox" style="width: 90%;margin: auto;margin-top: 30rpx;">
+		<view v-show="info.isPaymentIllegalDeposit" class="grayLine"></view>
+		<view v-show="info.isPaymentIllegalDeposit" class="flexBox" style="width: 90%;margin: auto;margin-top: 30rpx;">
 			<view class="leftBox">预收冻结</view>
 			<view class="leftBox" style="width: 47%;text-align: right;font-size: 36rpx;">{{info.preAcceptanceFreeze}}
 			</view>
 			<view class="leftBox" style="width: 3%;margin-left: 10rpx;"> ></view>
 		</view>
-		<view v-show="info.paymentMethod" class="bottomFlex">
+		<view v-show="info.isPaymentIllegalDeposit" class="bottomFlex">
 			<view style="width: 64%;">
 				<view style="font-size: 24rpx;color:#999999;"> 逾期不支付将按 <text style="color:#FFA05B;">《逾期违章协议》</text>处理
 				</view>
 				<view style="font-size: 36rpx;width: 70%;">
 					结算情况
 					<text style="color: #FC3736;margin-left: 10rpx;">
-						-<text style="font-size: 16rpx;margin-left: 10rpx;">¥</text>{{info.totalAmount}}
+						<text style="font-size: 16rpx;margin-left: 10rpx;">¥</text>{{info.totalAmount}}
 					</text>
 				</view>
 			</view>
-			<view class="pay">去结算</view>
+			<view class="pay" @click="getCodeByWxCode">去结算</view>
 		</view>
-		<view v-show="!info.paymentMethod" class="bottomFlex">
+		<view v-show="!info.isPaymentIllegalDeposit" class="bottomFlex">
 			<view style="font-size: 28rpx;">总计</view>
 			<view style="font-size: 36rpx;color: #FC3736;width: 55%;margin-left: 10rpx;"><text
 					style="font-size: 16rpx;">¥</text>{{info.totalAmount}}</view>
@@ -90,6 +90,9 @@
 	import {
 		paymentPrecreate
 	} from '@/apis/payment'
+	import {
+		throttle
+	} from '@/utils/tools'
 
 	export default {
 		data() {
@@ -132,7 +135,7 @@
 				})
 			},
 			// 授权
-			getCodeByWxCode: throttle(async function(index) {
+			getCodeByWxCode: throttle(async function() {
 				const [loginErr, loginRes] = await uni.login({
 					provider: 'weixin'
 				})
@@ -143,18 +146,18 @@
 				}
 				const [err, res] = await getCodeByWxCode(params)
 				if (err) return
-				this.paymentPrecreate(res.data.openid, index)
+				this.paymentPrecreate(res.data.openid)
 			}),
 			// 发起支付
-			async paymentPrecreate(openId, index) {
+			async paymentPrecreate(openId) {
 				const params = {
-					reflect: this.list[index].reflect,
-					orderId: this.list[index].id,
+					reflect: this.info.reflect,
+					orderId: this.info.orderId,
 					payerUid: openId,
 					payway: '3',
 					subPayway: '4',
 					subject: '租车定金',
-					// totalAmount: this.list[index].orderDeposit
+					// totalAmount: this.info.orderDeposit
 					totalAmount: 0.01
 				}
 				const [err, res] = await paymentPrecreate(params)
@@ -169,6 +172,7 @@
 				})
 				if (err) return
 				this.$toast('结算成功！')
+				uni.$emit(`${this.from}Refresh`)
 				setTimeout(() => {
 					this.$close()
 				}, 500)

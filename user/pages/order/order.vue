@@ -81,10 +81,11 @@
 						<view v-show="item.orderStatus === 4" class="btn blue"
 							@click.stop="$open('/pages/order/changeCarDetail')">换车详情</view>
 						<view v-show="item.orderStatus === 100 && item.evaluateCount===0" class="btn blue"
-							@click.stop="$open('/pages/order/evaluate')">评价
+							@click.stop="$open('/pages/order/evaluate', {from:'order', orderId: item.id, memberShopId: item.memberShopId})">
+							评价
 						</view>
 						<view v-show="item.orderStatus === 100 && item.evaluateCount>0" class="btn blue"
-							@click.stop="$open('/pages/common/storeComment')">查看评价</view>
+							@click.stop="$open('/pages/common/storeComment', {id: item.memberShopId})">查看评价</view>
 						<view v-show="item.orderStatus === 101" class="btn blue"
 							@click.stop="$open('/pages/home/home', 3)">再次预订</view>
 					</view>
