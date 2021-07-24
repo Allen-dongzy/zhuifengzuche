@@ -85,7 +85,8 @@
 							评价
 						</view>
 						<view v-show="item.orderStatus === 100 && item.evaluateCount>0" class="btn blue"
-							@click.stop="$open('/pages/common/storeComment', {id: item.memberShopId})">查看评价</view>
+							@click.stop="$open('/pages/common/storeComment', {orderId: item.id, id: item.memberShopId})">
+							查看评价</view>
 						<view v-show="item.orderStatus === 101" class="btn blue"
 							@click.stop="$open('/pages/home/home', 3)">再次预订</view>
 					</view>

@@ -9,3 +9,13 @@ export const returnVehicle = (orderId, loading = '') => { // 对接
 		loading
 	})
 }
+
+// 退款
+export const returnVehicleReimburse = (orderId, loading = '') => { // 对接
+	return request({
+		url: `return/vehicle/reimburse/${orderId}`,
+		method: 'GET',
+		data: {},
+		loading
+	})
+}

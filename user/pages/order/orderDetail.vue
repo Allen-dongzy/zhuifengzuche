@@ -195,7 +195,7 @@
 						评价订单
 					</view>
 					<view v-show="info.orderStatus===100 && info.evaluateCount>0" class="btn blue"
-						@click="$open('/pages/common/storeComment', {id: info.memberShopId})">
+						@click="$open('/pages/common/storeComment', {orderId: info.id, id: info.memberShopId})">
 						查看评价
 					</view>
 				</view>

@@ -278,6 +278,11 @@
 		"style": {
 			"navigationBarTitleText": "新人优惠"
 		}
+	}, {
+		"path": "pages/common/violation",
+		"style": {
+			"navigationBarTitleText": "逾期违章协议"
+		}
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -311,7 +316,7 @@
 			"path": "pages/order/order"
 		}, {
 			"name": "dzy", // dzy
-			"path": "pages/common/storeComment"
+			"path": "pages/mine/violationRecord"
 		}]
 	}
 }

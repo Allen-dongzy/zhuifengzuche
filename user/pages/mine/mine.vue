@@ -254,8 +254,11 @@
 		width: 90%;
 		margin: auto;
 		margin-top: 20rpx;
-		border-bottom: 2rpx solid #eff0f3;
 		padding: 30rpx 0rpx;
+
+		&~.flex-box-left {
+			border-top: 2rpx solid #eff0f3;
+		}
 
 		.text {
 			font-size: 28rpx;

@@ -25,7 +25,8 @@
 
 <script>
 	import {
-		shopEvaluatePageQueryById
+		shopEvaluatePageQueryById,
+		shopEvaluatePageQuery
 	} from '../../apis/shop'
 	import {
 		listManager
@@ -53,17 +54,21 @@
 		},
 		onLoad(e) {
 			if (e && e.id) this.id = e.id
-			this.shopEvaluatePageQueryById()
+			if (e && e.orderId) this.orderId = e.orderId
+			if (this.orderId) this.shopEvaluatePageQuery()
+			else this.shopEvaluatePageQueryById()
 		},
 		//下拉刷新
 		onPullDownRefresh() {
 			this.init()
-			this.shopEvaluatePageQueryById('refresh')
+			if (this.orderId) this.shopEvaluatePageQuery('refresh')
+			else this.shopEvaluatePageQueryById('refresh')
 		},
 		onReachBottom(e) {
 			if (!this.requestKey) return
 			this.page++
-			this.shopEvaluatePageQueryById()
+			if (this.orderId) this.shopEvaluatePageQuery()
+			else this.shopEvaluatePageQueryById()
 		},
 		methods: {
 			// 初始化
@@ -83,7 +88,30 @@
 				const [err, res] = await shopEvaluatePageQueryById(data)
 				if (refresh === 'refresh') uni.stopPullDownRefresh()
 				if (err) return
-				this.total = res.total
+				this.total = res.data.total
+				const {
+					requestKey,
+					dataStatus,
+					isRender
+				} = listManager(res.data.list, this.page, this.size)
+				this.requestKey = requestKey
+				this.dataStatus = dataStatus
+				if (!isRender) return
+				this.list = [...this.list, ...res.data.list]
+			},
+			// 订单id请求列表
+			async shopEvaluatePageQuery(refresh) {
+				this.dataStatus = 'loading'
+				let data = {
+					memberShopId: this.id,
+					orderId: this.orderId,
+					page: this.page,
+					size: this.size
+				}
+				const [err, res] = await shopEvaluatePageQuery(data)
+				if (refresh === 'refresh') uni.stopPullDownRefresh()
+				if (err) return
+				this.total = res.data.total
 				const {
 					requestKey,
 					dataStatus,

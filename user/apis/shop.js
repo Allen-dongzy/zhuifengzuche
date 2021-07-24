@@ -20,3 +20,13 @@ export const shopEvaluateAdd = (data, loading = '提交中') => { // 对接
 		loading
 	})
 }
+
+// 订单门店分页查询
+export const shopEvaluatePageQuery = (data, loading = '') => { // 对接
+	return request({
+		url: 'shop/evaluate/pageQuery',
+		method: 'POST',
+		data,
+		loading
+	})
+}

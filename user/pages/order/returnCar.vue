@@ -82,7 +82,8 @@
 
 <script>
 	import {
-		returnVehicle
+		returnVehicle,
+		returnVehicleReimburse
 	} from '@/apis/return'
 	import {
 		getCodeByWxCode
@@ -136,6 +137,10 @@
 			},
 			// 授权
 			getCodeByWxCode: throttle(async function() {
+				if (this.info.totalAmount <= 0) {
+					this.returnVehicleReimburse()
+					return
+				}
 				const [loginErr, loginRes] = await uni.login({
 					provider: 'weixin'
 				})
@@ -148,6 +153,16 @@
 				if (err) return
 				this.paymentPrecreate(res.data.openid)
 			}),
+			// 发起退款
+			async returnVehicleReimburse() {
+				const [err, res] = await returnVehicleReimburse(this.info.orderId)
+				if (err) return
+				this.$toast('结算成功！')
+				uni.$emit(`${this.from}Refresh`)
+				setTimeout(() => {
+					this.$close()
+				}, 500)
+			},
 			// 发起支付
 			async paymentPrecreate(openId) {
 				const params = {
@@ -157,7 +172,7 @@
 					payway: '3',
 					subPayway: '4',
 					subject: '租车定金',
-					// totalAmount: this.info.orderDeposit
+					// totalAmount: this.info.totalAmount
 					totalAmount: 0.01
 				}
 				const [err, res] = await paymentPrecreate(params)
