@@ -252,7 +252,7 @@
 		{
 			"path": "pages/fleetManage/hirePlan",
 			"style": {
-				"navigationBarTitleText": "租聘计划"
+				"navigationBarTitleText": "租凭计划"
 			}
 		},
 		{
@@ -338,7 +338,7 @@
 		{
 			"path": "pages/vehicleManage/add",
 			"style": {
-				"navigationBarTibtleText": "车型设置"
+				"navigationBarTitleText": "车型设置"
 			}
 		},
 		{
@@ -353,6 +353,11 @@
 				"navigationBarTitleText": "检验收车"
 			}
 		}, {
+			"path": "pages/home/inspectionCollectInfo",
+			"style": {
+				"navigationBarTitleText": "收车详情"
+			}
+		},{
 			"path": "pages/home/contract",
 			"style": {
 				"navigationBarTitleText": "租车合同"
@@ -413,7 +418,7 @@
 		"current": 0, //当前激活的模式（list 的索引项）
 		"list": [{
 			"name": "wcy", // wcy
-			"path": "pages/home/home" //启动页面，必选
+			"path": "pages/home/inspectionCollectInfo" //启动页面，必选
 		}, {
 			"name": "dzy", // dzy
 			"path": "pages/Store/store" //启动页面，必选

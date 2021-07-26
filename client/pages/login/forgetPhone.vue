@@ -89,7 +89,7 @@
 				inpType: '',
 				showpass1: true, //密码眼睛切换 false 关闭  true开启
 				inpType1: '',
-				phone: '17623178041', //账号
+				phone: '', //账号
 				code: '', //验证码
 				password1: '', //密码1
 				password2: '', //密码2

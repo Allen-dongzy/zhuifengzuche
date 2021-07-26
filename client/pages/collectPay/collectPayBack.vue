@@ -23,7 +23,7 @@
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">金额(元)</view>
-			<view class="titleRight">¥{{info.money}}</view>
+			<view class="titleRight" @click="setMoney">¥{{info.money}}></view>
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">付款人</view>
@@ -36,7 +36,7 @@
 		<view class="garyLine"></view>
 		<view class="flexbox" style="border-bottom: 0rpx;">
 			<view class="titleLeft">提交时间</view>
-			<view class="titleRight">2021-07-01 18:00:0</view>
+			<view class="titleRight">{{info.createTime}}</view>
 		</view>
 
 
@@ -47,15 +47,15 @@
 		<view v-if="money==true" class="box1">
 			<view style="width: 90%;margin: auto;font-size:32rpx;padding: 20rpx 0rpx;">修改金额</view>
 			<view style="width: 90%;margin: auto;">
-				<input value="" style="background-color:#EFF0F3;padding-left: 20rpx;height: 74rpx;border-radius: 10rpx;"
+				<input v-model="price" style="background-color:#EFF0F3;padding-left: 20rpx;height: 74rpx;border-radius: 10rpx;"
 					placeholder="请输入修改金额" />
 			</view>
 			<view style="width: 90%;margin: auto;">
 				<view style="display: inline-block;width: 50%;">
-					<view class="close">取消</view>
+					<view class="close" @click="money=false">取消</view>
 				</view>
 				<view style="display: inline-block;width: 50%;">
-					<view class="yes">确定</view>
+					<view class="yes" @click="sure">确定</view>
 				</view>
 			</view>
 		</view>
@@ -68,7 +68,7 @@
 				    border-radius: 50px;
 				    font-size: 32rpx;
 					line-height: 96rpx;
-				    height: 96rpx;" type="default" @click="next">确认收款</button>
+				    height: 96rpx;" type="default" @click="getMoney">确认收款</button>
 
 <!-- 		<view class="btn-box" v-show="info.examineStatus==2">
 			<view class="btn reject">拒绝</view>
@@ -80,13 +80,21 @@
 
 <script>
 	import {
-		findOneById
+		findOneById,
+		receiptPaymentAudit
 	} from '@/apis/receiptPayment'
+	
+	import {
+		throttle
+	} from '@/utils/tools';
+	
+	
 	export default {
 		data() {
 			return {
 				money: false,
-				info:''
+				info:'',
+				price:''
 			}
 		},
 		onLoad(e) {
@@ -102,6 +110,39 @@
 				this.info = res.data
 				this.info.image = JSON.parse(res.data.image)
 			},
+			setMoney(){
+				this.money=true
+			},
+			sure(){
+				console.log('11')
+				this.info.money=this.price
+				this.money=false
+				this.$forceUpdate()
+				
+			},
+			
+			getMoney:throttle(async function(e){
+				console.log(1111)
+					var  data={
+						id:this.info.id,
+						examineStatus:this.info.examineStatus,
+						transactionType:this.info.transactionType,
+						money:this.info.money
+					}
+				
+				
+				const [err,res] = await receiptPaymentAudit(data)
+				if(err) return
+				console.log(res)
+				this.$toast("操作成功")
+				setTimeout(() => {
+					uni.navigateBack({
+						delta:1
+					})
+				}, 800)
+				
+			
+			}),
 		}
 	}
 </script>
@@ -139,6 +180,7 @@
 	}
 
 	.Mask {
+		z-index: 1;
 		position: fixed;
 		background-color: #000000;
 		opacity: 0.6;
@@ -148,6 +190,7 @@
 	}
 
 	.box1 {
+		z-index: 1;
 		width: 90%;
 		position: absolute;
 		padding: 20rpx 0px;

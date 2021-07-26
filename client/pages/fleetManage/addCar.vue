@@ -246,10 +246,10 @@
 					    border-radius: 50px;
 					    font-size: 32rpx;
 					    height: 96rpx;line-height: 96rpx;margin-top: 40rpx;margin-bottom: 20rpx;" type="default"
-			@click="next">新增</button>
+			@click="next">保存</button>
 
 
-<!-- //颜色弹窗 -->
+		<!-- //颜色弹窗 -->
 		<uni-popup ref="popup" type="center">
 			<view style="background-color: #F1F1F1;width: 510rpx;height: 400rpx;border-radius: 20rpx;padding: 20rpx;">
 				<view v-for="(item,index) in colorList" style="display: inline-block;margin: 2rpx 30rpx;"
@@ -276,7 +276,8 @@
 	} from '@/apis/oss';
 	import {
 		vehicleInsert,
-		vehicleSelectOne
+		vehicleSelectOne,
+		vehicleUpdate
 	} from '@/apis/vehicle'
 
 
@@ -308,31 +309,31 @@
 				colorList: [{
 					name: '黑色',
 					color: '#000000'
-				},{
+				}, {
 					name: '白色',
 					color: '#FFFFFF'
-				},{
+				}, {
 					name: '红色',
 					color: '#D9001B'
-				},{
+				}, {
 					name: '蓝色',
 					color: '#02A7F0'
-				},{
+				}, {
 					name: '黄色',
 					color: '#FFFF00'
-				},{
+				}, {
 					name: '橙色',
 					color: '#F59A23'
-				},{
+				}, {
 					name: '绿色',
 					color: '#03BF16'
-				},{
+				}, {
 					name: '紫色',
 					color: '#8080FF'
-				},{
+				}, {
 					name: '灰色',
 					color: '#EFF0F3'
-				},{
+				}, {
 					name: '棕色',
 					color: '#962323'
 				}],
@@ -532,6 +533,67 @@
 				})
 			},
 			async next() {
+				if (this.vehicleModelId == "") {
+					this.$toast("请选择车型")
+					return false
+				} else if (this.carNum == "") {
+					this.$toast("请填写车牌号")
+					return false
+				} else if (this.colorName == "") {
+					this.$toast("请选择车身颜色")
+					return false
+				} else if (this.statusId == "") {
+					this.$toast("请选择车辆状态")
+					return false
+				} else if (this.purchaseTime == "") {
+					this.$toast("请选择购置日期")
+					return false
+				} else if (this.idCard1 == "") {
+					this.$toast("请上传行驶证正页")
+					return false
+				} else if (this.idCard2 == "") {
+					this.$toast("请上传行驶证副页")
+					return false
+				} else if (this.plateNumber == "") {
+					this.$toast("请填写号牌号码")
+					return false
+				} else if (this.brandModel == "") {
+					this.$toast("请填写品牌号码")
+					return false
+				} else if (this.discernCode == "") {
+					this.$toast("请填写车辆识别代号")
+					return false
+				} else if (this.engineNum == "") {
+					this.$toast("请填写发动机号码")
+					return false
+				} else if (this.getcard == "") {
+					this.$toast("请选择发证日期")
+					return false
+				} else if (this.ceartTime == "") {
+					this.$toast("请选择注册日期")
+					return false
+				} else if (this.insuranceSn == "") {
+					this.$toast("请填写交强险单号")
+					return false
+				} else if (this.RenewalTime == "") {
+					this.$toast("请选择交强险续保日期")
+					return false
+				} else if (this.CompulsoryList == "") {
+					this.$toast("请上传交强险险图片")
+					return false
+				} else if (this.businessSn == "") {
+					this.$toast("请填写商业险单号")
+					return false
+				} else if (this.businessDate == "") {
+					this.$toast("请选择商业险续保日期")
+					return false
+				} else if (this.businessList == "") {
+					this.$toast("请上传商业险险图片")
+					return false
+				} else if (this.InsuranceList == "") {
+					this.$toast("请上传保险证图片")
+					return false
+				}
 				if (this.carId == "") {
 					var data = {
 						vehicleModelId: this.vehicleModelId,
@@ -555,6 +617,15 @@
 						businessFile: JSON.stringify(this.businessList),
 						insuranceUrls: JSON.stringify(this.InsuranceList),
 					}
+					const [err, res] = await vehicleInsert(data)
+					if (err) return
+					console.log(res)
+					this.$toast("操作成功")
+					setTimeout(() => {
+						uni.navigateBack({
+							delta: 1
+						})
+					}, 800)
 				} else {
 					var data = {
 						id: this.carId,
@@ -579,14 +650,18 @@
 						businessFile: JSON.stringify(this.businessList),
 						insuranceUrls: JSON.stringify(this.InsuranceList),
 					}
+					const [err, res] = await vehicleUpdate(data)
+					if (err) return
+					console.log(res)
+					this.$toast("操作成功")
+					setTimeout(() => {
+						uni.navigateBack({
+							delta: 1
+						})
+					}, 800)
+
 				}
 
-				const [err, res] = await vehicleInsert(data)
-				if (err) return
-				console.log(res)
-				uni.navigateBack({
-					delta: 1
-				})
 			},
 			bindPickerChange: function(e) {
 				console.log('pp1')

@@ -13,7 +13,7 @@
 			<view class="searchText" @click="search">搜索</view>
 		</view>
 		<view class="flex-center flex-wrap content">
-				<view v-for="(item, index) in list" :key="index" class="panel" @click="carInfo()">
+				<view v-for="(item, index) in list" :key="index" class="panel" @click="carInfo(item.id)">
 					<view class="flex titlePanel">
 						<p class="title">{{item.carNumber}}</p>
 						<p v-show="item.vehicleStatus==1" class="type">正常</p>
@@ -58,11 +58,18 @@
 		data() {
 			return {
 				list:[],
-				carNum:''
+				carNum:'',
+				vcarId:''//车型id
 			}
 		},
-		onLoad() {
-			this.getlist()
+		onLoad(e) {
+			console.log(e.id==undefined)
+			if(e.id==undefined){
+					this.getlist()
+			}else{
+				this.vcarId=e.id
+				this.search()
+			}
 		},
 		methods: {
 			//获取列表
@@ -81,12 +88,21 @@
 				let data = {
 					page: this.page,
 					size: this.size,
-					carNumber:this.carNum
+					searchField:this.carNum,
+					vehicleModelId:this.vcarId,
 				}
+				
 				const [err, res] = await vehiclePageQuery(data)
 				if (err) return
 				console.log(res)
 				this.list = res.data.list
+			},
+			carInfo(e) {
+				uni.navigateTo({
+					url: './fleetDetail?id=' + e,
+					animationDuration: 200,
+					animationType: 'pop-in'
+				})
 			}
 		}
 	}

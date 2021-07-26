@@ -10,9 +10,9 @@
 			</swiper>
 		</view>
 		<view class="titlePanel">
-			<p class="title">{{carInfo.brandName}}{{carInfo.vehicleModelName}}</p>
+			<p class="title">{{carInfo.carNumber}}</p>
 			<p class="text">
-				{{carInfo.brandName}}/{{carInfo.gears}}/{{carInfo.capacity}}/{{carInfo.outputVolumeName}}/{{carInfo.model}}
+				{{carInfo.brandName}}/{{carInfo.vehicleModelName}}/{{carInfo.gears}}/{{carInfo.capacity}}/{{carInfo.outputVolumeName}}/{{carInfo.model}}
 			</p>
 			<view class="flex flex-wrap">
 				<p class="flex-center type">{{carInfo.categoryName}}</p>
@@ -258,7 +258,7 @@
 				</view>
 
 				<slider style="margin-bottom: 0px;" :value="sliderVal" activeColor="#5A7EFF" block-size="20" step="1"
-					@change="sliderChange" min="0" max="24" show-value />
+					@change="sliderChange" min="0" max="23" show-value />
 
 				<view style="display: flex;justify-content: center; align-items: center;padding: 60rpx 0rpx;">
 
@@ -323,9 +323,12 @@
 		},
 		onLoad(e) {
 			this.id = e.id
-			this.vehicleSelectOne(e.id)
-			this.vehicleSelectRentalPlanList()
+			
 	
+		},
+		onShow() {
+			this.vehicleSelectOne(this.id)
+			this.vehicleSelectRentalPlanList()
 		},
 		methods: {
 			async sure() {

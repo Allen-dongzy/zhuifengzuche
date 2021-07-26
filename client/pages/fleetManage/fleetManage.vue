@@ -208,15 +208,15 @@
 
 			},
 			//下拉刷新
-			onPullDownRefresh() {
-				this.page = 1
-				this.size = 10
-				this.list = []
-				this.getlist()
-				setTimeout(function() {
-					uni.stopPullDownRefresh();
-				}, 1000);
-			}, 
+			// onPullDownRefresh() {
+			// 	this.page = 1
+			// 	this.size = 10
+			// 	this.list = []
+			// 	this.getlist()
+			// 	setTimeout(function() {
+			// 		uni.stopPullDownRefresh();
+			// 	}, 1000);
+			// }, 
 			// 上拉加载
 			onReachBottom(e) {
 				this.page = this.page + 1;

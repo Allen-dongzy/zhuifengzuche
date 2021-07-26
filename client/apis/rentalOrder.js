@@ -55,3 +55,27 @@ export const deliveryVehicleGet = (data, loading = '等待中') => {
 	})
 }
 
+//调试检测免押状态
+export const depositType = (data, loading = '等待中') => {
+	return request({
+		url: `rentalOrder/check/depositType/${data}`,
+		contentType:'application/x-www-form-urlencoded',
+		method: 'GET',  
+		data:{},
+		loading
+	})
+}
+
+//员工-查看交车情况
+export const getCertificates = (data, loading = '等待中') => {
+	return request({
+		url: `vehicleCheck/getCertificates/${data}`,
+		contentType:'application/x-www-form-urlencoded',
+		method: 'POST',  
+		data:{},
+		loading
+	})
+}
+
+
+

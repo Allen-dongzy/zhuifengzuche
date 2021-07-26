@@ -1,14 +1,14 @@
 <template>
 	<view class="add">
-		
+
 		<view class="flexBoxContent" v-show="roles[0].id==1">
 			<view class="title">门店</view>
 			<view class="selectBox" @click="">
 				<view style="width: 85%;">
 					<picker @change="selectStore" :value="indexStore" :range="list" :range-key="'name'"
-							class="pickerBox">
-							<label  class="pickerText">{{storeName!=''?storeName:'请选择'}}</label>
-						</picker>
+						class="pickerBox">
+						<label class="pickerText">{{storeName!=''?storeName:'请选择'}}</label>
+					</picker>
 				</view>
 				<view style="width:10%;">
 					<image style="width:40rpx;height: 20rpx;transform: rotate(-90deg);"
@@ -16,12 +16,12 @@
 				</view>
 			</view>
 		</view>
-		
-		
-		
+
+
+
 		<view class="header">
 			<view class="label"></view>
-			<text>填写车辆信息</text>
+			<text>填写车型信息</text>
 		</view>
 		<view class="vehicle-information">
 			<view class="item">
@@ -208,7 +208,7 @@
 				<!-- 	<view class="input">50</view> -->
 				<input class="input" v-if="weekType==1" type="text" v-model="weekExternal" />
 				<input class="input" v-else type="text" v-model="weekWithin" />
-				
+
 				<view class="square" @click="add(1)">+1</view>
 				<view class="square" @click="add(2)">+10%</view>
 			</view>
@@ -256,16 +256,18 @@
 	import {
 		uploadFiles
 	} from '@/apis/oss';
-	
-	import{memberShopPageQuery} from '../../apis/memberShop'
+
+	import {
+		memberShopPageQuery
+	} from '../../apis/memberShop'
 	export default {
 		data() {
 			return {
-				storeShow:false,//门店显示或者隐藏
-				list:[],//门店列表
-				storeName:'',//门店值
-				indexStore:'',//门店角标
-				storeId:'',//门店id
+				storeShow: false, //门店显示或者隐藏
+				list: [], //门店列表
+				storeName: '', //门店值
+				indexStore: '', //门店角标
+				storeId: '', //门店id
 				filePath: config.filePath,
 				brandList: [], // 品牌列表
 				brandKey: false, // 品牌开关
@@ -284,9 +286,9 @@
 				stall: '', // 排档
 				seatList: [{
 					text: '2'
-				},{
+				}, {
 					text: '5'
-				},{
+				}, {
 					text: '6'
 				}, {
 					text: '7'
@@ -337,9 +339,9 @@
 			this.getType()
 			this.outputVolume()
 			this.getStore()
-			this.storeId=this.shopId
+			this.storeId = this.shopId
 			console.log(this.roles)
-			
+
 			if (e.id != undefined) {
 				this.searchCarid(e.id)
 				this.carId = e.id
@@ -349,16 +351,16 @@
 		},
 		methods: {
 			//获取门店
-			async getStore(){
-			  const [err,res] = await memberShopPageQuery()
-			  if (err) return
-			  this.list =res.data.list
+			async getStore() {
+				const [err, res] = await memberShopPageQuery()
+				if (err) return
+				this.list = res.data.list
 			},
 			//选择门店
-			selectStore(e){
+			selectStore(e) {
 				this.indexStore = e.target.value //取其下标
-				this.storeName=this.list[this.indexStore].name
-				this.storeId=this.list[this.indexStore].id
+				this.storeName = this.list[this.indexStore].name
+				this.storeId = this.list[this.indexStore].id
 			},
 			delLabel(e) {
 				this.labelList.splice(e, 1)
@@ -468,50 +470,50 @@
 				}
 			},
 			reduce(e) {
-				if(this.weekType==1){
+				if (this.weekType == 1) {
 					if (this.weekExternal > 1) {
 						if (e == 1) {
-							this.weekExternal --;			
+							this.weekExternal--;
 						} else {
 							this.weekExternal = parseFloat(this.weekExternal) - parseFloat(this.weekExternal) * 0.1
 						}
 					}
 					this.weekExternal = parseFloat(this.weekExternal).toFixed(2)
-				}else{
-					
+				} else {
+
 					if (this.weekWithin > 1) {
 						if (e == 1) {
-			
+
 							this.weekWithin--;
-					
+
 						} else {
 							this.weekWithin = parseFloat(this.weekWithin) - parseFloat(this.weekWithin) * 0.1
 						}
 					}
-				this.weekWithin = parseFloat(this.weekWithin).toFixed(2)
-					
+					this.weekWithin = parseFloat(this.weekWithin).toFixed(2)
+
 				}
 			},
 			add(e) {
-				if(this.weekType==2){
+				if (this.weekType == 2) {
 					if (this.weekWithin > 0) {
 						this.weekWithin = parseFloat(this.weekWithin)
 						if (e == 1) {
-					
+
 							this.weekWithin++;
-					
+
 						} else {
 							this.weekWithin = this.weekWithin + this.weekWithin * 0.1
 						}
 					}
 					this.weekWithin = this.weekWithin.toFixed(2)
-				}else{
+				} else {
 					if (this.weekExternal > 0) {
 						this.weekExternal = parseFloat(this.weekExternal)
 						if (e == 1) {
-					
+
 							this.weekExternal++;
-					
+
 						} else {
 							this.weekExternal = this.weekExternal + this.weekExternal * 0.1
 						}
@@ -578,6 +580,49 @@
 			},
 
 			async sure(e) {
+				if(this.brandId==""){
+					this.$toast("请选择品牌")
+					return false;
+				}else if(this.classesId==""){
+					this.$toast("请选择类别")
+					return false;
+				}else if(this.vehicleModel==""){
+					this.$toast("请填写车型")
+					return false;
+				}else if(this.stall==""){
+					this.$toast("请选择排挡")
+					return false;
+				}else if(this.seat==""){
+					this.$toast("请选择座位数")
+					return false;
+				}else if(this.displacementId==""){
+					this.$toast("请选择排量")
+					return false;
+				}else if(this.model==""){
+					this.$toast("请填写燃油型号")
+					return false;
+				}else if(this.cartypeImg==""){
+					this.$toast("请上传车型图片")
+					return false;
+				}else if(this.actualImg==""){
+					this.$toast("请上传实拍图片")
+					return false;
+				}else if(this.rentalMoney==""){
+					this.$toast("请填写租车押金")
+					return false;
+				}else if(this.protectionMoney==""){
+					this.$toast("请填写基本保障费")
+					return false;
+				}else if(this.breakRulesMoney==""){
+					this.$toast("请填写违章押金")
+					return false;
+				}else if(this.weekExternal==""){
+					this.$toast("请填写周末价格")
+					return false;
+				}else if(this.weekWithin==""){
+					this.$toast("请填周内价格")
+					return false;
+				}
 				if (e == 1) {
 					var data = {
 						brandId: this.brandId,
@@ -832,10 +877,10 @@
 			}
 		}
 	}
-	
-	
-	
-	
+
+
+
+
 	.flexBoxContent {
 		display: flex;
 		align-items: center;
@@ -845,13 +890,14 @@
 		margin: auto;
 		margin-bottom: 30rpx;
 	}
-	
+
 	.title {
 		color: black;
 		font-size: 28rpx;
 		width: 25%;
 		font-weight: 700;
 	}
+
 	.selectBox {
 		background-color: #EFF0F3;
 		width: 75%;
@@ -862,6 +908,7 @@
 		color: #999999;
 		font-size: 24rpx;
 	}
+
 	.pickerBox {
 		background-color: #EFF0F3;
 		color: #999999;
@@ -869,7 +916,7 @@
 		height: 74rpx;
 		border-radius: 10rpx;
 	}
-	
+
 	.pickerText {
 		height: 74rpx;
 		line-height: 74rpx;

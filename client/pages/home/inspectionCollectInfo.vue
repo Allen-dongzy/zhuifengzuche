@@ -45,124 +45,65 @@
 			<view class="item">
 				<view class="content">
 					<view class="caption">违约金</view>
-					<input v-show="mode===1" class="input" type="text" v-model="breachContract" placeholder="请填写违约金金额"
-						placeholder-style="font-size:28rpx;color:#b2b2b2;font-weight:100;" />
-					<view v-show="mode===0" class="input readonly">{{ breachContract || 'xxxxx' }}</view>
+					<view class="info">{{info.liquidatedDamages}}</view>
 				</view>
 			</view>
 			<view class="item">
 				<view class="content">
 					<view class="caption">滞纳金</view>
-					<input v-show="mode===1" class="input" type="text" v-model="delayingPayment" placeholder="请填写滞纳金金额"
-						placeholder-style="font-size:28rpx;color:#b2b2b2;font-weight:100;" />
-					<view v-show="mode===0" class="input readonly">{{ delayingPayment || 'xxxxx' }}</view>
+					<view class="info">{{info.penalty}}</view>
 				</view>
 			</view>
-			<view :class="['item', {'other': otherFees}]">
+			<view class="item">
 				<view class="content">
 					<view class="caption">其他费用</view>
-					<view v-show="mode===1" class="input" @click="openOtherFeesModal">
-						{{ otherFees ? '￥'+otherFees : '请填写其他费用'}} >
-					</view>
-					<view v-show="mode===0" class="input readonly">{{ '￥'+ (otherFees || 'xxxxx') }}</view>
+					<view class="info">{{info.otherFee}}</view>
 				</view>
-				<view class="note">{{ note }}</view>
 			</view>
+
 		</view>
-		<view  class="group">
-			<view class="add-record" >
-				<image class="icon" :src="`${filePath}/vehicleManage/add.png`"></image>
-				<text @click="openSelModal">添加记录</text>
-				<text style="margin-left: 50rpx;" @click="openSelModal1">查看</text>
-			</view>
-		</view>
+
 		<view class="footer-mat"></view>
 		<view class="footer">
 			<view class="info">
 				总计 <text class="price">￥<text class="price-big">{{allprice}}</text></text>
 			</view>
-			<view v-show="mode===0" class="look">查看记录</view>
-			<view v-show="mode===1" class="btn" @click="settlement">确认结算</view>
+			<view  class="look">查看记录</view>
 		</view>
 
-		<uni-popup ref="otherFeesPopup" type="center">
-			<view class="other-fees-modal">
-				<view class="block">
-					<view class="caption">其他费用</view>
-					<input v-model="cacheOtherFees" type="text" placeholder="请输入金额"
-						placeholder-style="font-size:24rpx;color:#999;font-weight:100;">
-				</view>
-				<view class="block">
-					<view class="caption">备注</view>
-					<textarea v-model="cacheNote" placeholder="请输入备注"
-						placeholder-style="font-size:24rpx;color:#999;font-weight:100;" />
-				</view>
-				<view class="bottom">
-					<view class="cancel" @click="closeOtherFeesModal">取消</view>
-					<view class="confirm" @click="otherFeesModalConfirm">确定</view>
-				</view>
-			</view>
-		</uni-popup>
-		<uni-popup ref="selPopup" type="center">
-			<view class="sel-modal">
-				<view class="item" @click="selModalConfirm(index)" v-for="(item, index) in selList" :key="index">
-					{{ item.text }}
-				</view>
-			</view>
-		</uni-popup>
+
+
 	</view>
 </template>
 
 <script>
 	import config from '@/common/js/config'
-	import UniPopup from '@/components/uni-popup/uni-popup'
 
 	import {
-		backCar,settlement
+		dataEcho
 	} from '@/apis/vehicle.js'
 	export default {
 		data() {
 			return {
-				mode: 1, // 0 不可操作 1 可操作
-				filePath: config.filePath, // oss路径
-				breachContract: '', // 违约金
-				delayingPayment: '', // 滞纳金
-				cacheOtherFees: '', // 临时其他费用
-				otherFees: '', // 其他费用
-				cacheNote: '', // 临时备注
-				note: '', // 备注
-				selList: [{
-					text: '其他记录'
-				}, {
-					text: '事故记录'
-				}],
-				id: '', //订单id
-				info: '',
-				allprice: '',
-				returnTheCarEarly:''
+				info:'',
+				allprice:''
 			}
 		},
-		components: {
-			UniPopup
-		},
-		computed: {
-			all() {
-				this.allprice = parseFloat(this.info.overtimeFee) + parseFloat(this.returnTheCarEarly) + parseFloat(
-				this.breachContract) + parseFloat(this.delayingPayment) + parseFloat(this.otherFees)
-			}
-		},
+	computed: {
+		all() {
+			this.allprice = parseFloat(this.info.overtimeFee) + parseFloat(this.returnTheCarEarly) + parseFloat(
+			this.breachContract) + parseFloat(this.delayingPayment) + parseFloat(this.otherFees)
+		}
+	},
 		onLoad(e) {
-			console.log(e.obj)
+		console.log(e.obj)
 			this.id = JSON.parse(e.obj).order
-		},
-		onShow() {
-			this.note=""
-			this.backCar()
+			this.dataEcho()
 		},
 		methods: {
-			async backCar() {
+			async dataEcho() {
 
-				const [err, res] = await backCar(this.id)
+				const [err, res] = await dataEcho(this.id)
 				if (err) return
 				console.log(res)
 				this.info = res.data
@@ -171,70 +112,10 @@
 				this.otherFees = this.info.otherFee
 				this.returnTheCarEarly= this.info.returnTheCarEarly
 			},
-			// 打开其他费用模态框
-			openOtherFeesModal() {
-				this.$refs.otherFeesPopup.open()
-			},
-			// 关闭其他费用模态框
-			closeOtherFeesModal() {
-				this.$refs.otherFeesPopup.close()
-			},
-			// 打开选择模态框
-			openSelModal() {
-				this.$refs.selPopup.open()
-			},
-			// 打开选择模态框
-			openSelModal1() {
-				this.$refs.selPopup.open()
-			},
-			// 关闭选择模态框
-			closeSelModal() {
-				this.$refs.selPopup.close()
-			},
-			// 选择模态框确认
-			selModalConfirm(index) {
-				console.log(index)
-				this.closeSelModal()
-				if(index==0){
-					uni.navigateTo({
-						url:'./addOther?obj='+JSON.stringify(this.info)
-					})
-				}else{
-					uni.navigateTo({
-						url:'./addAccident?obj='+JSON.stringify(this.info)
-					})
-				}
-				
-			},
-			// 其他费用模态框确认
-			otherFeesModalConfirm() {
-				this.otherFees = this.cacheOtherFees
-				this.note = this.cacheNote
-				this.closeOtherFeesModal()
-			},
-		async	settlement(){
-			this.info.liquidatedDamages=this.breachContract
-			this.info.penalty=this.delayingPayment
-			this.info.otherFee=this.otherFees
-			this.info.totalAmount=this.allprice
-			
-				const [err,res] = await settlement(this.info)
-				if(err) return
-				console.log(res)
-				this.$toast("操作成功")
-				setTimeout(() => {
-						if(this.info.carRentalDeposit>=this.info.illegalDeposit){
-						   uni.navigateTo({
-							url:'../advanceFreeze/advanceFreeze?id=0'+'&obj='+JSON.stringify(this.info)+'&pay='+JSON.stringify(res.data.reflect)
-						   })
-						}else{
-							uni.navigateTo({
-								url:'../advanceFreeze/advanceFreeze?id=5'+'&obj='+JSON.stringify(this.info)+'&pay='+JSON.stringify(res.data.reflect)
-							})
-						}
-				}, 800)
-		
-			}
+
+
+
+
 		}
 	}
 </script>

@@ -55,7 +55,7 @@
 			style="padding: 30rpx;background-color: #EFF0F3;border-radius: 20rpx;height:220rpx;width: 90%;margin: 20rpx auto;" />
 
 
-		<button style=" color: white;
+		<button v-show="type==1" style=" color: white;
 				width: 90%;
 						margin: 20rpx auto;
 					    background-color: #5A7EFF;
@@ -71,11 +71,10 @@
 	} from '@/apis/oss';
 
 	import {
-		deliveryVehicleSave
-	} from '@/apis/rentalOrder'
-	import {
 		deliveryVehicleGet,
-		payStatus
+		payStatus,
+		getCertificates,
+		deliveryVehicleSave
 	} from "../../apis/rentalOrder"
 	export default {
 		data() {
@@ -86,12 +85,21 @@
 				driver2: '',
 				info: '',
 				payinfo: '',
-				mark:''
+				mark:'',
+				type:'',
 			}
 		},
 		onLoad(e) {
-			this.info = JSON.parse(e.obj)
-			this.deliveryVehicleGet(JSON.parse(e.obj).order)
+			console.log(e)
+			if(e.type==1){
+				this.type==1
+				this.info = JSON.parse(e.obj)
+				this.deliveryVehicleGet(JSON.parse(e.obj).order)
+			}else{
+				this.type==2
+				this.info = JSON.parse(e.obj)
+				this.getCertificates(JSON.parse(e.obj).order)
+			}
 		},
 		methods: {
 			async sure() {
@@ -158,6 +166,20 @@
 				console.log(res)
 				this.payinfo = res.data
 			},
+			
+			async getCertificates(e) {
+				console.log(e)
+				const [err, res] = await getCertificates(e)
+				if (err) return
+				console.log(res)
+				this.payinfo = res.data
+				this.idCard1=this.payinfo.idCardPositive
+				this.idCard2=this.payinfo.idCardBack
+				this.driver1=this.payinfo.drivingPositive
+				this.driver2=this.payinfo.drivingBack
+				this.mark=this.payinfo.remarks
+			},
+			
 		}
 	}
 </script>

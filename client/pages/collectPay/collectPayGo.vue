@@ -224,7 +224,7 @@
 				this.list.splice(e,1)
 			},
 			
-			take:(async function(e){
+			take:throttle(async function(e){
 				if(e==1){
 					var  data={
 						id:this.info.id,

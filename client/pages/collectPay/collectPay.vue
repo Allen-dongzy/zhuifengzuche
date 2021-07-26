@@ -45,7 +45,7 @@
 		<!-- 已收款 -->
 		<view v-if="type==2">
 			<view class="content" v-for="(item,index) in orderList" :key="index"
-				@click="$open('/pages/collectPay/collectPayBacked')">
+				@click="$open('/pages/collectPay/collectPayBacked',{obj:JSON.stringify(item)})">
 				<view class="contenBox" style="border-bottom: 2rpx dashed    #EFF0F3 ;">
 					<view class="carNum">{{item.carNumber}}</view>
 					<view class="price" style="border-bottom: 0rpx;text-align: right;">¥{{item.money}}</view>
@@ -54,7 +54,7 @@
 					<image class="xiangmuIcon" :src="$util.fileUrl('/xiangmu.png')" mode=""></image>
 					<view style="font-size: 24rpx;color: #C0C0C0;">{{item.projectName}}</view>
 					<image class="timeIcon" :src="$util.fileUrl('/time.png')" mode=""></image>
-					<view class="time">{{item.createTime}}</view>
+					<view class="time">{{item.createTime.slice(0,10)}}</view>
 				</view>
 			</view>
 		</view>
