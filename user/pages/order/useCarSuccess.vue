@@ -5,7 +5,7 @@
 			<view class="caption">用车成功！</view>
 			<view class="info">祝您用车愉快</view>
 		</view>
-		<view class="btn" @click="$open('/pages/home/home', 3)">确定</view>
+		<view class="btn" @click="confirm">确定</view>
 	</view>
 </template>
 
@@ -14,6 +14,13 @@
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
+			}
+		},
+		methods: {
+			confirm() {
+				uni.$emit('orderDetail')
+				uni.$emit('orderDetailRefresh')
+				this.$close(3)
 			}
 		}
 	}

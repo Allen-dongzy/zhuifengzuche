@@ -70,7 +70,7 @@
 							@click.stop="$open('/pages/common/goInspect', {mode:'edit', orderId: item.id, vehicleId: item.vehicleId})">
 							查看车况
 						</view>
-						<view v-show="item.orderStatus === 3" class="btn white"
+						<view v-show="item.orderStatus === 3  && !item.isLeaseRenewal" class="btn white"
 							@click.stop="rentalOrderRenewCarRentalPriceCheck(index)">
 							续租用车
 						</view>
@@ -253,8 +253,7 @@
 					payway: '3',
 					subPayway: '4',
 					subject: '租车定金',
-					// totalAmount: this.list[index].orderDeposit
-					totalAmount: 0.01
+					totalAmount: this.list[index].orderDeposit
 				}
 				const [err, res] = await paymentPrecreate(params)
 				if (err) return

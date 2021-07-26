@@ -5,20 +5,31 @@
 			<view class="price">￥<text>{{price}}</text></view>
 		</view>
 		<view class="toast">*取车时支付租车押金￥5000，可以取车时申请免押</view>
-		<view class="btn" @click="pay">支&#32;付</view>
+		<view class="btn" @click="getCodeByWxCode">支&#32;付</view>
 	</view>
 </template>
 
 <script>
+	import {
+		getCodeByWxCode
+	} from '@/apis/sso'
+	import {
+		paymentPrecreate
+	} from '@/apis/payment'
+	import {
+		throttle
+	} from '@/utils/tools'
+
 	export default {
 		data() {
 			return {
-				price: ''
+				price: '',
+				reflect: {}, // 支付信息
 			}
 		},
 		onLoad(e) {
-			console.log(e.price)
-			this.price = e.price
+			if (e && e.price) this.price = e.price
+			if (e && e.reflect) this.reflect = JSON.parse(e.reflect)
 		},
 		methods: {
 			// 微信平台是否有登录能力
@@ -30,18 +41,51 @@
 				if (res && ~res.provider.indexOf('weixin')) returnRes = 'weixin'
 				return returnRes
 			},
-			// 支付
-			async pay() {
-				const providerRes = await this.isLoginFunc()
-				if (providerRes !== 'weixin') return
-				const [err, res] = await uni.login({
+			// 授权
+			getCodeByWxCode: throttle(async function(index) {
+				if (!this.price) {
+					this.$toast('金额错误！')
+					return
+				}
+				const [loginErr, loginRes] = await uni.login({
 					provider: 'weixin'
 				})
+				if (loginErr) return
+				const params = {
+					code: loginRes.code,
+					loginType: 1
+				}
+				const [err, res] = await getCodeByWxCode(params)
 				if (err) return
-				console.log(res.code)
-				uni.reLaunch({
-					url: './order'
+				this.paymentPrecreate(res.data.openid, index)
+			}),
+			// 发起支付
+			async paymentPrecreate(openId, index) {
+				const params = {
+					reflect: this.reflect,
+					orderId: this.reflect.orderId,
+					payerUid: openId,
+					payway: '3',
+					subPayway: '4',
+					subject: '租车定金',
+					totalAmount: this.price
+				}
+				const [err, res] = await paymentPrecreate(params)
+				if (err) return
+				this.pay(res.data.wapPayRequest)
+			},
+			// 支付
+			async pay(wapPayRequest) {
+				const [err, res] = await uni.requestPayment({
+					provider: 'wxpay',
+					...wapPayRequest
 				})
+				if (err) return
+				this.$toast('租车成功！')
+				uni.$emit('orderRefresh')
+				setTimeout(() => {
+					this.$open('/pages/order/order', 3)
+				}, 500)
 			}
 		}
 	}

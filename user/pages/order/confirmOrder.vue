@@ -165,7 +165,7 @@
 		<view class="bottom-mat"></view>
 		<view class="bottom">
 			<view class="price-info">
-				总计<view class="price">￥<text>{{info.orderPriceInfo.total}}</text></view>
+				总计<view class="price">￥<text>{{info.orderPriceInfo.total.toFixed(2)}}</text></view>
 			</view>
 			<view class="func-box">
 				<view class="detail" @click="$open('/pages/order/costDetail?obj='+JSON.stringify(info.orderPriceInfo))">
@@ -367,7 +367,7 @@
 				this.$refs.processPopup.open()
 			},
 			// 关闭流程弹窗
-			closeProcessPopup() {
+			closeProcessPopup() { 
 				this.$refs.processPopup.close()
 			},
 			// 打开地图
@@ -442,8 +442,9 @@
 				}
 				const [err, res] = await rentalOrderCreateOrders(data)
 				if (err) return
-				uni.navigateTo({
-					url: './orderPay?price=' + this.info.orderPriceInfo.total
+				this.$open('./orderPay', {
+					price: this.info.orderPriceInfo.total,
+					reflect: JSON.stringify(res.data.reflect)
 				})
 			},
 			// 监听时间

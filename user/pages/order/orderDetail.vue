@@ -50,7 +50,7 @@
 					</view>
 					<view class="btn-box">
 						<view class="btn white" @click="contactStore">联系门店</view>
-						<view v-show="info.orderStatus===3" class="btn white"
+						<view v-show="info.orderStatus===3 && !info.isLeaseRenewal" class="btn white"
 							@click="rentalOrderRenewCarRentalPriceCheck">续租用车</view>
 						<view class="btn blue" @click="returnCar">前往还车
 						</view>
@@ -284,7 +284,7 @@
 		},
 		filters: {
 			jsonFormat(str) {
-				return JSON.parse(str)[0]
+				return str ? JSON.parse(str)[0] : ''
 			}
 		},
 		onLoad(e) {
@@ -343,9 +343,9 @@
 				const [err, res] = await rentalOrderCancelOrderByUserGet(params)
 				if (err) return
 				const [btnErr, btnRes] = await this.$showModal({
-					content: res.data
+					content: res.message
 				})
-				if (btnRes !== 0) return
+				if (btnRes !== 'confirm') return
 				this.rentalOrderCancelOrderByUser()
 			}),
 			// 授权
@@ -371,8 +371,7 @@
 					payway: '3',
 					subPayway: '4',
 					subject: '租车定金',
-					// totalAmount: this.info.orderDeposit
-					totalAmount: 0.01
+					totalAmount: this.info.orderDeposit
 				}
 				const [err, res] = await paymentPrecreate(params)
 				if (err) return

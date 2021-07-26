@@ -316,7 +316,7 @@
 			"path": "pages/order/order"
 		}, {
 			"name": "dzy", // dzy
-			"path": "pages/mine/violationRecord"
+			"path": "pages/common/violation"
 		}]
 	}
 }

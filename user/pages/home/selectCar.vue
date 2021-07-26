@@ -27,7 +27,8 @@
 						<view class="parameter-box">
 							<view class="title-bar">
 								<view class="caption">{{item.brandName}}</view>
-								<view class="status">{{item.isFull===1 ? '已租满': `还剩${item.rentableNum}辆`}}</view>
+								<view class="status">
+									{{item.isFull===1 ? '已租满': item.rentableNum ? `还剩${item.rentableNum}辆`: ''}}</view>
 							</view>
 							<view class="parameter">{{item.vehicleModelName}}丨{{item.gears}} {{item.capacity}}座
 								{{item.outputVolumeName}}

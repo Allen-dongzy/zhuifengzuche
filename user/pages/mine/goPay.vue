@@ -342,8 +342,7 @@
 					payway: '3',
 					subPayway: '4',
 					subject: '发起付款',
-					// totalAmount: this.money
-					totalAmount: 0.01
+					totalAmount: this.money
 				}
 				const [err, res] = await paymentPrecreate(params)
 				if (err) return
