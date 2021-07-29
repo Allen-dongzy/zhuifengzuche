@@ -376,6 +376,7 @@
 				})
 				// 选择地点
 				uni.$on('checkAddress', e => {
+					console.log(e)
 					switch (e.addressMode) {
 						case 'takeCar':
 							this.takeCarAddress = JSON.parse(e.address)

@@ -325,7 +325,7 @@
 			"path": "pages/order/order"
 		}, {
 			"name": "dzy", // dzy
-			"path": "pages/mine/finded"
+			"path": "pages/order/costDetail"
 		}]
 	}
 }

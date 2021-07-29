@@ -133,6 +133,10 @@
 			clearDate: {
 				type: Boolean,
 				default: true
+			},
+			disabled: {
+				type: Boolean,
+				default: false
 			}
 		},
 		data() {
@@ -284,6 +288,7 @@
 			 * @param {Object} weeks
 			 */
 			choiceDate(weeks) {
+				if (this.disabled) return
 				if (weeks.disable) return
 				this.calendar = weeks
 				// console.log(this.cale.multipleStatus)

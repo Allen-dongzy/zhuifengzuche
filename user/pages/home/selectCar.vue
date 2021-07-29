@@ -42,7 +42,7 @@
 						</view>
 					</view>
 					<view class="price-bar">
-						<view class="calendar" @click.stop="$open('/pages/home/priceCalendar')">
+						<view class="calendar" @click.stop="goPriceCalendar(index)">
 							<image class="icon-calendar" :src="`${ossUrl}/home/icon-calendar.png`"></image>
 							<text>价格日历</text>
 							<view class="arrow"></view>
@@ -51,7 +51,7 @@
 					</view>
 					<view class="address-bar">
 						<image class="icon-home" :src="`${ossUrl}/home/icon-home.png`"></image>
-						<view class="address" @click.stop="$open('/pages/home/store')">
+						<view class="address" @click.stop="openMap(index)">
 							门店地址：<text>{{item.memberShopAddress}}</text></view>
 					</view>
 				</view>
@@ -245,6 +245,14 @@
 				this.carModelList = res.data
 				this.brandDataStatus = 'noMore'
 			},
+			// 前往价格日历
+			goPriceCalendar(index) {
+				this.$open('/pages/home/priceCalendar', {
+					info: JSON.stringify(this.carList[index]),
+					takeCarTime: this.takeCarTime,
+					carAlsoTime: this.carAlsoTime
+				})
+			},
 			// 触底加载
 			scrollToBottom() {
 				if (!this.requestKey) return
@@ -416,7 +424,14 @@
 				this.closeSeatModal()
 				this.init()
 				this.vehiclePageQuery()
-			})
+			}),
+			// 打开地图
+			openMap(index) {
+				uni.openLocation({
+					latitude: Number(this.carList[index].lat),
+					longitude: Number(this.carList[index].lon)
+				})
+			}
 		}
 	}
 </script>

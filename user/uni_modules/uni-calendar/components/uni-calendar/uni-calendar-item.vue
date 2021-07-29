@@ -6,8 +6,7 @@
 		'uni-calendar-item--before-checked':weeks.beforeMultiple,
 		'uni-calendar-item--multiple': weeks.multiple,
 		'uni-calendar-item--after-checked':weeks.afterMultiple,
-		}"
-	 @click="choiceDate(weeks)">
+		}" @click="choiceDate(weeks)">
 		<view class="uni-calendar-item__weeks-box-item">
 			<text v-if="selected&&weeks.extraInfo" class="uni-calendar-item__weeks-box-circle"></text>
 			<text class="uni-calendar-item__weeks-box-text" :class="{
@@ -98,6 +97,7 @@
 	.uni-calendar-item__weeks-box-text {
 		font-size: $uni-font-size-base;
 		color: $uni-text-color;
+		
 	}
 
 	.uni-calendar-item__weeks-lunar-text {
@@ -159,10 +159,12 @@
 		color: #fff;
 		opacity: 0.8;
 	}
+
 	.uni-calendar-item--before-checked {
 		background-color: #ff5a5f;
 		color: #fff;
 	}
+
 	.uni-calendar-item--after-checked {
 		background-color: #ff5a5f;
 		color: #fff;

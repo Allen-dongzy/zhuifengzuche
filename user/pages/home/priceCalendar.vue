@@ -1,36 +1,75 @@
 <template>
 	<view class="price-calendar">
 		<view class="car-card">
-			<image class="pic" src="https://youjia-image.cdn.bcebos.com/seriesImage/158738183449412be5bb.png@!w_600_fp">
+			<image class="pic" :src="info.vehicleModelFiles | jsonFormat" mode="aspectFill">
 			</image>
 			<view class="description">
-				<view class="caption">大众迈腾</view>
+				<view class="caption">{{info.brandName}}</view>
 				<view class="params">
-					<view class="info">大众 捷达丨自动 5座 2.0L</view>
-					<view class="price">￥<text>188/天</text></view>
+					<view class="info">{{info.vehicleModelName}}丨{{info.gears}} {{info.capacity}}座
+						{{info.outputVolumeName}}
+					</view>
+					<view class="price">￥<text>{{info.toDayPrice}}/天</text></view>
 				</view>
-				<view class="label-box">
-					<view class="label">时尚</view>
-					<view class="label">省油</view>
-					<view class="label">舒适</view>
+				<view class="label-box" v-if="info.labels && info.labels.length>0">
+					<view class="label" v-for="(item, index) in info.labels.slice(0,3)" :key="index">{{item}}</view>
 				</view>
 			</view>
 		</view>
 		<view class="card-mat"></view>
-		<uni-calendar :insert="true" :showMonth="false" :start-date="'2021-6-1'" :end-date="'2021-6-30'" :range="true">
+		<uni-calendar :insert="true" :showMonth="false" :customRange="customRange" :start-date="startDate"
+			:end-date="endDate" :selected="selectedList" :range="true" :disabled="true">
 		</uni-calendar>
 	</view>
 </template>
 
 <script>
-	export default {
+	import {
+		vehicleQueryVehicleModelRentList
+	} from '@/apis/vehicle'
 
+	export default {
+		data() {
+			return {
+				info: {}, // 车辆信息
+				startDate: '',
+				endDate: '',
+				customRange: [],
+				selectedList: []
+			}
+		},
+		filters: {
+			jsonFormat(str) {
+				return str ? JSON.parse(str)[0] : ''
+			}
+		},
+		onLoad(e) {
+			if (e && e.info) this.info = JSON.parse(e.info)
+			if (e && e.takeCarTime && e.carAlsoTime) this.customRange.push(e.takeCarTime.split(' ')[0], e.carAlsoTime
+				.split(' ')[0])
+			this.vehicleQueryVehicleModelRentList()
+		},
+		methods: {
+			// 获取价格日历
+			async vehicleQueryVehicleModelRentList() {
+				const [err, res] = await vehicleQueryVehicleModelRentList(this.info.vehicleModelId)
+				if (err) return
+				this.startDate = res.data[0].rentalTime.split(' ')[0]
+				this.endDate = res.data[res.data.length - 1].rentalTime.split(' ')[0]
+				res.data.forEach(item => {
+					item.date = item.rentalTime.split(' ')[0]
+					item.info = `￥${item.rentalMoney}`
+				})
+				this.selectedList = res.data
+			}
+		}
 	}
 </script>
 
 <style lang="scss">
 	@import '@/static/scss/_mixin.scss';
-	page{
+
+	page {
 		background-color: #EFF0F3;
 	}
 
@@ -95,11 +134,11 @@
 		.card-mat {
 			height: 188rpx;
 		}
-		
+
 		.uni-calendar__content {
 			background-color: #EFF0F3 !important;
 		}
-		
+
 		.uni-calendar-item--disable {
 			background-color: transparent !important;
 		}
@@ -110,89 +149,66 @@
 			margin-top: 40rpx;
 		}
 
-		.uni-calendar__header-btn-box,
+		.uni-calendar__header-btn-box {
+			.uni-calendar__header-btn {
+				border-left-color: #999;
+				border-top-color: #999;
+			}
+		}
+
 		.uni-calendar__backtoday {
 			display: none !important;
 		}
 
-		.uni-calendar__weeks:nth-of-type(1) {
-			position: relative;
-			top: -100rpx;
-		}
-
-		.uni-calendar__weeks {
-			position: relative;
-			top: -40rpx;
-		}
-
-		.uni-calendar__header {
-			position: relative;
-			top: 70rpx;
-			border-bottom: 0 !important;
-		}
-
-		.uni-calendar__header-text {
-			@include font-set(28rpx, #000, 700);
-		}
-
-		.uni-calendar__weeks-day {
-			border-bottom: 0 !important;
-
-			&>text {
-				@include font-set(24rpx, #000, 500);
-			}
-		}
-
-		.uni-calendar__weeks {
-			&~.uni-calendar__weeks {
-				margin-top: 20rpx;
-			}
-		}
-
-		.uni-calendar-item--before-checked {
-			background-color: rgba(90, 126, 255, 0.50) !important;
-			// border-radius: 66rpx;
-
-			.uni-calendar-item__weeks-box-item {
-				background-color: #5A7EFF !important;
-				// border-radius: 66rpx;
-			}
-		}
-
-		.uni-calendar-item--after-checked {
-			background-color: rgba(90, 126, 255, 0.50) !important;
-
-			.uni-calendar-item__weeks-box-item {
-				background-color: #5A7EFF !important;
-			}
-		}
-
-		.uni-calendar-item--multiple {
-			opacity: 1 !important;
-		}
-
-		.uni-calendar-item__weeks-lunar-text.uni-calendar-item--isDay-text.uni-calendar-item--multiple {
-			background-color: transparent;
-		}
-
-		.uni-calendar-item__weeks-box-text.uni-calendar-item--multiple {
+		.uni-calendar-item__weeks-box-circle {
 			background-color: transparent !important;
 		}
 
-		.uni-calendar-item__weeks-box.uni-calendar-item--before-checked.uni-calendar-item--multiple {
-			background-color: rgba(90, 126, 255, 0.50) !important;
-			border-top-right-radius: 0;
-			border-bottom-right-radius: 0;
+		.uni-calendar-item__weeks-lunar-text.uni-calendar-item--extra {
+			color: #5A7EFF !important;
+			opacity: 1 !important;
 		}
 
-		.uni-calendar-item__weeks-box.uni-calendar-item--after-checked.uni-calendar-item--multiple {
-			background-color: rgba(90, 126, 255, 0.50) !important;
-			border-top-left-radius: 0;
-			border-bottom-left-radius: 0;
+		.uni-calendar-item--checked {
+			background-color: transparent !important;
+			opacity: 1 !important;
 		}
 
-		.uni-calendar-item__weeks-box.uni-calendar-item--multiple {
-			background-color: rgba(90, 126, 255, 0.50) !important;
+		.uni-calendar-item__weeks-box-item {
+			.uni-calendar-item--isDay-text {
+				color: #333;
+			}
+		}
+
+		.uni-calendar-item--isDay {
+			background-color: transparent !important;
+			opacity: 1 !important;
+
+			.uni-calendar-item--isDay-text {
+				color: #fff;
+			}
+		}
+
+		.uni-calendar-item__weeks-box-text.uni-calendar-item--isDay-text.uni-calendar-item--isDay,
+		.uni-calendar-item__weeks-box-text.uni-calendar-item--checked {
+			padding: 2rpx 16rpx !important;
+			border-radius: 33rpx !important;
+			background-color: #5A7EFF !important;
+			opacity: 1 !important;
+		}
+
+		.uni-calendar-item--before-checked,
+		.uni-calendar-item--multiple {
+			background-color: transparent !important;
+			opacity: 1 !important;
+		}
+
+		.uni-calendar-item__weeks-box-text.uni-calendar-item--before-checked.uni-calendar-item--multiple,
+		.uni-calendar-item__weeks-box-text.uni-calendar-item--multiple{
+			padding: 2rpx 16rpx !important;
+			border-radius: 33rpx !important;
+			background-color: #5A7EFF !important;
+			opacity: 1 !important;
 		}
 	}
 </style>
