@@ -9,19 +9,21 @@
 		<view class="setbox">
 			<view class="moreInpbox">
 				<view style="width: 90%;">
-					<input type="text" class="inpBox" style="width: 95%;" v-model="phone" placeholder="请填写手机号" />
+					<input type="number" maxlength="11" class="inpBox" style="width: 95%;" v-model="phone"
+						placeholder="请填写手机号" />
 				</view>
 			</view>
 			<view class="line"></view>
 			<view class="moreInpbox">
 				<view style="width: 70%;">
-					<input :type="inpType" class="inpBox" style="width: 95%;" v-model="code" placeholder="请填写验证码" />
+					<input type="text" maxlength="6" class="inpBox" style="width: 95%;" v-model="code"
+						placeholder="请填写验证码" />
 				</view>
 				<view class="btn" @click="sendLoginCode">{{!codeKey?`${countDown}s`:'获取验证码'}}</view>
 			</view>
 			<view class="line"></view>
 			<view style="width: 86%;margin: auto;height: 96rpx;">
-				<button style="color: #007AFF;border:1px solid #5A7EFF" @click="login">登陆</button>
+				<button style="color: #007AFF;border:1px solid #5A7EFF" @click="login">登录</button>
 			</view>
 			<view class="selectBox">
 				<view style="width: 32rpx;height: 32rpx;padding-top: 6rpx;" @click="lookAgreement">
@@ -55,7 +57,7 @@
 			return {
 				ossUrl: this.$ossUrl, // oss
 				agreementType: false, //协议切换
-				phone: '17623178041', // 手机号
+				phone: '', // 手机号
 				code: '', // 验证码
 				codeKey: true, // 请求验证码开关
 				countDown: 60, // 倒计时
@@ -110,7 +112,16 @@
 					this.$toast('请阅读并同意用户协议')
 					return
 				}
-				const checkItem = {
+				const checkList = [{
+					value: this.phone,
+					rules: [{
+						type: 'required',
+						msg: '请输入手机号'
+					}, {
+						type: 'phone',
+						msg: '请输入正确的手机号'
+					}]
+				}, {
 					value: this.code,
 					rules: [{
 						type: 'required',
@@ -121,8 +132,8 @@
 						max: 6,
 						msg: '验证码范围错误'
 					}]
-				}
-				const checkRes = validator(checkItem, this.$toast)
+				}]
+				const checkRes = validator(checkList, this.$toast)
 				if (checkRes.status !== 1000) return
 				const params = {
 					code: this.code,

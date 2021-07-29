@@ -90,6 +90,7 @@
 		},
 		onLoad() {
 			this.findQueryNum()
+			this.eventListener()
 		},
 		methods: {
 			async findQueryNum() {
@@ -111,14 +112,12 @@
 				}
 			},
 			async sure() {
-				// addBuyHistory
 				let data = {
 					buyCount: this.list[this.selectNum].num,
 					buyMoney: this.list[this.selectNum].price,
 					payType: 0
 				}
 				const [err, res] = await addBuyHistory(data)
-				console.log(res)
 				this.buyinfo = res.data
 				this.getCodeByWxCode()
 			},
@@ -165,6 +164,12 @@
 				if (err) return
 				this.$toast('购买成功！')
 				this.findQueryNum()
+			},
+			// 监听事件
+			eventListener() {
+				uni.$on('riskRefresh', () => {
+					this.findQueryNum()
+				})
 			}
 		}
 	}

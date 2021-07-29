@@ -23,7 +23,8 @@
 				<view v-show="!carAlsoDay && !carAlsoTime" class="sub-caption" @click="$toast('请选择还车时间')">选择时间</view>
 			</view>
 		</view>
-		<uni-calendar :insert="true" :showMonth="false" :range="true" @change="calendarChange">
+		<uni-calendar :insert="true" :range="true" :showMonth="false" :date='date' :customRange="customRange"
+			@change="calendarChange">
 		</uni-calendar>
 		<view class="date"></view>
 		<view class="picker-box">
@@ -68,6 +69,7 @@
 					'21:30', '22:00', '22:30', '23:00', '23:30'
 				],
 				weekShow: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+				customRange: [], // 自定义选取范围
 				takeCarTimeIndex: [0], // 取车时间下标
 				carAlsoTimeIndex: [0], // 还车时间下标
 				takeCarDate: '', // 取车日期显示
@@ -77,6 +79,7 @@
 				carAlsoDay: '', // 还车日是周几显示
 				carAlsoTime: '', // 还车时间显示
 				totalDate: 0, // 总天数
+				date: ''
 			}
 		},
 		watch: {
@@ -101,6 +104,25 @@
 				return parseInt(date[1]) && parseInt(date[2]) ? `${parseInt(date[1])}月${parseInt(date[2])}日` : ''
 			}
 		},
+		onLoad(e) {
+			if (e && e.takeCarTime) this.takeCarDate = e.takeCarTime.split(' ')[0]
+			if (e && e.takeCarDayShow) this.takeCarDay = e.takeCarDayShow
+			if (e && e.takeCarTimeShow) {
+				this.takeCarTime = e.takeCarTimeShow
+				const index = this.timeBox.indexOf(this.takeCarTime)
+				this.takeCarTimeIndex = [index >= 0 ? index : 0]
+			}
+			if (e && e.carAlsoTime) this.carAlsoDate = e.carAlsoTime.split(' ')[0]
+			if (e && e.carAlsoDayShow) this.carAlsoDay = e.carAlsoDayShow
+			if (e && e.carAlsoTimeShow) {
+				this.carAlsoTime = e.carAlsoTimeShow
+				const index = this.timeBox.indexOf(this.carAlsoTime)
+				this.carAlsoTimeIndex = [index >= 0 ? index : 0]
+			}
+			if (e && e.totalDate) this.totalDate = e.totalDate
+			if (e && e.takeCarTime && e.carAlsoTime) this.customRange.push(e.takeCarTime.split(' ')[0], e.carAlsoTime
+				.split(' ')[0])
+		},
 		methods: {
 			// 取车时间改变
 			takeCarTimeIndexChange(e) {
@@ -124,6 +146,13 @@
 			calendarChange(e) {
 				if (e && e.range && e.range.before) this.takeCarDate = e.range.before
 				if (e && e.range && e.range.after) this.carAlsoDate = e.range.after
+				const takeCarDateTimestamp = `${this.takeCarDate} 00:00:00` || ''
+				const carAlsoDateTimestamp = `${this.carAlsoDate} 00:00:00` || ''
+				if (takeCarDateTimestamp && carAlsoDateTimestamp && takeCarDateTimestamp > carAlsoDateTimestamp) {
+					const cacheDate = this.takeCarDate
+					this.takeCarDate = this.carAlsoDate
+					this.carAlsoDate = cacheDate
+				}
 				this.totalDate = e.range.data.length || 0
 			},
 			// 清空
@@ -168,8 +197,12 @@
 					this.$toast('开始时间不能小于当前时间！')
 					return
 				}
-				if (takeCarTimeStamp > carAlsoTimeStamp) {
-					this.$toast('开始时间不能大于结束时间！')
+				if (carAlsoTimeStamp - takeCarTimeStamp <= (1000 * 60 * 60 * 2)) {
+					this.$toast('租车时间必须大于两个小时！')
+					return
+				}
+				if (carAlsoTimeStamp - takeCarTimeStamp > (86400000 * 29)) {
+					this.$toast('租车时间不得大于二十九天！')
 					return
 				}
 				uni.$emit('checkTime', {

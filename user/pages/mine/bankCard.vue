@@ -44,7 +44,8 @@
 				this.list = []
 				const [err, res] = await receiptPaymentBankList()
 				if (err) {
-					this.dataStatus = 'noData'
+					if (this.list.length > 0) this.dataStatus = 'noMore'
+					else this.dataStatus = 'noData'
 					return
 				}
 				this.list = res.data

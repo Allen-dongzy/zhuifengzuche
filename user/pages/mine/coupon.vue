@@ -1,7 +1,7 @@
 <template>
 	<view class="">
 		<view class="flexBox">
-			<view class="" v-for="(item,index) in tabList" :key="index" @click="taptab(index)" class="box">
+			<view v-for="(item,index) in tabList" :key="index" @click="taptab(index)" class="box">
 				<view class="acSelect" v-if="selectIndex==index">
 					{{item.name}}
 					<view class="blueLine"></view>
@@ -22,7 +22,7 @@
 								<view class="time">到期时间：{{item.closeTime ? item.closeTime.split(' ')[0] : ''}}</view>
 							</view>
 						</view>
-						<view class="btn" @click="getCouponById(item.id)">
+						<view class="btn" @click="couponHandler(index)">
 							<image class="btn-bg" v-show="type===0" :src="`${ossUrl}/home/is-get-btn.png`"></image>
 							<image class="btn-bg" v-show="type!==0" :src="`${ossUrl}/home/no-get-btn.png`"></image>
 							<view class="text" v-show="type==0">可使用</view>
@@ -40,8 +40,7 @@
 
 <script>
 	import {
-		findIsUseCouponByUser,
-		getCouponById
+		couponQueryPage
 	} from '@/apis/coupon'
 	import {
 		throttle
@@ -71,23 +70,25 @@
 				size: 10,
 				requestKey: true,
 				dataStatus: '', // more loading noMore noData
-				selectType: '', //goods是确认订单跳转进来
+				selectType: '', // home:首页跳转进来 goods:订单跳转进来
 			}
 		},
 		onLoad(e) {
-			this.selectType = e.selectType
-			this.findIsUseCouponByUser()
+			if (e && e.selectType) this.selectType = e.selectType
+			this.couponQueryPage()
 		},
 		onReachBottom() {
 			if (!this.requestKey) return
 			this.page++
-			this.findIsUseCouponByUser()
+			this.couponQueryPage()
 		},
 		methods: {
 			// 切换
 			taptab(index) {
 				this.selectIndex = index
 				this.type = this.tabList[index].status
+				this.init()
+				this.couponQueryPage()
 			},
 			// 初始化
 			init() {
@@ -96,28 +97,37 @@
 				this.couponList = []
 			},
 			// 获取优惠券列表
-			async findIsUseCouponByUser() {
+			async couponQueryPage() {
 				this.dataStatus = 'loading'
-				const [err, res] = await findIsUseCouponByUser()
+				const params = {
+					page: this.page,
+					size: this.size,
+					status: this.type
+				}
+				const [err, res] = await couponQueryPage(params)
 				if (err) return
 				const {
 					requestKey,
 					dataStatus,
 					isRender
-				} = listManager(res.data, this.page, this.size)
+				} = listManager(res.data.list, this.page, this.size)
 				this.requestKey = requestKey
 				this.dataStatus = dataStatus
 				if (!isRender) return
-				this.couponList = [...this.couponList, ...res.data]
+				this.couponList = [...this.couponList, ...res.data.list]
 			},
-			// 领取优惠券
-			getCouponById(e) {
-				let pages = getCurrentPages(); //获取所有页面栈实例列表
-				let prevPage = pages[pages.length - 2]; //上一页页面实例
-				prevPage.$vm.couponId = e; //修改上一页data里面的tagIndex 参数值
+			// 点击领取
+			couponHandler(index) {
+				if (this.selectType === 'goods') this.selCouponById(index)
+			},
+			// 选择优惠券
+			selCouponById(index) {
+				let pages = getCurrentPages() //获取所有页面栈实例列表
+				let prevPage = pages[pages.length - 2] //上一页页面实例
+				prevPage.$vm.couponId = this.couponList[index].id //修改上一页data里面的tagIndex 参数值
 				uni.navigateBack({ //uni.navigateTo跳转的返回，默认1为返回上一级
 					delta: 1
-				});
+				})
 			}
 		}
 	}

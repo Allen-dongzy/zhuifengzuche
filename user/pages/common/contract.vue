@@ -53,6 +53,7 @@
 		data() {
 			return {
 				mode: '', // 模式 edit:编辑模式 readonly:只读模式
+				from: '', // order  orderDetail
 				img: '', // 合同
 				id: '', // 合同id
 				orderId: '', // 订单id
@@ -63,6 +64,7 @@
 			if (e && e.orderId) this.orderId = e.orderId
 			if (e && e.vehicleId) this.vehicleId = e.vehicleId
 			if (e && e.mode) this.mode = e.mode
+			if (e && e.from) this.from = e.from
 			this.vehicleGetVehicleCertificatess()
 			this.eventListenter()
 		},
@@ -108,7 +110,9 @@
 				if (err) return
 				this.$toast('提交成功')
 				setTimeout(() => {
-					this.$open('/pages/order/useCarSuccess')
+					this.$open('/pages/order/useCarSuccess', {
+						from: this.from
+					})
 				}, 500)
 			}),
 			// 监听函数

@@ -255,8 +255,7 @@
 	}, {
 		"path": "pages/order/returnCar",
 		"style": {
-			"navigationBarTitleText": "前往还车",
-			"enablePullDownRefresh": true
+			"navigationBarTitleText": "前往还车"
 		}
 	}, {
 		"path": "pages/mine/aboutMe",
@@ -282,6 +281,16 @@
 		"path": "pages/common/violation",
 		"style": {
 			"navigationBarTitleText": "逾期违章协议"
+		}
+	}, {
+		"path": "pages/common/carRentalAgreement",
+		"style": {
+			"navigationBarTitleText": "用户租车协议"
+		}
+	}, {
+		"path": "pages/common/security",
+		"style": {
+			"navigationBarTitleText": "驾无忧保障"
 		}
 	}],
 	"globalStyle": {
@@ -316,7 +325,7 @@
 			"path": "pages/order/order"
 		}, {
 			"name": "dzy", // dzy
-			"path": "pages/common/violation"
+			"path": "pages/mine/finded"
 		}]
 	}
 }

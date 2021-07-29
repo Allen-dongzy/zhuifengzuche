@@ -79,7 +79,8 @@
 				}
 				const [err, res] = await receiptPaymentPageQuery(params)
 				if (err) {
-					this.dataStatus = 'noData'
+					if (this.page > 1) this.dataStatus = 'noMore'
+					else this.dataStatus = 'noData'
 					this.requestKey = false
 					return
 				}

@@ -12,11 +12,12 @@
 			<view class="name-box">
 				<view class="name">{{info.clientVehicleVo.brandName}}</view>
 				<view class="label-box">
-					<view v-for="(item,index) in info.clientVehicleVo.labels" class="label">{{item}}</view>
+					<view v-for="(item,index) in info.clientVehicleVo.labels" :key="index" class="label">{{item}}</view>
 				</view>
 			</view>
-			<view class="params">{{info.clientVehicleVo.categoryName}}丨{{info.clientVehicleVo.gears}}
-				{{info.clientVehicleVo.size}}座 {{info.clientVehicleVo.outputVolumeName}}
+			<view v-show="info.clientVehicleVo" class="params">
+				{{info.clientVehicleVo.gears}} / {{info.clientVehicleVo.capacity}}座 /
+				{{info.clientVehicleVo.outputVolumeName}} /
 			</view>
 		</view>
 		<view class="lease">
@@ -73,11 +74,11 @@
 		</view>
 		<view class="function-box">
 			<view class="item">
-				<view class="left">
+				<view class="left" @click="$open('/pages/common/security')">
 					<view class="top">驾无忧保障<image class="question" :src="`${ossUrl}/order/question.png`"></image>
 						<view class="price">￥20/天</view>
 					</view>
-					<view class="bottom">添加一份无忧保障，添一份安心</view>
+					<view class="bottom-text">添加一份无忧保障，添一份安心</view>
 				</view>
 				<view class="right" @click="selInsurance">
 					<view class="text">￥<text>{{info.orderPriceInfo.insuranceMoney }}</text></view>
@@ -90,14 +91,13 @@
 					<view class="label">已选推荐优惠</view>
 				</view>
 				<view class="right">
-					-
 					<view class="text">￥<text>{{confirm}}</text></view>
 					<view class="arrow"></view>
 				</view>
 			</view>
 			<view class="item vertical">
 				<view class="top">备注</view>
-				<input type="text" v-model="remark" placeholder="填写备注信息..." placeholder-class="input">
+				<input type="text" v-model="remark" maxlength="100" placeholder="填写备注信息..." placeholder-class="input">
 			</view>
 		</view>
 		<view class="tab-box">
@@ -130,10 +130,11 @@
 			<view v-show="acIndex < 5" class="box box-voucher">
 				<view class="info">{{ bottomInfo }}</view>
 				<view class="bottom-info-mat"></view>
-				<view class="bottom-info" @click="tapIcon">
-					<image class="icon" :src="selStatus ? `${ossUrl}/order/sel-ac.png` : `${ossUrl}/order/sel.png`">
+				<view class="bottom-info">
+					<image class="icon" :src="selStatus ? `${ossUrl}/order/sel-ac.png` : `${ossUrl}/order/sel.png`"
+						@click="tapIcon">
 					</image>
-					已阅读并同意<text>《用户租车协议》</text>
+					已阅读并同意<text @click="$open('/pages/common/carRentalAgreement')">《用户租车协议》</text>
 				</view>
 			</view>
 			<view v-show="acIndex === 5" class="box box-invoice">
@@ -155,23 +156,26 @@
 						</view>
 					</view>
 				</view>
-				<view class="bottom-info" @click="tapIcon">
-					<image class="icon" :src="selStatus ? `${ossUrl}/order/sel-ac.png` : `${ossUrl}/order/sel.png`">
+				<view class="bottom-info">
+					<image class="icon" :src="selStatus ? `${ossUrl}/order/sel-ac.png` : `${ossUrl}/order/sel.png`"
+						@click="tapIcon">
 					</image>
-					已阅读并同意<text>《用户租车协议》</text>
+					已阅读并同意<text @click="$open('/pages/common/carRentalAgreement')">《用户租车协议》</text>
 				</view>
 			</view>
 		</view>
 		<view class="bottom-mat"></view>
 		<view class="bottom">
 			<view class="price-info">
-				总计<view class="price">￥<text>{{info.orderPriceInfo.total.toFixed(2)}}</text></view>
+				总计<view class="price">
+					￥<text>{{total || 0}}</text>
+				</view>
 			</view>
 			<view class="func-box">
 				<view class="detail" @click="$open('/pages/order/costDetail?obj='+JSON.stringify(info.orderPriceInfo))">
 					费用明细<view class="arrow"></view>
 				</view>
-				<view class="btn" @click="sure()">立即预定</view>
+				<view class="btn" @click="sure()">立即租车</view>
 			</view>
 		</view>
 		<!-- 弹窗-流程 -->
@@ -224,6 +228,7 @@
 			return {
 				ossUrl: this.$ossUrl, // oss
 				swiperInfo: [], // 轮播数据
+				total: '',
 				dotsStyles: {
 					bottom: 10,
 					backgroundColor: '#dadada',
@@ -317,10 +322,17 @@
 					orderSource: 0
 				}
 				const [err, res] = await rentalOrderGenerateOrder(data)
-				if (err) return
+				if (err) {
+					if (!err.message) this.$toast('订单错误！')
+					setTimeout(() => {
+						this.$close()
+					}, 1000)
+					return
+				}
 				this.info = res.data
 				this.info.clientVehicleVo.vehicleModelFiles = JSON.parse(this.info.clientVehicleVo.vehicleModelFiles)
 				this.info.clientVehicleVo.labels = JSON.parse(this.info.clientVehicleVo.labels)
+				this.total = this.info.orderPriceInfo.total.toFixed(2)
 				if (this.info.returnPlace.name === this.info.pickPlace.name) {
 					this.yidiType = false
 				} else {
@@ -367,7 +379,7 @@
 				this.$refs.processPopup.open()
 			},
 			// 关闭流程弹窗
-			closeProcessPopup() { 
+			closeProcessPopup() {
 				this.$refs.processPopup.close()
 			},
 			// 打开地图
@@ -443,9 +455,10 @@
 				const [err, res] = await rentalOrderCreateOrders(data)
 				if (err) return
 				this.$open('./orderPay', {
-					price: this.info.orderPriceInfo.total,
+					price: this.info && this.info.orderPriceInfo && this.info.orderPriceInfo.total ? this.info
+						.orderPriceInfo.total : '',
 					reflect: JSON.stringify(res.data.reflect)
-				})
+				}, 1)
 			},
 			// 监听时间
 			eventListener() {
@@ -684,8 +697,8 @@
 				.left {
 					@include flex-col(center, flex-start);
 
-					.bottom {
-						@include font-set(24rpx, #999);
+					.bottom-text {
+						@include font-set(22rpx, #999);
 						line-height: 34rpx;
 						margin-top: 10rpx;
 					}
@@ -940,7 +953,7 @@
 			border-radius: 20rpx;
 
 			.process-content {
-				max-height: 664rpx;
+				max-height: 630rpx;
 			}
 
 			.title {

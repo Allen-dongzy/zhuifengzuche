@@ -148,7 +148,7 @@
 					size: this.size,
 					cityCode: this.city.code,
 					areaCode: this.areaList[this.acIndex].areaCode,
-					search: this.keyword,
+					name: this.keyword,
 					lat: this.areaList[this.acIndex].lat,
 					lon: this.areaList[this.acIndex].lng
 				}

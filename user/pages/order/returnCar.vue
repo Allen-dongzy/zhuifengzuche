@@ -51,8 +51,9 @@
 				<view class="rightBox">¥{{info.otherFee}}</view>
 			</view>
 		</view>
-		<view v-show="info.isPaymentIllegalDeposit" class="grayLine"></view>
-		<view v-show="info.isPaymentIllegalDeposit" class="flexBox" style="width: 90%;margin: auto;margin-top: 30rpx;">
+		<view v-show="info.isPaymentIllegalDeposit && info.preAcceptanceFreeze>0" class="grayLine"></view>
+		<view v-show="info.isPaymentIllegalDeposit && info.preAcceptanceFreeze>0" class="flexBox"
+			style="width: 90%;margin: auto;margin-top: 30rpx;">
 			<view class="leftBox">预收冻结</view>
 			<view class="leftBox" style="width: 47%;text-align: right;font-size: 36rpx;">{{info.preAcceptanceFreeze}}
 			</view>

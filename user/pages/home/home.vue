@@ -42,15 +42,12 @@
 					{{carAlsoAddress.name || '选择地点'}}
 				</view>
 			</view>
-			<view class="time-bar" @click="$open('/pages/home/selectTime')">
+			<view class="time-bar" @click="selectTime">
 				<view class="time-box start-time">
-					<view class="date">{{takeCarDateShow || '选择日期'}}</view>
+					<view class="date">{{takeCarDateShow}}</view>
 					<view class="time" v-show="takeCarTimeShow || takeCarDayShow">
 						<text v-show="takeCarDayShow">{{takeCarDayShow}}</text>
 						<text v-show="takeCarTimeShow">{{takeCarTimeShow}}</text>
-					</view>
-					<view class="time left" v-show="!takeCarTimeShow && !takeCarDayShow">
-						<text>选择时间</text>
 					</view>
 				</view>
 				<view class="line-bar">
@@ -58,24 +55,21 @@
 					<image class="interval" :src="`${ossUrl}/home/interval.png`"></image>
 				</view>
 				<view class="time-box end-time">
-					<view class="date">{{carAlsoDateShow || '选择日期'}}</view>
+					<view class="date">{{carAlsoDateShow}}</view>
 					<view class="time" v-show="carAlsoTimeShow || carAlsoDayShow">
 						<text v-show="carAlsoTimeShow">{{carAlsoTimeShow}}</text>
 						<text v-show="carAlsoDayShow">{{carAlsoDayShow}}</text>
 					</view>
-					<view class="time right" v-show="!carAlsoTimeShow && !carAlsoDayShow">
-						<text>选择时间</text>
-					</view>
 				</view>
 			</view>
-			<view class="info">*异地还车调度费3元/公里；22:00-07:00取还车，将收取￥40/次夜间服务费</view>
+			<view v-show="remoteSwitch" class="info">*异地还车调度费3元/公里；22:00-07:00取还车，将收取￥40/次夜间服务费</view>
 			<view class="toast" @click="openProcessPopup">
 				<image class="sesame" :src="`${ossUrl}/home/sesame.png`"></image>芝麻分达<text>550</text>即可享受押金双免租车 >
 			</view>
 			<view class="btn" @click="carRental">立即租车</view>
 		</view>
 		<!-- go.png -->
-		<view class="notice-box" @click="$open('/pages/mine/coupon')">
+		<view v-show="couponNum>0" class="notice-box" @click="$open('/pages/mine/coupon', {selectType: 'home'})">
 			<image class="notice-bg" :src="`${ossUrl}/home/notice.png`" mode="aspectFill"></image>
 			<view class="mask">
 				<view class="info">立即领取租车优惠券! 租车立省20元!</view>
@@ -98,7 +92,7 @@
 			<view class="process-modal">
 				<scroll-view class="process-content" :scroll-y="true">
 					<view class="title">免押金</view>
-					<view class="info">下单预付租金后，取车时间向门店工作人员<text>申请芝麻信用免押金</text>，信用综合评估通过后有机会见面25000元。</view>
+					<view class="info">下单预付租金后，取车时间向门店工作人员<text>申请芝麻信用免押金</text>，信用综合评估通过后有机会减免25000元。</view>
 					<image class="process" :src="`${ossUrl}/home/process.png`"></image>
 					<view class="section">
 						<view class="caption">使用芝麻信用免押金</view>
@@ -138,7 +132,7 @@
 												到期时间：{{item.closeTime ? item.closeTime.split(' ')[0] : ''}}</view>
 										</view>
 									</view>
-									<view class="btn" @click="getCouponById(index)">
+									<view class="btn">
 										<image class="btn-bg" :src="`${ossUrl}/home/is-get-btn.png`"></image>
 										<view class="text">领取</view>
 									</view>
@@ -159,14 +153,15 @@
 	import EvanSwitch from '@/components/evan-switch/evan-switch'
 	import {
 		findNewCoupon,
-		oneClickReceiveNewCoupons,
-		getCouponById
+		findIsUseCouponByUser,
+		oneClickReceiveNewCoupons
 	} from '@/apis/coupon'
 	import {
 		customerHomeBannerGetSpread
 	} from '@/apis/customerHomeBanner'
 	import {
-		throttle
+		throttle,
+		toDate
 	} from '@/utils/tools'
 	import validator from 'crazy-validator'
 
@@ -175,6 +170,7 @@
 			return {
 				ossUrl: this.$ossUrl, // oss
 				swiperInfo: [], // 轮播数据
+				weekShow: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
 				dotsStyles: {
 					bottom: 40,
 					backgroundColor: '#dadada',
@@ -184,7 +180,8 @@
 				}, // 轮播样式
 				current: 0, // 轮播当前索引
 				remoteSwitch: false, // 是否开启异地还车
-				couponList: [], // 优惠券列表
+				couponList: [], // 新人优惠券列表
+				couponNum: 0, // 可使用优惠券数量
 				takeCarCity: {}, // 取车城市
 				takeCarAddress: {}, // 取车地址
 				carAlsoCity: {}, // 还车城市
@@ -206,21 +203,36 @@
 		watch: {
 			// 监听异地取车开关
 			remoteSwitch(newVal) {
-				if (newVal) {
-					this.carAlsoCity = {}
-					this.carAlsoAddress = ''
-				} else {
-					this.carAlsoCity = this.takeCarCity
-					this.carAlsoAddress = this.takeCarAddress
-				}
+				this.carAlsoCity = this.takeCarCity
+				this.carAlsoAddress = this.takeCarAddress
 			}
 		},
 		onLoad() {
 			this.customerHomeBannerGetSpread()
-			if (this.$storage.get('token')) this.loginAfterRequest()
+			this.showTime()
+			if (this.$storage.get('token')) {
+				this.loginAfterRequest()
+				this.findIsUseCouponByUser()
+			}
 			this.eventListener()
 		},
 		methods: {
+			// 显示默认时间
+			showTime() {
+				const startTimestamp = Date.now() + 86400000
+				const startTimeArr = toDate(startTimestamp)
+				const endTimestamp = startTimestamp + (4 * 86400000)
+				const endTimeArr = toDate(endTimestamp)
+				this.takeCarDateShow = `${startTimeArr[1]}月${startTimeArr[2]}日`
+				this.takeCarDayShow = this.weekShow[new Date(startTimestamp).getDay()]
+				this.takeCarTimeShow = '10:00'
+				this.takeCarTime = `${startTimeArr[0]}-${startTimeArr[1]}-${startTimeArr[2]} 10:00:00`
+				this.carAlsoDateShow = `${endTimeArr[1]}月${endTimeArr[2]}日`
+				this.carAlsoDayShow = this.weekShow[new Date(endTimestamp).getDay()]
+				this.carAlsoTimeShow = '10:00'
+				this.carAlsoTime = `${endTimeArr[0]}-${endTimeArr[1]}-${endTimeArr[2]} 10:00:00`
+				this.totalDate = 4
+			},
 			// 登录之后的请求
 			loginAfterRequest() {
 				this.findNewCoupon()
@@ -230,6 +242,12 @@
 				const [err, res] = await customerHomeBannerGetSpread()
 				if (err) return
 				this.swiperInfo = res.data
+			},
+			// 获取可使用的优惠券列表
+			async findIsUseCouponByUser() {
+				const [err, res] = await findIsUseCouponByUser()
+				if (err) return
+				this.couponNum = res.data.length
 			},
 			// 获取新人优惠券
 			async findNewCoupon() {
@@ -244,16 +262,6 @@
 				if (err) return
 				this.$toast('领取成功')
 				this.closeCouponPopup()
-			}),
-			// 领取优惠券
-			getCouponById: throttle(async function(index) {
-				const params = {
-					couponId: this.couponList[index].id
-				}
-				const [err, res] = await getCouponById(params)
-				if (err) return
-				this.$toast('领取成功')
-				this.couponList.splice(index, 1)
 			}),
 			// 轮播改变
 			swiperChange(e) {
@@ -322,6 +330,18 @@
 					addressMode: 'carAlso'
 				})
 			},
+			// 选择时间
+			selectTime() {
+				this.$open('/pages/home/selectTime', {
+					takeCarDayShow: this.takeCarDayShow,
+					takeCarTimeShow: this.takeCarTimeShow,
+					takeCarTime: this.takeCarTime,
+					carAlsoDayShow: this.carAlsoDayShow,
+					carAlsoTimeShow: this.carAlsoTimeShow,
+					carAlsoTime: this.carAlsoTime,
+					totalDate: this.totalDate,
+				})
+			},
 			// 打开流程弹窗
 			openProcessPopup() {
 				this.$refs.processPopup.open()
@@ -345,9 +365,11 @@
 					switch (e.cityMode) {
 						case 'takeCar':
 							this.takeCarCity = JSON.parse(e.city)
+							this.takeCarAddress = ''
 							break
 						case 'carAlso':
 							this.carAlsoCity = JSON.parse(e.city)
+							this.carAlsoAddress = ''
 							break
 					}
 					if (!this.remoteSwitch) this.carAlsoCity = this.takeCarCity
@@ -362,7 +384,6 @@
 							this.carAlsoAddress = JSON.parse(e.address)
 							break
 					}
-					console.log(JSON.stringify(this.takeCarAddress))
 					if (!this.remoteSwitch) this.carAlsoAddress = this.takeCarAddress
 				})
 				// 选择时间
@@ -612,7 +633,7 @@
 			border-radius: 20rpx;
 
 			.process-content {
-				max-height: 664rpx;
+				max-height: 630rpx;
 			}
 
 			.title {

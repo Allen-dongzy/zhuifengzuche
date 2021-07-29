@@ -1,6 +1,6 @@
 <template>
 	<view class="select-city">
-		<t-city :cityMode="cityMode" />
+		<t-city :cityMode="cityMode" :city="city" />
 	</view>
 </template>
 
@@ -17,7 +17,7 @@
 			TCity
 		},
 		onLoad(e) {
-			this.cityMode = e.cityMode
+			if (e && e.cityMode) this.cityMode = e.cityMode
 		},
 		methods: {}
 	}

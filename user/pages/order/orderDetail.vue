@@ -7,7 +7,7 @@
 					<image :src="`${ossUrl}/order/refresh.png`"></image>刷新
 				</view>
 			</view>
-			<view v-show="info.orderStatus===0 || info.orderStatus===1" class="info">{{info.countdown}}</view>
+			<view v-show="(info.orderStatus===0 || info.orderStatus===1) && info.countdown" class="info">{{info.countdown}}</view>
 			<view class="bottom">
 				<view class="btn-box">
 					<view v-if="info.orderStatus===0 || info.orderStatus===1 || info.orderStatus===2" class="btn white"
@@ -15,7 +15,7 @@
 						取消订单</view>
 					<view v-if="info.orderStatus===0" class="btn blue" @click="getCodeByWxCode">立即支付</view>
 					<view v-if="info.orderStatus===2" class="btn white"
-						@click="$open('/pages/common/goInspect', {mode:'edit', orderId: info.id, vehicleId: info.vehicleId})">
+						@click="$open('/pages/common/goInspect', {mode:'edit', from: 'orderDetail', orderId: info.id, vehicleId: info.vehicleId})">
 						查看车况
 					</view>
 				</view>
@@ -241,6 +241,7 @@
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
+				id: '',
 				info: {}, // 订单信息
 				week: ['', '周一', '周二', '周三', '周四', '周五', '周六', '周日']
 			}
@@ -256,7 +257,7 @@
 			// 状态显示
 			statusShow() {
 				let info = ''
-				switch (this.info.orderStatus) {
+				switch (Number(this.info.orderStatus)) {
 					case 1:
 						info = '等待送车'
 						break
@@ -288,14 +289,15 @@
 			}
 		},
 		onLoad(e) {
-			if (e && e.id) this.rentalOrderOrderInfo(e.id)
+			if (e && e.id) this.id = e.id
+			if (this.id) this.rentalOrderOrderInfo()
 			this.eventListener()
 		},
 		methods: {
 			// 请求订单详情
-			async rentalOrderOrderInfo(orderId) {
+			async rentalOrderOrderInfo() {
 				const params = {
-					orderId
+					orderId: this.id
 				}
 				const [err, res] = await rentalOrderOrderInfo(params)
 				if (err) return
@@ -399,7 +401,7 @@
 			},
 			// 刷新
 			refresh: throttle(function() {
-				this.rentalOrderOrderInfo(this.info.id)
+				this.rentalOrderOrderInfo()
 			}),
 			// 联系门店
 			contactStore() {
@@ -527,8 +529,8 @@
 				}
 
 				.contact {
+					@include box-h(60rpx);
 					@include flex-row();
-
 					@include font-set(24rpx, #FFA05B, 500);
 					line-height: 36rpx;
 

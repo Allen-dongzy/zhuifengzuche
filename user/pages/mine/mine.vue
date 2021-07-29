@@ -3,7 +3,7 @@
 		<view class="name-box">
 			<image class="avatar" :src="icon || `${ossUrl}/mine/touxiang.png`" mode="aspectFill" @click="headerTap">
 			</image>
-			<view class="nickname" @click="headerTap">{{nickname || username || '点击登陆'}}
+			<view class="nickname" @click="headerTap">{{nickname || username || '点击登录'}}
 				<view class="arrow"></view>
 			</view>
 		</view>

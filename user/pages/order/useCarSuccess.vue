@@ -14,12 +14,16 @@
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
+				from: '' // order  orderDetail
 			}
+		},
+		onLoad(e) {
+			if (e && e.from) this.from = e.from
 		},
 		methods: {
 			confirm() {
-				uni.$emit('orderDetail')
-				uni.$emit('orderDetailRefresh')
+				if (this.from === 'order') uni.$emit('orderRefresh')
+				else if (this.from === 'orderDetail') uni.$emit('orderDetailRefresh')
 				this.$close(3)
 			}
 		}
