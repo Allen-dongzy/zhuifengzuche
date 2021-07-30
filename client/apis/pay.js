@@ -40,3 +40,13 @@ export const thawMoney = (data, loading = '等待中') => {
 		loading
 	})
 }
+//违章押金退款
+export const refundOfIllegalDeposit = (data, loading = '等待中') => {  
+	return request({
+		url: "return/vehicle/refundOfIllegalDeposit/"+data,
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'GET',
+		data:{},
+		loading
+	})
+}

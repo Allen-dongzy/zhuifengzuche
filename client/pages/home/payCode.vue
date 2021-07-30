@@ -65,6 +65,7 @@
 					subPayway: 2,
 					subject: '收款',
 					totalAmount: this.price,
+					// totalAmount: 0.01,
 
 				}
 				const [err, res] = await precreate(data)

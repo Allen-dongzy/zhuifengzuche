@@ -5,12 +5,14 @@
 			<image style="width: 48rpx;height: 48rpx;" :src="$util.fileUrl('/time.png')" mode=""></image>
 			<view style="margin-left: 2%;">
 				<picker mode="date" :value="staredate" :start="startDate" :end="endDate" @change="starTime">
-					<view class="uni-input">{{staredate}}</view>
+					<view class="uni-input" v-if="staredate==''">请选择</view>
+					<view class="uni-input" v-else>{{staredate.substring(0,10)}}</view>
 				</picker>
 			</view>
 			<view style="margin-left: 2%;">
 				<picker mode="date" :value="enddate" :start="startDate" :end="endDate" @change="endTime">
-					<view class="uni-input">{{enddate}}</view>
+					<view class="uni-input" v-if="enddate==''">请选择</view>
+					<view class="uni-input" v-else>{{enddate.substring(0,10)}}</view>
 				</picker>
 			</view>
 			<view class="statusBox" @click="changestatus">
@@ -105,12 +107,14 @@
 				<image style="width: 48rpx;height: 48rpx;" :src="$util.fileUrl('/time.png')" mode=""></image>
 				<view style="margin-left: 2%;">
 					<picker mode="date" :value="staredate" :start="startDate" :end="endDate" @change="starTime">
-						<view class="uni-input">{{staredate}}</view>
+						<view class="uni-input" v-if="staredate==''">请选择</view>
+						<view class="uni-input" v-else>{{staredate.substring(0,10)}}</view>
 					</picker>
 				</view>
 				<view style="margin-left: 2%;">
 					<picker mode="date" :value="enddate" :start="startDate" :end="endDate" @change="endTime">
-						<view class="uni-input">{{enddate}}</view>
+						<view class="uni-input" v-if="enddate==''">请选择</view>
+						<view class="uni-input" v-else>{{enddate.substring(0,10)}}</view>
 					</picker>
 				</view>
 				<view class="statusBox" @click="changestatus">
@@ -156,32 +160,8 @@
 
 			return {
 				index: 0,
-				carList: [1, 1, 1, 1],
-				list: [{
-					name: 19,
-					price: 219,
-					status: 1
-				}, {
-					name: 19,
-					price: 219,
-					status: 2
-				}, {
-					name: 19,
-					price: 219,
-					status: 3
-				}, {
-					name: 19,
-					price: 219,
-					status: 4
-				}, {
-					name: 19,
-					price: 219,
-					status: 5
-				}, {
-					name: 19,
-					price: 219,
-					status: 6
-				}],
+				carList: [],
+				list: [],
 				statusList: [{
 					name: '正常',
 					id: 1,
@@ -199,8 +179,8 @@
 					id: 4,
 					status: false
 				}], //状态list
-				staredate: '开始时间',
-				enddate: '结束时间',
+				staredate: '',
+				enddate: '',
 				showStatus: false,
 				search: false,
 				page: 1,
@@ -222,39 +202,48 @@
 			}
 		},
 		methods: {
-			//监听搜索
-			onInput: debounce(async function() {
-				let data = {
-					page: this.page,
-					size: this.size,
-					searchField: this.searchField
-				}
-				const [err, res] = await vehiclePageLeaseQuery(data)
-				if (err) return
-				this.carList = res.data.list
-
-			}),
+	
 			//列表
 
 			async vehiclePageLeaseQuery() {
+	
 				let data = {
 					page: this.page,
 					size: this.size,
 					planStatus: this.statuseId,
-					searchField: this.searchField
+					searchField: this.searchField, 
+					planBeginTime: this.staredate,
+					planEndTime: this.enddate,
 				}
 				const [err, res] = await vehiclePageLeaseQuery(data)
 				if (err) return
 				this.carList = res.data.list
 				console.log(res.data.list)
 			},
-			sure() {
-				this.vehiclePageLeaseQuery()
+			async sure() {
+				if(this.staredate!=""){
+					this.staredate=this.staredate.substring(0,10)+ ' 00:00:00'
+				}
+				if(this.enddate!=""){
+					this.enddate=this.enddate.substring(0,10)+ ' 00:00:00'
+				}
 				this.showStatus = false
+				let data = {
+					page: this.page,
+					size: this.size,
+					planStatus: this.statuseId,
+					searchField: this.searchField, 
+					planBeginTime: this.staredate,
+					planEndTime: this.enddate,
+				}
+				const [err, res] = await vehiclePageLeaseQuery(data)
+				if (err) return
+				this.carList = res.data.list
+				console.log(res.data.list)
 			},
 			async starTime(e) {
 				this.staredate = e.target.value
-				if (this.enddate == '结束时间') {
+				if (this.enddate == '') {
 					this.$toast("请选择结束时间")
 					return false;
 				} else {
@@ -263,6 +252,8 @@
 						size: this.size,
 						planBeginTime: this.staredate + ' 00:00:00',
 						planEndTime: this.enddate + ' 00:00:00',
+						planStatus: this.statuseId,
+						searchField: this.searchField, 
 					}
 				}
 				const [err, res] = await vehiclePageLeaseQuery(data)
@@ -275,7 +266,7 @@
 			async endTime(e) {
 				this.enddate = e.target.value
 
-				if (this.staredate == '开始时间') {
+				if (this.staredate == '') {
 					this.$toast("请选择开始时间")
 					return false;
 				} else {
@@ -284,6 +275,8 @@
 						size: this.size,
 						planBeginTime: this.staredate + ' 00:00:00',
 						planEndTime: this.enddate + ' 00:00:00',
+						planStatus: this.statuseId,
+						searchField: this.searchField, 
 					}
 				}
 				const [err, res] = await vehiclePageLeaseQuery(data)

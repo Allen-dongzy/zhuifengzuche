@@ -21,3 +21,14 @@ export const differenceOfPrices = (data, loading = '') => {
 		loading
 	})
 }
+
+//交换车辆信息
+export const transferInfo = (data, loading = '') => {
+	return request({
+		url: "transfer/transferInfo",
+		contentType: 'application/json',
+		method: 'POST',
+		data,
+		loading
+	})
+}

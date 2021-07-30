@@ -66,7 +66,7 @@
 		<view class="footer-mat"></view>
 		<view class="footer">
 			<view class="info">
-				总计 <text class="price">￥<text class="price-big">{{allprice}}</text></text>
+				总计 <text class="price">￥<text class="price-big">{{Math.round(allprice*Math.pow(10, 2))/100}} </text></text>
 			</view>
 			<view  class="look">查看记录</view>
 		</view>
@@ -91,8 +91,13 @@
 		},
 	computed: {
 		all() {
-			this.allprice = parseFloat(this.info.overtimeFee) + parseFloat(this.returnTheCarEarly) + parseFloat(
-			this.breachContract) + parseFloat(this.delayingPayment) + parseFloat(this.otherFees)
+			console.log(parseFloat(this.info.overtimeFee))
+			console.log(parseFloat(this.info.returnTheCarEarly))
+			console.log(parseFloat(this.info.breachContract))
+			console.log(parseFloat(this.info.delayingPayment))
+			console.log(parseFloat(this.info.otherFees))
+			
+			this.allprice = Number(this.info.overtimeFee) + Number(this.returnTheCarEarly) + Number(this.breachContract) + Number(this.delayingPayment) + Number(this.otherFees)
 		}
 	},
 		onLoad(e) {

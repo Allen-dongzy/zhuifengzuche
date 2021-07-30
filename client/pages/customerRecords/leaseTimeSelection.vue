@@ -25,7 +25,7 @@
 		</view>
 		<uni-calendar :insert="true" :showMonth="false" :range="true" @change="calendarChange">
 		</uni-calendar>
-		<view class="date">2021年6月</view>
+		<view class="date">{{takeCarDate}}{{takeCarTime}}<text v-show="takeCarDate!=''">——</text>{{carAlsoDate}}{{carAlsoTime}}</view>
 		<view class="picker-box">
 			<view class="picker-item">
 				<view class="caption">取车时间</view>
@@ -101,6 +101,9 @@
 				return parseInt(date[1]) && parseInt(date[2]) ? `${parseInt(date[1])}月${parseInt(date[2])}日` : ''
 			}
 		},
+		onLoad() {
+	
+		},
 		methods: {
 			// 取车时间改变
 			takeCarTimeIndexChange(e) {
@@ -159,11 +162,30 @@
 				}]
 				const checkRes = validator(checkList, this.$toast)
 				if (checkRes.status !== 1000) return
+
 				uni.$emit('getCarRentalTime', {
 					takeCarTime: `${this.takeCarDate} ${this.takeCarTime}`,
 					carAlsoTime: `${this.carAlsoDate} ${this.carAlsoTime}`
 				})
-				this.$close()
+				var x = `${this.takeCarDate} ${this.takeCarTime}`
+				var y = `${this.carAlsoDate} ${this.carAlsoTime}`
+				if ((new Date(x)).getTime() > (new Date(y)).getTime()) {
+					this.$toast('开始时间不能大于结束时间')
+				} else {
+					if ((new Date(x)).getTime() < Date.parse(new Date())) {
+						this.$toast('开始时间不能小于当前时间')
+					} else if ((new Date(y)).getTime() < Date.parse(new Date())) {
+
+						this.$toast('结束时间不能小于当前时间')
+					} else {
+						this.$close()
+					}
+				}
+
+
+
+
+
 			}
 		}
 	}

@@ -134,14 +134,14 @@
 				log: false,
 				log1: false,
 				log2: false,
-				log3: false,
+				log3: true,
 				provinceList: [], //省份数组
 				cityList: [], //城市数组
 				areaList: [], //区域数组
 				provinceIndex: '', //省份角标
 				cityIndex: '', //城市角标
 				areaIndex: '', //区角标
-				index: '', //交通枢纽角标
+				index: 1, //交通枢纽角标
 				indexName:'',//交通枢纽名字
 				selectProvince: '', //选择省份ID
 				selectProvinceName: '', //选择省份名字
@@ -149,7 +149,7 @@
 				selectCityName: '', //选择城市名字
 				selectArea: '', //选择区域ID
 				selectAreaName: '', //选择区域名字
-				selectTransportation: '', //选择枢纽ID
+				selectTransportation: 0, //选择枢纽ID
 				TransportationList: [{
 					name: '是',
 					id: 1
@@ -302,7 +302,6 @@
 				this.selectTransportation = this.TransportationList[this.index].id
 			},
 			async sure() {
-				
 				if(this.obj==""){
 					var data = {
 						provinceCode: this.selectProvince,

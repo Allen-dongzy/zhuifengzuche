@@ -92,7 +92,8 @@
 				num:'',//剩余次数
 			}
 		},
-		onLoad() {
+
+		onShow() {
 			this.findQueryNum()
 		},
 		methods: {

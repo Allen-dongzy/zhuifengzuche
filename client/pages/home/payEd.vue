@@ -42,10 +42,16 @@
 					uni.navigateBack({
 						delta:3
 					})
+					const pages = getCurrentPages(); //获取页面栈
+						const beforePage = pages[pages.length - 4]; //前一个页面
+						beforePage.$vm.getmoney();   //前一个页面方法
 				}else{
 					uni.navigateBack({
 						delta:2
 					})
+					const pages = getCurrentPages(); //获取页面栈
+						const beforePage = pages[pages.length - 3]; //前一个页面
+						beforePage.$vm.getmoney();   //前一个页面方法
 				}
 			}
 		}

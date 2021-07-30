@@ -130,3 +130,35 @@ export const dataEcho = (data, loading = '') => { // 对接
 		loading
 	})
 }
+
+// ota车辆列表
+export const otaPageQuery = (data, loading = '') => { // 对接
+	return request({
+		url: 'vehicle/otaPageQuery',
+		contentType: 'application/json',
+		method: 'POST',
+		data,
+		loading
+	})
+}
+// oat 开关
+export const vehicleOTAOpen = (vehicleId,platformId, status,loading = '') => { // 对接
+	return request({
+		url: `vehicle/vehicleOTAOpen/${vehicleId}/${platformId}/${status}`,
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'POST',
+		data:{},
+		loading
+	})
+}
+// 根据条件查询门店下面可租用的车
+export const findAvailable = (data, loading = '') => { // 对接
+	return request({
+		url: 'vehicle/findAvailable',
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'POST',
+		data,
+		loading
+	})
+}
+

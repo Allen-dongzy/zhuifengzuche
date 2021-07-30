@@ -58,7 +58,7 @@
 			<view class="selectBox">
 				<view style="width: 80%;">
 					<picker mode="date" @change="selectpurchaseTime" :value="purchaseTime" :start="startDate"
-						:end="endDate" class="pickerBox">
+						:end="currentdate" class="pickerBox">
 						<label v-if="!log3" class="pickerText">请选择</label>
 						<label v-else class="pickerText">{{purchaseTime}}</label>
 					</picker>
@@ -103,7 +103,7 @@
 		<view class="title">发证日期</view>
 		<view class="selectBox" style="margin-left: 10%;width: 82%;margin-top: 20rpx;">
 			<view style="width: 80%;">
-				<picker mode="date" @change="selectgetcard" :value="getcard" :start="startDate" :end="endDate"
+				<picker mode="date" @change="selectgetcard" :value="getcard" :start="startDate" :end="currentdate"
 					class="pickerBox">
 					<label v-if="!log4" class="pickerText">请选择</label>
 					<label v-else class="pickerText">{{getcard}}</label>
@@ -119,7 +119,7 @@
 		<view class="title">注册日期</view>
 		<view class="selectBox" style="margin-left: 10%;width: 82%;margin-top: 20rpx;">
 			<view style="width: 80%;">
-				<picker mode="date" @change="setTime" :value="ceartTime" :start="startDate" :end="endDate"
+				<picker mode="date" @change="setTime" :value="ceartTime" :start="startDate" :end="currentdate"
 					class="pickerBox">
 					<label v-if="!log5" class="pickerText">请选择</label>
 					<label v-else class="pickerText">{{ceartTime}}</label>
@@ -359,7 +359,8 @@
 				businessSn: '', //商业险单号
 				businessDate: '', //商业险续保日期
 				carObj: '', //详情车辆信息、
-				carId: ''
+				carId: '',
+				currentdate:''
 			}
 		},
 		computed: {
@@ -371,6 +372,7 @@
 			}
 		},
 		onLoad(e) {
+			this.currentdate =this.getNowFormatDate();	
 			this.queryAll()
 			if (e.id != undefined) {
 				this.vehicleSelectOne(e.id)
@@ -379,6 +381,22 @@
 
 		},
 		methods: {
+			//获取时间
+		 getNowFormatDate(){
+				var date = new Date();
+				var seperator1 = "-";
+				var year = date.getFullYear();
+				var month = date.getMonth() + 1;
+				var day = date.getDate();
+				if (month >= 1 && month <= 9) {
+					month = "0" + month;
+				}
+				if (day >= 0 && day <= 9) {
+					day = "0" + day;
+				}
+				 this.currentdate = year + seperator1 + month + seperator1 + day;
+				return this.currentdate;
+			},
 			//获取详情
 			async vehicleSelectOne(e) {
 				const [err, res] = await vehicleSelectOne(e)

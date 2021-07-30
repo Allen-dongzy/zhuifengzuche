@@ -8,10 +8,12 @@
 		</view>
 		<!-- 收款 -->
 		<view v-if="type==0">
-			<view class="content" v-for="(item,index) in orderList" :key="index"
-				@click="$open('/pages/collectPay/collectPayBack',{obj:JSON.stringify(item)})">
+			<view class="content" v-for="(item,index) in orderList" :key="index" @click="collectPayBack(index)">
 				<view class="contenBox" style="border-bottom: 2rpx dashed    #EFF0F3 ;">
 					<view class="carNum">{{item.carNumber}}</view>
+					<view class="price" style="font-size: 25rpx;" v-if="item.examineStatus==3">审核未通过</view>
+					<view class="price" style="font-size: 25rpx;" v-if="item.examineStatus==1">审核通过</view>
+					<view class="price" style="font-size: 25rpx;" v-if="item.type==1">换车其他收费</view>
 					<view class="price" style="border-bottom: 0rpx;text-align: right;">¥{{item.money}}</view>
 				</view>
 				<view class="contentBottom">
@@ -25,7 +27,7 @@
 		<!-- 付款 -->
 		<view v-if="type==1">
 			<view class="content" v-for="(item,index) in orderList" :key="index"
-				@click="$open('/pages/collectPay/collectPayGo',{obj:JSON.stringify(item)})">
+				@click="collectPayGo(index)">
 				<view class="contenBox">
 					<view class="carNum">{{item.carNumber}}</view>
 					<view v-if="item.examineStatus==0" class="orderType" style="color:#5A7EFF;">待确认</view>
@@ -33,6 +35,7 @@
 					<view v-if="item.examineStatus==2" class="orderType" style="color:#FFA05B;">审核中</view>
 					<view v-if="item.examineStatus==3" class="orderType" style="color:#FC3736;">未通过</view>
 				</view>
+				
 				<view class="price">¥{{item.money}}</view>
 				<view class="contentBottom">
 					<image class="xiangmuIcon" :src="$util.fileUrl('/xiangmu.png')" mode=""></image>
@@ -144,8 +147,34 @@
 					return
 				}
 				this.orderList=res.data.list
-				// listManager()
+			},
+			collectPayBack(e){
+				if(this.orderList[e].type==1){
+					if(this.orderList[e].examineStatus==0){
+						uni.navigateTo({
+							url:'/pages/collectPay/collectPayBack?obj='+JSON.stringify(this.orderList[e])
+						})
+					}
+				}else{
+					uni.navigateTo({
+						url:'/pages/collectPay/collectPayBack?obj='+JSON.stringify(this.orderList[e])
+					})
+				}
+			},
+			collectPayGo(e){
+				if(this.orderList[e].type==1){
+					if(this.orderList[e].examineStatus==0){
+						uni.navigateTo({
+							url:'/pages/collectPay/collectPayGo?obj='+JSON.stringify(this.orderList[e])
+						})
+					}
+				}else{
+					uni.navigateTo({
+						url:'/pages/collectPay/collectPayGo?obj='+JSON.stringify(this.orderList[e])
+					})
+				}
 			}
+
 		}
 	}
 </script>
