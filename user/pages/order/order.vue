@@ -20,7 +20,8 @@
 				@click="$open('/pages/order/orderDetail', {id: item.id})">
 				<view class="item-header">
 					<view class="name-box">
-						<view class="name">{{item.carModelName}}</view>
+						<view class="name">
+							{{item.orderStatus === 0 ? item.carModelName.split('|')[0] : item.carModelName}}</view>
 						<view v-show="item.orderStatus === 0"
 							:class="['label-card', {'orange': item.orderStatus === 0}]">
 							<view class="top"></view>
@@ -42,12 +43,12 @@
 						</view>
 					</view>
 					<view class="address">
-						<text v-show="item.pickPlace !== item.returnPlace">取</text>
-						<text v-show="item.pickPlace === item.returnPlace">取还</text>
+						<text v-show="item.pickPlace !== item.returnPlace">取车点</text>
+						<text v-show="item.pickPlace === item.returnPlace">取/还车点</text>
 						{{item.pickPlace}}
 					</view>
 					<view v-show="item.pickPlace !== item.returnPlace" class="address">
-						<text>还</text>{{item.returnPlace}}
+						<text>还车点</text>{{item.returnPlace}}
 					</view>
 					<view v-show="item.orderStatus === 100" class="info">违章押金未退还</view>
 				</view>
@@ -67,10 +68,10 @@
 						<view v-show="item.orderStatus === 0" class="btn blue" @click.stop="getCodeByWxCode(index)">立即支付
 						</view>
 						<view v-show="item.orderStatus === 2" class="btn blue"
-							@click.stop="$open('/pages/common/goInspect', {mode:'edit', orderId: item.id, vehicleId: item.vehicleId})">
+							@click.stop="$open('/pages/common/goInspect', {mode:'edit', from: 'order', orderId: item.id, vehicleId: item.vehicleId})">
 							查看车况
 						</view>
-						<view v-show="item.orderStatus === 3" class="btn white"
+						<view v-show="item.orderStatus === 3  && !item.isLeaseRenewal" class="btn white"
 							@click.stop="rentalOrderRenewCarRentalPriceCheck(index)">
 							续租用车
 						</view>
@@ -196,7 +197,7 @@
 				if (refresh === 'refresh') uni.stopPullDownRefresh()
 				if (err) {
 					if (this.page > 1) this.dataStatus = 'noMore'
-					else if (this.page === 1) this.dataStatus = 'noData'
+					else this.dataStatus = 'noData'
 					this.reqeuestKey = false
 					return
 				}
@@ -253,8 +254,7 @@
 					payway: '3',
 					subPayway: '4',
 					subject: '租车定金',
-					// totalAmount: this.list[index].orderDeposit
-					totalAmount: 0.01
+					totalAmount: this.list[index].orderDeposit
 				}
 				const [err, res] = await paymentPrecreate(params)
 				if (err) return
@@ -353,7 +353,7 @@
 
 			.item {
 				@include box-w(670rpx);
-				padding: 40rpx;
+				padding: 40rpx 40rpx 0;
 				border-radius: 20rpx;
 				box-shadow: 0 0 8rpx 0 rgba(114, 141, 244, 0.25);
 
@@ -465,13 +465,14 @@
 				}
 
 				.bottom {
+					@include box-h(138rpx);
 					@include flex-row(space-between);
-					padding-top: 38rpx;
 
 					.contact {
+						@include box-h(90rpx);
 						@include flex-row();
 						@include font-set(24rpx, #FFA05B, 500);
-						line-height: 36rpx;
+						line-height: 90rpx;
 
 						.phone {
 							@include square(32rpx);

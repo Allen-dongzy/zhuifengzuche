@@ -48,7 +48,8 @@
 						</view>
 						<view class="ul">
 							<view class="li current" @click="selectCity(currentCity)">
-								<image class="icon" :src="`${ossUrl}/common/location.png`"></image>{{currentCity.name}}
+								<image class="icon" :src="`${ossUrl}/common/location.png`"></image>
+								{{currentCity.name}}
 							</view>
 						</view>
 					</view>
@@ -112,7 +113,8 @@
 				hasNoData: false,
 				searchFocus: false,
 				letterDetails: [],
-				currentLetter: "area" //默认选择hot
+				currentLetter: "area", //默认选择hot
+				cityInfo: {}, // 传来的城市信息对象
 			};
 		},
 		props: {

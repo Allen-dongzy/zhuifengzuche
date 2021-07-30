@@ -1,88 +1,159 @@
 <template>
 	<view class="store">
 		<view class="address-title">
-			<view class="caption">滨江路皇冠大道送车点</view>
-			<view class="address">
+			<view class="caption">{{name}}</view>
+			<view class="address" @click="openMap(-1)">
 				<image class="icon-location" :src="`${ossUrl}/common/location-big.png`"></image>
-				<text>滨江路皇冠大道送车点</text>
+				<text>{{address}}</text>
 				<view class="arrow"></view>
 			</view>
 		</view>
 		<view class="bg-bar"></view>
 		<view class="list">
-			<view class="caption">有<text>2</text>个门店入住该地点</view>
-			<view class="store-card" v-for="(item, index) in 5" :key="index">
+			<view class="caption">有<text>{{list.length}}</text>个门店入住该地点</view>
+			<view class="store-card" v-for="(item, index) in list" :key="index">
 				<view class="head">
 					<view class="base-info">
-						<image class="logo" :src="`${ossUrl}/common/cache-logo.png`"></image>
+						<image class="logo" :src="item.shopImages"></image>
 						<view class="title-box">
-							<view class="store-caption">郑家院子1号店</view>
+							<view class="store-caption">{{item.name}}</view>
 							<view class="star-box">
-								<image class="star" :src="`${ossUrl}/common/icon-star.png`" v-for="(item, index) in 4"
-									:key="index"></image>
+								<image class="star" :src="`${ossUrl}/common/icon-star.png`"
+									v-for="(item, index) in starCode" :key="index"></image>
 							</view>
 						</view>
 					</view>
 					<view class="btn-group">
-						<image class="btn" :src="`${ossUrl}/common/location-big.png`" @click="openMap"></image>
-						<image class="btn" :src="`${ossUrl}/common/phone-big.png`" @click="phoneCall"></image>
+						<image class="btn" :src="`${ossUrl}/common/location-big.png`" @click="openMap(index)"></image>
+						<image class="btn" :src="`${ossUrl}/common/phone-big.png`" @click="phoneCall(index)"></image>
 					</view>
 				</view>
 				<view class="info">
 					<view class="bar">
 						<image class="icon" :src="`${ossUrl}/common/icon-time.png`"></image>
-						<view class="description">营业时间：8:00-21:00</view>
+						<view class="description">营业时间：{{item.beginTime || '暂无'}}-{{item.endTime || '暂无'}}
+						</view>
 					</view>
 					<view class="bar">
 						<image class="icon" :src="`${ossUrl}/home/icon-phone.png`"></image>
-						<view class="description">电话号码：<text @click="phoneCall">18888888888</text></view>
+						<view class="description">电话号码：<text @click="phoneCall(index)">{{item.memberPhone}}</text>
+						</view>
 					</view>
 					<view class="bar">
 						<image class="icon" :src="`${ossUrl}/home/icon-message.png`"></image>
-						<view class="description" @click="$open('/pages/common/storeComment')">评论：123条</view>
-						<view class="arrow" @click="$open('/pages/common/storeComment')"></view>
+						<view class="description" @click="$open('/pages/common/storeComment', {id: item.id})">
+							评论：{{item.evaluationNumber || 0}}条</view>
+						<view class="arrow" @click="$open('/pages/common/storeComment', {id: item.id})"></view>
 					</view>
 					<view class="bar">
 						<image class="icon" :src="`${ossUrl}/common/icon-home-black.png`"></image>
-						<view class="description">门店地址：<text @click="openMap">郑家院子东路8号</text></view>
+						<view class="description">门店地址：<text @click="openMap(index)">{{item.memberAddress}}</text>
+						</view>
 					</view>
 				</view>
 			</view>
 		</view>
+		<uni-load-more :status="dataStatus" />
 		<view class="bottom-mat"></view>
 		<view class="bottom">
-			<view class="btn">选择该地点</view>
+			<view class="btn" @click="selAddress">选择该地点</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {
+		deliveryFindShop
+	} from '@/apis/delivery'
+	import {
+		listManager
+	} from '@/utils/uni-tools'
+
 	export default {
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
+				deliveryId: '',
+				name: '',
+				address: '',
+				lat: '',
+				lon: '',
+				list: [],
+				page: 1,
+				size: 10,
+				requestKey: true,
+				dataStatus: '', // more loading noMore noData
+				cacheAddressMode: '',
+				cacheAddress: ''
 			}
 		},
+		onLoad(e) {
+			if (e && e.deliveryId) this.deliveryId = e.deliveryId
+			if (e && e.name) this.name = e.name
+			if (e && e.address) this.address = e.address
+			if (e && e.lat) this.lat = e.lat
+			if (e && e.lon) this.lon = e.lon
+			if (e && e.cacheAddressMode) this.cacheAddressMode = e.cacheAddressMode
+			if (e && e.cacheAddress) this.cacheAddress = e.cacheAddress
+			this.deliveryFindShop()
+		},
+		onReachBottom() {
+			if (!this.requestKey) return
+			this.page++
+			this.deliveryFindShop()
+		},
 		methods: {
+			// 根据送车点查询门店列表
+			async deliveryFindShop() {
+				const params = {
+					deliveryId: this.deliveryId
+				}
+				const [err, res] = await deliveryFindShop(params)
+				if (err) {
+					if (this.page > 1) this.dataStatus = 'noMore'
+					else if (this.page === 1) this.dataStatus = 'noData'
+					this.requestKey = false
+					return
+				}
+				const {
+					requestKey,
+					dataStatus,
+					isRender
+				} = listManager(res.data, this.page, this.size)
+				this.requestKey = requestKey
+				this.dataStatus = dataStatus
+				if (!isRender) return
+				this.list = [...this.list, ...res.data]
+			},
 			// 打电话
-			phoneCall() {
+			phoneCall(index) {
 				uni.makePhoneCall({
-					phoneNumber: '17623178041'
+					phoneNumber: this.list[index].memberPhone
 				})
 			},
 			// 打开地图
-			async openMap() {
-				// 获取位置
-				const [err, res] = await uni.getLocation({
-					type: 'gcj02'
-				})
-				const latitude = res.latitude
-				const longitude = res.longitude
-				// 打开位置
+			openMap(index) {
+				let latitude = ''
+				let longitude = ''
+				if (index >= 0) {
+					latitude = Number(this.list[index].lat)
+					longitude = Number(this.list[index].lon)
+				} else {
+					latitude = Number(this.lat)
+					longitude = Number(this.lon)
+				}
 				uni.openLocation({
 					latitude,
 					longitude
 				})
+			},
+			// 选择地点
+			selAddress() {
+				uni.$emit('checkAddress', {
+					addressMode: this.cacheAddressMode,
+					address: this.cacheAddress
+				})
+				this.$close(2)
 			}
 		}
 	}
@@ -146,7 +217,7 @@
 			}
 
 			.store-card {
-				@include box(670rpx, 468rpx, #fff);
+				@include box-w(670rpx, #fff);
 				border-radius: 20rpx;
 				box-shadow: 0 0 8rpx 0 rgba(114, 141, 244, 0.25);
 				padding: 44rpx 40rpx 40rpx;
@@ -216,6 +287,7 @@
 						}
 
 						.description {
+							max-width: 540rpx;
 							@include font-set(28rpx, #000);
 							line-height: 40rpx;
 							margin-left: 20rpx;

@@ -3,26 +3,28 @@
 		<view class="flexBox">
 			<view class="title">姓名</view>
 			<view class="value">
-				<input v-model="localRealName" type="text" placeholder-class="input" placeholder="填写姓名" />
+				<input v-model="localRealName" :maxlength="10" type="text" placeholder-class="input"
+					placeholder="填写姓名" />
 			</view>
 		</view>
 		<view class="flexBox">
 			<view class="title">身份证号</view>
 			<view class="value">
-				<input v-model="localIdCard" type="text" placeholder-class="input" placeholder="填写身份证号" />
+				<input v-model="localIdCard" :maxlength="18" type="text" placeholder-class="input"
+					placeholder="填写身份证号" />
 			</view>
 		</view>
 		<view class="flexBox">
 			<view class="title">紧急联系人</view>
 			<view class="value">
-				<input v-model="localEmergencyContactName" type="text" placeholder-class="input"
+				<input v-model="localEmergencyContactName" :maxlength="10" type="text" placeholder-class="input"
 					placeholder="填写紧急联系人" />
 			</view>
 		</view>
 		<view class="flexBox">
 			<view class="title">紧急联系人方式</view>
 			<view class="value">
-				<input v-model="localEmergencyContactPhone" type="text" placeholder-class="input"
+				<input v-model="localEmergencyContactPhone" :maxlength="11" type="number" placeholder-class="input"
 					placeholder="填写紧急联系人方式" />
 			</view>
 		</view>

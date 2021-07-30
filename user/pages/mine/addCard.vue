@@ -172,6 +172,10 @@
 			}),
 			// 删除银行卡
 			bankCardDel: throttle(async function() {
+				const [btnErr, btnRes] = await this.$showModal({
+					content: '确定删除银行卡？'
+				})
+				if (btnRes !== 'confirm') return
 				const params = {
 					id: this.id
 				}
@@ -215,8 +219,10 @@
 	}
 
 	.delBox {
-		width: 20%;
+		width: 50%;
+		height: 96rpx;
 		text-align: center;
+		line-height: 96rpx;
 		margin: auto;
 		color: #FE3636;
 		font-size: 24rpx;
@@ -224,10 +230,12 @@
 	}
 
 	.btn {
+		position: fixed;
+		bottom: 60rpx;
+		left: 50%;
+		transform: translateX(-50%);
 		color: white;
 		width: 90%;
-		margin: auto;
-		margin-top: 25vh;
 		background-color: #5A7EFF;
 		border-radius: 50px;
 		font-size: 32rpx;

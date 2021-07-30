@@ -15,7 +15,7 @@
 		<view class="header-mat"></view>
 		<view v-show="!searchKey" class="classify" :style="{height: `${windowHeight - searchHeight - 14}px`}">
 			<scroll-view class="class" :scroll-y="true">
-				<view class="item" v-for="(item, index) in carClassList" :key="index" @click="tapClass(index)">
+				<view class="item" v-for="(item, index) in carClassList" :key="index" @click.stop="tapClass(index)">
 					<view :class="['title', {'ac': index === acClass}]">{{item.name}}</view>
 					<view class="price">{{ item.price ? `￥${item.price}` : ''}}</view>
 				</view>
@@ -27,7 +27,9 @@
 						<view class="parameter-box">
 							<view class="title-bar">
 								<view class="caption">{{item.brandName}}</view>
-								<view class="status">{{item.isFull===1 ? '已租满': `还剩${item.rentableNum}辆`}}</view>
+								<view class="status">
+									{{item.isFull===1 ? '已租满': item.rentableNum ? `还剩${item.rentableNum}辆`: ''}}
+								</view>
 							</view>
 							<view class="parameter">{{item.vehicleModelName}}丨{{item.gears}} {{item.capacity}}座
 								{{item.outputVolumeName}}
@@ -40,7 +42,7 @@
 						</view>
 					</view>
 					<view class="price-bar">
-						<view class="calendar" @click.stop="$open('/pages/home/priceCalendar')">
+						<view class="calendar" @click.stop="goPriceCalendar(index)">
 							<image class="icon-calendar" :src="`${ossUrl}/home/icon-calendar.png`"></image>
 							<text>价格日历</text>
 							<view class="arrow"></view>
@@ -49,8 +51,8 @@
 					</view>
 					<view class="address-bar">
 						<image class="icon-home" :src="`${ossUrl}/home/icon-home.png`"></image>
-						<view class="address" @click.stop="$open('/pages/home/store')">
-							门店地址：<text>{{item.memberShopAddress}}</text></view>
+						<view class="address" @click.stop="openMap(index)">
+							门店名称：<text>{{item.memberShopName}}</text></view>
 					</view>
 				</view>
 				<uni-load-more :status="dataStatus" />
@@ -71,6 +73,8 @@
 								<text>{{item.vehicleModelName}}</text>
 								<image v-show="acModel === index" class="hook" :src="`${ossUrl}/home/hook.png`"></image>
 							</view>
+							<uni-load-more v-show="brandDataStatus==='noData'" :status="brandDataStatus">
+							</uni-load-more>
 						</scroll-view>
 					</view>
 					<view class="bottom-mat"></view>
@@ -165,6 +169,9 @@
 				size: 10,
 				requestKey: true,
 				dataStatus: '', // more loading noMore noData
+				brandPage: 1,
+				brandSize: 10,
+				brandDataStatus: '', // more loading noMore noData
 				takeCarTime: '', // 租车时间
 				carAlsoTime: '', // 还车时间
 				params: {}, // 备用参数
@@ -176,7 +183,7 @@
 		},
 		filters: {
 			jsonFormat(str) {
-				return JSON.parse(str)[0]
+				return str ? JSON.parse(str)[0] : ''
 			}
 		},
 		onLoad(e) {
@@ -229,10 +236,23 @@
 			},
 			// 根据品牌获取车型列表
 			async vehicleQueryVehicleModels() {
+				this.brandDataStatus = 'loading'
 				const [err, res] = await vehicleQueryVehicleModels(this.takeCarAddress.id, this.carBrandList[this
 					.acBranch].id)
-				if (err) return
+				if (err) {
+					this.brandDataStatus = 'noData'
+					return
+				}
 				this.carModelList = res.data
+				this.brandDataStatus = 'noMore'
+			},
+			// 前往价格日历
+			goPriceCalendar(index) {
+				this.$open('/pages/home/priceCalendar', {
+					info: JSON.stringify(this.carList[index]),
+					takeCarTime: this.takeCarTime,
+					carAlsoTime: this.carAlsoTime
+				})
 			},
 			// 触底加载
 			scrollToBottom() {
@@ -263,8 +283,9 @@
 				}
 				const [err, res] = await vehiclePageQuery(params)
 				if (err) {
+					if (this.page > 1) this.dataStatus = 'noMore'
+					else this.dataStatus = 'noData'
 					this.requestKey = false
-					this.dataStatus = 'noData'
 					return
 				}
 				const {
@@ -286,7 +307,6 @@
 			// 前往租车详情
 			goDetail(index) {
 				this.params.carModelId = this.carList[index].vehicleModelId
-				console.log(this.params)
 				this.$open('/pages/order/confirmOrder', this.params)
 			},
 			// 获取搜索框高度
@@ -326,7 +346,6 @@
 						this.seatStatus ? this.closeSeatModal() : this.openSeatModal()
 						break
 				}
-
 			},
 			// 切换分类
 			tapClass: throttle(function(index) {
@@ -334,7 +353,7 @@
 				this.acClass = index
 				this.init()
 				this.vehiclePageQuery()
-			}),
+			}, 300),
 			// 打开品牌模态框
 			openBrandModal() {
 				this.$refs.brandPopup.open()
@@ -352,7 +371,7 @@
 				this.acBranch = index
 				this.carModelInit()
 				this.vehicleQueryVehicleModels()
-			}),
+			}, 300),
 			// 切换型号
 			tapModel(index) {
 				this.acModel = index
@@ -406,7 +425,14 @@
 				this.closeSeatModal()
 				this.init()
 				this.vehiclePageQuery()
-			})
+			}),
+			// 打开地图
+			openMap(index) {
+				uni.openLocation({
+					latitude: Number(this.carList[index].lat),
+					longitude: Number(this.carList[index].lon)
+				})
+			}
 		}
 	}
 </script>
@@ -456,14 +482,15 @@
 			@include box-w();
 			@include flex-row(space-between, flex-start);
 			margin-top: 28rpx;
-			padding: 0 32rpx;
 
 			.class {
-				@include box(162rpx, 100%);
+				@include box(194rpx, 100%);
 				border-right: 1px solid #EFF0F3;
 
 				.item {
-					margin-bottom: 22rpx;
+					padding-top: 22rpx;
+					padding-left: 32rpx;
+					padding-bottom: 22rpx;
 
 					.title {
 						@include font-set(28rpx, #000, 700);
@@ -483,7 +510,8 @@
 			}
 
 			.list {
-				@include box(522rpx, 100%);
+				@include box(554rpx, 100%);
+				padding-right: 20rpx;
 				padding-bottom: 50rpx;
 
 				.item {
@@ -503,7 +531,7 @@
 						}
 
 						.parameter-box {
-							margin-left: 10rpx;
+							margin-left: 20rpx;
 
 							.title-bar {
 								@include flex-row();

@@ -39,3 +39,13 @@ export const oneClickReceiveNewCoupons = (data, loading = '领取中') => { // �
 		loading
 	})
 }
+
+// 分页查询用户的优惠券
+export const couponQueryPage = (data, loading = '') => { // 对接
+	return request({
+		url: 'coupon/queryPage',
+		method: 'GET',
+		data,
+		loading
+	})
+}

@@ -51,8 +51,9 @@
 				<view class="rightBox">¥{{info.otherFee}}</view>
 			</view>
 		</view>
-		<view v-show="info.isPaymentIllegalDeposit" class="grayLine"></view>
-		<view v-show="info.isPaymentIllegalDeposit" class="flexBox" style="width: 90%;margin: auto;margin-top: 30rpx;">
+		<view v-show="info.isPaymentIllegalDeposit && info.preAcceptanceFreeze>0" class="grayLine"></view>
+		<view v-show="info.isPaymentIllegalDeposit && info.preAcceptanceFreeze>0" class="flexBox"
+			style="width: 90%;margin: auto;margin-top: 30rpx;">
 			<view class="leftBox">预收冻结</view>
 			<view class="leftBox" style="width: 47%;text-align: right;font-size: 36rpx;">{{info.preAcceptanceFreeze}}
 			</view>
@@ -60,7 +61,8 @@
 		</view>
 		<view v-show="info.isPaymentIllegalDeposit" class="bottomFlex">
 			<view style="width: 64%;">
-				<view style="font-size: 24rpx;color:#999999;"> 逾期不支付将按 <text style="color:#FFA05B;">《逾期违章协议》</text>处理
+				<view style="font-size: 24rpx;color:#999999;"> 逾期不支付将按 <text style="color:#FFA05B;"
+						@click="$open('/pages/common/violation')">《逾期违章协议》</text>处理
 				</view>
 				<view style="font-size: 36rpx;width: 70%;">
 					结算情况
@@ -172,8 +174,7 @@
 					payway: '3',
 					subPayway: '4',
 					subject: '租车定金',
-					// totalAmount: this.info.totalAmount
-					totalAmount: 0.01
+					totalAmount: this.info.totalAmount
 				}
 				const [err, res] = await paymentPrecreate(params)
 				if (err) return

@@ -22,7 +22,7 @@ export const ssoInfo = (data, loading = '') => { // 对接
 }
 
 // 登录
-export const login = (data, loading = '登陆中') => { // 对接
+export const login = (data, loading = '登录中') => { // 对接
 	return request({
 		url: 'sso/login',
 		method: 'POST',

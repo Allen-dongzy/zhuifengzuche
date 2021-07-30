@@ -47,8 +47,9 @@
 				}
 				const [err, res] = await messagePageQuery(params)
 				if (err) {
+					if (this.page > 1) this.dataStatus = 'noMore'
+					else this.dataStatus = 'noData'
 					this.requestKey = false
-					this.dataStatus = 'noData'
 					return
 				}
 				const {

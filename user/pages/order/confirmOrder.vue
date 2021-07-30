@@ -12,16 +12,16 @@
 			<view class="name-box">
 				<view class="name">{{info.clientVehicleVo.brandName}}</view>
 				<view class="label-box">
-					<view v-for="(item,index) in info.clientVehicleVo.labels" class="label">{{item}}</view>
+					<view v-for="(item,index) in info.clientVehicleVo.labels" :key="index" class="label">{{item}}</view>
 				</view>
 			</view>
-			<view class="params">{{info.clientVehicleVo.categoryName}}丨{{info.clientVehicleVo.gears}}
-				{{info.clientVehicleVo.size}}座 {{info.clientVehicleVo.outputVolumeName}}
+			<view v-show="info.clientVehicleVo" class="params">
+				{{info.clientVehicleVo.gears}} / {{info.clientVehicleVo.capacity}}座 /
+				{{info.clientVehicleVo.outputVolumeName}} / {{info.clientVehicleVo.model}}
 			</view>
 		</view>
 		<view class="lease">
 			<view class="caption">租期</view>
-
 			<view class="time">
 				<view class="left">
 					<view class="caption">{{takeday}}</view>
@@ -37,27 +37,41 @@
 					<view class="sub-caption">{{backweek}} {{backtime}}</view>
 				</view>
 			</view>
-			<view class="caption">取还</view>
-			<view class="take-also">
-				<view class="address-box">
-					<image class="home" :src="`${ossUrl}/common/icon-home-black.png`"></image>
-					<view class="address">门店地址：{{info.pickPlace.name}}</view>
-				</view>
-				<view class="btn-box">
-					<image class="btn" :src="`${ossUrl}/common/location-big.png`"
-						@click="openMap(info.pickPlace.lat,info.pickPlace.lon)"></image>
-					<!-- <image class="btn" :src="`${ossUrl}/common/phone-big.png`" @click="phoneCall"></image> -->
+			<view v-show="!yidiType">
+				<view class="caption top">取还</view>
+				<view class="take-also">
+					<view class="address-box">
+						<image class="home" :src="`${ossUrl}/common/icon-home-black.png`"></image>
+						<view class="address">门店地址：{{info.pickPlace.address}}</view>
+					</view>
+					<view class="btn-box">
+						<image class="btn" :src="`${ossUrl}/common/location-big.png`"
+							@click="openMap(info.pickPlace.lat, info.pickPlace.lon)"></image>
+					</view>
 				</view>
 			</view>
-			<view v-show="yidiType==true" class="take-also">
-				<view class="address-box">
-					<image class="home" :src="`${ossUrl}/common/icon-home-black.png`"></image>
-					<view class="address">门店地址：{{info.returnPlace.name}}</view>
+			<view v-show="yidiType">
+				<view class="caption top">取车</view>
+				<view class="take-also">
+					<view class="address-box">
+						<image class="home" :src="`${ossUrl}/common/icon-home-black.png`"></image>
+						<view class="address">门店地址：{{info.pickPlace.address}}</view>
+					</view>
+					<view class="btn-box">
+						<image class="btn" :src="`${ossUrl}/common/location-big.png`"
+							@click="openMap(info.pickPlace.lat, info.pickPlace.lon)"></image>
+					</view>
 				</view>
-				<view class="btn-box">
-					<image class="btn" :src="`${ossUrl}/common/location-big.png`"
-						@click="openMap(info.returnPlace.lat,info.returnPlace.lon)"></image>
-					<!-- <image class="btn" :src="`${ossUrl}/common/phone-big.png`" @click="phoneCall"></image> -->
+				<view class="caption top">还车</view>
+				<view class="take-also">
+					<view class="address-box">
+						<image class="home" :src="`${ossUrl}/common/icon-home-black.png`"></image>
+						<view class="address">门店地址：{{info.returnPlace.address}}</view>
+					</view>
+					<view class="btn-box">
+						<image class="btn" :src="`${ossUrl}/common/location-big.png`"
+							@click="openMap(info.returnPlace.lat, info.returnPlace.lon)"></image>
+					</view>
 				</view>
 			</view>
 			<view class="address-info">* 下单半小时内可免费取消</view>
@@ -73,31 +87,30 @@
 		</view>
 		<view class="function-box">
 			<view class="item">
-				<view class="left">
+				<view class="left" @click="$open('/pages/common/security')">
 					<view class="top">驾无忧保障<image class="question" :src="`${ossUrl}/order/question.png`"></image>
-						<view class="price">￥20/天</view>
+						<view class="price">￥{{info.clientVehicleVo.insurancePrice || 0}}/天</view>
 					</view>
-					<view class="bottom">添加一份无忧保障，添一份安心</view>
+					<view class="bottom-text">添加一份无忧保障，添一份安心</view>
 				</view>
 				<view class="right" @click="selInsurance">
 					<view class="text">￥<text>{{info.orderPriceInfo.insuranceMoney }}</text></view>
 					<view :class="['circle', {'ac':isInsurance}]"></view>
 				</view>
 			</view>
-			<view class="item" @click="$open('/pages/mine/coupon?selectType=goods')">
+			<view class="item" @click="$open('/pages/mine/coupon', {selectType: 'goods'})">
 				<view class="caption">
 					优惠券
-					<view class="label">已选推荐优惠</view>
+					<view v-show="couponPrice>0" class="label">已选推荐优惠</view>
 				</view>
 				<view class="right">
-					-
-					<view class="text">￥<text>{{confirm}}</text></view>
+					<view class="text">￥<text>{{couponPrice || 0}}</text></view>
 					<view class="arrow"></view>
 				</view>
 			</view>
 			<view class="item vertical">
 				<view class="top">备注</view>
-				<input type="text" v-model="remark" placeholder="填写备注信息..." placeholder-class="input">
+				<input type="text" v-model="remark" maxlength="100" placeholder="填写备注信息..." placeholder-class="input">
 			</view>
 		</view>
 		<view class="tab-box">
@@ -130,10 +143,11 @@
 			<view v-show="acIndex < 5" class="box box-voucher">
 				<view class="info">{{ bottomInfo }}</view>
 				<view class="bottom-info-mat"></view>
-				<view class="bottom-info" @click="tapIcon">
-					<image class="icon" :src="selStatus ? `${ossUrl}/order/sel-ac.png` : `${ossUrl}/order/sel.png`">
+				<view class="bottom-info">
+					<image class="icon" :src="selStatus ? `${ossUrl}/order/sel-ac.png` : `${ossUrl}/order/sel.png`"
+						@click="tapIcon">
 					</image>
-					已阅读并同意<text>《用户租车协议》</text>
+					已阅读并同意<text @click="$open('/pages/common/carRentalAgreement')">《用户租车协议》</text>
 				</view>
 			</view>
 			<view v-show="acIndex === 5" class="box box-invoice">
@@ -144,34 +158,42 @@
 				<view class="list">
 					<view class="item" v-for="(item, index) in invoiceList" :key="index" @click="selectInvoice(index)">
 						<view class="name">
-							{{item.title}}
-							<view class="label">普票</view>
+							<view class="title">
+								{{item.title}}
+								<view class="label">普票</view>
+							</view>
 							<view class="label" v-show="index==invoiceIndex" style="background-color: #FFA05B;">已选择
 							</view>
 						</view>
 						<view class="number">
 							{{item.taxNum}}
 							<view class="arrow"></view>
+							<view class="click-block" @click.stop="goInvoiceInfo(item)">
+							</view>
 						</view>
 					</view>
 				</view>
-				<view class="bottom-info" @click="tapIcon">
-					<image class="icon" :src="selStatus ? `${ossUrl}/order/sel-ac.png` : `${ossUrl}/order/sel.png`">
+				<view class="bottom-info">
+					<image class="icon" :src="selStatus ? `${ossUrl}/order/sel-ac.png` : `${ossUrl}/order/sel.png`"
+						@click="tapIcon">
 					</image>
-					已阅读并同意<text>《用户租车协议》</text>
+					已阅读并同意<text @click="$open('/pages/common/carRentalAgreement')">《用户租车协议》</text>
 				</view>
 			</view>
 		</view>
 		<view class="bottom-mat"></view>
 		<view class="bottom">
 			<view class="price-info">
-				总计<view class="price">￥<text>{{info.orderPriceInfo.total}}</text></view>
+				总计<view class="price">
+					￥<text>{{total ? total.toFixed(2) : 0}}</text>
+				</view>
 			</view>
 			<view class="func-box">
-				<view class="detail" @click="$open('/pages/order/costDetail?obj='+JSON.stringify(info.orderPriceInfo))">
+				<view class="detail"
+					@click="$open('/pages/order/costDetail', {info: JSON.stringify(info.orderPriceInfo)})">
 					费用明细<view class="arrow"></view>
 				</view>
-				<view class="btn" @click="sure()">立即预定</view>
+				<view class="btn" @click="sure()">立即租车</view>
 			</view>
 		</view>
 		<!-- 弹窗-流程 -->
@@ -179,7 +201,7 @@
 			<view class="process-modal">
 				<scroll-view class="process-content" :scroll-y="true">
 					<view class="title">免押金</view>
-					<view class="info">下单预付租金后，取车时间向门店工作人员<text>申请芝麻信用免押金</text>，信用综合评估通过后有机会见面25000元。</view>
+					<view class="info">下单预付租金后，取车时间向门店工作人员<text>申请芝麻信用免押金</text>，信用综合评估通过后有机会减免25000元。</view>
 					<image class="process" :src="`${ossUrl}/home/process.png`"></image>
 					<view class="section">
 						<view class="caption">使用芝麻信用免押金</view>
@@ -208,22 +230,22 @@
 		rentalOrderGenerateOrder,
 		rentalOrderCreateOrders
 	} from '@/apis/rentalOrder'
-
 	import {
 		findIsUseCouponByUser
 	} from '@/apis/coupon'
 	import {
 		invoiceQueryByUser
 	} from '@/apis/invoice'
-
 	import {
 		mapState
 	} from 'vuex'
+
 	export default {
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
 				swiperInfo: [], // 轮播数据
+				total: '',
 				dotsStyles: {
 					bottom: 10,
 					backgroundColor: '#dadada',
@@ -239,9 +261,9 @@
 				invoiceSwitch: false, // 是否开启发票
 				isInsurance: false, // 是否选择保险
 				isInsuranceId: 0, //0是否 1是买
-				confirm: '', //优惠券
+				couponPrice: '', //优惠券
 				invoiceIndex: 0, //选择发票下标
-				invoiceId: '', //发票Id
+				invoiceId: null, //发票Id
 				invoiceList: [], //发票list
 				couponId: '', //优惠券id
 				info: '', //获取页面信息
@@ -265,7 +287,6 @@
 			bottomInfo() {
 				let info = ''
 				switch (this.acIndex) {
-
 					case 0:
 						info = '身份证+驾照正副本；身份证有效期需1个月以上，驾龄3个月以上'
 						break
@@ -285,6 +306,12 @@
 				return info
 			},
 			...mapState('app', ['platform'])
+		},
+		watch: {
+			acIndex(newVal) {
+				if (newVal !== 5 || this.invoiceList.length > 0) return
+				this.emptyInvoiceModal()
+			}
 		},
 		components: {
 			EvanSwitch
@@ -317,10 +344,17 @@
 					orderSource: 0
 				}
 				const [err, res] = await rentalOrderGenerateOrder(data)
-				if (err) return
+				if (err) {
+					if (!err.message) this.$toast('订单错误！')
+					setTimeout(() => {
+						this.$close()
+					}, 1000)
+					return
+				}
 				this.info = res.data
 				this.info.clientVehicleVo.vehicleModelFiles = JSON.parse(this.info.clientVehicleVo.vehicleModelFiles)
 				this.info.clientVehicleVo.labels = JSON.parse(this.info.clientVehicleVo.labels)
+				this.total = Number(this.info.orderPriceInfo.total.toFixed(2))
 				if (this.info.returnPlace.name === this.info.pickPlace.name) {
 					this.yidiType = false
 				} else {
@@ -333,8 +367,24 @@
 				const [err, res] = await invoiceQueryByUser()
 				if (err) return
 				this.invoiceList = res.data
-				if (!this.invoiceList[0] || !this.invoiceList[0].id) return
-				this.invoiceId = this.invoiceList[0].id
+				this.invoiceId = this.invoiceList[0] ? this.invoiceList[0].id : null
+			},
+			// 空发票弹窗
+			async emptyInvoiceModal() {
+				const [err, res] = await this.$showModal({
+					content: '暂无发票抬头，立即添加？'
+				})
+				if (res !== 'confirm') return
+				this.$open('/pages/mine/invoiceInfo', {
+					mode: 'add'
+				})
+			},
+			// 前往发票编辑
+			goInvoiceInfo(item) {
+				this.$open('/pages/mine/invoiceInfo', {
+					mode: 'edit',
+					info: JSON.stringify(item)
+				})
 			},
 			//选择发票
 			selectInvoice(e) {
@@ -346,10 +396,9 @@
 				const [err, res] = await findIsUseCouponByUser()
 				if (err) return
 				if (!res.data || res.data.length === 0) return
-				this.confirm = res.data[0].discountAmount
+				this.couponPrice = res.data[0].discountAmount
 				this.couponId = res.data[0].id
 			},
-
 			// 轮播改变
 			swiperChange(e) {
 				this.current = e.detail.current;
@@ -371,14 +420,9 @@
 				this.$refs.processPopup.close()
 			},
 			// 打开地图
-			async openMap() {
-				// 获取位置
-				const [err, res] = await await uni.getLocation({
-					type: 'gcj02'
-				})
-				const latitude = res.latitude
-				const longitude = res.longitude
-				// 打开位置
+			async openMap(latitude, longitude) {
+				latitude = Number(latitude)
+				longitude = Number(longitude)
 				uni.openLocation({
 					latitude,
 					longitude
@@ -388,24 +432,27 @@
 			selInsurance() {
 				this.isInsurance = !this.isInsurance
 				if (this.isInsurance == true) {
-					this.info.orderPriceInfo.total = Number(this.info.orderPriceInfo.insuranceMoney) + Number(this.info
-						.orderPriceInfo.total)
+					this.info.orderPriceInfo.total = this.total += Number(this.info.orderPriceInfo.insuranceMoney)
+					this.info.orderPriceInfo.orderPriceList.push({
+						id: 99,
+						name: '驾无忧保险',
+						note: null,
+						price: this.info.orderPriceInfo.insuranceMoney
+					})
 				} else {
-					this.info.orderPriceInfo.total = Number(this.info.orderPriceInfo.total) - Number(this.info
-						.orderPriceInfo.insuranceMoney)
+					this.info.orderPriceInfo.total = this.total -= Number(this.info.orderPriceInfo.insuranceMoney)
+					let current = -1
+					this.info.orderPriceInfo.orderPriceList.forEach((item, index) => {
+						if (item.name === '驾无忧保险') current = index
+					})
+					this.info.orderPriceInfo.orderPriceList.splice(current, 1)
 				}
-
-				this.$forceUpdate()
 			},
+			// 租车
 			async sure() {
 				if (this.selStatus == false) {
 					this.$toast("请同意用户协议");
 					return false;
-				}
-				if (this.isInsurance) {
-					this.isInsuranceId = 1
-				} else {
-					this.isInsuranceId = 0
 				}
 				if (!this.info.orderPriceInfo.isRealName) {
 					this.$toast('您未实名认证，请先去完善个人信息！')
@@ -414,42 +461,47 @@
 					}, 500)
 					return
 				}
-				if (this.invoiceSwitch) {
-					var data = {
-						couponId: this.couponId,
-						invoiceId: this.invoiceId,
-						isInsurance: this.isInsuranceId,
-						orderSource: 0,
-						pickPlace: this.takeId,
-						returnPlace: this.backId,
-						remark: this.remark,
-						rentBeginTime: this.yudingInfo.takeCarTime,
-						rentEndTime: this.yudingInfo.carAlsoTime,
-						vehicleModelId: this.carId
-					}
-				} else {
-					var data = {
-						couponId: this.couponId,
-						isInsurance: this.isInsuranceId,
-						orderSource: 0,
-						pickPlace: this.takeId,
-						returnPlace: this.backId,
-						remark: this.remark,
-						rentBeginTime: this.yudingInfo.takeCarTime,
-						rentEndTime: this.yudingInfo.carAlsoTime,
-						vehicleModelId: this.carId
-					}
+				const params = {
+					couponId: this.couponId,
+					invoiceId: this.invoiceId,
+					isInsurance: this.isInsuranceId ? 1 : 0,
+					orderSource: 0,
+					pickPlace: this.takeId,
+					returnPlace: this.backId,
+					remark: this.remark,
+					rentBeginTime: this.yudingInfo.takeCarTime,
+					rentEndTime: this.yudingInfo.carAlsoTime,
+					vehicleModelId: this.carId
 				}
-				const [err, res] = await rentalOrderCreateOrders(data)
+				const [err, res] = await rentalOrderCreateOrders(params)
 				if (err) return
-				uni.navigateTo({
-					url: './orderPay?price=' + this.info.orderPriceInfo.total
-				})
+				this.$open('./orderPay', {
+					price: this.total,
+					reflect: JSON.stringify(res.data.reflect)
+				}, 1)
 			},
 			// 监听时间
 			eventListener() {
+				// 详情刷新
 				uni.$on('detailRefresh', () => {
 					this.rentalOrderGenerateOrder()
+				})
+				// 优惠券更新
+				uni.$on('couponUpdate', (e) => {
+					this.info.orderPriceInfo.total = this.total -= Number(this.couponPrice)
+					this.couponPrice = e.price
+					this.couponId = e.couponId
+					this.info.orderPriceInfo.total = this.total += Number(this.couponPrice)
+					this.info.orderPriceInfo.orderPriceList.forEach((item, index) => {
+						if (item.name === '优惠券减免') {
+							item.id = e.couponId
+							item.price = -(e.price)
+						}
+					})
+				})
+				// 发票刷新
+				uni.$on('invoiceRefresh', () => {
+					this.invoiceQueryByUser()
 				})
 			}
 		}
@@ -488,12 +540,13 @@
 					margin-left: 32rpx;
 
 					.label {
-						@include box(62rpx, 34rpx, rgba(90, 126, 255, 0.10));
+						@include box-h(34rpx, rgba(90, 126, 255, 0.10));
+						padding: 0 10rpx;
 						@include flex-center;
 						@include font-set(16rpx, #5A7EFF, 700);
 
 						&~.label {
-							margin-left: 8rpx;
+							margin-left: 12rpx;
 						}
 					}
 				}
@@ -513,11 +566,15 @@
 
 			.caption {
 				@include font-set(32rpx, #000, 700);
+
+				&.top {
+					margin-top: 40rpx;
+				}
 			}
 
 			.time {
 				@include flex-row(space-between);
-				padding: 20rpx 0 40rpx;
+				padding-top: 20rpx;
 
 				.left,
 				.right {
@@ -683,8 +740,8 @@
 				.left {
 					@include flex-col(center, flex-start);
 
-					.bottom {
-						@include font-set(24rpx, #999);
+					.bottom-text {
+						@include font-set(22rpx, #999);
 						line-height: 34rpx;
 						margin-top: 10rpx;
 					}
@@ -840,9 +897,13 @@
 						}
 
 						.name {
-							@include flex-row();
+							@include flex-row(space-between);
 							@include font-set(28rpx, #000, 500);
 							line-height: 40rpx;
+
+							.title {
+								@include flex-row();
+							}
 
 							.label {
 								@include box(62rpx, 34rpx, #5A7EFF);
@@ -854,6 +915,7 @@
 						}
 
 						.number {
+							position: relative;
 							@include flex-row(space-between);
 							@include font-set(24rpx, #999);
 							line-height: 34rpx;
@@ -865,6 +927,13 @@
 								border-left: 0;
 								border-bottom: 0;
 								transform: rotate(45deg);
+							}
+
+							.click-block {
+								position: absolute;
+								bottom: -20rpx;
+								right: -10rpx;
+								@include box(80rpx, 80rpx);
 							}
 						}
 					}
@@ -939,7 +1008,7 @@
 			border-radius: 20rpx;
 
 			.process-content {
-				max-height: 664rpx;
+				max-height: 630rpx;
 			}
 
 			.title {

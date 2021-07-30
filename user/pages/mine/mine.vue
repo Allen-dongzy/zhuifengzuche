@@ -1,9 +1,10 @@
 <template>
 	<view class="box" :style="{backgroundImage: 'url('+`${ossUrl}/mine/userbg.png`+')'}">
 		<view class="name-box">
-			<image class="avatar" :src="icon || `${ossUrl}/mine/touxiang.png`" mode="aspectFill" @click="headerTap">
+			<image class="avatar" :src="icon || `${ossUrl}/mine/touxiang.png`" mode="aspectFill" @click="headTap">
 			</image>
-			<view class="nickname" @click="headerTap">{{nickname || username || '点击登陆'}}
+			<view class="nickname" @click="headTap">
+				{{nickname || username || '点击登录'}}
 				<view class="arrow"></view>
 			</view>
 		</view>
@@ -16,7 +17,7 @@
 				<view class="price">0.00<text>元</text></view>
 			</view>
 			<view class="line"></view>
-			<view @click="coupon">
+			<view @click="skip('./coupon')">
 				<view class="flex-box item">
 					<image class="icon" :src="`${ossUrl}/mine/youhui.png`"></image>
 					<view class="text">优惠券</view>
@@ -25,26 +26,27 @@
 			</view>
 		</view>
 		<view class="flex-box function">
-			<view class="flex-box-one" @click="lookinfo">
+			<view class="flex-box-one" @click="skip('./news')">
 				<image class="icon" :src="`${ossUrl}/mine/news.png`"></image>
 				<view class="gray-text">消息通知</view>
 			</view>
-			<view class="flex-box-one" @click="violation">
+			<view class="flex-box-one" @click="skip('./violationRecord')">
 				<image class="icon" :src="`${ossUrl}/mine/weizhang.png`"></image>
 				<view class="gray-text">违章记录</view>
 			</view>
-			<view class="flex-box-one" @click="$open('/pages/mine/pay', {type: 1})">
+			<view class="flex-box-one" @click="skip('/pages/mine/pay', {type: 1})">
 				<image class="icon" :src="`${ossUrl}/mine/fukuan.png`"></image>
 				<view class="gray-text">付款</view>
 			</view>
-			<view class="flex-box-one" @click="$open('/pages/mine/pay', {type: 0})">
+			<view class="flex-box-one" @click="skip('/pages/mine/pay', {type: 0})">
 				<image class="icon" :src="`${ossUrl}/mine/shoukuan.png`"></image>
 				<view class="gray-text">收款</view>
 			</view>
 		</view>
 		<view class="gray-line"></view>
-		<view class="flex-box-left" @click="selectOne(item.path)" v-for="(item,index) in list " :key="index">
-			<image class="icon" :src="`${ossUrl}`+item.img+``" mode="widthFix"></image>
+		<view class="flex-box-left" @click="item.isLogin ? skip(item.path) : $open(item.path)"
+			v-for="(item, index) in list " :key="index">
+			<image class="icon" :src="`${ossUrl}${item.img}`" mode="widthFix"></image>
 			<view class="text">{{item.name}}</view>
 			<image class="arrow" :src="`${ossUrl}/mine/huiyou.png`"></image>
 		</view>
@@ -72,23 +74,28 @@
 				list: [{
 					name: '发票抬头',
 					img: '/mine/fapiao.png',
-					path: '/pages/mine/invoice'
+					path: '/pages/mine/invoice',
+					isLogin: true
 				}, {
 					name: '银行卡',
 					img: '/mine/yhk.png',
-					path: './bankCard'
+					path: './bankCard',
+					isLogin: true
 				}, {
 					name: '风控查询',
 					img: '/mine/fengkong.png',
-					path: './risk'
+					path: './risk',
+					isLogin: true
 				}, {
 					name: '联系我们',
 					img: '/mine/lianxi.png',
-					path: '/pages/mine/contactUs'
+					path: '/pages/mine/contactUs',
+					isLogin: false
 				}, {
 					name: '关于追风',
 					img: '/mine/about.png',
-					path: '/pages/mine/aboutMe'
+					path: '/pages/mine/aboutMe',
+					isLogin: false
 				}]
 			};
 		},
@@ -99,45 +106,21 @@
 		methods: {
 			// user 清空用户信息
 			...mapMutations('user', ['clearInfo']),
-			// 点击头像
-			headerTap() {
+			// 公共跳转
+			skip(url, params = {}) {
+				if (!this.$storage.get('token')) {
+					this.$toast('请前往登录！')
+					setTimeout(() => {
+						this.$open('/pages/common/login')
+					}, 500)
+					return
+				}
+				this.$open(url, params)
+			},
+			// 头部跳转
+			headTap() {
 				if (this.$storage.get('token')) this.$open('/pages/mine/personalInformation')
 				else this.$open('/pages/common/login')
-			},
-			lookinfo() {
-				uni.navigateTo({
-					url: './news',
-					animationDuration: 200,
-					animationType: 'pop-in'
-				})
-			},
-			wallet() {
-				uni.navigateTo({
-					url: './balance',
-					animationDuration: 200,
-					animationType: 'pop-in'
-				})
-			},
-			coupon() {
-				uni.navigateTo({
-					url: './coupon',
-					animationDuration: 200,
-					animationType: 'pop-in'
-				})
-			},
-			selectOne(e) {
-				uni.navigateTo({
-					url: e,
-					animationDuration: 200,
-					animationType: 'pop-in'
-				})
-			},
-			violation() {
-				uni.navigateTo({
-					url: './violationRecord',
-					animationDuration: 200,
-					animationType: 'pop-in'
-				})
 			},
 			// 退出登录
 			logout() {

@@ -1,7 +1,6 @@
 <template>
-	<view class="">
-		<view class="title">租车合同</view>
-		<scroll-view class="content" :scroll-y="true" :style="{height: `${windowHeight*0.65}px`}">经友好协商，《租车合同》及附件《租车单》签字各方就车辆租赁事宜达成如下协议：一、出租方的权利和义务
+	<view class="car-rental-agreement">经友好协商，《租车合同》及附件《租车单》签字各方就车辆租赁事宜达成如下协议：
+一、出租方的权利和义务
 1.1出租方和承租方关于租赁车辆、租期、价款、取还车日期等具体内容在小程序、网站、APP、门店及《租车单》《验车单》中约定。《租车单》、《验车单》、
 《租车合同》及其它相关附件等，是本合同的组成部分，具有同等法律效力。
 1.2出租方作为追风租车全国连锁伙伴，承诺按照追风租车自有小程序或合作品牌小程序、网站、APP、门店等公共信息发布渠道公示的服务标准，为承租方提供本合同项下的汽车租赁服务。
@@ -37,8 +36,7 @@
 3.3租赁期满，承租方应按规定的还车时间和地点交还车辆、证照及附带设备，并保持车辆清洁。由出租方工作人员依《验车单》内容验收，如有损坏或丢失应照价
 3.4赔偿，价格标准以小程序、网站、APP、门店公示为准。
 承租方将车辆交付出租方时，应在《验车单》中签字以确认归还车辆的时间、车辆状态等信息。如归还车辆时双方对归还车辆的状态有异议，应在《验车单》中将异议列明，由双方签字，并当场有针对性的拍照取证。一方拒绝签字或拒绝拍照的，拒绝一方应承担由此产生的不利后果。若因承租方原因无法现场交付车辆，如给出租方造成相应损失的，出租方保留向承租方主张相关权益的权利。
-3.5承租方如需续租，须在租期届满前 24
-小时向出租方电话申请，出租方有权决定是否同意续租，同意续租的，承租方须按照续租时间点小程序、网站、APP、门店公示的车辆租赁价格支付日租金及基础服务费等，并提供支付凭证给出租
+3.5承租方如需续租，须在租期届满前 24 小时向出租方电话申请，出租方有权决定是否同意续租，同意续租的，承租方须按照续租时间点小程序、网站、APP、门店公示的车辆租赁价格支付日租金及基础服务费等，并提供支付凭证给出租
 方，本合同其他条款持续有效；出租方同意续租的，承租方需预先支付续租费用，出租方不同意续租的，承租方必须按原定合同约定时间和地点归还车辆。承租方未经出租方同意续租并未按期还车的，按3.5强行续租超期未归还处理。
 3.6租赁期限届满承租方强行续租超期未归还承租车辆，应按照日租金的 200%为标
 准，按日（不足1日的按1日计）支付超期期间违约金及出租方由此产生的其它损失，直至车辆归还日截止收取，并且出租方有权立即收回车辆；在租车城市以外地区收回车辆的，承租方须另行支付异地收车费（收费标准为每公里 10 元）。
@@ -98,111 +96,19 @@
 7.10本合同自各方签字或盖章后生效。
 承租方确认在签署本合同前，已经知悉合同全部内容，并完全理解协议各条款的法律含义，同意按照本合同约定履行相应义务。
 承租方：本人已阅读、理解本合同所有条款内容，并同意按照本
-合同约定如实履行相应义务。</scroll-view>
-		<view v-if="!img" class="sign">
-			<text class="sign-box" @click="$open('/pages/common/signIng')">点击签名</text>
-		</view>
-		<view v-else class="sign">
-			<view>签名:</view>
-			<image class="sign-pic" :src="img" @click="goSign" mode="aspectFill"></image>
-		</view>
-		<view v-show="!img && mode==='edit'" class="btn-before">提交</view>
-		<view v-show="img && mode==='edit'" class="btn-after" @click="vehicleUpdateVehicleCertificates">提交</view>
+合同约定如实履行相应义务。
 	</view>
 </template>
 
 <script>
-	import {
-		vehicleGetVehicleCertificatess,
-		vehicleUpdateVehicleCertificates
-	} from '@/apis/vehicle'
-	import {
-		throttle
-	} from '@/utils/tools'
-	import {
-		previewImgs
-	} from '@/utils/uni-tools'
-	import {
-		mapState
-	} from 'vuex'
-
 	export default {
 		data() {
 			return {
-				mode: '', // 模式 edit:编辑模式 readonly:只读模式
-				from: '', // order  orderDetail
-				img: '', // 合同
-				id: '', // 合同id
-				orderId: '', // 订单id
-				vehicleId: '' // 车辆id
+
 			}
-		},
-		computed: {
-			// app 页面高度
-			...mapState('app', ['windowHeight'])
-		},
-		onLoad(e) {
-			if (e && e.orderId) this.orderId = e.orderId
-			if (e && e.vehicleId) this.vehicleId = e.vehicleId
-			if (e && e.mode) this.mode = e.mode
-			if (e && e.from) this.from = e.from
-			this.vehicleGetVehicleCertificatess()
-			this.eventListenter()
 		},
 		methods: {
-			// 查看合同
-			async vehicleGetVehicleCertificatess() {
-				const params = {
-					orderId: this.orderId,
-					vehicleId: this.vehicleId
-				}
-				const [err, res] = await vehicleGetVehicleCertificatess(params)
-				if (err) return
-				if (res.code === 500) {
-					setTimeout(() => {
-						this.$close()
-					}, 500)
-					return
-				}
-				if (res.data.contract) this.img = res.data.contract
-				this.id = res.data.id
-			},
-			// 去签名
-			goSign() {
-				if (this.mode === 'edit') {
-					this.$open('/pages/common/signIng')
-				} else if (this.mode === 'readonly') {
-					// this.previewPics([this.img])
-				}
-			},
-			// 预览图片
-			previewPics(urls, index = 0) {
-				previewImgs(urls, index)
-			},
-			// 上传合同
-			vehicleUpdateVehicleCertificates: throttle(async function() {
-				const params = {
-					id: this.id,
-					orderId: this.orderId,
-					vehicleId: this.vehicleId,
-					contract: this.img
-				}
-				const [err, res] = await vehicleUpdateVehicleCertificates(params)
-				if (err) return
-				this.$toast('提交成功')
-				setTimeout(() => {
-					this.$open('/pages/order/useCarSuccess', {
-						from: this.from
-					})
-				}, 500)
-			}),
-			// 监听函数
-			eventListenter() {
-				// 监听合同
-				uni.$on('refreshSign', e => {
-					this.img = e.sign
-				})
-			}
+
 		}
 	}
 </script>
@@ -210,72 +116,10 @@
 <style lang="scss">
 	@import '@/static/scss/_mixin.scss';
 
-	.title {
-		width: 90%;
-		font-size: 35rpx;
-		color: #000000;
-		padding-top: 20rpx;
-		padding-left: 20rpx;
-	}
-
-	.content {
-		@include box-w();
+	.car-rental-agreement {
 		padding: 30rpx;
 		@include font-set(28rpx, #666);
 		@include text-reserve;
 		line-height: 60rpx;
-	}
-
-	.sign {
-		width: 90%;
-		margin: 0 auto;
-		display: flex;
-		align-items: center;
-		justify-content: flex-end;
-	}
-
-	.sign-box {
-		color: #5A7EFF;
-		border-bottom: 2rpx solid #5A7EFF;
-		margin-top: 20rpx;
-	}
-
-	.sign-pic {
-		display: block;
-		width: 188rpx;
-		height: 256rpx;
-		transform: rotate(270deg);
-		margin-left: 60rpx;
-	}
-
-	.btn-after {
-		position: fixed;
-		bottom: 60rpx;
-		left: 50%;
-		transform: translateX(-50%);
-		color: white;
-		width: 88%;
-		background-color: #5A7EFF;
-		border-radius: 50px;
-		font-size: 32rpx;
-		height: 96rpx;
-		line-height: 96rpx;
-		text-align: center;
-	}
-
-	.btn-before {
-		position: fixed;
-		bottom: 60rpx;
-		left: 50%;
-		transform: translateX(-50%);
-		border: 0 !important;
-		width: 670rpx !important;
-		background-color: #ddd;
-		border-radius: 50px;
-		font-size: 32rpx;
-		height: 96rpx;
-		line-height: 96rpx;
-		color: #fff !important;
-		text-align: center;
 	}
 </style>

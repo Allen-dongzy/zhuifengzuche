@@ -216,8 +216,7 @@
 					payway: '3',
 					subPayway: '4',
 					subject: '续租',
-					// totalAmount: this.totalPrice
-					totalAmount: 0.01
+					totalAmount: this.totalPrice
 				}
 				const [err, res] = await paymentPrecreate(params)
 				if (err) return

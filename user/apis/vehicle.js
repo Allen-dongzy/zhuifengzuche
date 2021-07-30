@@ -64,7 +64,7 @@ export const vehicleQueryVehicleCategorys = (deliveryId, loading = '') => { // �
 }
 
 // 根据车型id查询租金列表
-export const vehicleQueryVehicleModelRentList = (vehicleModelId, loading = '') => {
+export const vehicleQueryVehicleModelRentList = (vehicleModelId, loading = '') => { // 对接
 	return request({
 		url: `vehicle/queryVehicleModelRentList/${vehicleModelId}`,
 		contentType: 'application/x-www-form-urlencoded',

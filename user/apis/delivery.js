@@ -21,3 +21,14 @@ export const deliveryFindNearDelivery = (data, loading = '') => {
 		loading
 	})
 }
+
+// 根据送车点查询下面门店列表
+export const deliveryFindShop = (data, loading = '') => {
+	return request({
+		url: 'delivery/findShop',
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'POST',
+		data,
+		loading
+	})
+}

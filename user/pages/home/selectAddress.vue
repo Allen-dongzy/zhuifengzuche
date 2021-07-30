@@ -24,7 +24,7 @@
 			</scroll-view>
 			<scroll-view class="list" :scroll-y="true" @scrolltolower="scrollToBottom">
 				<view class="address-item" v-for="(item, index) in carAddressList" :key="index"
-					@click="selectAddress(item)">
+					@click="selectAddress(index)">
 					<view class="caption">{{item.name}}</view>
 					<view class="description">{{item.address}}
 						<view class="arrow"></view>
@@ -36,7 +36,7 @@
 		<!-- 搜索列表 -->
 		<view v-show="searchKey" class="address-list">
 			<view class="address-item" v-for="(item, index) in carAddressList" :key="index"
-				@click="selectAddress(item)">
+				@click="selectAddress(index)">
 				<view class="caption">{{item.name}}</view>
 				<view class="description">{{item.address}}
 					<view class="arrow"></view>
@@ -148,12 +148,17 @@
 					size: this.size,
 					cityCode: this.city.code,
 					areaCode: this.areaList[this.acIndex].areaCode,
-					search: this.keyword,
+					name: this.keyword,
 					lat: this.areaList[this.acIndex].lat,
 					lon: this.areaList[this.acIndex].lng
 				}
 				const [err, res] = await deliveryFindDeliveryPage(params)
-				if (err) return
+				if (err) {
+					if (this.page > 1) this.dataStatus = 'noMore'
+					else this.dataStatus = 'noData'
+					this.requestKey = false
+					return
+				}
 				const {
 					requestKey,
 					dataStatus,
@@ -178,12 +183,16 @@
 				this.deliveryFindDeliveryPage()
 			},
 			// 选择地址
-			selectAddress(item) {
-				uni.$emit('checkAddress', {
-					addressMode: this.addressMode,
-					address: JSON.stringify(item)
+			selectAddress(index) {
+				this.$open('/pages/home/store', {
+					deliveryId: this.carAddressList[index].id,
+					name: this.carAddressList[index].name,
+					address: this.carAddressList[index].address,
+					lat: this.carAddressList[index].lat,
+					lon: this.carAddressList[index].lon,
+					cacheAddressMode: this.addressMode,
+					cacheAddress: JSON.stringify(this.carAddressList[index])
 				})
-				this.$close()
 			}
 		}
 	}

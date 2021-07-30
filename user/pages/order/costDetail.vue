@@ -19,10 +19,6 @@
 			<view class="item-bar" v-for="(item,index) in info.orderPriceList" :key="index">
 				<view class="left">
 					<view class="caption">{{item.name}}</view>
-					<view class="text" v-show="item.name=='异地调度'">按取还车每公里3元计算</view>
-					<view class="text" v-show="item.name=='零散小时收费'">租车非整天时零散小时收取的超时小费</view>
-					<view class="text" v-show="item.name=='夜间取车费'">夜间取车费</view>
-					<view class="text" v-show="item.name=='夜间还车费'">夜间还车费</view>
 				</view>
 				<view class="right">
 					￥{{item.price.toString().startsWith('-') ? `-${item.price.toString().slice(1)}` : item.price}}
@@ -32,7 +28,7 @@
 		<view class="bottom-mat"></view>
 		<view class="bottom">
 			<view class="caption">总计</view>
-			<view class="price">￥<text>{{info.total}}</text></view>
+			<view class="price">￥<text>{{Number(info.total).toFixed(2)}}</text></view>
 		</view>
 	</view>
 </template>
@@ -45,7 +41,7 @@
 			}
 		},
 		onLoad(e) {
-			this.info = JSON.parse(e.obj)
+			if (e && e.info) this.info = JSON.parse(e.info)
 		},
 		methods: {
 

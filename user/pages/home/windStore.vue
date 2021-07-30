@@ -13,28 +13,33 @@
 					</view>
 				</view>
 				<view class="btn-group">
-					<image class="btn" :src="`${ossUrl}/common/location-big.png`" @click="openMap(item.lat,item.lon)"></image>
-					<image class="btn" :src="`${ossUrl}/common/phone-big.png`" @click="phoneCall(item.memberPhone)"></image>
+					<image class="btn" :src="`${ossUrl}/common/location-big.png`" @click="openMap(item.lat,item.lon)">
+					</image>
+					<image class="btn" :src="`${ossUrl}/common/phone-big.png`" @click="phoneCall(item.memberPhone)">
+					</image>
 				</view>
 			</view>
 			<view class="info">
 				<view class="bar">
 					<image class="icon" :src="`${ossUrl}/common/icon-time.png`"></image>
-					<view class="description">营业时间：{{item.beginTime}}-{{item.endTime}}</view>
+					<view class="description">营业时间：{{item.beginTime || '暂无'}}-{{item.endTime || '暂无'}}</view>
 				</view>
 				<view class="bar">
 					<image class="icon" :src="`${ossUrl}/home/icon-phone.png`"></image>
-					<view class="description">电话号码：<text @click="phoneCall(item.memberPhone)">{{item.memberPhone}}</text></view>
+					<view class="description">电话号码：<text
+							@click="phoneCall(item.memberPhone)">{{item.memberPhone}}</text></view>
 				</view>
 				<view class="bar">
 					<image class="icon" :src="`${ossUrl}/home/icon-message.png`"></image>
-					<view class="description" @click="$open('/pages/common/storeComment?id='+item.id)">评论：{{item.evaluationNumber}}条</view>
+					<view class="description" @click="$open('/pages/common/storeComment?id='+item.id)">
+						评论：{{item.evaluationNumber}}条</view>
 					<view class="arrow" @click="$open('/pages/common/storeComment')"></view>
 				</view>
 				<view class="bar">
 					<image class="icon" :src="`${ossUrl}/common/icon-home-black.png`"></image>
-					<view class="description">门店地址：<text @click="openMap(item.lat,item.lon)">{{item.memberAddress}}</text></view>
-				</view> 
+					<view class="description">门店地址：<text
+							@click="openMap(item.lat,item.lon)">{{item.memberAddress}}</text></view>
+				</view>
 			</view>
 		</view>
 	</view>
@@ -42,36 +47,38 @@
 
 <script>
 	// import {} from '../../apis/shop.js'
-	import {memberShopPageQuery} from '../../apis/memberShop.js'
+	import {
+		memberShopPageQuery
+	} from '../../apis/memberShop.js'
 	export default {
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
-				page:1,
-				size:10,
-				list:[]
+				page: 1,
+				size: 10,
+				list: []
 			}
 		},
 		onLoad() {
 			this.memberShopPageQuery()
 		},
 		methods: {
-		async memberShopPageQuery(){
-			let data={
-				page:this.page,
-				size:this.size
-			}
-			const [err,res] = await memberShopPageQuery()
-			if(err) return
-			console.log(res.data.list)
-			 if(res.data.list.length==0){
-				 
-			 }else{
-				for (let i =0;i<res.data.list.length;i++) {
-					this.list.push(res.data.list[i])
+			async memberShopPageQuery() {
+				let data = {
+					page: this.page,
+					size: this.size
 				}
-			 }
-		},
+				const [err, res] = await memberShopPageQuery()
+				if (err) return
+				console.log(res.data.list)
+				if (res.data.list.length == 0) {
+
+				} else {
+					for (let i = 0; i < res.data.list.length; i++) {
+						this.list.push(res.data.list[i])
+					}
+				}
+			},
 			// 打电话
 			phoneCall(e) {
 				uni.makePhoneCall({
@@ -79,24 +86,24 @@
 				})
 			},
 			// 打开地图
-			async openMap(q,e) {
+			async openMap(q, e) {
 				console.log(q)
 				console.log(e)
 				// 获取位置
-				
 
-				
-				 uni.openLocation({
-				            latitude:parseFloat(q),
-				            longitude:parseFloat(e),
-				            success: function (e) {
-								console.log(e)
-				                console.log('success');
-				            },
-							fail:function(e){
-									console.log(e)
-							}
-				        });
+
+
+				uni.openLocation({
+					latitude: parseFloat(q),
+					longitude: parseFloat(e),
+					success: function(e) {
+						console.log(e)
+						console.log('success');
+					},
+					fail: function(e) {
+						console.log(e)
+					}
+				});
 			}
 		}
 	}
@@ -109,7 +116,7 @@
 		padding: 40rpx;
 
 		.store-card {
-			@include box(670rpx, 468rpx, #fff);
+			@include box-w(670rpx, #fff);
 			border-radius: 20rpx;
 			box-shadow: 0 0 8rpx 0 rgba(114, 141, 244, 0.25);
 			padding: 44rpx 40rpx 40rpx;
@@ -179,6 +186,7 @@
 					}
 
 					.description {
+						max-width: 540rpx;
 						@include font-set(28rpx, #000);
 						line-height: 40rpx;
 						margin-left: 20rpx;

@@ -111,6 +111,7 @@
 			return {
 				ossUrl: this.$ossUrl, // oss
 				mode: '', // 模式 edit:编辑模式 readonly:只读模式
+				from: '', // order  orderDetail
 				orderId: '', // 订单id
 				vehicleId: '', // 车型id
 				carNumber: '', // 车牌号
@@ -126,6 +127,7 @@
 			if (e && e.orderId) this.orderId = e.orderId
 			if (e && e.vehicleId) this.vehicleId = e.vehicleId
 			if (e && e.mode) this.mode = e.mode
+			if (e && e.from) this.from = e.from
 			this.vehicleVehiclePreview()
 		},
 		methods: {
@@ -170,6 +172,7 @@
 				setTimeout(() => {
 					this.$open('/pages/common/contract', {
 						mode: 'edit',
+						from: this.from,
 						vehicleId: this.vehicleId,
 						orderId: this.orderId
 					})
