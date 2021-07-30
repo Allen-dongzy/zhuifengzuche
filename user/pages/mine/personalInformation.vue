@@ -10,7 +10,7 @@
 		<view class="flexBox">
 			<view class="title">身份证号</view>
 			<view class="value">
-				<input v-model="localIdCard" :maxlength="18" type="number" placeholder-class="input"
+				<input v-model="localIdCard" :maxlength="18" type="text" placeholder-class="input"
 					placeholder="填写身份证号" />
 			</view>
 		</view>

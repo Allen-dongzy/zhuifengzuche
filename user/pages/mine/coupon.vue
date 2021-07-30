@@ -122,12 +122,11 @@
 			},
 			// 选择优惠券
 			selCouponById(index) {
-				let pages = getCurrentPages() //获取所有页面栈实例列表
-				let prevPage = pages[pages.length - 2] //上一页页面实例
-				prevPage.$vm.couponId = this.couponList[index].id //修改上一页data里面的tagIndex 参数值
-				uni.navigateBack({ //uni.navigateTo跳转的返回，默认1为返回上一级
-					delta: 1
+				uni.$emit('couponUpdate', {
+					couponId: this.couponList[index].id,
+					price: this.couponList[index].discountAmount
 				})
+				this.$close()
 			}
 		}
 	}

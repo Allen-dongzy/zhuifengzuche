@@ -190,7 +190,7 @@
 	}, {
 		"path": "pages/mine/invoiceInfo",
 		"style": {
-			"navigationBarTitleText": "发票详情"
+			"navigationBarTitleText": ""
 		}
 	}, {
 		"path": "pages/common/login",
@@ -325,7 +325,7 @@
 			"path": "pages/order/order"
 		}, {
 			"name": "dzy", // dzy
-			"path": "pages/order/costDetail"
+			"path": "pages/common/contract"
 		}]
 	}
 }

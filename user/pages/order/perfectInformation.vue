@@ -10,7 +10,7 @@
 			</view>
 			<view class="item">
 				<view class="name">身份证号</view>
-				<input v-model="localIdCard" :maxlength="18" type="number" placeholder="填写身份证号"
+				<input v-model="localIdCard" :maxlength="18" type="text" placeholder="填写身份证号"
 					placeholder-class="place-input" />
 			</view>
 			<view class="item">

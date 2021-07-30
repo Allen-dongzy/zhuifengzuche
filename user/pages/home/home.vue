@@ -57,12 +57,12 @@
 				<view class="time-box end-time">
 					<view class="date">{{carAlsoDateShow}}</view>
 					<view class="time" v-show="carAlsoTimeShow || carAlsoDayShow">
-						<text v-show="carAlsoTimeShow">{{carAlsoTimeShow}}</text>
 						<text v-show="carAlsoDayShow">{{carAlsoDayShow}}</text>
+						<text v-show="carAlsoTimeShow">{{carAlsoTimeShow}}</text>
 					</view>
 				</view>
 			</view>
-			<view v-show="remoteSwitch" class="info">*异地还车调度费3元/公里；22:00-07:00取还车，将收取￥40/次夜间服务费</view>
+			<view v-show="remoteSwitch" class="info">*异地还车调度费3元/公里；22:00-07:00取还车，将收取￥50/次夜间服务费</view>
 			<view class="toast" @click="openProcessPopup">
 				<image class="sesame" :src="`${ossUrl}/home/sesame.png`"></image>芝麻分达<text>550</text>即可享受押金双免租车 >
 			</view>
@@ -76,6 +76,7 @@
 				<image class="go" :src="`${ossUrl}/home/go.png`"></image>
 			</view>
 		</view>
+		<view v-show="false" class="bottom-mat"></view>
 		<view class="bottom">
 			<view class="item" @click="$open('/pages/common/joinInvestment')">
 				<image class="icon" :src="`${ossUrl}/home/join.png`" mode="heightFix"></image>
@@ -290,6 +291,19 @@
 				}]
 				const checkRes = validator(checkList, this.$toast)
 				if (checkRes.status !== 1000) return
+				const currentTimeStamp = Date.now()
+				const takeCarTimeStamp = new Date(this.takeCarTime).getTime()
+				if (takeCarTimeStamp < currentTimeStamp) {
+					this.$toast('送车时间小于当前时间！')
+					return
+				}
+				if (!this.$storage.get('token')) {
+					this.$toast('请前往登录！')
+					setTimeout(() => {
+						this.$open('/pages/common/login')
+					}, 500)
+					return
+				}
 				const params = {
 					takeCarDateShow: this.takeCarDateShow,
 					takeCarDayShow: this.takeCarDayShow,
@@ -376,7 +390,6 @@
 				})
 				// 选择地点
 				uni.$on('checkAddress', e => {
-					console.log(e)
 					switch (e.addressMode) {
 						case 'takeCar':
 							this.takeCarAddress = JSON.parse(e.address)
@@ -602,9 +615,23 @@
 			}
 		}
 
+		.bottom-mat {
+			height: 106rpx;
+		}
+
 		.bottom {
+			@include box-w(100%, #fff);
+			padding-top: 20rpx;
+			padding-bottom: 40rpx;
 			@include flex-center;
-			margin-bottom: 60rpx;
+
+			&.ac {
+				position: fixed;
+				bottom: 0;
+				left: 50%;
+				z-index: 9;
+				transform: translateX(-50%);
+			}
 
 			.item {
 				@include flex-center;

@@ -217,7 +217,7 @@
 			}
 
 			.store-card {
-				@include box(670rpx, 468rpx, #fff);
+				@include box-w(670rpx, #fff);
 				border-radius: 20rpx;
 				box-shadow: 0 0 8rpx 0 rgba(114, 141, 244, 0.25);
 				padding: 44rpx 40rpx 40rpx;
@@ -287,6 +287,7 @@
 						}
 
 						.description {
+							max-width: 540rpx;
 							@include font-set(28rpx, #000);
 							line-height: 40rpx;
 							margin-left: 20rpx;

@@ -20,7 +20,8 @@
 				@click="$open('/pages/order/orderDetail', {id: item.id})">
 				<view class="item-header">
 					<view class="name-box">
-						<view class="name">{{item.carModelName}}</view>
+						<view class="name">
+							{{item.orderStatus === 0 ? item.carModelName.split('|')[0] : item.carModelName}}</view>
 						<view v-show="item.orderStatus === 0"
 							:class="['label-card', {'orange': item.orderStatus === 0}]">
 							<view class="top"></view>

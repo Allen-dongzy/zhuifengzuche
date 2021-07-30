@@ -7,9 +7,15 @@
 				</image>
 			</view>
 			<view class="flex" style="margin: 30rpx 0px;">
-				<view class="num">{{item.cardNumber}}</view>
+				<view class="num" v-for="(inner, sub) in item.bandSections" :key="sub">
+					<text v-show="sub === item.bandSections.length-1">{{ inner }}</text>
+					<text class="star" v-show="sub < item.bandSections.length-1">{{ inner | bankFilter }}</text>
+				</view>
 			</view>
-			<view class="name">{{item.name}}</view>
+			<view class="bottom">
+				<text class="name">{{item.name}}</text>
+				<text class="default">设为默认</text>
+			</view>
 		</view>
 		<view v-show="dataStatus === 'noData'" class="empty">
 			<image class="bg" :src="`${ossUrl}/common/res-empty.png`"></image>
@@ -33,6 +39,15 @@
 				list: []
 			}
 		},
+		filters: {
+			bankFilter(bankSection) {
+				let nums = ''
+				for (let i = 0; i < bankSection.length; i++) {
+					nums += '*'
+				}
+				return nums
+			}
+		},
 		onLoad(e) {
 			if (e && e.mode) this.mode = e.mode
 			this.receiptPaymentBankList()
@@ -48,6 +63,9 @@
 					else this.dataStatus = 'noData'
 					return
 				}
+				res.data.forEach(item => {
+					item.bandSections = this.getSection(item.cardNumber)
+				})
 				this.list = res.data
 				this.dataStatus = 'noMore'
 			},
@@ -66,6 +84,15 @@
 					info: JSON.stringify(this.list[index])
 				})
 				this.$close()
+			},
+			// 获取段落
+			getSection(cardNumber) {
+				const bandSections = []
+				cardNumber = cardNumber.toString()
+				for (let i = 0; i < cardNumber.length; i += 4) {
+					bandSections.push(cardNumber.slice(i, i + 4))
+				}
+				return bandSections
 			},
 			// 监听事件
 			eventListener() {
@@ -86,7 +113,7 @@
 		margin: auto;
 		border-radius: 20rpx;
 		margin-top: 20rpx;
-		padding: 30rpx;
+		padding: 30rpx 30rpx 0;
 	}
 
 	.flex {
@@ -97,10 +124,36 @@
 	.num {
 		font-size: 48rpx;
 		margin-right: 20rpx;
+
+		&~.num {
+			margin-left: 20rpx;
+		}
+
+		.star {
+			position: relative;
+			top: 8rpx;
+		}
+	}
+
+	.bottom {
+		width: 100%;
+		height: 102rpx;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 	}
 
 	.name {
+		height: 100%;
+		line-height: 102rpx;
 		color: #999999;
+		font-size: 28rpx;
+	}
+
+	.default {
+		height: 100%;
+		line-height: 102rpx;
+		color: #5A7EFF;
 		font-size: 28rpx;
 	}
 

@@ -18,7 +18,7 @@
 				<view v-show="carAlsoDateShow" class="caption">{{carAlsoDateShow}}</view>
 				<view v-show="!carAlsoDateShow" class="caption" @click="$toast('请选择还车日期')">选择日期</view>
 				<view v-show="carAlsoDay || carAlsoTime" class="sub-caption">
-					<text v-show="carAlsoTime">{{carAlsoTime}}</text><text v-show="carAlsoDay">{{carAlsoDay}}</text>
+					<text v-show="carAlsoTime">{{carAlsoDay}}</text><text v-show="carAlsoDay">{{carAlsoTime}}</text>
 				</view>
 				<view v-show="!carAlsoDay && !carAlsoTime" class="sub-caption" @click="$toast('请选择还车时间')">选择时间</view>
 			</view>

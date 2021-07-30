@@ -153,7 +153,12 @@
 					lon: this.areaList[this.acIndex].lng
 				}
 				const [err, res] = await deliveryFindDeliveryPage(params)
-				if (err) return
+				if (err) {
+					if (this.page > 1) this.dataStatus = 'noMore'
+					else this.dataStatus = 'noData'
+					this.requestKey = false
+					return
+				}
 				const {
 					requestKey,
 					dataStatus,

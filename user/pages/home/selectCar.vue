@@ -52,7 +52,7 @@
 					<view class="address-bar">
 						<image class="icon-home" :src="`${ossUrl}/home/icon-home.png`"></image>
 						<view class="address" @click.stop="openMap(index)">
-							门店地址：<text>{{item.memberShopAddress}}</text></view>
+							门店名称：<text>{{item.memberShopName}}</text></view>
 					</view>
 				</view>
 				<uni-load-more :status="dataStatus" />
@@ -73,7 +73,8 @@
 								<text>{{item.vehicleModelName}}</text>
 								<image v-show="acModel === index" class="hook" :src="`${ossUrl}/home/hook.png`"></image>
 							</view>
-							<uni-load-more :status="brandDataStatus"></uni-load-more>
+							<uni-load-more v-show="brandDataStatus==='noData'" :status="brandDataStatus">
+							</uni-load-more>
 						</scroll-view>
 					</view>
 					<view class="bottom-mat"></view>
