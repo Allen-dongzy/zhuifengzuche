@@ -490,7 +490,7 @@
 					sizeType: ['original', 'compressed'],
 					sourceType: ['camera', 'album'], //camera 拍照 album 相册
 					success: async (res) => {
-						console.log('ppppp')
+						console.log('ppppp') 
 						console.log(res)
 						const [err, rese] = await uploadFiles([res.tempFilePaths[0]]);//微信
 						// const [err, rese] = await uploadFiles([res.apFilePathsV2[0]]);//支付宝
