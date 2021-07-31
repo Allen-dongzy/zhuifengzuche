@@ -8,17 +8,17 @@
 			<view class="">选择车型</view>
 			<view class="selectBox">
 				<view style="width: 80%;">
-					<picker @change="bindPickerChange" :value="index" :range="list" :range-key="'name'"
+					<picker  @change="bindPickerChange" :value="index" :range="list" :range-key="'name'"
 						class="pickerBox">
 						<label v-if="!log1" class="pickerText">{{carObj!=''?carObj.vehicleModelName:'请选择'}}</label>
 						<label v-else class="pickerText">{{list[index].name}}</label>
 					</picker>
 				</view>
 				<view style="width:15%;">
-					<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode=""></image>
+					<image mode="aspectFill" style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" ></image>
 				</view>
 			</view>
-		</view>
+		</view> 
 		<view class="flexBoxContent">
 			<view class="">车&ensp;牌&ensp;号</view>
 			<input class="inpBox" style="width: 70%;" type="text" v-model="carNum" placeholder="请输入车牌号" />
@@ -32,7 +32,7 @@
 					<view class="colorBox" :style="{backgroundColor:boxColor}"></view>
 				</view>
 				<view style="width:15%;">
-					<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode=""></image>
+					<image mode="aspectFill" style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" ></image>
 				</view>
 			</view>
 		</view>
@@ -48,7 +48,7 @@
 					</picker>
 				</view>
 				<view style="width:15%;">
-					<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode=""></image>
+					<image mode="aspectFill" style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" ></image>
 				</view>
 			</view>
 		</view>
@@ -65,15 +65,15 @@
 
 				</view>
 				<view style="width:15%;">
-					<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode=""></image>
+					<image mode="aspectFill" style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" ></image>
 				</view>
 			</view>
 		</view>
 		<view class="lineBox"></view>
 		<view class="title">行驶证照片</view>
 		<view class="idCard">
-			<image class="imgBox" @click="getImg(1)" :src="idCard1 || $util.fileUrl('/driver1.png')" mode=""></image>
-			<image class="imgBox" @click="getImg(2)" :src="idCard2 ||$util.fileUrl('/driver2.png')" mode=""></image>
+			<image mode="aspectFill" class="imgBox" @click="getImg(1)" :src="idCard1 || $util.fileUrl('/driver1.png')" ></image>
+			<image mode="aspectFill" class="imgBox" @click="getImg(2)" :src="idCard2 ||$util.fileUrl('/driver2.png')" ></image>
 		</view>
 
 
@@ -111,7 +111,7 @@
 
 			</view>
 			<view style="width:15%;">
-				<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode=""></image>
+				<image mode="aspectFill" style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" ></image>
 			</view>
 		</view>
 
@@ -127,7 +127,7 @@
 
 			</view>
 			<view style="width:15%;">
-				<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode=""></image>
+				<image mode="aspectFill" style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" ></image>
 			</view>
 		</view>
 
@@ -154,7 +154,7 @@
 
 				</view>
 				<view style="width:15%;">
-					<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode=""></image>
+					<image mode="aspectFill" style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" ></image>
 				</view>
 			</view>
 		</view>
@@ -163,13 +163,13 @@
 			<view v-for="(item,index) in CompulsoryList" :key="index"
 				style="display: inline-block;width: 20%;margin: 0px 2%;">
 				<view style="position: relative;">
-					<image style="height:160rpx;width: 160rpx;" :src="item" mode=""></image>
-					<image style="position: absolute;height: 36rpx;width: 36rpx;top: -20rpx;left:140rpx;"
-						:src="$util.fileUrl('/lancha.png')" @click="delImg(1,index)" mode=""></image>
+					<image mode="aspectFill" style="height:160rpx;width: 160rpx;" :src="item" ></image>
+					<image mode="aspectFill" style="position: absolute;height: 36rpx;width: 36rpx;top: -20rpx;left:140rpx;"
+						:src="$util.fileUrl('/lancha.png')" @click="delImg(1,index)" ></image>
 				</view>
 			</view>
 			<view style="display: inline-block;width: 20%;margin: 0px 2%;" @click="getImgMore(3)">
-				<image style="height:160rpx;width: 160rpx;" :src="$util.fileUrl('/guanxi.png')" mode=""></image>
+				<image mode="aspectFill" style="height:160rpx;width: 160rpx;" :src="$util.fileUrl('/guanxi.png')" ></image>
 			</view>
 		</view>
 
@@ -198,7 +198,7 @@
 
 				</view>
 				<view style="width:15%;">
-					<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode=""></image>
+					<image mode="aspectFill" style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" ></image>
 				</view>
 			</view>
 		</view>
@@ -207,14 +207,14 @@
 			<view v-for="(item,index) in businessList" :key="index"
 				style="display: inline-block;width: 20%;margin: 0px 2%;">
 				<view style="position: relative;">
-					<image style="height:160rpx;width: 160rpx;" :src="item" mode=""></image>
-					<image @click="delImg(2,index)"
+					<image mode="aspectFill" style="height:160rpx;width: 160rpx;" :src="item" ></image>
+					<image mode="aspectFill" @click="delImg(2,index)"
 						style="position: absolute;height: 36rpx;width: 36rpx;top: -20rpx;left:140rpx;"
-						:src="$util.fileUrl('/lancha.png')" mode=""></image>
+						:src="$util.fileUrl('/lancha.png')" ></image>
 				</view>
 			</view>
 			<view style="display: inline-block;width: 20%;margin: 0px 2%;" @click="getImgMore(4)">
-				<image style="height:160rpx;width: 160rpx;" :src="$util.fileUrl('/guanxi.png')" mode=""></image>
+				<image mode="aspectFill" style="height:160rpx;width: 160rpx;" :src="$util.fileUrl('/guanxi.png')" ></image>
 			</view>
 		</view>
 
@@ -229,13 +229,13 @@
 			<view v-for="(item,index) in InsuranceList" :key="index"
 				style="display: inline-block;width: 20%;margin: 0px 2%;">
 				<view style="position: relative;">
-					<image style="height:160rpx;width: 160rpx;" :src="item" mode=""></image>
-					<image style="position: absolute;height: 36rpx;width: 36rpx;top: -20rpx;left:140rpx;"
-						:src="$util.fileUrl('/lancha.png')" @click="delImg(3,index)" mode=""></image>
+					<image mode="aspectFill" style="height:160rpx;width: 160rpx;" :src="item" ></image>
+					<image mode="aspectFill" style="position: absolute;height: 36rpx;width: 36rpx;top: -20rpx;left:140rpx;"
+						:src="$util.fileUrl('/lancha.png')" @click="delImg(3,index)" ></image>
 				</view>
 			</view>
 			<view style="display: inline-block;width: 20%;margin: 0px 2%;" @click="getImgMore(5)">
-				<image style="height:160rpx;width: 160rpx;" :src="$util.fileUrl('/guanxi.png')" mode=""></image>
+				<image mode="aspectFill" style="height:160rpx;width: 160rpx;" :src="$util.fileUrl('/guanxi.png')" ></image>
 			</view>
 		</view>
 
@@ -490,8 +490,11 @@
 					sizeType: ['original', 'compressed'],
 					sourceType: ['camera', 'album'], //camera 拍照 album 相册
 					success: async (res) => {
+						console.log('ppppp')
 						console.log(res)
-						const [err, rese] = await uploadFiles([res.tempFilePaths[0]]);
+						const [err, rese] = await uploadFiles([res.tempFilePaths[0]]);//微信
+						// const [err, rese] = await uploadFiles([res.apFilePathsV2[0]]);//支付宝
+						console.log('乒乒乓乓')
 						console.log(rese)
 						if (err) return
 						console.log(rese)
