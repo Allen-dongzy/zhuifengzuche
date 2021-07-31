@@ -79,7 +79,7 @@
 		<view class="footer-mat"></view>
 		<view class="footer">
 			<view class="info">
-				总计 <text class="price">￥<text class="price-big">{{allprice}}</text></text>
+				总计 <text class="price">￥<text class="price-big">{{allprice.toFixed(2)}}</text></text>
 			</view>
 			<view v-show="mode===0" class="look">查看记录</view>
 			<view v-show="mode===1" class="btn" @click="settlement">确认结算</view>

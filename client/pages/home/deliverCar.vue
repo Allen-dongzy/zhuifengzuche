@@ -23,7 +23,7 @@
 			<image v-show="payinfo.otherFeesPickCarPrice==0" style="width:48%;height: 186rpx;"
 				:src="$util.fileUrl('/shoukuan.png')" @click="$open('/pages/home/otherPay',{orderId:info.order})"
 				mode=""></image>
-				
+
 			<view class="pricebox" v-show="payinfo.otherFeesPickCarPrice!=0">
 				<view class="flexBox">
 					<view class="priceText">其他收款</view>
@@ -34,10 +34,11 @@
 				<view style="font-size: 20rpx;margin-top: 20rpx;">¥<text
 						style="font-size: 48rpx;">{{payinfo.otherFeesPickCarPrice}}</text></view>
 			</view>
-			
-		 <!-- 押金 -->
+
+			<!-- 押金 -->
 			<image v-show="payinfo.retreatRentalDeposit==0" style="width:48%;height: 186rpx;margin-left: 4%;"
-				:src="$util.fileUrl('/shoukuan1.png')"  @click="$open('/pages/home/payCode',{price:payinfo.rentalDeposit,orderId:info.order,type:2})"></image>
+				:src="$util.fileUrl('/shoukuan1.png')"
+				@click="$open('/pages/home/payCode',{price:payinfo.rentalDeposit,orderId:info.order,type:2})"></image>
 			<view class="pricebox" style="margin-left: 4%;" v-show="payinfo.retreatRentalDeposit!=0">
 				<view class="flexBox">
 					<view class="priceText">预收冻结</view>
@@ -69,6 +70,9 @@
 	import {
 		uploadFiles
 	} from '@/apis/oss';
+	import {
+		throttle
+	} from '@/utils/tools';
 
 	import {
 		deliveryVehicleGet,
@@ -85,52 +89,59 @@
 				driver2: '',
 				info: '',
 				payinfo: '',
-				mark:'',
-				type:'',
+				mark: '',
+				type: '',
 			}
 		},
 		onLoad(e) {
 			console.log(e)
-			if(e.type==1){
-				this.type==1
+			if (e.type == 1) {
+				this.type = 1
 				this.info = JSON.parse(e.obj)
 				this.deliveryVehicleGet(JSON.parse(e.obj).order)
-			}else{
-				this.type==2
+			} else {
+				this.type = 2
 				this.info = JSON.parse(e.obj)
 				this.getCertificates(JSON.parse(e.obj).order)
 			}
 		},
 		methods: {
-			async sure() {
-				if(this.payinfo.depositType==1){
-					var data={
-						idCardBack:this.idCard2,
-						idCardPositive:this.idCard1,
-						drivingBack:this.driver2,
-						drivingPositive:this.driver1,
-						retreatRentalDeposit:this.payinfo.rentalDeposit,
-						remarks:this.mark,
-						otherFeesPickCarPrice:this.payinfo.otherFeesPickCarPrice,
-						orderId:this.info.order,
-						depositType:this.payinfo.depositType
+
+			sure: throttle(async function() {
+				if (this.payinfo.depositType == 1) {
+					var data = {
+						idCardBack: this.idCard2,
+						idCardPositive: this.idCard1,
+						drivingBack: this.driver2,
+						drivingPositive: this.driver1,
+						retreatRentalDeposit: this.payinfo.rentalDeposit,
+						remarks: this.mark,
+						otherFeesPickCarPrice: this.payinfo.otherFeesPickCarPrice,
+						orderId: this.info.order,
+						depositType: this.payinfo.depositType
 					}
-				}else{
-				var data={
-					idCardBack:this.idCard2,
-					idCardPositive:this.idCard1,
-					drivingBack:this.driver2, 
-					drivingPositive:this.driver1,
-					retreatRentalDeposit:this.payinfo.rentalDeposit,
-					remarks:this.mark,
-					orderId:this.info.order,
-					depositType:this.payinfo.depositType
-				}	
+				} else {
+					var data = {
+						idCardBack: this.idCard2,
+						idCardPositive: this.idCard1,
+						drivingBack: this.driver2,
+						drivingPositive: this.driver1,
+						retreatRentalDeposit: this.payinfo.rentalDeposit,
+						remarks: this.mark,
+						orderId: this.info.order,
+						depositType: this.payinfo.depositType
+					}
 				}
 				const [err, res] = await deliveryVehicleSave(data)
 				if (err) return
 				console.log(res)
-			},
+				this.$toast("操作成功")
+				setTimeout(() => {
+					uni.navigateBack({
+						delta: 1
+					})
+				}, 800)
+			}),
 			updataImg(e) {
 				uni.chooseImage({
 					count: 1,
@@ -152,7 +163,7 @@
 						}
 					},
 					fail() {
-			
+
 					}
 				})
 			},
@@ -166,20 +177,28 @@
 				console.log(res)
 				this.payinfo = res.data
 			},
-			
+
 			async getCertificates(e) {
 				console.log(e)
 				const [err, res] = await getCertificates(e)
 				if (err) return
 				console.log(res)
 				this.payinfo = res.data
-				this.idCard1=this.payinfo.idCardPositive
-				this.idCard2=this.payinfo.idCardBack
-				this.driver1=this.payinfo.drivingPositive
-				this.driver2=this.payinfo.drivingBack
-				this.mark=this.payinfo.remarks
+				this.idCard1 = this.payinfo.idCardPositive
+				this.idCard2 = this.payinfo.idCardBack
+				this.driver1 = this.payinfo.drivingPositive
+				this.driver2 = this.payinfo.drivingBack
+				this.mark = this.payinfo.remarks
 			},
-			
+			async getmoney(e) {
+
+				const [err, res] = await getCertificates(this.info.order)
+				if (err) return
+				console.log(res)
+				this.payinfo = res.data
+				this.mark = this.payinfo.remarks
+			},
+
 		}
 	}
 </script>

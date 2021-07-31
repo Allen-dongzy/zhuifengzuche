@@ -42,7 +42,6 @@
 
 		<!-- 修改金额弹窗 -->
 		<view v-if="money==true" class="Mask">
-
 		</view>
 		<view v-if="money==true" class="box1">
 			<view style="width: 90%;margin: auto;font-size:32rpx;padding: 20rpx 0rpx;">修改金额</view>
@@ -59,9 +58,8 @@
 				</view>
 			</view>
 		</view>
-
-		<button style=" color: white;
-			width: 80%;
+		
+		<button v-show="infotype.type==0" style="color: white;width: 80%;
 					margin: auto;
 					margin-top: 50rpx;
 				    background-color: #5A7EFF;
@@ -70,10 +68,10 @@
 					line-height: 96rpx;
 				    height: 96rpx;" type="default" @click="getMoney">确认收款</button>
 
-<!-- 		<view class="btn-box" v-show="info.examineStatus==2">
-			<view class="btn reject">拒绝</view>
-			<view class="btn confirm">通过</view>
-		</view> -->
+		<view class="btn-box" v-show="infotype.type==1||roles[0].id==4 ">
+			<view class="btn reject"  @click="changegetMoney(1)">拒绝</view>
+			<view class="btn confirm" @click="changegetMoney(2)">通过</view>
+		</view>
 
 	</view>
 </template>
@@ -94,12 +92,14 @@
 			return {
 				money: false,
 				info:'',
-				price:''
+				price:'',
+				infotype:'',
 			}
 		},
 		onLoad(e) {
 			console.log(e)
 			console.log(JSON.parse(e.obj))
+			this.infotype=JSON.parse(e.obj)
 			this.id = JSON.parse(e.obj).id
 			this.findOneById()
 		},
@@ -129,6 +129,39 @@
 						transactionType:this.info.transactionType,
 						money:this.info.money
 					}
+				
+				
+				const [err,res] = await receiptPaymentAudit(data)
+				if(err) return
+				console.log(res)
+				this.$toast("操作成功")
+				setTimeout(() => {
+					uni.navigateBack({
+						delta:1
+					})
+				}, 800)
+				
+			
+			}),
+			
+			changegetMoney:throttle(async function(e){
+				if(e==1){
+					var  data={
+						id:this.info.id,
+						examineStatus:3,
+						transactionType:this.info.transactionType,
+						money:this.info.money,
+						type:1
+					}
+				}else{
+					var  data={
+						id:this.info.id,
+						examineStatus:this.info.examineStatus,
+						transactionType:this.info.transactionType,
+						money:this.info.money,
+						type:1
+					}
+				}
 				
 				
 				const [err,res] = await receiptPaymentAudit(data)

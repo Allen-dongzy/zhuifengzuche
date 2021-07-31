@@ -33,7 +33,7 @@
 			<view class="flexBox">
 				<view class="title">客户手机号</view>
 				<view class="item">
-					<input class="inpBox" type="text" v-model="phone" placeholder="请输入客户手机号" />
+					<input class="inpBox"  maxlength="11" type="text" v-model="phone" placeholder="请输入客户手机号" />
 				</view>
 			</view>
 			<view class="flexBoxContent">

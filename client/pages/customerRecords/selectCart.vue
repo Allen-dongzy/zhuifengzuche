@@ -71,7 +71,8 @@
 		debounce
 	} from '@/utils/tools'
 	import {
-		vehicleQueryAll
+		vehicleQueryAll,
+		findAvailable
 	} from '@/apis/vehicle'
 	import {
 		vehicleBrandQueryAll
@@ -114,13 +115,24 @@
 				}], //状态list
 				carStatusIndex: -1, // 状态
 				brandList: [], //品牌列表
-				brandIndex: -1 // 品牌
+				brandIndex: -1 ,// 品牌
+				shopid:'',//门店id
+				time:'',
 			}
 		},
-		onLoad() {
-			this.getlist()
+		onLoad(e) {
+			console.log(e)
 			this.getType()
 			this.getBrand()
+			if(e.type!=undefined){
+				this.shopid=e.shopid
+				this.time=e.time
+				this.findAvailable()
+			}else{
+				this.getlist()
+			
+			}
+
 		},
 		onReachBottom() {
 			if (!this.requesKey) return
@@ -128,6 +140,17 @@
 			this.getlist()
 		},
 		methods: {
+			//获取可以使用的车辆
+			
+		async	findAvailable(){
+			let data={
+				date:this.time,
+				shopId:this.shopid
+			}
+				const [err, res] = await findAvailable(data)
+				if (err) return
+			this.list=res.data
+			},
 			// 显示模态框
 			showModal(e) {
 				this.modalName = e.currentTarget.dataset.target

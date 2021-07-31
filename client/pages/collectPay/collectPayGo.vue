@@ -2,7 +2,7 @@
 	<view class="">
 		<view class="flexbox" v-show="info.platform==1">
 			<view class="titleLeft">日期</view>
-			<view class="titleRight">{{info.localDate.slice(0,10)}}</view>
+			<view class="titleRight">{{info.localDate}}</view>
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">平台</view>
@@ -40,7 +40,7 @@
 
 
 		<view class="upimgbox">
-			<view class="imglistbox" v-for="(item,index) in info.image">
+			<view class="imglistbox" v-for="(item,index) in info.image" :key='index'>
 				<image style="width:160rpx;height:160rpx;" :src="item" mode=""></image>
 			</view>
 		</view>
@@ -61,7 +61,7 @@
 					<text style="color:#999999;font-size: 20rpx;">(辅助财务审核)</text>
 				</view>
 			
-				<view class="imglistbox" v-for="(item,index) in list">
+				<view class="imglistbox" v-for="(item,index) in list" :key='index'>
 					<image style="width:160rpx;height:160rpx;" :src="item" mode=""></image>
 					<image class="lanClose" :src="$util.fileUrl('/lancha.png')" @click="delImg(index)" mode=""></image>
 				</view>
@@ -73,7 +73,6 @@
 				<!-- 审核未通过 -->
 				<view class="reTitle" v-show="info.examineStatus==3">拒绝原因：{{info.reason}}</view>
 			</view>
-			
 		</view>
 
 
@@ -84,7 +83,7 @@
 				<text style="color:#999999;font-size: 20rpx;">(辅助财务审核)</text>
 			</view>
 
-			<view class="imglistbox" v-for="(item,index) in list">
+			<view class="imglistbox" v-for="(item,index) in list" :key='index'>
 				<image style="width:160rpx;height:160rpx;" :src="item" mode=""></image>
 				<!-- <image class="lanClose" :src="$util.fileUrl('/lancha.png')" @click="delImg(index)" mode=""></image> -->
 			</view>
@@ -94,16 +93,31 @@
 		
 		
 		
-		<!-- 待审核 -->
-		<button class="sure" type="default" @click="take(1)" v-show="info.examineStatus==0" >提交审核</button>
+<view v-show="infotype.type==0">
+	<!-- 待审核 -->
+	<button class="sure" type="default" @click="take(1)" v-show="info.examineStatus==0" >提交审核</button>
+	<!-- 审核未通过 -->
+	<button class="sure" type="default"  v-show="info.examineStatus==3" @click="take(1)">重新提交</button>
+	<!-- 普通店主审核 -->
+	<view class="colorTitle" style="margin: 20rpx 0rpx 60rpx 0rpx;" v-show="info.examineStatus==2 && roles[0].id==4">
+		<view class="setnull" @click="refuseBtn">拒绝</view>
+		<view class="pay" @click="take(3)">付款</view>
+	</view>
+</view>
 
-		<!-- 审核未通过 -->
-		<button class="sure" type="default"  v-show="info.examineStatus==3" @click="take(1)">重新提交</button>
-		<!-- 店主审核 -->
-		<view class="colorTitle" style="margin: 20rpx 0rpx 60rpx 0rpx;" v-show="info.examineStatus==2 && roles[0].id==4">
-			<view class="setnull" @click="refuseBtn">拒绝</view>
-			<view class="pay" @click="take(3)">付款</view>
-		</view>
+
+<view v-show="infotype.type==1">
+	<!-- 换车店主审核 -->
+	<view class="colorTitle" style="margin: 20rpx 0rpx 60rpx 0rpx;" v-show="roles[0].id==4">
+		<view class="setnull" @click="refuseBtn">拒绝</view>
+		<view class="pay" @click="take(3)">通过</view>
+	</view>
+</view>
+
+
+
+
+
 
 		<!-- 拒绝弹窗 -->
 		<view v-if="refuse==true" class="Mask">
@@ -143,7 +157,7 @@
 				</view>
 			</view>
 		</view>
-
+		
 	</view>
 </template>
 
@@ -170,6 +184,7 @@
 				info: '',//数据详细
 				id: '',//数据id
 				reason:'',//拒绝理由
+				infotype:'',
 			}
 		},
 		computed: {
@@ -178,8 +193,9 @@
 		},
 		onLoad(e) {
 			console.log(e)
-			console.log(JSON.parse(e.obj))
+			console.log(JSON.parse(e.obj).type)
 			this.id = JSON.parse(e.obj).id
+			this.infotype=JSON.parse(e.obj)
 			this.findOneById()
 		},
 		methods: {

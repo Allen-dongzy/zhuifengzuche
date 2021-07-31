@@ -2,27 +2,44 @@
 	<view class="">
 		<view class="box">
 			<view class="content">
-				<view style="font-size: 28rpx;margin-top: 40rpx;">渝A·5231B</view>
-				<view style="margin-top: 12rpx;color: #999999;">大众 捷达</view>
+				<view style="font-size: 28rpx;margin-top: 40rpx;">{{info.carNumber}}</view>
+				<view style="margin-top: 12rpx;color: #999999;">{{info.brandName}} {{info.modelName}}</view>
 			</view>
 		</view>
-		<view class="flexBox"  v-for="(item,index) in list" :key="index">
-			<view class="title">{{item.name}}</view>
-			<view class="on-off"><switch :checked="item.status" @change="" /> </view>
+		<view class="flexBox"  v-for="(item,index) in info.platformVoList" :key="index">
+			<view class="title">{{item.thirdName}}</view>
+			<view class="on-off"><switch :checked="item.thirdStatus==1" @change="setOpen(index)" /> </view>
 		</view>
 
 	</view>
 </template>
 
 <script>
-	export default {
+	
+	import {
+		vehicleOTAOpen
+	} from '@/apis/vehicle'
+	export default { 
 		data() {
 			return {
-				list:[{name:'携程',status:true},{name:'飞猪',status:false},{name:'去哪儿',status:false}]
+				info:''
 			}
 		},
+		onLoad(e) {
+			this.info=JSON.parse(e.obj)
+		},
 		methods: {
-
+		async	setOpen(e){
+				console.log(e)
+				if(this.info.platformVoList[e].thirdStatus==0){
+					this.info.platformVoList[e].thirdStatus=1
+				}else{
+						this.info.platformVoList[e].thirdStatus=0
+				}
+				const [err,res] = await vehicleOTAOpen(this.info.id,this.info.platformVoList[e].id,this.info.platformVoList[e].thirdStatus)
+				if(err) return
+				this.$toast('修改成功') 
+			}
 		}
 	}
 </script>

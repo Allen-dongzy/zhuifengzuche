@@ -107,7 +107,7 @@
 								@tap.stop="toHomeLevel1('/pages/home/inspectionCollect?obj=',item)" :disabled="item.isPaymentIllegalDeposit==1">检验收车</button>
 							<button type="default" v-show="tabCheck==2" class="flex-center btn"
 								@tap.stop="toHomeLevel1('/pages/home/inspectionCollectInfo?obj=',item)" >收车详情</button>
-							<button type="default" v-show="tabCheck==2" class="flex-center btn bg-btn">退还押金</button>
+							<button type="default" v-show="tabCheck==2" class="flex-center btn bg-btn" @click.stop="backMoney(item.id)">退还押金</button>
 						</view>
 					</view>
 				</view>
@@ -125,6 +125,9 @@
 		getOrderStatus,
 		getOrderPageList
 	} from '@/apis/rentalOrder';
+	import {
+		refundOfIllegalDeposit
+	} from '@/apis/pay'
 
 	export default {
 		data() {
@@ -176,6 +179,11 @@
 		},
 		onLoad() {
 			this.getlist()
+		},
+		onShow() {
+			
+			this.orderList=[]
+	
 			this.getOrderList()
 		},
 		methods: {
@@ -220,6 +228,12 @@
 					}
 				}
 			},
+			
+			async	backMoney(e){
+					const [err,res]=await refundOfIllegalDeposit(e)
+					if(err) return
+					this.$toast('退还成功')
+				},
 
 			/**
 			 * 状态切换

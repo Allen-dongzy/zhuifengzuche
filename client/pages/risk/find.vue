@@ -1,8 +1,8 @@
 <template>
 	<view style="padding-top: 40rpx;">
 		<view class="box" ><input class="inpBox" type="text" v-model="name" placeholder="请输入查询对象的姓名" /> </view>
-		<view class="box"><input class="inpBox" type="text" v-model="phone" placeholder="请输入查询对象的手机号" /> </view>
-		<view class="box"><input class="inpBox" type="text" v-model="identityNum" placeholder="请输入查询对象的身份证号" /> </view>
+		<view class="box"><input class="inpBox" maxlength="11" type="text" v-model="phone" placeholder="请输入查询对象的手机号" /> </view>
+		<view class="box"><input class="inpBox" type="text" maxlength="18" v-model="identityNum" placeholder="请输入查询对象的身份证号" /> </view>
 		<view class="find" @click="findOne">查询</view>
 	</view>
 </template>
@@ -22,6 +22,16 @@
 		},
 		methods: {
 		async	findOne(){
+			if(this.name==""){
+				this.toast('请输入名字')
+				 return false
+			}else if(this.phone==""){
+				this.toast('请输入手机号')
+				 return false
+			}else if(this.identityNum==""){
+				this.toast('请输入身份证号')
+				 return false
+			}
 			let data={
 				name:this.name,
 				phone:this.phone,

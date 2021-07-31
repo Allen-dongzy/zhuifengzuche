@@ -229,6 +229,7 @@
 								<view style="font-size: 20rpx;">¥{{itemy.money}}</view>
 							</view>
 							<view v-if="itemy.planStatus==2" class="timecolorBox" style="background-color: #5A7EFF;">
+								
 								<view>{{itemy.planStartTime.slice(8,11)}}</view>
 								<view style="font-size: 20rpx;">¥{{itemy.money}}</view>
 							</view>
@@ -358,6 +359,9 @@
 				const [err, res] = await vehiclePlanInsert(data)
 				if (err) return
 				this.$toast("预留成功")
+				this.close()
+				this.planShow=false
+					this.vehicleSelectRentalPlanList()
 				console.log(res)
 			},
 			selectReserve(e) {
@@ -794,5 +798,12 @@
 		line-height: 96rpx;
 		margin-top: 40rpx;
 		margin-bottom: 20rpx;
+	}
+	.redLine {
+		height: 4rpx;
+		width: 24rpx;
+		background-color: #FC3736;
+		margin: auto;
+		margin-top: 10rpx;
 	}
 </style>

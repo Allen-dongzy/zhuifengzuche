@@ -68,7 +68,7 @@
 					:src="$util.fileUrl('/xiangshang.png')" @click="getpeopleInfo" mode=""></image>
 			</view>
 			<view class="flexBox">
-				<view class="moreContent" style="text-align: left;" @click="call(info.userPhone)">联系电话</view>
+				<view class="moreContent" style="text-align: left;" @click="phone(info.userPhone)">联系电话</view>
 				<view class="moreContent" style="color:#5A7EFF ;" @click="phone">{{info.userPhone}}</view>
 			</view>
 			<view v-show="peopleShow==true">
@@ -171,7 +171,7 @@
 						<view class="moreContent">{{info.invoiceRegisteredAddress}}</view>
 					</view>
 					<view class="flexBox">
-						<view class="moreTitle" @click="call(info.invoicePhone)">电话</view>
+						<view class="moreTitle" @click="phone(info.invoicePhone)">电话</view>
 						<view class="moreContent">{{info.invoicePhone}}</view>
 					</view>
 					<view class="flexBox">
@@ -210,30 +210,28 @@
 				placeholder="请输入备注信息" disabled="true" />
 		</view>
 		<!-- 换车 -->
-		<view class="flexBox" v-show="type==5 || type==1">
-			<image style="width: 40rpx;height: 40rpx;margin-left: 80%;" :src="$util.fileUrl('/huanche.png')"
-				@click="getmoneyInfo" mode=""></image>
-			<view class="moreContent" style="width: 10%;color: #5A7EFF;" @click="changeCar">换车</view>
-		</view>
+<!-- 		<view class="flexBox" v-show="type==5 || type==1">
+			<image style="width: 40rpx;height: 40rpx;margin-left: 80%;" :src="$util.fileUrl('/huanche.png')"></image>
+			<view class="moreContent" style="width: 10%;color: #5A7EFF;" @click="changeCar(info)">换车</view>
+		</view> -->
 		<view class="flexBox" v-show="type==100">
 			<view class="moreContent" style="width: 20%;color: #5A7EFF;margin-left: 55%;" @click="violation(1)">查看违章</view>
 			<view class="moreContent" style="width: 20%;color: #5A7EFF;" @click="violation(2)">添加违章</view>
 		</view>
 		<!-- 联系客户和出车检验 -->
 		<view class="flexBox" style="width: 90%;margin: 60rpx auto 30rpx auto;">
-			<image style="width: 32rpx;height: 32rpx;" :src="$util.fileUrl('/phone@2x.png')" @click="getmoneyInfo"
-				mode=""></image>
+			<image style="width: 32rpx;height: 32rpx;" :src="$util.fileUrl('/phone@2x.png')" @click="phone(info.userPhone)"></image>
 			<view style="color: #FFA05B;font-size: 24rpx;margin-left: 10rpx;">联系客户</view>
 			<view style="width: 75%;display: flex;align-items: center;justify-content: flex-end;">
 				<view v-show="type==5" class="lanbox" @click="deliverCar(2)">交车情况</view>
 				<view v-show="type==100" class="lanbox" @click="shoucheInfo">收车情况</view>
 				<!-- <view v-show="type==100" class="lanbox">结算佣金</view> -->
-				<view v-show="type==1" class="lanbox" :disabled="item.isCarTest==false" @click="goInspect()">出车检验</view>
+				<view v-show="type==1" class="lanbox"  @click="goInspect()">出车检验</view>
 				<view v-show="type==5 " class="lanbox" @click="jianyanshouche"
-					:disabled="item.isPaymentIllegalDeposit==1">检验收车</view>
+					:disabled="info.isPaymentIllegalDeposit==1">检验收车</view>
 				<view :disabled="info.isVehicleCertificates==true" v-show="type==1" @click="deliverCar(1)"
 					class="lanbox">交付车辆</view>
-				<view v-show="type==100" class="lanbox1">退还押金</view>
+				<view v-show="type==100" class="lanbox1" @click="backMoney">退还押金</view>
 			</view>
 			<!-- 待支付 按钮都不要    已取消 按钮都不要    已完成  100 结算 收车 退还      待收车 5 交车 检验       待送车 1 出车 交付-->
 		</view>
@@ -244,6 +242,9 @@
 	import {
 		orderInfo
 	} from '@/apis/rentalOrder'
+	import {
+		refundOfIllegalDeposit
+	} from '@/apis/pay'
 	export default {
 		data() {
 			return {
@@ -304,20 +305,19 @@
 					phoneNumber: e //仅为示例
 				});
 			},
-			changeCar() {
+			changeCar(e) {
+				
 				uni.navigateTo({
-					url: './changeCar',
+					url: './changeCar?obj='+JSON.stringify(this.info),
 					animationDuration: 200,
 					animationType: 'pop-in'
 				})
 			},
-			call(e) {
-				uni.makePhoneCall({
-					phoneNumber: e
-				})
-			},
 			//出车检验
 			goInspect() {
+				if(this.info.isCarTest==true){
+					return false;
+				}
 				let data = {
 					order: this.info.id,
 					carnum: this.info.adminOrderVehicleInfoVoList[0].vehicleNumber,
@@ -371,6 +371,11 @@
 						url:'./violationAdd?type=1&obj='+JSON.stringify(this.info)
 					})
 				}
+			},
+		async	backMoney(){
+				const [err,res]=await refundOfIllegalDeposit(this.info.id)
+				if(err) return
+				this.$toast('退还成功')
 			}
 		}
 	}

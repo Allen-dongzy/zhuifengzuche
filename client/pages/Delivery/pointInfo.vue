@@ -42,7 +42,7 @@
 		methods: {
 			async del() {
 				
-				const [err, res] = await this.$showModal({content:'是否要删除该数据？'})
+				const [err, res] = await this.$showModal({content:'是否删除该送车点？'})
 				if (res === 'confirm'){
 					const [err1, res1] = await deliveryDelete({
 						id: this.obj.id

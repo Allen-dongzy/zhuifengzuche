@@ -28,63 +28,190 @@
 			<view class="cu-dialog basis-lg" @click.stop="">
 				<view class="flex status">
 					<i></i>
-					<p>品牌</p>
+					<p>排挡</p>
 				</view>
 				<view class="flex flex-wrap statusList">
-					<i class="flex-center">全部</i>
-					<i class="flex-center blue-i">正常</i>
-					<i class="flex-center">异常</i>
-					<i class="flex-center">租赁中</i>
-					<i class="flex-center">预留中</i>
+					<view v-for="(item,index) in stallList" @click="selectStall(index)">
+						<i v-if="item.status==false" class="flex-center">{{item.text}}</i>
+						<i v-else class="flex-center blue-i">{{item.text}}</i>
+					</view>
 				</view>
 				<view class="flex status">
 					<i></i>
 					<p>座位</p>
 				</view>
 				<view class="flex flex-wrap statusList">
-					<i class="flex-center">全部</i>
-					<i class="flex-center blue-i">豪华</i>
-					<i class="flex-center">奢华</i>
-					<i class="flex-center">中等</i>
+					<view v-for="(item,index) in seatList" @click="selectSeat(index)">
+						<i v-if="item.status==false" class="flex-center">{{item.text}}座</i>
+						<i v-else class="flex-center blue-i">{{item.text}}座</i>
+					</view>
 				</view>
 				<view class="flex status">
 					<i></i>
-					<p>排挡</p>
+					<p>品牌</p>
 				</view>
 				<view class="flex flex-wrap statusList">
-					<i class="flex-center blue-i">玛莎拉蒂-总裁</i>
-					<i v-for="(item, index) in 10" class="flex-center">宝马</i>
+					<!-- <i class="flex-center blue-i">玛莎拉蒂-总裁</i> -->
+					<view v-for="(item, index) in brandList" :key="index" @click="selectBrand(index)">
+						<i v-if="item.status==false" class="flex-center">{{item.name}}</i>
+						<i v-else class="flex-center blue-i">{{item.name}}</i>
+					</view>
+
 				</view>
 				<view class="flex btn">
-					<button type="default" class="flex-center reset">清空</button>
-					<button type="default" class="flex-center submit">确定</button>
+					<button type="default" class="flex-center reset" @click="clearAll">清空</button>
+					<button type="default" class="flex-center submit" @click="sureSearch">确定</button>
 				</view>
 			</view>
 		</view>
 		<!-- 列表 -->
-			<view class="box">
-					<view class="content" @click="lookInfo">
-						<view style="font-size: 28rpx;margin-top: 40rpx;">渝A·5231B</view>
-						<view style="margin-top: 12rpx;">大众 捷达</view>
+			<view class="box" v-for="(item,index) in carList">
+					<view class="content" @click="lookInfo(item)">
+						<view style="font-size: 28rpx;margin-top: 40rpx;">{{item.carNumber}}</view>
+						<view style="margin-top: 12rpx;">{{item.brandName}} {{item.modelName}}</view>
 						<view class="flexBox">
-							<view class="iconBox">携程</view>
-							<view class="iconBox">飞猪</view>
+							<view class="iconBox"  v-for="(itemy,indexy) in item.platformVoList" v-show="itemy.thirdStatus==1" >{{itemy.thirdName}}</view>
 						</view>
 					</view>
-		
 				</view>
 	</view>
 </template>
 
 <script>
+	import {
+		vehicleBrandQueryAll
+	} from '@/apis/vehicleBrand'
+	import {
+		otaPageQuery
+	} from '@/apis/vehicle'
+	
 	export default {
 		data() {
 			return {
 				modalName: '',
 				search: false,
+				page:1,
+				size:10,
+				brandList: [], //品牌数组
+				brandId: '', //品牌Id
+				seatId: '', //座位Id
+				stallId: '', //排挡Id
+				seatList: [{
+					text: '2',
+					status: false
+				},{
+					text: '5',
+					status: false
+				},{
+					text: '6',
+					status: false
+				}, {
+					text: '7',
+					status: false
+				}, {
+					text: '9',
+					status: false
+				}], // 座位数列表
+				stallList: [{
+					text: '全部',
+					status: false
+				}, {
+					text: '手动',
+					status: false
+				}, {
+					text: '自动',
+					status: false
+				}], // 排档列表
+				carList:[],//车辆列表
 			}
 		},
+		onLoad() {
+		
+		},
+		onShow() {
+			this.otaPageQuery()	
+			this.getBrand()
+		},
 		methods: {
+		async	otaPageQuery(){
+			let data={
+				page:this.page,
+				size:this.size,
+			}
+				const [err,res] = await otaPageQuery(data)
+				if(err) return
+				this.carList=res.data.list
+				
+			},
+			//品牌
+			async getBrand() {
+				const [err, res] = await vehicleBrandQueryAll()
+				if (err) return
+				console.log(res)
+				this.brandList = res.data
+				for (let i = 0; i < this.brandList.length; i++) {
+					this.brandList[i].status = false
+				}
+			},
+			//选择排挡
+			selectStall(e) {
+				console.log(e)
+				for (let i = 0; i < this.stallList.length; i++) {
+					this.stallList[i].status = false
+				}
+				this.stallId = this.stallList[e].text
+				this.stallList[e].status = true
+			},
+			//选择座位数
+			selectSeat(e) {
+				for (let i = 0; i < this.seatList.length; i++) {
+					this.seatList[i].status = false
+				}
+			
+				this.seatId = this.seatList[e].text
+			
+				this.seatList[e].status = true
+			},
+			//选择品牌
+			selectBrand(e) {
+				console.log(e)
+				for (let i = 0; i < this.brandList.length; i++) {
+					this.brandList[i].status = false
+				}
+				this.brandList[e].status = true
+				this.$forceUpdate()
+				this.brandId = this.brandList[e].id
+			},
+			//清空
+			clearAll() {
+				for (let i = 0; i < this.brandList.length; i++) {
+					this.brandList[i].status = false
+				}
+				for (let i = 0; i < this.seatList.length; i++) {
+					this.seatList[i].status = false
+				}
+				for (let i = 0; i < this.stallList.length; i++) {
+					this.stallList[i].status = false
+				}
+			},
+			//确定
+			async sureSearch() {
+				if (this.stallId === "全部") {
+					this.stallId = ""
+				}
+				let data = {
+					page: this.page,
+					size: this.size,
+					brandId: this.brandId,
+					capacity: this.seatId,
+					gears: this.stallId,
+				}
+				const [err, res] = await otaPageQuery(data)
+				if (err) return
+				console.log(res)
+				this.$toast('查询成功')
+				this.list = res.data.list
+			},
 			showSearch() {
 				if (this.search) {
 					this.search = false
@@ -108,9 +235,10 @@
 			hideModal(e) {
 				this.modalName = ''
 			},
-			lookInfo() {
+			lookInfo(e) {
+				
 				uni.navigateTo({
-					url: './otaInfo',
+					url: './otaInfo?obj='+JSON.stringify(e),
 					animationDuration: 200,
 					animationType: 'pop-in'
 				})
@@ -239,7 +367,6 @@
 				bottom: 0;
 				background-color: #FFFFFF;
 				border-top: 1rpx solid rgba(0, 0, 0, .2);
-
 				.reset {
 					width: 160rpx;
 					height: 80rpx;
@@ -296,7 +423,7 @@
 			border-radius: 5rpx;
 			background-color: rgba(90, 126, 255, 0.1);
 			height: 34rpx;
-			width: 62rpx;
+			width: 80rpx;
 			line-height: 34rpx;
 			text-align: center;
 			font-size: 16rpx;
