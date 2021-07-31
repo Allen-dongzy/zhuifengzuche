@@ -21,23 +21,23 @@
 				<view class="city" @click="$open('/pages/home/selectCity', {cityMode: 'takeCar'})">
 					{{takeCarCity.shortName || '选择城市'}}
 				</view>
-				<image class="dot" :src="`${ossUrl}/home/dot.png`"></image>
+				<image class="dot" :src="`${ossUrl}/home/dot.png`" mode="aspectFill"></image>
 				<view class="address" @click="goTakeCarAddress">
 					{{takeCarAddress.name || '选择地点'}}
 				</view>
 				<evan-switch v-model="remoteSwitch" active-color="#5A7EFF"></evan-switch>
 			</view>
-			<view v-show="remoteSwitch" class="title-bar">
+			<view v-if="remoteSwitch" class="title-bar">
 				<view class="caption">
 					<view class="circle orange"></view>
 					<text>还车地点</text>
 				</view>
 			</view>
-			<view v-show="remoteSwitch" class="block">
+			<view v-if="remoteSwitch" class="block">
 				<view class="city text-1" @click="$open('/pages/home/selectCity', {cityMode: 'carAlso'})">
 					{{carAlsoCity.shortName || '选择城市'}}
 				</view>
-				<image class="dot" :src="`${ossUrl}/home/dot.png`"></image>
+				<image class="dot" :src="`${ossUrl}/home/dot.png`" mode="aspectFill"></image>
 				<view class="address text-1" @click="goCarAlsoAddress">
 					{{carAlsoAddress.name || '选择地点'}}
 				</view>
@@ -45,46 +45,47 @@
 			<view class="time-bar" @click="selectTime">
 				<view class="time-box start-time">
 					<view class="date">{{takeCarDateShow}}</view>
-					<view class="time" v-show="takeCarTimeShow || takeCarDayShow">
-						<text v-show="takeCarDayShow">{{takeCarDayShow}}</text>
-						<text v-show="takeCarTimeShow">{{takeCarTimeShow}}</text>
+					<view class="time" v-if="takeCarTimeShow || takeCarDayShow">
+						<text v-if="takeCarDayShow">{{takeCarDayShow}}</text>
+						<text v-if="takeCarTimeShow">{{takeCarTimeShow}}</text>
 					</view>
 				</view>
 				<view class="line-bar">
 					<view class="date">{{totalDate || 0}}天</view>
-					<image class="interval" :src="`${ossUrl}/home/interval.png`"></image>
+					<image class="interval" :src="`${ossUrl}/home/interval.png`" mode="aspectFill"></image>
 				</view>
 				<view class="time-box end-time">
 					<view class="date">{{carAlsoDateShow}}</view>
-					<view class="time" v-show="carAlsoTimeShow || carAlsoDayShow">
-						<text v-show="carAlsoDayShow">{{carAlsoDayShow}}</text>
-						<text v-show="carAlsoTimeShow">{{carAlsoTimeShow}}</text>
+					<view class="time" v-if="carAlsoTimeShow || carAlsoDayShow">
+						<text v-if="carAlsoDayShow">{{carAlsoDayShow}}</text>
+						<text v-if="carAlsoTimeShow">{{carAlsoTimeShow}}</text>
 					</view>
 				</view>
 			</view>
-			<view v-show="remoteSwitch" class="info">*异地还车调度费3元/公里；22:00-07:00取还车，将收取￥50/次夜间服务费</view>
+			<view v-if="remoteSwitch" class="info">*异地还车调度费3元/公里；22:00-07:00取还车，将收取￥50/次夜间服务费</view>
 			<view class="toast" @click="openProcessPopup">
-				<image class="sesame" :src="`${ossUrl}/home/sesame.png`"></image>芝麻分达<text>550</text>即可享受押金双免租车 >
+				<image class="sesame" :src="`${ossUrl}/home/sesame.png`" mode="aspectFill"></image>
+				芝麻分达<text>550</text>即可享受押金双免租车 >
 			</view>
 			<view class="btn" @click="carRental">立即租车</view>
 		</view>
 		<!-- go.png -->
-		<view v-show="couponNum>0" class="notice-box" @click="$open('/pages/mine/coupon', {selectType: 'home'})">
+		<view v-if="couponNum>0" class="notice-box" @click="$open('/pages/mine/coupon', {selectType: 'home'})">
 			<image class="notice-bg" :src="`${ossUrl}/home/notice.png`" mode="aspectFill"></image>
 			<view class="mask">
 				<view class="info">立即领取租车优惠券! 租车立省20元!</view>
-				<image class="go" :src="`${ossUrl}/home/go.png`"></image>
+				<image class="go" :src="`${ossUrl}/home/go.png`" mode="aspectFill"></image>
 			</view>
 		</view>
-		<view v-show="false" class="bottom-mat"></view>
+		<view v-if="false" class="bottom-mat"></view>
 		<view class="bottom">
 			<view class="item" @click="$open('/pages/common/joinInvestment')">
-				<image class="icon" :src="`${ossUrl}/home/join.png`" mode="heightFix"></image>
+				<image class="icon" :src="`${ossUrl}/home/join.png`" mode="aspectFill"></image>
 				<text>招商加盟</text>
 			</view>
 			<view class="line"></view>
 			<view class="item" @click="$open('/pages/home/windStore')">
-				<image class="icon" :src="`${ossUrl}/home/shop.png`" mode="heightFix"></image>
+				<image class="icon icon-2" :src="`${ossUrl}/home/shop.png`" mode="aspectFill"></image>
 				<text>追风门店</text>
 			</view>
 		</view>
@@ -94,7 +95,7 @@
 				<scroll-view class="process-content" :scroll-y="true">
 					<view class="title">免押金</view>
 					<view class="info">下单预付租金后，取车时间向门店工作人员<text>申请芝麻信用免押金</text>，信用综合评估通过后有机会减免25000元。</view>
-					<image class="process" :src="`${ossUrl}/home/process.png`"></image>
+					<image class="process" :src="`${ossUrl}/home/process.png`" mode="aspectFill"></image>
 					<view class="section">
 						<view class="caption">使用芝麻信用免押金</view>
 						<view class="text">使用芝麻信用免押金的订单，车辆押金取车前冻结，还车时解冻；违章押金还车冻结。还车后30天若无违章则解冻。</view>
@@ -116,14 +117,14 @@
 		<!-- 弹窗-领券 -->
 		<uni-popup ref="couponPopup" type="center" :maskClick="false">
 			<view class="coupon-modal">
-				<image class="bg" :src="`${ossUrl}/home/coupon-bg.png`"></image>
+				<image class="bg" :src="`${ossUrl}/home/coupon-bg.png`" mode="aspectFill"></image>
 				<view class="mask">
-					<image class="caption" :src="`${ossUrl}/home/coupon-title.png`"></image>
+					<image class="caption" :src="`${ossUrl}/home/coupon-title.png`" mode="aspectFill"></image>
 					<view class="title">恭喜您，获得{{couponList.length}}张优惠券</view>
 					<scroll-view class="coupon-content" :scroll-y="true">
 						<view class="coupon-box" v-for="(item, index) in couponList" :key="index">
 							<view class="coupon">
-								<image class="bg" :src="`${ossUrl}/home/is-get-bg.png`"></image>
+								<image class="bg" :src="`${ossUrl}/home/is-get-bg.png`" mode="aspectFill"></image>
 								<view class="mask">
 									<view class="info is-get">
 										<view class="price">￥<text>{{item.discountAmount}}</text></view>
@@ -134,7 +135,8 @@
 										</view>
 									</view>
 									<view class="btn">
-										<image class="btn-bg" :src="`${ossUrl}/home/is-get-btn.png`"></image>
+										<image class="btn-bg" :src="`${ossUrl}/home/is-get-btn.png`" mode="aspectFill">
+										</image>
 										<view class="text">领取</view>
 									</view>
 								</view>
@@ -142,7 +144,8 @@
 						</view>
 					</scroll-view>
 					<view class="coupon-btn" @click="oneClickReceiveNewCoupons">一键领取</view>
-					<image class="coupon-close" :src="`${ossUrl}/home/coupon-close.png`" @click="closeCouponPopup">
+					<image class="coupon-close" :src="`${ossUrl}/home/coupon-close.png`" mode="aspectFill"
+						@click="closeCouponPopup">
 					</image>
 				</view>
 			</view>
@@ -211,13 +214,20 @@
 		onLoad() {
 			this.customerHomeBannerGetSpread()
 			this.showTime()
-			if (this.$storage.get('token')) {
-				this.loginAfterRequest()
-				this.findIsUseCouponByUser()
-			}
+			if (this.$storage.get('token')) this.loginAfterRequest()
 			this.eventListener()
 		},
+		onPullDownRefresh() {
+			this.init()
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		methods: {
+			// 初始化
+			init() {
+				if (this.$storage.get('token')) this.loginAfterRequest()
+			},
 			// 显示默认时间
 			showTime() {
 				const startTimestamp = Date.now() + 86400000
@@ -237,6 +247,7 @@
 			// 登录之后的请求
 			loginAfterRequest() {
 				this.findNewCoupon()
+				this.findIsUseCouponByUser()
 			},
 			// 查询轮播
 			async customerHomeBannerGetSpread() {
@@ -420,6 +431,10 @@
 <style lang="scss">
 	@import '@/static/scss/_mixin.scss';
 
+	page {
+		background-color: #fff;
+	}
+
 	.home {
 		.uni-swiper__dots-box {
 			padding-right: 40rpx;
@@ -486,7 +501,7 @@
 				}
 
 				.city {
-					@include box-w(128rpx);
+					@include box-w(130rpx);
 				}
 
 				.dot {
@@ -638,7 +653,12 @@
 				padding: 0 72rpx;
 
 				.icon {
+					width: 40rpx;
 					height: 26rpx;
+					&.icon-2{
+						width: 30rpx;
+						height: 26rpx;
+					}
 				}
 
 				text {
@@ -787,7 +807,7 @@
 									@include flex-row();
 
 									&.is-get {
-										@include font-gradient(180deg, #FFD26E, #FFF1C0);
+										color: #FECF65;
 									}
 
 									&.no-get {

@@ -5,14 +5,14 @@
 				<view style="width:80%">
 					<view style="font-size: 36rpx;">{{info.deliveryVo.address}}</view>
 					<view class="flexBox" style="margin-top: 20rpx;">
-						<image style="width: 32rpx;height:34rpx;" :src="`${ossUrl}/common/icon-home-black.png`"></image>
+						<image style="width: 32rpx;height:34rpx;" :src="`${ossUrl}/common/icon-home-black.png`" mode="aspectFill"></image>
 						<view style="font-size: 28rpx;color:#000000;">门店地址：{{info.deliveryVo.address}}</view>
 					</view>
 				</view>
 				<view style="width:20%">
-					<image style="width: 44rpx;height:44rpx;" :src="`${ossUrl}/common/location-big.png`"
+					<image style="width: 44rpx;height:44rpx;" :src="`${ossUrl}/common/location-big.png`" mode="aspectFill"
 						@click="openMap"></image>
-					<image style="width: 44rpx;height:44rpx;margin-left: 30rpx;" :src="`${ossUrl}/common/phone-big.png`"
+					<image style="width: 44rpx;height:44rpx;margin-left: 30rpx;" :src="`${ossUrl}/common/phone-big.png`" mode="aspectFill"
 						@click="contactStore"></image>
 				</view>
 			</view>
@@ -25,11 +25,11 @@
 			</view>
 		</view>
 		<view class="grayLine"></view>
-		<view v-show="!info.isPaymentIllegalDeposit" class="box" style="margin-top: 100rpx;">
+		<view v-if="!info.isPaymentIllegalDeposit" class="box" style="margin-top: 100rpx;">
 			<view class="wait">等待追风小子验车</view>
 			<view class="wait">验车后将根据油量、综合车况等补缴或退还金额</view>
 		</view>
-		<view v-show="info.isPaymentIllegalDeposit" class="box">
+		<view v-if="info.isPaymentIllegalDeposit" class="box">
 			<view class="flexBox" style="border-bottom: 2rpx solid #EFF0F3;padding: 30rpx 0rpx;">
 				<view class="leftBox">超时费</view>
 				<view class="rightBox">¥{{info.overtimeFee}}</view>
@@ -51,15 +51,15 @@
 				<view class="rightBox">¥{{info.otherFee}}</view>
 			</view>
 		</view>
-		<view v-show="info.isPaymentIllegalDeposit && info.preAcceptanceFreeze>0" class="grayLine"></view>
-		<view v-show="info.isPaymentIllegalDeposit && info.preAcceptanceFreeze>0" class="flexBox"
+		<view v-if="info.isPaymentIllegalDeposit && info.preAcceptanceFreeze>0" class="grayLine"></view>
+		<view v-if="info.isPaymentIllegalDeposit && info.preAcceptanceFreeze>0" class="flexBox"
 			style="width: 90%;margin: auto;margin-top: 30rpx;">
 			<view class="leftBox">预收冻结</view>
 			<view class="leftBox" style="width: 47%;text-align: right;font-size: 36rpx;">{{info.preAcceptanceFreeze}}
 			</view>
 			<view class="leftBox" style="width: 3%;margin-left: 10rpx;"> ></view>
 		</view>
-		<view v-show="info.isPaymentIllegalDeposit" class="bottomFlex">
+		<view v-if="info.isPaymentIllegalDeposit" class="bottomFlex">
 			<view style="width: 64%;">
 				<view style="font-size: 24rpx;color:#999999;"> 逾期不支付将按 <text style="color:#FFA05B;"
 						@click="$open('/pages/common/violation')">《逾期违章协议》</text>处理
@@ -73,7 +73,7 @@
 			</view>
 			<view class="pay" @click="getCodeByWxCode">去结算</view>
 		</view>
-		<view v-show="!info.isPaymentIllegalDeposit" class="bottomFlex">
+		<view v-if="!info.isPaymentIllegalDeposit" class="bottomFlex">
 			<view style="font-size: 28rpx;">总计</view>
 			<view style="font-size: 36rpx;color: #FC3736;width: 55%;margin-left: 10rpx;"><text
 					style="font-size: 16rpx;">¥</text>{{info.totalAmount}}</view>

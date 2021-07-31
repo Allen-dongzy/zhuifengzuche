@@ -1,6 +1,6 @@
 <template>
 	<view class="advance-detail">
-		<image class="bg" :src="`${ossUrl}/common/res-success.png`"></image>
+		<image class="bg" :src="`${ossUrl}/common/res-success.png`" mode="aspectFill"></image>
 		<view class="list">
 			<view class="item">
 				<view class="caption">租车押金</view>

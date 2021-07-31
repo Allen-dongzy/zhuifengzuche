@@ -191,6 +191,9 @@
 
 		.uni-calendar-item__weeks-box-text.uni-calendar-item--isDay-text.uni-calendar-item--isDay,
 		.uni-calendar-item__weeks-box-text.uni-calendar-item--checked {
+			min-width: 64rpx;
+			box-sizing: border-box;
+			text-align: center;
 			padding: 2rpx 16rpx !important;
 			border-radius: 33rpx !important;
 			background-color: #5A7EFF !important;
@@ -204,7 +207,10 @@
 		}
 
 		.uni-calendar-item__weeks-box-text.uni-calendar-item--before-checked.uni-calendar-item--multiple,
-		.uni-calendar-item__weeks-box-text.uni-calendar-item--multiple{
+		.uni-calendar-item__weeks-box-text.uni-calendar-item--multiple {
+			min-width: 64rpx;
+			box-sizing: border-box;
+			text-align: center;
 			padding: 2rpx 16rpx !important;
 			border-radius: 33rpx !important;
 			background-color: #5A7EFF !important;

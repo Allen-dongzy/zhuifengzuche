@@ -1,7 +1,7 @@
 <template>
 	<view class="use-car-success">
 		<view class="center">
-			<image class="bg" :src="`${ossUrl}/common/res-success.png`"></image>
+			<image class="bg" :src="`${ossUrl}/common/res-success.png`" mode="aspectFill"></image>
 			<view class="caption">用车成功！</view>
 			<view class="info">祝您用车愉快</view>
 		</view>

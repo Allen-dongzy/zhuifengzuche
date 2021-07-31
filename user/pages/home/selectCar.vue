@@ -3,17 +3,17 @@
 		<view class="header">
 			<view :class="['item', {'ac': acTab === 0}]" @click="taptab(0)">默认</view>
 			<view :class="['item', {'ac': acTab === 1}]" @click="taptab(1)">
-				品牌<image class="arrow" :src="`${ossUrl}/home/${acTab === 1?'arrow-up':'arrow-down'}.png`"></image>
+				品牌<image class="arrow" :src="`${ossUrl}/home/${acTab === 1?'arrow-up':'arrow-down'}.png`" mode="aspectFill"></image>
 			</view>
 			<view :class="['item', {'ac': acTab === 2}]" @click="taptab(2)">
-				排档<image class="arrow" :src="`${ossUrl}/home/${acTab === 2?'arrow-up':'arrow-down'}.png`"></image>
+				排档<image class="arrow" :src="`${ossUrl}/home/${acTab === 2?'arrow-up':'arrow-down'}.png`" mode="aspectFill"></image>
 			</view>
 			<view :class="['item', {'ac': acTab === 3}]" @click="taptab(3)">
-				座位数<image class="arrow" :src="`${ossUrl}/home/${acTab === 3?'arrow-up':'arrow-down'}.png`"></image>
+				座位数<image class="arrow" :src="`${ossUrl}/home/${acTab === 3?'arrow-up':'arrow-down'}.png`" mode="aspectFill"></image>
 			</view>
 		</view>
 		<view class="header-mat"></view>
-		<view v-show="!searchKey" class="classify" :style="{height: `${windowHeight - searchHeight - 14}px`}">
+		<view class="classify" :style="{height: `${windowHeight - searchHeight - 14}px`}">
 			<scroll-view class="class" :scroll-y="true">
 				<view class="item" v-for="(item, index) in carClassList" :key="index" @click.stop="tapClass(index)">
 					<view :class="['title', {'ac': index === acClass}]">{{item.name}}</view>
@@ -43,14 +43,14 @@
 					</view>
 					<view class="price-bar">
 						<view class="calendar" @click.stop="goPriceCalendar(index)">
-							<image class="icon-calendar" :src="`${ossUrl}/home/icon-calendar.png`"></image>
+							<image class="icon-calendar" :src="`${ossUrl}/home/icon-calendar.png`" mode="aspectFill"></image>
 							<text>价格日历</text>
 							<view class="arrow"></view>
 						</view>
 						<view class="price">￥<text>{{item.toDayPrice}}/天</text></view>
 					</view>
 					<view class="address-bar">
-						<image class="icon-home" :src="`${ossUrl}/home/icon-home.png`"></image>
+						<image class="icon-home" :src="`${ossUrl}/home/icon-home.png`" mode="aspectFill"></image>
 						<view class="address" @click.stop="openMap(index)">
 							门店名称：<text>{{item.memberShopName}}</text></view>
 					</view>
@@ -71,9 +71,9 @@
 							<view :class="['item', {'ac': acModel === index}]" v-for="(item, index) in carModelList"
 								:key="index" @click="tapModel(index)">
 								<text>{{item.vehicleModelName}}</text>
-								<image v-show="acModel === index" class="hook" :src="`${ossUrl}/home/hook.png`"></image>
+								<image v-if="acModel === index" class="hook" :src="`${ossUrl}/home/hook.png`" mode="aspectFill"></image>
 							</view>
-							<uni-load-more v-show="brandDataStatus==='noData'" :status="brandDataStatus">
+							<uni-load-more v-if="brandDataStatus==='noData'" :status="brandDataStatus">
 							</uni-load-more>
 						</scroll-view>
 					</view>

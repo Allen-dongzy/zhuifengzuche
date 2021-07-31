@@ -2,7 +2,8 @@
 	"pages": [{
 		"path": "pages/home/home",
 		"style": {
-			"navigationBarTitleText": "追风租车"
+			"navigationBarTitleText": "追风租车",
+			"enablePullDownRefresh": true
 		}
 	}, {
 		"path": "pages/order/order",
@@ -13,7 +14,8 @@
 	}, {
 		"path": "pages/mine/mine",
 		"style": {
-			"navigationStyle": "custom"
+			"navigationStyle": "custom",
+			"enablePullDownRefresh": true
 		}
 	}, {
 		"path": "pages/home/selectTime",

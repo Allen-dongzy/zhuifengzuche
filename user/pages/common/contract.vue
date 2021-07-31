@@ -106,8 +106,8 @@
 			<view>签名:</view>
 			<image class="sign-pic" :src="img" @click="goSign" mode="aspectFill"></image>
 		</view>
-		<view v-show="!img && mode==='edit'" class="btn-before">提交</view>
-		<view v-show="img && mode==='edit'" class="btn-after" @click="vehicleUpdateVehicleCertificates">提交</view>
+		<view v-if="!img && mode==='edit'" class="btn-before">提交</view>
+		<view v-if="img && mode==='edit'" class="btn-after" @click="vehicleUpdateVehicleCertificates">提交</view>
 	</view>
 </template>
 

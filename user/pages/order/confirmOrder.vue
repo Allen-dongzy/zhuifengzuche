@@ -15,7 +15,7 @@
 					<view v-for="(item,index) in info.clientVehicleVo.labels" :key="index" class="label">{{item}}</view>
 				</view>
 			</view>
-			<view v-show="info.clientVehicleVo" class="params">
+			<view v-if="info.clientVehicleVo" class="params">
 				{{info.clientVehicleVo.gears}} / {{info.clientVehicleVo.capacity}}座 /
 				{{info.clientVehicleVo.outputVolumeName}} / {{info.clientVehicleVo.model}}
 			</view>
@@ -37,39 +37,39 @@
 					<view class="sub-caption">{{backweek}} {{backtime}}</view>
 				</view>
 			</view>
-			<view v-show="!yidiType">
+			<view v-if="!yidiType">
 				<view class="caption top">取还</view>
 				<view class="take-also">
 					<view class="address-box">
-						<image class="home" :src="`${ossUrl}/common/icon-home-black.png`"></image>
+						<image class="home" :src="`${ossUrl}/common/icon-home-black.png`" mode="aspectFill"></image>
 						<view class="address">门店地址：{{info.pickPlace.address}}</view>
 					</view>
 					<view class="btn-box">
-						<image class="btn" :src="`${ossUrl}/common/location-big.png`"
+						<image class="btn" :src="`${ossUrl}/common/location-big.png`" mode="aspectFill"
 							@click="openMap(info.pickPlace.lat, info.pickPlace.lon)"></image>
 					</view>
 				</view>
 			</view>
-			<view v-show="yidiType">
+			<view v-if="yidiType">
 				<view class="caption top">取车</view>
 				<view class="take-also">
 					<view class="address-box">
-						<image class="home" :src="`${ossUrl}/common/icon-home-black.png`"></image>
+						<image class="home" :src="`${ossUrl}/common/icon-home-black.png`" mode="aspectFill"></image>
 						<view class="address">门店地址：{{info.pickPlace.address}}</view>
 					</view>
 					<view class="btn-box">
-						<image class="btn" :src="`${ossUrl}/common/location-big.png`"
+						<image class="btn" :src="`${ossUrl}/common/location-big.png`" mode="aspectFill"
 							@click="openMap(info.pickPlace.lat, info.pickPlace.lon)"></image>
 					</view>
 				</view>
 				<view class="caption top">还车</view>
 				<view class="take-also">
 					<view class="address-box">
-						<image class="home" :src="`${ossUrl}/common/icon-home-black.png`"></image>
+						<image class="home" :src="`${ossUrl}/common/icon-home-black.png`" mode="aspectFill"></image>
 						<view class="address">门店地址：{{info.returnPlace.address}}</view>
 					</view>
 					<view class="btn-box">
-						<image class="btn" :src="`${ossUrl}/common/location-big.png`"
+						<image class="btn" :src="`${ossUrl}/common/location-big.png`" mode="aspectFill"
 							@click="openMap(info.returnPlace.lat, info.returnPlace.lon)"></image>
 					</view>
 				</view>
@@ -78,17 +78,17 @@
 		</view>
 		<view class="sesame-box">
 			<view class="toast">
-				<image class="sesame" :src="`${ossUrl}/home/sesame.png`"></image>芝麻分达<text>550</text>即可享受押金双免租车
+				<image class="sesame" :src="`${ossUrl}/home/sesame.png`" mode="aspectFill"></image>芝麻分达<text>550</text>即可享受押金双免租车
 			</view>
-			<evan-switch v-show="freeAndState" v-model="rentFreeSwitch" active-color="#5A7EFF"></evan-switch>
-			<view v-show="!freeAndState" class="deposit-free" @click="openProcessPopup">
+			<evan-switch v-if="freeAndState" v-model="rentFreeSwitch" active-color="#5A7EFF"></evan-switch>
+			<view v-if="!freeAndState" class="deposit-free" @click="openProcessPopup">
 				申请免押<view class="arrow"></view>
 			</view>
 		</view>
 		<view class="function-box">
 			<view class="item">
 				<view class="left" @click="$open('/pages/common/security')">
-					<view class="top">驾无忧保障<image class="question" :src="`${ossUrl}/order/question.png`"></image>
+					<view class="top">驾无忧保障<image class="question" :src="`${ossUrl}/order/question.png`" mode="aspectFill"></image>
 						<view class="price">￥{{info.clientVehicleVo.insurancePrice || 0}}/天</view>
 					</view>
 					<view class="bottom-text">添加一份无忧保障，添一份安心</view>
@@ -101,7 +101,7 @@
 			<view class="item" @click="$open('/pages/mine/coupon', {selectType: 'goods'})">
 				<view class="caption">
 					优惠券
-					<view v-show="couponPrice>0" class="label">已选推荐优惠</view>
+					<view v-if="couponPrice>0" class="label">已选推荐优惠</view>
 				</view>
 				<view class="right">
 					<view class="text">￥<text>{{couponPrice || 0}}</text></view>
@@ -140,17 +140,17 @@
 					<view class="line"></view>
 				</view>
 			</scroll-view>
-			<view v-show="acIndex < 5" class="box box-voucher">
+			<view v-if="acIndex < 5" class="box box-voucher">
 				<view class="info">{{ bottomInfo }}</view>
 				<view class="bottom-info-mat"></view>
 				<view class="bottom-info">
-					<image class="icon" :src="selStatus ? `${ossUrl}/order/sel-ac.png` : `${ossUrl}/order/sel.png`"
+					<image class="icon" :src="selStatus ? `${ossUrl}/order/sel-ac.png` : `${ossUrl}/order/sel.png`" mode="aspectFill"
 						@click="tapIcon">
 					</image>
 					已阅读并同意<text @click="$open('/pages/common/carRentalAgreement')">《用户租车协议》</text>
 				</view>
 			</view>
-			<view v-show="acIndex === 5" class="box box-invoice">
+			<view v-if="acIndex === 5" class="box box-invoice">
 				<view class="top">
 					<view class="info">还车时取票，不包含押金金额</view>
 					<evan-switch v-model="invoiceSwitch" active-color="#5A7EFF"></evan-switch>
@@ -162,7 +162,7 @@
 								{{item.title}}
 								<view class="label">普票</view>
 							</view>
-							<view class="label" v-show="index==invoiceIndex" style="background-color: #FFA05B;">已选择
+							<view class="label" v-if="index==invoiceIndex" style="background-color: #FFA05B;">已选择
 							</view>
 						</view>
 						<view class="number">
@@ -174,7 +174,7 @@
 					</view>
 				</view>
 				<view class="bottom-info">
-					<image class="icon" :src="selStatus ? `${ossUrl}/order/sel-ac.png` : `${ossUrl}/order/sel.png`"
+					<image class="icon" :src="selStatus ? `${ossUrl}/order/sel-ac.png` : `${ossUrl}/order/sel.png`" mode="aspectFill"
 						@click="tapIcon">
 					</image>
 					已阅读并同意<text @click="$open('/pages/common/carRentalAgreement')">《用户租车协议》</text>
@@ -202,7 +202,7 @@
 				<scroll-view class="process-content" :scroll-y="true">
 					<view class="title">免押金</view>
 					<view class="info">下单预付租金后，取车时间向门店工作人员<text>申请芝麻信用免押金</text>，信用综合评估通过后有机会减免25000元。</view>
-					<image class="process" :src="`${ossUrl}/home/process.png`"></image>
+					<image class="process" :src="`${ossUrl}/home/process.png`" mode="aspectFill"></image>
 					<view class="section">
 						<view class="caption">使用芝麻信用免押金</view>
 						<view class="text">使用芝麻信用免押金的订单，车辆押金取车前冻结，还车时解冻；违章押金还车冻结。还车后30天若无违章则解冻。</view>

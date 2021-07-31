@@ -1,7 +1,7 @@
 <template>
 	<view class="settlement-success">
 		<view class="center">
-			<image class="bg" :src="`${ossUrl}/common/res-success.png`"></image>
+			<image class="bg" :src="`${ossUrl}/common/res-success.png`" mode="aspectFill"></image>
 			<view class="caption">结算成功！</view>
 			<view class="info-1">工作人员正在处理中 再次感谢您选择追风租车</view>
 			<view class="btn">前往评价</view>

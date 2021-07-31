@@ -7,11 +7,11 @@
 		<view class="flexBox">
 
 			<view v-for="(item, index) in stars" :key="index" style="margin: 40rpx 10rpx;" @click="select(index)">
-				<image style="width: 52rpx;height: 52rpx;" :src="`${ossUrl}/common/icon-star.png`"></image>
+				<image style="width: 52rpx;height: 52rpx;" :src="`${ossUrl}/common/icon-star.png`" mode="aspectFill"></image>
 			</view>
 			<view v-for="(item, index) in (5-stars)" :key="index" style="margin: 40rpx 10rpx;"
 				@click="select(stars+index)">
-				<image style="width: 52rpx;height: 52rpx;" :src="`${ossUrl}/common/grayStar.png`"></image>
+				<image style="width: 52rpx;height: 52rpx;" :src="`${ossUrl}/common/grayStar.png`" mode="aspectFill"></image>
 			</view>
 		</view>
 		<view class="grayLine"></view>

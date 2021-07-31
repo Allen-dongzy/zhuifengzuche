@@ -3,9 +3,9 @@
 		<view class="titelBlack">选择续租还车时间（续租<text style="color: #5A7EFF;">{{totalDate || 0}}</text>天<text
 				style="color: #5A7EFF;">{{totalHour || 0}}</text>小时）</view>
 		<view class="flexBox">
-			<image class="day" :src="`${ossUrl}/common/daytime.png`"></image>
+			<image class="day" :src="`${ossUrl}/common/daytime.png`" mode="aspectFill"></image>
 			<view class="dayTime" @click="openProcessPopup">{{dateShow || '选择日期'}}</view>
-			<image class="day" style="margin-left: 20%" :src="`${ossUrl}/common/icon-time.png`"></image>
+			<image class="day" style="margin-left: 20%" :src="`${ossUrl}/common/icon-time.png`" mode="aspectFill"></image>
 			<view class="dayTime">
 				<picker mode="time" @change="timeHandler" :start="startDate" :end="endDate" class="pickerBox">
 					<label class="pickerText">{{timeShow || '选择时间'}}</label>

@@ -11,7 +11,7 @@
 		<view class="all-box">
 			<view>
 				<view class="flex-box item">
-					<image class="icon" :src="`${ossUrl}/mine/yue.png`"></image>
+					<image class="icon" :src="`${ossUrl}/mine/yue.png`" mode="aspectFill"></image>
 					<view class="text">余额</view>
 				</view>
 				<view class="price">0.00<text>元</text></view>
@@ -19,7 +19,7 @@
 			<view class="line"></view>
 			<view @click="skip('./coupon')">
 				<view class="flex-box item">
-					<image class="icon" :src="`${ossUrl}/mine/youhui.png`"></image>
+					<image class="icon" :src="`${ossUrl}/mine/youhui.png`" mode="aspectFill"></image>
 					<view class="text">优惠券</view>
 				</view>
 				<view class="price">{{couponCount}}<text>张</text></view>
@@ -27,19 +27,19 @@
 		</view>
 		<view class="flex-box function">
 			<view class="flex-box-one" @click="skip('./news')">
-				<image class="icon" :src="`${ossUrl}/mine/news.png`"></image>
+				<image class="icon" :src="`${ossUrl}/mine/news.png`" mode="aspectFill"></image>
 				<view class="gray-text">消息通知</view>
 			</view>
 			<view class="flex-box-one" @click="skip('./violationRecord')">
-				<image class="icon" :src="`${ossUrl}/mine/weizhang.png`"></image>
+				<image class="icon" :src="`${ossUrl}/mine/weizhang.png`" mode="aspectFill"></image>
 				<view class="gray-text">违章记录</view>
 			</view>
 			<view class="flex-box-one" @click="skip('/pages/mine/pay', {type: 1})">
-				<image class="icon" :src="`${ossUrl}/mine/fukuan.png`"></image>
+				<image class="icon" :src="`${ossUrl}/mine/fukuan.png`" mode="aspectFill"></image>
 				<view class="gray-text">付款</view>
 			</view>
 			<view class="flex-box-one" @click="skip('/pages/mine/pay', {type: 0})">
-				<image class="icon" :src="`${ossUrl}/mine/shoukuan.png`"></image>
+				<image class="icon" :src="`${ossUrl}/mine/shoukuan.png`" mode="aspectFill"></image>
 				<view class="gray-text">收款</view>
 			</view>
 		</view>
@@ -48,12 +48,12 @@
 			v-for="(item, index) in list " :key="index">
 			<image class="icon" :src="`${ossUrl}${item.img}`" mode="widthFix"></image>
 			<view class="text">{{item.name}}</view>
-			<image class="arrow" :src="`${ossUrl}/mine/huiyou.png`"></image>
+			<image class="arrow" :src="`${ossUrl}/mine/huiyou.png`" mode="aspectFill"></image>
 		</view>
-		<view v-show="$storage.get('token')" class="flex-box-left" @click="logout">
+		<view v-if="$storage.get('token')" class="flex-box-left" @click="logout">
 			<image class="icon" :src="`${ossUrl}/mine/out.png`" mode="widthFix"></image>
 			<view class="text">退出登录</view>
-			<image class="arrow" :src="`${ossUrl}/mine/huiyou.png`"></image>
+			<image class="arrow" :src="`${ossUrl}/mine/huiyou.png`" mode="aspectFill"></image>
 		</view>
 	</view>
 </template>
@@ -64,7 +64,8 @@
 	} from '@/utils/uni-tools'
 	import {
 		mapState,
-		mapMutations
+		mapMutations,
+		mapActions
 	} from 'vuex'
 
 	export default {
@@ -103,9 +104,21 @@
 			// user 头像，用户昵称，用户名，优惠券数量
 			...mapState('user', ['icon', 'nickname', 'username', 'couponCount'])
 		},
+		onPullDownRefresh() {
+			this.init()
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			}, 500)
+		},
 		methods: {
-			// user 清空用户信息
+			// user  清空用户信息
 			...mapMutations('user', ['clearInfo']),
+			// user 获取用户信息
+			...mapActions('user', ['getUserInfo']),
+			// 初始化
+			init() {
+				this.getUserInfo('refresh')
+			},
 			// 公共跳转
 			skip(url, params = {}) {
 				if (!this.$storage.get('token')) {

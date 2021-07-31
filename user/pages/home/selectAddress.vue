@@ -1,15 +1,15 @@
 <template>
 	<view class="select-address">
 		<view class="search-bar">
-			<view v-show="!searchKey" class="input" @click="toggleSearchBox">
-				<image class="icon-search" :src="`${ossUrl}/common/search.png`"></image>
+			<view v-if="!searchKey" class="input" @click="toggleSearchBox">
+				<image class="icon-search" :src="`${ossUrl}/common/search.png`" mode="aspectFill"></image>
 				<text>{{keyword || '景点、地址寻找附件送车点'}}</text>
 			</view>
-			<view v-show="searchKey" class="search-box">
+			<view v-if="searchKey" class="search-box">
 				<view class="search-content">
-					<image class="icon-search" :src="`${ossUrl}/common/search.png`"></image>
+					<image class="icon-search" :src="`${ossUrl}/common/search.png`" mode="aspectFill"></image>
 					<input type="text" placeholder="景点、地址寻找附件送车点" v-model="keyword" @input="keywordChange">
-					<image v-show="keyword" class="icon-delete" :src="`${ossUrl}/common/delete.png`"
+					<image v-if="keyword" class="icon-delete" :src="`${ossUrl}/common/delete.png`" mode="aspectFill"
 						@click="clearKeyword"></image>
 				</view>
 				<view class="btn" @click="toggleSearchBox">取消</view>
@@ -17,7 +17,7 @@
 		</view>
 		<view class="search-bar-mat"></view>
 		<!-- 筛选列表 -->
-		<view v-show="!searchKey" class="classify" :style="{height: `${windowHeight - searchHeight - 5}px`}">
+		<view v-if="!searchKey" class="classify" :style="{height: `${windowHeight - searchHeight - 5}px`}">
 			<scroll-view class="class" :scroll-y="true">
 				<view :class="['item', {'ac': index === acIndex}]" v-for="(item, index) in areaList" :key="index"
 					@click="tapClass(index)">{{item.name}}</view>
@@ -34,7 +34,7 @@
 			</scroll-view>
 		</view>
 		<!-- 搜索列表 -->
-		<view v-show="searchKey" class="address-list">
+		<view v-if="searchKey" class="address-list">
 			<view class="address-item" v-for="(item, index) in carAddressList" :key="index"
 				@click="selectAddress(index)">
 				<view class="caption">{{item.name}}</view>
@@ -43,7 +43,7 @@
 				</view>
 			</view>
 		</view>
-		<uni-load-more v-show="searchKey" :status="dataStatus" />
+		<uni-load-more v-if="searchKey" :status="dataStatus" />
 	</view>
 </template>
 
@@ -110,7 +110,7 @@
 				const [err, res] = await regionCityFindDeliveryArea(params)
 				if (err) return
 				this.areaList = res.data
-				this.deliveryFindDeliveryPage()
+				// this.deliveryFindDeliveryPage()
 			},
 			// 触底加载
 			scrollToBottom() {

@@ -9,11 +9,11 @@
 		</view>
 		<view class="flexBox">
 			<view style="width: 50%;" class="flexBox">
-				<image style="width: 40rpx;height: 40rpx;" :src="`${ossUrl}/common/km.png`"></image>
+				<image style="width: 40rpx;height: 40rpx;" :src="`${ossUrl}/common/km.png`" mode="aspectFill"></image>
 				<view style="color: #5A7EFF;margin-left: 10rpx;">当前里程</view>
 			</view>
 			<view style="width: 50%;" class="flexBox">
-				<image style="width: 40rpx;height: 40rpx;" :src="`${ossUrl}/common/you.png`"></image>
+				<image style="width: 40rpx;height: 40rpx;" :src="`${ossUrl}/common/you.png`" mode="aspectFill"></image>
 				<view style="color: #5A7EFF;margin-left: 10rpx;">当前油量</view>
 			</view>
 		</view>
@@ -33,7 +33,7 @@
 			<view class="grayLine"></view>
 			<view class="flexBox" style="padding: 10rpx 0rpx 30rpx 0rpx;">
 				<view class="blackText" style="width: 79%;">{{item.name}}</view>
-				<view v-show="item.condition" class="ok">确认完好</view>
+				<view v-if="item.condition" class="ok">确认完好</view>
 			</view>
 			<view>
 				<view class="line"></view>
@@ -41,8 +41,8 @@
 					<view class="blackText">{{inner.name}}<text class="garyText">({{inner.description}})</text> </view>
 					<view style="display: flex;align-items: center;width: 29%;">
 						<view :class="['selectOk', {'statusOk': inner.condition===0}]">完好</view>
-						<view v-show="!inner.condition" class="selectNo">损坏</view>
-						<view v-show="inner.condition && inner.condition===1" class="lookImg"
+						<view v-if="!inner.condition" class="selectNo">损坏</view>
+						<view v-if="inner.condition && inner.condition===1" class="lookImg"
 							@click="previewPics([inner.image])">查看图片</view>
 					</view>
 				</view>
@@ -57,30 +57,30 @@
 				<image style="width:160rpx;height:160rpx;" :src="inner" mode="aspectFill"></image>
 			</view>
 		</view>
-		<view v-show="mode==='edit'" class="flexBox">
+		<view v-if="mode==='edit'" class="flexBox">
 			<view class="blackText" style="width: 20%;">添加备注</view>
 		</view>
-		<textarea v-show="mode==='edit'" value="" placeholder="请输入备注信息"
+		<textarea v-if="mode==='edit'" value="" placeholder="请输入备注信息"
 			style="padding: 20rpx;width:85%;margin: auto;background-color: #EFF0F3;height:220rpx;border-radius: 20rpx;margin-top: 30rpx;"
 			v-model="remarks" />
-		<view v-show="mode==='edit'"
+		<view v-if="mode==='edit'"
 			style="width: 92%;margin: auto;padding-bottom: 20rpx;border-bottom: 2rpx solid #EFF0F3;">
 			<view style="display: inline-block;width: 21%;margin: 20rpx 2%;position: relative;"
 				v-for="(item, index) in imgList" :key="index">
 				<view>
 					<image style="width:160rpx;height:160rpx;" :src="item" mode="aspectFill"></image>
 					<image style="width:36rpx;height:36rpx;position: absolute;top:-10rpx;right: -25rpx;"
-						:src="`${ossUrl}/common/lancha.png`" @click="removePic(index)"></image>
+						:src="`${ossUrl}/common/lancha.png`" mode="aspectFill" @click="removePic(index)"></image>
 				</view>
 			</view>
 			<view v-if="imgList.length<3" style="display: inline-block;width: 21%;margin: 20rpx 2%;position: relative;"
 				@click="choosePics">
 				<view>
-					<image style="width:160rpx;height:160rpx;" :src="`${ossUrl}/common/guanxi.png`"></image>
+					<image style="width:160rpx;height:160rpx;" :src="`${ossUrl}/common/guanxi.png`" mode="aspectFill"></image>
 				</view>
 			</view>
 		</view>
-		<button v-show="mode==='edit'" style=" color: white;
+		<button v-if="mode==='edit'" style=" color: white;
 			width: 80%;
 					margin: 20rpx auto;
 				    background-color: #5A7EFF;

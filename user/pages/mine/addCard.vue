@@ -29,7 +29,7 @@
 					placeholder-style="text-align: right;" placeholder="填写银行卡号" />
 			</view>
 		</view>
-		<view v-show="type==1" class="delBox" @click="bankCardDel">删除银行卡</view>
+		<view v-if="type==1" class="delBox" @click="bankCardDel">删除银行卡</view>
 		<view v-if="type===0" class="btn" @click="bankCardAdd">新增</view>
 		<view v-else class="btn" @click="bankCardEdit">更新</view>
 	</view>

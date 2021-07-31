@@ -2,8 +2,8 @@
 	<view class="coupon-center">
 		<view class="list">
 			<view class="coupon" v-for="(item, index) in 10" :key="index">
-				<image class="bg" v-show="index%2===0" :src="`${ossUrl}/home/is-get-bg.png`"></image>
-				<image class="bg" v-show="index%2!==0" :src="`${ossUrl}/home/no-get-bg.png`"></image>
+				<image class="bg" v-if="index%2===0" :src="`${ossUrl}/home/is-get-bg.png`" mode="aspectFill"></image>
+				<image class="bg" v-if="index%2!==0" :src="`${ossUrl}/home/no-get-bg.png`" mode="aspectFill"></image>
 				<view class="mask">
 					<view :class="['info', {'is-get': index%2===0}, {'no-get': index%2!==0}]">
 						<view class="price">￥<text>50</text></view>
@@ -13,8 +13,8 @@
 						</view>
 					</view>
 					<view class="btn">
-						<image class="btn-bg" v-show="index%2===0" :src="`${ossUrl}/home/is-get-btn.png`"></image>
-						<image class="btn-bg" v-show="index%2!==0" :src="`${ossUrl}/home/no-get-btn.png`"></image>
+						<image class="btn-bg" v-if="index%2===0" :src="`${ossUrl}/home/is-get-btn.png`" mode="aspectFill"></image>
+						<image class="btn-bg" v-if="index%2!==0" :src="`${ossUrl}/home/no-get-btn.png`" mode="aspectFill"></image>
 						<view class="text">{{ index%2===0 ? '领取' : '已领取' }}</view>
 					</view>
 				</view>
@@ -62,7 +62,7 @@
 						@include flex-row();
 
 						&.is-get {
-							@include font-gradient(180deg, #FFD26E, #FFF1C0);
+							color: #FECF65;
 						}
 
 						&.no-get {
