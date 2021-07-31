@@ -35,7 +35,6 @@
 			}
 		},
 		onLoad(e) {
-			console.log(e)
 			if (e && e.accessToken) this.accessToken = e.accessToken
 		},
 		methods: {
