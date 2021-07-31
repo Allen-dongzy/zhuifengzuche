@@ -2,17 +2,17 @@
 	"pages": [{
 		"path": "pages/aliPage/authorization",
 		"style": {
-			"navigationBarTitleText": "登录"
+			"navigationBarTitleText": "授权"
 		}
 	}, {
-		"path": "pages/aliPage/userinfo",
+		"path": "pages/aliPage/applyNoCash",
 		"style": {
-			"navigationBarTitleText": "用户信息"
+			"navigationBarTitleText": "申请免押"
 		}
 	}, {
 		"path": "pages/aliPage/result",
 		"style": {
-			"navigationBarTitleText": "结果展示"
+			"navigationBarTitleText": "免押结果"
 		}
 	}, {
 		"path": "pages/home/home",
@@ -342,7 +342,7 @@
 			"path": "pages/order/order"
 		}, {
 			"name": "dzy", // dzy
-			"path": "pages/common/contract"
+			"path": "pages/aliPage/userinfo"
 		}]
 	}
 }
