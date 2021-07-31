@@ -1,5 +1,20 @@
 {
 	"pages": [{
+		"path": "pages/aliPage/authorization",
+		"style": {
+			"navigationBarTitleText": "登录"
+		}
+	}, {
+		"path": "pages/aliPage/userinfo",
+		"style": {
+			"navigationBarTitleText": "用户信息"
+		}
+	}, {
+		"path": "pages/aliPage/result",
+		"style": {
+			"navigationBarTitleText": "结果展示"
+		}
+	}, {
 		"path": "pages/home/home",
 		"style": {
 			"navigationBarTitleText": "追风租车",
