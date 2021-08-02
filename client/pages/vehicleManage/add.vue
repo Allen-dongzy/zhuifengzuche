@@ -206,7 +206,7 @@
 				<view class="square" @click="reduce(2)">-10%</view>
 				<view class="square" @click="reduce(1)">-1</view>
 				<!-- 	<view class="input">50</view> -->
-				<input class="input" v-if="weekType==1" type="text" v-model="weekExternal" />
+				<input class="input" v-if="weekType==2" type="text" v-model="weekExternal" />
 				<input class="input" v-else type="text" v-model="weekWithin" />
 
 				<view class="square" @click="add(1)">+1</view>

@@ -191,12 +191,15 @@
 				this.mark = this.payinfo.remarks
 			},
 			async getmoney(e) {
-
-				const [err, res] = await getCertificates(this.info.order)
+	let data = {
+					orderId: this.info.order
+				}
+				
+				const [err, res] = await deliveryVehicleGet(data)
 				if (err) return
 				console.log(res)
 				this.payinfo = res.data
-				this.mark = this.payinfo.remarks
+		
 			},
 
 		}
