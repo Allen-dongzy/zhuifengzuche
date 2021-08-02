@@ -5,8 +5,6 @@
 			@getAuthorize="onGetAuthorize" @error="onAuthError">
 			支付宝一键登录
 		</button>
-		<button type="default" @click="aaa">aaa</button>
-		<web-view src="https://www.baidu.com/" onMessage="test"></web-view>
 		<!-- #endif -->
 	</view>
 </template>
@@ -25,7 +23,7 @@
 			getInfo() {
 				return new Promise((resolve, reject) => {
 					my.getAuthCode({
-						scopes: 'auth_zhima', // 主动授权（弹框）：auth_user，静默授权（不弹框）：auth_base
+						scopes: 'auth_user', // 主动授权（弹框）：auth_user，静默授权（不弹框）：auth_base
 						success: res => {
 							resolve(res)
 						},
@@ -52,25 +50,7 @@
 				this.$open('/pages/aliPage/applyNoCash', {
 					accessToken: res.data.access_token
 				})
-			}),
-			aaa() {
-				my.ap.navigateToAlipayPage({
-					appCode: 'antForest',
-					appParams: {
-						autoShowProps: 1 //可选参数，等1时，默认打开开启森林背包
-					},
-					success: (res) => {
-						my.alert({
-							content: '成功：' + JSON.stringify(res)
-						});
-					},
-					fail: (res) => {
-						my.alert({
-							content: '失败：' + JSON.stringify(res)
-						});
-					}
-				})
-			}
+			})
 		}
 	}
 </script>
