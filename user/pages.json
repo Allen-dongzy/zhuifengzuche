@@ -1,10 +1,5 @@
 {
 	"pages": [{
-		"path": "pages/aliPage/authorization",
-		"style": {
-			"navigationBarTitleText": "授权"
-		}
-	}, {
 		"path": "pages/aliPage/applyNoCash",
 		"style": {
 			"navigationBarTitleText": "申请免押"
