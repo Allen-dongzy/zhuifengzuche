@@ -1,63 +1,5 @@
 <template>
 	<view class="order-detail">
-		<view v-if="info.orderStatus===0 || info.orderStatus===1 || info.orderStatus===2" class="top-panel-1">
-			<view v-if="info.orderStatus===1 || info.orderStatus===2" class="statu-bar">
-				<view class="status">{{statusShow}}</view>
-				<view v-if="info.orderStatus===1" class="refresh" @click="refresh">
-					<image :src="`${ossUrl}/order/refresh.png`" mode="aspectFill"></image>刷新
-				</view>
-			</view>
-			<view v-if="(info.orderStatus===0 || info.orderStatus===1) && info.countdown" class="info">{{info.countdown}}</view>
-			<view class="bottom">
-				<view class="btn-box">
-					<view v-if="info.orderStatus===0 || info.orderStatus===1 || info.orderStatus===2" class="btn white"
-						@click="rentalOrderCancelOrderByUserGet">
-						取消订单</view>
-					<view v-if="info.orderStatus===0" class="btn blue" @click="getCodeByWxCode">立即支付</view>
-					<view v-if="info.orderStatus===2" class="btn white"
-						@click="$open('/pages/common/goInspect', {mode:'edit', from: 'orderDetail', orderId: info.id, vehicleId: info.vehicleId})">
-						查看车况
-					</view>
-				</view>
-				<view v-if="info.orderStatus===0 || info.orderStatus===1" class="contact" @click="contactStore">
-					<image class="phone" :src="`${ossUrl}/common/phone-big.png`" mode="aspectFill"></image>
-					联系门店
-				</view>
-				<view v-if="info.orderStatus===2" class="contact" @click="contactSendCarPart">
-					<image class="phone" :src="`${ossUrl}/common/phone-big.png`" mode="aspectFill"></image>
-					联系送车员
-				</view>
-			</view>
-		</view>
-		<view
-			v-if="info.orderStatus===3 || info.orderStatus===4 || info.orderStatus===5 || info.orderStatus===100 || info.orderStatus===101"
-			class="top-panel-2">
-			<view class="top">
-				<image class="bg" :src="`${ossUrl}/order/order-bg.png`" mode="aspectFill"></image>
-				<view class="mask">
-					<view class="caption">{{statusShow}}</view>
-					<view v-if="info.orderStatus===3 || info.orderStatus===5" class="toast">{{info.countdown}}</view>
-					<view v-if="info.orderStatus===4" class="toast">请前往换车详情页面完成换车</view>
-					<view v-if="info.orderStatus===100" class="toast">感谢您对追风租车的信任，期待再次光临</view>
-					<view v-if="info.orderStatus===101" class="toast">您的订单已取消，感谢你使用追风租车</view>
-				</view>
-			</view>
-			<view v-if="info.orderStatus===3 || info.orderStatus===5" class="menu">
-				<view class="menu-box">
-					<view class="header">
-						<image class="icon" :src="`${ossUrl}/order/exclamation.png`" mode="aspectFill"></image>
-						<view class="caption">{{info.breakRulesString}}</view>
-					</view>
-					<view class="btn-box">
-						<view class="btn white" @click="contactStore">联系门店</view>
-						<view v-if="info.orderStatus===3 && !info.isLeaseRenewal" class="btn white"
-							@click="rentalOrderRenewCarRentalPriceCheck">续租用车</view>
-						<view class="btn blue" @click="returnCar">前往还车
-						</view>
-					</view>
-				</view>
-			</view>
-		</view>
 		<view class="order-card"
 			:class="{'radius': info.orderStatus===4 || info.orderStatus===100 || info.orderStatus===101}">
 			<view class="info">
@@ -171,10 +113,14 @@
 			</view>
 		</view>
 
+		<view class="bottom-btn" @click="paymentAliPayFrozenMoney">免押</view>
+
 		<view v-if="info.orderStatus===4 || info.orderStatus===100 || info.orderStatus===101" class="bottom-bar">
 			<view class="left">
-				<image v-if="info.orderStatus===4" class="icon" :src="`${ossUrl}/order/smile.png`" mode="aspectFill"></image>
-				<image v-if="info.orderStatus!==4" class="icon" :src="`${ossUrl}/order/price.png`" mode="aspectFill"></image>
+				<image v-if="info.orderStatus===4" class="icon" :src="`${ossUrl}/order/smile.png`" mode="aspectFill">
+				</image>
+				<image v-if="info.orderStatus!==4" class="icon" :src="`${ossUrl}/order/price.png`" mode="aspectFill">
+				</image>
 				<text v-if="info.orderStatus===4">追风租车祝您生活愉快</text>
 				<text v-if="info.orderStatus===100">违押金未退还</text>
 				<text v-if="info.orderStatus===101">半小时内免费取消，金额已原路退回</text>
@@ -230,6 +176,9 @@
 	import {
 		paymentPrecreate
 	} from '@/apis/payment'
+	import {
+		paymentAliPayFrozenMoney
+	} from '@/apis/aliApis'
 	import {
 		throttle
 	} from '@/utils/tools'
@@ -438,6 +387,27 @@
 					orderStatus: this.info.orderStatus,
 					orderId: this.info.id,
 					vehicleId: this.info.vehicleId
+				})
+			},
+			// 支付宝资金冻结
+			paymentAliPayFrozenMoney: throttle(async function() {
+				const params = {
+					orderSn: this.info.orderSn
+				}
+				const [err, res] = await paymentAliPayFrozenMoney(params)
+				if (err || !res.data.orderStr) return
+				this.aliTradePay(res.data.orderStr)
+			}),
+			// 阿里冻结支付
+			aliTradePay(orderStr) {
+				my.tradePay({
+					orderStr,
+					success: (res) => {
+						console.log(res)
+					},
+					fail: (res) => {
+						console.log(err)
+					}
 				})
 			},
 			// 监听函数
@@ -921,6 +891,15 @@
 				border-top: 1px solid #EFF0F3;
 				margin-top: 40rpx;
 			}
+		}
+
+		.bottom-btn {
+			@include box(500rpx, 100rpx, #fff);
+			margin: 50rpx auto;
+			border-radius: 10rpx;
+			border: 1px solid #ddd;
+			@include flex-center;
+			@include font-set(34rpx, #333);
 		}
 	}
 </style>

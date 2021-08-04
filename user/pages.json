@@ -5,6 +5,11 @@
 			"navigationBarTitleText": "申请免押"
 		}
 	}, {
+		"path": "pages/aliPage/orderDetail",
+		"style": {
+			"navigationBarTitleText": "订单详情"
+		}
+	}, {
 		"path": "pages/aliPage/result",
 		"style": {
 			"navigationBarTitleText": "免押结果"
