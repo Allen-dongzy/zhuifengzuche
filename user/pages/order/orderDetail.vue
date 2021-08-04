@@ -1,13 +1,13 @@
 <template>
 	<view class="order-detail">
-		<view v-show="info.orderStatus===0 || info.orderStatus===1 || info.orderStatus===2" class="top-panel-1">
-			<view v-show="info.orderStatus===1 || info.orderStatus===2" class="statu-bar">
+		<view v-if="info.orderStatus===0 || info.orderStatus===1 || info.orderStatus===2" class="top-panel-1">
+			<view v-if="info.orderStatus===1 || info.orderStatus===2" class="statu-bar">
 				<view class="status">{{statusShow}}</view>
-				<view v-show="info.orderStatus===1" class="refresh" @click="refresh">
-					<image :src="`${ossUrl}/order/refresh.png`"></image>刷新
+				<view v-if="info.orderStatus===1" class="refresh" @click="refresh">
+					<image :src="`${ossUrl}/order/refresh.png`" mode="aspectFill"></image>刷新
 				</view>
 			</view>
-			<view v-show="(info.orderStatus===0 || info.orderStatus===1) && info.countdown" class="info">{{info.countdown}}</view>
+			<view v-if="(info.orderStatus===0 || info.orderStatus===1) && info.countdown" class="info">{{info.countdown}}</view>
 			<view class="bottom">
 				<view class="btn-box">
 					<view v-if="info.orderStatus===0 || info.orderStatus===1 || info.orderStatus===2" class="btn white"
@@ -19,38 +19,38 @@
 						查看车况
 					</view>
 				</view>
-				<view v-show="info.orderStatus===0 || info.orderStatus===1" class="contact" @click="contactStore">
-					<image class="phone" :src="`${ossUrl}/common/phone-big.png`"></image>
+				<view v-if="info.orderStatus===0 || info.orderStatus===1" class="contact" @click="contactStore">
+					<image class="phone" :src="`${ossUrl}/common/phone-big.png`" mode="aspectFill"></image>
 					联系门店
 				</view>
-				<view v-show="info.orderStatus===2" class="contact" @click="contactSendCarPart">
-					<image class="phone" :src="`${ossUrl}/common/phone-big.png`"></image>
+				<view v-if="info.orderStatus===2" class="contact" @click="contactSendCarPart">
+					<image class="phone" :src="`${ossUrl}/common/phone-big.png`" mode="aspectFill"></image>
 					联系送车员
 				</view>
 			</view>
 		</view>
 		<view
-			v-show="info.orderStatus===3 || info.orderStatus===4 || info.orderStatus===5 || info.orderStatus===100 || info.orderStatus===101"
+			v-if="info.orderStatus===3 || info.orderStatus===4 || info.orderStatus===5 || info.orderStatus===100 || info.orderStatus===101"
 			class="top-panel-2">
 			<view class="top">
-				<image class="bg" :src="`${ossUrl}/order/order-bg.png`"></image>
+				<image class="bg" :src="`${ossUrl}/order/order-bg.png`" mode="aspectFill"></image>
 				<view class="mask">
 					<view class="caption">{{statusShow}}</view>
-					<view v-show="info.orderStatus===3 || info.orderStatus===5" class="toast">{{info.countdown}}</view>
-					<view v-show="info.orderStatus===4" class="toast">请前往换车详情页面完成换车</view>
-					<view v-show="info.orderStatus===100" class="toast">感谢您对追风租车的信任，期待再次光临</view>
-					<view v-show="info.orderStatus===101" class="toast">您的订单已取消，感谢你使用追风租车</view>
+					<view v-if="info.orderStatus===3 || info.orderStatus===5" class="toast">{{info.countdown}}</view>
+					<view v-if="info.orderStatus===4" class="toast">请前往换车详情页面完成换车</view>
+					<view v-if="info.orderStatus===100" class="toast">感谢您对追风租车的信任，期待再次光临</view>
+					<view v-if="info.orderStatus===101" class="toast">您的订单已取消，感谢你使用追风租车</view>
 				</view>
 			</view>
-			<view v-show="info.orderStatus===3 || info.orderStatus===5" class="menu">
+			<view v-if="info.orderStatus===3 || info.orderStatus===5" class="menu">
 				<view class="menu-box">
 					<view class="header">
-						<image class="icon" :src="`${ossUrl}/order/exclamation.png`"></image>
+						<image class="icon" :src="`${ossUrl}/order/exclamation.png`" mode="aspectFill"></image>
 						<view class="caption">{{info.breakRulesString}}</view>
 					</view>
 					<view class="btn-box">
 						<view class="btn white" @click="contactStore">联系门店</view>
-						<view v-show="info.orderStatus===3 && !info.isLeaseRenewal" class="btn white"
+						<view v-if="info.orderStatus===3 && !info.isLeaseRenewal" class="btn white"
 							@click="rentalOrderRenewCarRentalPriceCheck">续租用车</view>
 						<view class="btn blue" @click="returnCar">前往还车
 						</view>
@@ -86,11 +86,11 @@
 					</view>
 				</view>
 			</view>
-			<view v-show="info.startDeliveryName === info.endDeliveryName" class="address">
+			<view v-if="info.startDeliveryName === info.endDeliveryName" class="address">
 				<view class="label">取还</view>
 				{{info.startDeliveryName}}
 			</view>
-			<view v-show="info.startDeliveryName !== info.endDeliveryName">
+			<view v-if="info.startDeliveryName !== info.endDeliveryName">
 				<view class="address">
 					<view class="label">取</view>
 					{{info.endDeliveryName}}
@@ -104,17 +104,17 @@
 		</view>
 
 		<view class="info-card-1">
-			<view v-show="info.orderStatus===0" class="order-item">
+			<view v-if="info.orderStatus===0" class="order-item">
 				<view class="left">
 					<view class="top">
-						驾无忧保障<image class="question" :src="`${ossUrl}/order/question.png`"></image>
+						驾无忧保障<image class="question" :src="`${ossUrl}/order/question.png`" mode="aspectFill"></image>
 						<view class="price">￥{{info.insuranceDayPriceByDay || 0}}/天</view>
 					</view>
 					<view class="bottom">添加一份无忧保障，添一份安心</view>
 				</view>
 				<view class="right">￥{{info.insuranceDayPrice || 0}}</view>
 			</view>
-			<view v-show="info.orderStatus===0" class="order-item">
+			<view v-if="info.orderStatus===0" class="order-item">
 				<view class="left">优惠券</view>
 				<view class="right">{{info.useCouponPrice ? `-￥${info.useCouponPrice.toString().slice(1)}` : '-￥0'}}
 				</view>
@@ -122,7 +122,7 @@
 			<view class="order-item">
 				<view class="left">
 					<view class="cost"
-						@click="$open('/pages/order/costDetail', {obj: JSON.stringify(info.orderPriceInfo)})">
+						@click="$open('/pages/order/costDetail', {info: JSON.stringify(info.orderPriceInfo)})">
 						总计
 						<text>费用明细</text>
 						<view class="arrow"></view>
@@ -155,7 +155,7 @@
 				<view class="left">支付方式</view>
 				<view class="right">{{info.paymentType}}</view>
 			</view>
-			<view v-show="info.orderStatus===3 || info.orderStatus===5" class="order-item"
+			<view v-if="info.orderStatus===3 || info.orderStatus===5" class="order-item"
 				@click="$open('/pages/order/depositReceived', {payTheVoucherRentalCarDeposit: info.payTheVoucherRentalCarDeposit, paymentVoucherHandler: info.paymentVoucherHandler, paymentVoucherTransactionTime: info.paymentVoucherTransactionTime})">
 				<view class="left">支付凭证</view>
 				<view class="right">预收冻结￥{{info.payTheVoucherRentalCarDeposit}}
@@ -171,30 +171,30 @@
 			</view>
 		</view>
 
-		<view v-show="info.orderStatus===4 || info.orderStatus===100 || info.orderStatus===101" class="bottom-bar">
+		<view v-if="info.orderStatus===4 || info.orderStatus===100 || info.orderStatus===101" class="bottom-bar">
 			<view class="left">
-				<image v-show="info.orderStatus===4" class="icon" :src="`${ossUrl}/order/smile.png`"></image>
-				<image v-show="info.orderStatus!==4" class="icon" :src="`${ossUrl}/order/price.png`"></image>
-				<text v-show="info.orderStatus===4">追风租车祝您生活愉快</text>
-				<text v-show="info.orderStatus===100">违押金未退还</text>
-				<text v-show="info.orderStatus===101">半小时内免费取消，金额已原路退回</text>
+				<image v-if="info.orderStatus===4" class="icon" :src="`${ossUrl}/order/smile.png`" mode="aspectFill"></image>
+				<image v-if="info.orderStatus!==4" class="icon" :src="`${ossUrl}/order/price.png`" mode="aspectFill"></image>
+				<text v-if="info.orderStatus===4">追风租车祝您生活愉快</text>
+				<text v-if="info.orderStatus===100">违押金未退还</text>
+				<text v-if="info.orderStatus===101">半小时内免费取消，金额已原路退回</text>
 			</view>
 			<view class="right">
-				<view v-show="info.orderStatus===100 || info.orderStatus===101" class="contact" @click="contactStore">
-					<image class="phone" :src="`${ossUrl}/common/phone-big.png`"></image>
+				<view v-if="info.orderStatus===100 || info.orderStatus===101" class="contact" @click="contactStore">
+					<image class="phone" :src="`${ossUrl}/common/phone-big.png`" mode="aspectFill"></image>
 					联系门店
 				</view>
-				<view v-show="info.orderStatus===4 || info.orderStatus===100" class="btn-box">
-					<view v-show="info.orderStatus===4" class="btn white" @click="contactSendCarPart">联系送车员</view>
-					<view v-show="info.orderStatus===4" class="btn blue"
+				<view v-if="info.orderStatus===4 || info.orderStatus===100" class="btn-box">
+					<view v-if="info.orderStatus===4" class="btn white" @click="contactSendCarPart">联系送车员</view>
+					<view v-if="info.orderStatus===4" class="btn blue"
 						@click="$open('/pages/order/changeCarDetail', {id: info.id})">
 						换车详情
 					</view>
-					<view v-show="info.orderStatus===100 && info.evaluateCount===0" class="btn blue"
+					<view v-if="info.orderStatus===100 && info.evaluateCount===0" class="btn blue"
 						@click="$open('/pages/order/evaluate', {from:'orderDetail', orderId: info.id, memberShopId: info.memberShopId})">
 						评价订单
 					</view>
-					<view v-show="info.orderStatus===100 && info.evaluateCount>0" class="btn blue"
+					<view v-if="info.orderStatus===100 && info.evaluateCount>0" class="btn blue"
 						@click="$open('/pages/common/storeComment', {orderId: info.id, id: info.memberShopId})">
 						查看评价
 					</view>

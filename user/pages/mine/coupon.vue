@@ -12,8 +12,8 @@
 		<view class="coupon-center">
 			<view class="list">
 				<view class="coupon" v-for="(item, index) in couponList" :key="index">
-					<image class="bg" v-show="type==0" :src="`${ossUrl}/home/is-get-bg.png`"></image>
-					<image class="bg" v-show="type!=0" :src="`${ossUrl}/home/no-get-bg.png`"></image>
+					<image class="bg" v-if="type==0" :src="`${ossUrl}/home/is-get-bg.png`" mode="aspectFill"></image>
+					<image class="bg" v-if="type!=0" :src="`${ossUrl}/home/no-get-bg.png`" mode="aspectFill"></image>
 					<view class="mask">
 						<view :class="['info', {'is-get': type===0}, {'no-get': type!==0}]">
 							<view class="price">￥<text>{{item.discountAmount}}</text></view>
@@ -23,11 +23,11 @@
 							</view>
 						</view>
 						<view class="btn" @click="couponHandler(index)">
-							<image class="btn-bg" v-show="type===0" :src="`${ossUrl}/home/is-get-btn.png`"></image>
-							<image class="btn-bg" v-show="type!==0" :src="`${ossUrl}/home/no-get-btn.png`"></image>
-							<view class="text" v-show="type==0">可使用</view>
-							<view class="text" v-show="type==1">已使用</view>
-							<view class="text" v-show="type==2">已过期</view>
+							<image class="btn-bg" v-if="type===0" :src="`${ossUrl}/home/is-get-btn.png`" mode="aspectFill"></image>
+							<image class="btn-bg" v-if="type!==0" :src="`${ossUrl}/home/no-get-btn.png`" mode="aspectFill"></image>
+							<view class="text" v-if="type==0">可使用</view>
+							<view class="text" v-if="type==1">已使用</view>
+							<view class="text" v-if="type==2">已过期</view>
 						</view>
 					</view>
 				</view>
@@ -196,7 +196,7 @@
 						@include flex-row();
 
 						&.is-get {
-							@include font-gradient(180deg, #FFD26E, #FFF1C0);
+							color: #FECF65;
 						}
 
 						&.no-get {

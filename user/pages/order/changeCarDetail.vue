@@ -1,21 +1,21 @@
 <template>
 	<view class="change-car-detail">
 		<view class="card">
-			<image class="pic" src="https://youjia-image.cdn.bcebos.com/seriesImage/158738183449412be5bb.png@!w_600_fp">
+			<image class="pic" src="https://youjia-image.cdn.bcebos.com/seriesImage/158738183449412be5bb.png@!w_600_fp" mode="aspectFill">
 			</image>
 			<view class="caption">大众迈腾</view>
 			<view class="params">自动挡丨5座 丨2.0L</view>
 			<view class="info">92#汽油</view>
-			<image class="label" :src="`${ossUrl}/order/logo-label.png`"></image>
+			<image class="label" :src="`${ossUrl}/order/logo-label.png`" mode="aspectFill"></image>
 		</view>
-		<image class="tranform" :src="`${ossUrl}/order/tranform.png`"></image>
+		<image class="tranform" :src="`${ossUrl}/order/tranform.png`" mode="aspectFill"></image>
 		<view class="card">
-			<image class="pic" src="https://youjia-image.cdn.bcebos.com/seriesImage/158738183449412be5bb.png@!w_600_fp">
+			<image class="pic" src="https://youjia-image.cdn.bcebos.com/seriesImage/158738183449412be5bb.png@!w_600_fp" mode="aspectFill">
 			</image>
 			<view class="caption">大众迈腾</view>
 			<view class="params">自动挡丨5座 丨2.0L</view>
 			<view class="info">92#汽油</view>
-			<image class="label" :src="`${ossUrl}/order/logo-label.png`"></image>
+			<image class="label" :src="`${ossUrl}/order/logo-label.png`" mode="aspectFill"></image>
 		</view>
 		<view class="bottom-mat"></view>
 		<view class="bottom">

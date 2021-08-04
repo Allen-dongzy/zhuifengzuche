@@ -16,18 +16,18 @@
 				</view>
 			</view>
 			<!-- 搜索列表  -->
-			<view class="reach-content" v-show="keyword">
-				<block v-show="searchCityList.length">
+			<view class="reach-content" v-if="keyword">
+				<block v-if="searchCityList.length">
 					<view class="li" v-for="item in searchCityList" :key="item.id" @click="citySearchList(item)">
 						{{ item.name }}
 					</view>
 				</block>
-				<view class="has-no-data" v-show="hasNoData">没有找到匹配数据~</view>
+				<view class="has-no-data" v-if="hasNoData">没有找到匹配数据~</view>
 			</view>
 		</view>
 
 		<!-- 城市列表 -->
-		<view v-show="!searchMode">
+		<view v-if="!searchMode">
 			<view class="top-search">
 				<view class="item" @click="searchMode = true">
 					<image class="icon-search" :src="`${ossUrl}/common/search.png`"></image>

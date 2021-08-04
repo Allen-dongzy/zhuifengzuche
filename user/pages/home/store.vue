@@ -3,7 +3,7 @@
 		<view class="address-title">
 			<view class="caption">{{name}}</view>
 			<view class="address" @click="openMap(-1)">
-				<image class="icon-location" :src="`${ossUrl}/common/location-big.png`"></image>
+				<image class="icon-location" :src="`${ossUrl}/common/location-big.png`" mode="aspectFill"></image>
 				<text>{{address}}</text>
 				<view class="arrow"></view>
 			</view>
@@ -14,39 +14,39 @@
 			<view class="store-card" v-for="(item, index) in list" :key="index">
 				<view class="head">
 					<view class="base-info">
-						<image class="logo" :src="item.shopImages"></image>
+						<image class="logo" :src="item.shopImages" mode="aspectFill"></image>
 						<view class="title-box">
 							<view class="store-caption">{{item.name}}</view>
 							<view class="star-box">
-								<image class="star" :src="`${ossUrl}/common/icon-star.png`"
+								<image class="star" :src="`${ossUrl}/common/icon-star.png`" mode="aspectFill"
 									v-for="(item, index) in starCode" :key="index"></image>
 							</view>
 						</view>
 					</view>
 					<view class="btn-group">
-						<image class="btn" :src="`${ossUrl}/common/location-big.png`" @click="openMap(index)"></image>
-						<image class="btn" :src="`${ossUrl}/common/phone-big.png`" @click="phoneCall(index)"></image>
+						<image class="btn" :src="`${ossUrl}/common/location-big.png`" mode="aspectFill" @click="openMap(index)"></image>
+						<image class="btn" :src="`${ossUrl}/common/phone-big.png`" mode="aspectFill" @click="phoneCall(index)"></image>
 					</view>
 				</view>
 				<view class="info">
 					<view class="bar">
-						<image class="icon" :src="`${ossUrl}/common/icon-time.png`"></image>
+						<image class="icon" :src="`${ossUrl}/common/icon-time.png`" mode="aspectFill"></image>
 						<view class="description">营业时间：{{item.beginTime || '暂无'}}-{{item.endTime || '暂无'}}
 						</view>
 					</view>
 					<view class="bar">
-						<image class="icon" :src="`${ossUrl}/home/icon-phone.png`"></image>
+						<image class="icon" :src="`${ossUrl}/home/icon-phone.png`" mode="aspectFill"></image>
 						<view class="description">电话号码：<text @click="phoneCall(index)">{{item.memberPhone}}</text>
 						</view>
 					</view>
 					<view class="bar">
-						<image class="icon" :src="`${ossUrl}/home/icon-message.png`"></image>
+						<image class="icon" :src="`${ossUrl}/home/icon-message.png`" mode="aspectFill"></image>
 						<view class="description" @click="$open('/pages/common/storeComment', {id: item.id})">
 							评论：{{item.evaluationNumber || 0}}条</view>
 						<view class="arrow" @click="$open('/pages/common/storeComment', {id: item.id})"></view>
 					</view>
 					<view class="bar">
-						<image class="icon" :src="`${ossUrl}/common/icon-home-black.png`"></image>
+						<image class="icon" :src="`${ossUrl}/common/icon-home-black.png`" mode="aspectFill"></image>
 						<view class="description">门店地址：<text @click="openMap(index)">{{item.memberAddress}}</text>
 						</view>
 					</view>

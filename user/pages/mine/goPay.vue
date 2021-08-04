@@ -8,9 +8,9 @@
 					<label class="grayTetx">{{platformIndex >= 0 ? platformList[platformIndex].name : '请选择' }}</label>
 				</picker>
 			</view>
-			<image style="width:28rpx;height: 38rpx;" :src="`${ossUrl}/mine/huiyou.png`"></image>
+			<image style="width:28rpx;height: 38rpx;" :src="`${ossUrl}/mine/huiyou.png`" mode="aspectFill"></image>
 		</view>
-		<view class="flexBox" v-show="orderKey">
+		<view class="flexBox" v-if="orderKey">
 			<view class="blackTitle">订单</view>
 			<view style="width: 56%;">
 				<picker @change="orderChange" :value="orderIndex" :range="orderList" :range-key="'show'"
@@ -18,9 +18,9 @@
 					<label class="grayTetx">{{orderIndex >=0 ? orderList[orderIndex].show : '请选择'}}</label>
 				</picker>
 			</view>
-			<image style="width:28rpx;height: 38rpx;" :src="`${ossUrl}/mine/huiyou.png`"></image>
+			<image style="width:28rpx;height: 38rpx;" :src="`${ossUrl}/mine/huiyou.png`" mode="aspectFill"></image>
 		</view>
-		<view class="flexBox" v-show="timeKey">
+		<view class="flexBox" v-if="timeKey">
 			<view class="blackTitle" style="width: 30%;">租车开始时间</view>
 			<view style="width: 66%;padding-left:100rpx">
 				<picker mode="date" @change="dateChange" :value="timeDate" :start="startDate" :end="endDate"
@@ -29,7 +29,7 @@
 				</picker>
 			</view>
 			<view style="width:4%;">
-				<image style="width:28rpx;height: 28rpx;" :src="`${ossUrl}/mine/daytime.png`"></image>
+				<image style="width:28rpx;height: 28rpx;" :src="`${ossUrl}/mine/daytime.png`" mode="aspectFill"></image>
 			</view>
 		</view>
 		<view class="flexBox">
@@ -66,7 +66,7 @@
 				<input class="grayTetx" type="text" v-model="payer" placeholder="请填写付款人姓名" />
 			</view>
 		</view>
-		<view class="flexBox" @click="$open('/pages/mine/bankCard', {mode: 'select'})" v-show="type===0">
+		<view class="flexBox" @click="$open('/pages/mine/bankCard', {mode: 'select'})" v-if="type===0">
 			<view class="blackTitle">银行卡</view>
 			<view style="width: 56%;">
 				<picker class="pickerBox" :disabled="true">
@@ -74,7 +74,7 @@
 						class="grayTetx">{{Object.keys(bankCard).length>0 ? `${bankCard.bankName} (${bankCard.name} 尾号${bankCard.cardNumber.slice(bankCard.cardNumber.length-4)})` : '请选择'}}</label>
 				</picker>
 			</view>
-			<image style="width:28rpx;height: 38rpx;" :src="`${ossUrl}/mine/huiyou.png`"></image>
+			<image style="width:28rpx;height: 38rpx;" :src="`${ossUrl}/mine/huiyou.png`" mode="aspectFill"></image>
 		</view>
 		<view class="flexBox" style="border: none;">备注</view>
 		<view
@@ -89,11 +89,12 @@
 							@click="previewPics(imgList, index)">
 						</image>
 						<image style="width:32rpx;height:32rpx;position: absolute;z-index:9;top:-10rpx;right: -16rpx;"
-							:src="`${ossUrl}/common/lancha.png`" @click.stop="removePic(index)"></image>
+							:src="`${ossUrl}/common/lancha.png`" mode="aspectFill" @click.stop="removePic(index)">
+						</image>
 					</view>
 				</view>
 				<image v-if="imgList.length<3" style="width:120rpx;height: 120rpx;" :src="`${ossUrl}/mine/beizhu.png`"
-					@click="choosePics"></image>
+					mode="aspectFill" @click="choosePics"></image>
 			</view>
 		</view>
 		<button style=" color: white;

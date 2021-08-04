@@ -91,10 +91,10 @@ const user = {
 		// 获取用户信息
 		async getUserInfo({
 			commit
-		}) {
+		}, action = '') {
 			if (!storage.get('token')) return
 			const userinfo = storage.get('userinfo')
-			if (userinfo && Object.keys(userinfo).length > 0) {
+			if (userinfo && Object.keys(userinfo).length > 0 && action !== 'refresh') {
 				commit('setUserInfo', userinfo)
 				return
 			}

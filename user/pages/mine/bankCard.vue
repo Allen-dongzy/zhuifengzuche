@@ -3,13 +3,13 @@
 		<view class="box" v-for="(item, index) in list" :key="index" @click="selectCard(index)">
 			<view class="flex">
 				<view style="width: 90%;">{{item.bankName}}</view>
-				<image style="height: 44rpx;width: 44rpx;" :src="`${ossUrl}/mine/edit.png`" @click="edit(index)">
+				<image style="height: 44rpx;width: 44rpx;" :src="`${ossUrl}/mine/edit.png`" mode="aspectFill" @click="edit(index)">
 				</image>
 			</view>
 			<view class="flex" style="margin: 30rpx 0px;">
 				<view class="num" v-for="(inner, sub) in item.bandSections" :key="sub">
-					<text v-show="sub === item.bandSections.length-1">{{ inner }}</text>
-					<text class="star" v-show="sub < item.bandSections.length-1">{{ inner | bankFilter }}</text>
+					<text v-if="sub === item.bandSections.length-1">{{ inner }}</text>
+					<text class="star" v-if="sub < item.bandSections.length-1">{{ inner | bankFilter }}</text>
 				</view>
 			</view>
 			<view class="bottom">
@@ -17,8 +17,8 @@
 				<text class="default">设为默认</text>
 			</view>
 		</view>
-		<view v-show="dataStatus === 'noData'" class="empty">
-			<image class="bg" :src="`${ossUrl}/common/res-empty.png`"></image>
+		<view v-if="dataStatus === 'noData'" class="empty">
+			<image class="bg" :src="`${ossUrl}/common/res-empty.png`" mode="aspectFill"></image>
 			<view class="text">暂无银行卡</view>
 		</view>
 		<view class="btn" @click="$open('/pages/mine/addCard')">添加银行卡</view>

@@ -9,7 +9,7 @@
 		</view>
 		<view class="line"></view>
 		<view class="addCard">
-			<image style="height: 36rpx;width: 36rpx;margin-left: 40rpx;" :src="`${ossUrl}/mine/addCard.png`" mode=""> 
+			<image style="height: 36rpx;width: 36rpx;margin-left: 40rpx;" :src="`${ossUrl}/mine/addCard.png`" mode="aspectFill"> 
 			</image>
 			<view style="margin-left: 10rpx;" @click="setCard(0)">添加银行卡</view>
 		</view>

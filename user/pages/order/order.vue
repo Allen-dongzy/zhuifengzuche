@@ -21,8 +21,9 @@
 				<view class="item-header">
 					<view class="name-box">
 						<view class="name">
-							{{item.orderStatus === 0 ? item.carModelName.split('|')[0] : item.carModelName}}</view>
-						<view v-show="item.orderStatus === 0"
+							{{item.orderStatus === 1 || item.orderStatus === 2 ? item.carModelName.split('|')[0] : item.carModelName}}
+						</view>
+						<view v-if="item.orderStatus === 0"
 							:class="['label-card', {'orange': item.orderStatus === 0}]">
 							<view class="top"></view>
 							<view class="line"></view>
@@ -37,68 +38,68 @@
 							{{item.rentBeginTime.slice(0, 16)}}&nbsp;至&nbsp;{{item.rentEndTime.slice(0, 16)}}
 						</view>
 						<view
-							v-show="item.orderStatus === 1 || item.orderStatus === 2 || item.orderStatus === 3 || item.orderStatus === 4 || item.orderStatus === 5 || item.orderStatus === 100 || item.orderStatus === 101"
+							v-if="item.orderStatus === 1 || item.orderStatus === 2 || item.orderStatus === 3 || item.orderStatus === 4 || item.orderStatus === 5 || item.orderStatus === 100 || item.orderStatus === 101"
 							:class="['status', {'blue': item.orderStatus!==7}, {'red':item.orderStatus===101}] ">
 							{{item.orderStatus | orderStatusShow}}
 						</view>
 					</view>
 					<view class="address">
-						<text v-show="item.pickPlace !== item.returnPlace">取车点</text>
-						<text v-show="item.pickPlace === item.returnPlace">取/还车点</text>
+						<text v-if="item.pickPlace !== item.returnPlace">取车点</text>
+						<text v-if="item.pickPlace === item.returnPlace">取/还车点</text>
 						{{item.pickPlace}}
 					</view>
-					<view v-show="item.pickPlace !== item.returnPlace" class="address">
+					<view v-if="item.pickPlace !== item.returnPlace" class="address">
 						<text>还车点</text>{{item.returnPlace}}
 					</view>
-					<view v-show="item.orderStatus === 100" class="info">违章押金未退还</view>
+					<view v-if="item.orderStatus === 100" class="info">违章押金未退还</view>
 				</view>
 				<view class="bottom">
 					<view
-						v-show="item.orderStatus === 0 || item.orderStatus === 1 || item.orderStatus === 3 || item.orderStatus === 4 || item.orderStatus === 5"
+						v-if="item.orderStatus === 0 || item.orderStatus === 1 || item.orderStatus === 3 || item.orderStatus === 4 || item.orderStatus === 5"
 						class="contact" @click.stop="contactStore(index)">
-						<image class="phone" :src="`${ossUrl}/common/phone-big.png`"></image>
+						<image class="phone" :src="`${ossUrl}/common/phone-big.png`" mode="aspectFill"></image>
 						<view class="info">联系门店</view>
 					</view>
-					<view v-show="item.orderStatus === 2" class="contact" @click.stop="contactSendCarPart(index)">
-						<image class="phone" :src="`${ossUrl}/common/phone-big.png`"></image>
+					<view v-if="item.orderStatus === 2" class="contact" @click.stop="contactSendCarPart(index)">
+						<image class="phone" :src="`${ossUrl}/common/phone-big.png`" mode="aspectFill"></image>
 						<view class="info">联系送车员</view>
 					</view>
-					<view v-show="item.orderStatus >= 100" class="contact"></view>
+					<view v-if="item.orderStatus >= 100" class="contact"></view>
 					<view class="btn-box">
-						<view v-show="item.orderStatus === 0" class="btn blue" @click.stop="getCodeByWxCode(index)">立即支付
+						<view v-if="item.orderStatus === 0" class="btn blue" @click.stop="getCodeByWxCode(index)">立即支付
 						</view>
-						<view v-show="item.orderStatus === 2" class="btn blue"
+						<view v-if="item.orderStatus === 2" class="btn blue"
 							@click.stop="$open('/pages/common/goInspect', {mode:'edit', from: 'order', orderId: item.id, vehicleId: item.vehicleId})">
 							查看车况
 						</view>
-						<view v-show="item.orderStatus === 3  && !item.isLeaseRenewal" class="btn white"
+						<view v-if="item.orderStatus === 3  && !item.isLeaseRenewal" class="btn white"
 							@click.stop="rentalOrderRenewCarRentalPriceCheck(index)">
 							续租用车
 						</view>
-						<view v-show="item.orderStatus === 3 || item.orderStatus === 5" class="btn blue"
+						<view v-if="item.orderStatus === 3 || item.orderStatus === 5" class="btn blue"
 							@click.stop="returnCar(index)">
 							前往还车
 						</view>
-						<view v-show="item.orderStatus === 4" class="btn blue"
+						<view v-if="item.orderStatus === 4" class="btn blue"
 							@click.stop="$open('/pages/order/changeCarDetail')">换车详情</view>
-						<view v-show="item.orderStatus === 100 && item.evaluateCount===0" class="btn blue"
+						<view v-if="item.orderStatus === 100 && item.evaluateCount===0" class="btn blue"
 							@click.stop="$open('/pages/order/evaluate', {from:'order', orderId: item.id, memberShopId: item.memberShopId})">
 							评价
 						</view>
-						<view v-show="item.orderStatus === 100 && item.evaluateCount>0" class="btn blue"
+						<view v-if="item.orderStatus === 100 && item.evaluateCount>0" class="btn blue"
 							@click.stop="$open('/pages/common/storeComment', {orderId: item.id, id: item.memberShopId})">
 							查看评价</view>
-						<view v-show="item.orderStatus === 101" class="btn blue"
+						<view v-if="item.orderStatus === 101" class="btn blue"
 							@click.stop="$open('/pages/home/home', 3)">再次预订</view>
 					</view>
 				</view>
 			</view>
 		</view>
-		<view v-show="dataStatus !== 'noData'">
+		<view v-if="dataStatus !== 'noData'">
 			<uni-load-more :status="dataStatus" />
 		</view>
-		<view v-show="dataStatus === 'noData'" class="empty">
-			<image class="bg" :src="`${ossUrl}/common/res-empty.png`"></image>
+		<view v-if="dataStatus === 'noData'" class="empty">
+			<image class="bg" :src="`${ossUrl}/common/res-empty.png`" mode="aspectFill"></image>
 			<view class="text">暂无订单</view>
 		</view>
 	</view>

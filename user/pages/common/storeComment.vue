@@ -11,7 +11,7 @@
 						<view class="caption">{{item.customInfoName}}</view>
 						<view class="star-box">
 							<image v-for="(inner, sub) in item.starCode" :key="sub" class="star"
-								:src="`${ossUrl}/common/icon-star.png`"></image>
+								:src="`${ossUrl}/common/icon-star.png`" mode="aspectFill"></image>
 						</view>
 					</view>
 					<view class="time">{{item.createTime ? item.createTime.split(' ')[0] : ''}}</view>

@@ -1,7 +1,7 @@
 <template>
 	<view class="">
 		<view style="width: 90%;margin: auto;text-align: center;margin-top: 20vh;">
-				<image  style="width: 400rpx;height: 252rpx;" :src="`${ossUrl}/common/res-success.png`"></image>
+				<image  style="width: 400rpx;height: 252rpx;" :src="`${ossUrl}/common/res-success.png`" mode="aspectFill"></image>
 		</view>
 		<view class="title">评价成功！</view>
 		<view class="title1">再次感谢您选择追风租车 </view>

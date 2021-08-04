@@ -1,7 +1,7 @@
 <template>
 	<view class="">
 		<view style="width:400rpx; margin: auto;margin-top: 25vh;">
-			<image style="height:250rpx;width: 100%;" :src="`${ossUrl}/mine/payed.png`"></image>
+			<image style="height:250rpx;width: 100%;" :src="`${ossUrl}/mine/payed.png`" mode="aspectFill"></image>
 		</view>
 		<view class="title">提交成功！</view>
 		<view class="title1">工作人员正在处理中，请耐心等待</view>

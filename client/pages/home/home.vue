@@ -1,18 +1,18 @@
 <template>
 	<view class="home">
 		<view class="flex-center tabList">
-			<swiper class="swiperIcon" :indicator-dots="false" :indicator-color="indicatorColor"
+			<swiper class="swiperIcon"  :indicator-dots="false" :indicator-color="indicatorColor"
 				:indicator-active-color="indicatorActiveColor" >
 				<swiper-item class="flex flex-wrap swiperItem" >
 					<view v-for="(item,index) in swiperIcon" :key="index" class="flex-center flex-direction iconPanel"
 						@click="toHomeLevel(item.url)">
-						<image :src="$util.fileUrl(item.path)" lazy-load></image>
+						<image mode="aspectFill" style="height: 100rpx;width: 100rpx;" :src="$util.fileUrl(item.path)" lazy-load></image>
 						<p>{{ item.text }}</p>
 					</view>
 				</swiper-item>
 				<!-- 				<swiper-item class="flex flex-wrap swiperItem">
 					<view v-for="(item,index) in swiperIcon" :key="index" class="flex-center flex-direction iconPanel">
-						<image :src="$util.fileUrl(item.path)" lazy-load></image>
+						<image mode="aspectFill" :src="$util.fileUrl(item.path)" lazy-load></image>
 						<p>{{ item.text }}</p>
 					</view>
 				</swiper-item> -->
@@ -34,7 +34,7 @@
 								{{ item.orderStatus }}{{item.statusCount}}
 							</p>
 							<p v-else :style="{color: (item.check?'#5A7EFF':'#999999')}">{{ item.orderStatus }}</p>
-							<i v-show="item.check"></i>
+							<i v-if="item.check"></i>
 						</view>
 					</view>
 				</view>
@@ -45,8 +45,8 @@
 				<view class="header">
 					<view class="flex titlePanel">
 						<p class="title">{{item.vehicleNumber}}</p>
-						<view class="flex-center status" v-show="tabCheck==0 || tabCheck==3">
-							<image :src="$util.fileUrl('/paid_label@2x.png')"></image>
+						<view class="flex-center status" v-if="tabCheck==0 || tabCheck==3">
+							<image mode="aspectFill" :src="$util.fileUrl('/paid_label@2x.png')"></image>
 							<p>已支付</p>
 						</view>
 					</view>
@@ -72,48 +72,48 @@
 						<text class="cuIcon-countdown"></text>
 						<p>{{item.rentBeginTime}} 至 {{item.rentEndTime}}</p>
 					</view>
-					<view class="flex location" v-show="radio==true">
+					<view class="flex location" v-if="radio==true">
 						<i></i>
 						<p class="type">取</p>
 						<p class="text">{{item.pickPlace}}</p>
 					</view>
-					<view class="flex location" v-show="radio==true">
+					<view class="flex location" v-if="radio==true">
 						<i></i>
 						<p class="type">还</p>
 						<p class="text">{{item.returnPlace}}</p>
 					</view>
-					<view class="flex location" v-show="radio==false">
+					<view class="flex location" v-if="radio==false">
 						<i></i>
 						<p class="type">取还</p>
 						<p class="text">{{item.pickPlace}}</p>
 					</view>
-					<p class="dateText" v-show="tabCheck<2">{{item.countdown}}</p>
-					<p class="dateText" v-show="tabCheck==2">{{item.breakRulesString}}</p>
+					<p class="dateText" v-if="tabCheck<2">{{item.countdown}}</p>
+					<p class="dateText" v-if="tabCheck==2">{{item.breakRulesString}}</p>
 					<view class="flex submit">
 						<view class="flex phone" @click.stop="call(item.memberPhone)">
-							<image :src="$util.fileUrl('/phone@2x.png')"></image>
+							<image mode="aspectFill" :src="$util.fileUrl('/phone@2x.png')"></image>
 							<p>联系客户</p>
 						</view>
 						<view class="flex">
-							<button :disabled="item.isCarTest==false" type="default" v-show="tabCheck==0" class="flex-center btn"  
+							<button :disabled="item.isCarTest==false" type="default" v-if="tabCheck==0" class="flex-center btn"  
 								@tap.stop="toHomeLevel1('/pages/home/goInspect?obj=',item)">出车检验</button>
-							<button type="default" :disabled="item.isVehicleCertificates==true" v-show="tabCheck==0" class="flex-center btn"
+							<button type="default" :disabled="item.isVehicleCertificates==true" v-if="tabCheck==0" class="flex-center btn"
 								style="margin-left: 20rpx;"
 								@tap.stop="toHomeLevel1('/pages/home/deliverCar?type=1&obj=',item)">交付车辆</button>
-							<button type="default" v-show="tabCheck==1" class="flex-center btn"
+							<button type="default" v-if="tabCheck==1" class="flex-center btn"
 								@tap.stop="toHomeLevel1('/pages/home/deliverCar?type=2&obj=',item)">交车情况</button>
-							<button type="default" v-show="tabCheck==1" class="flex-center btn"
+							<button type="default" v-if="tabCheck==1" class="flex-center btn"
 								style="margin-left: 20rpx;"
 								@tap.stop="toHomeLevel1('/pages/home/inspectionCollect?obj=',item)" :disabled="item.isPaymentIllegalDeposit==1">检验收车</button>
-							<button type="default" v-show="tabCheck==2" class="flex-center btn"
+							<button type="default" v-if="tabCheck==2" class="flex-center btn"
 								@tap.stop="toHomeLevel1('/pages/home/inspectionCollectInfo?obj=',item)" >收车详情</button>
-							<button type="default" v-show="tabCheck==2" class="flex-center btn bg-btn" @click.stop="backMoney(item.id)">退还押金</button>
+							<button type="default" v-if="tabCheck==2" class="flex-center btn bg-btn" @click.stop="backMoney(item.id)">退还押金</button>
 						</view>
 					</view>
 				</view>
 			</view>
-			<view class="loadmore">
-				<tui-loadmore v-if="orderSize" :index="2"></tui-loadmore>
+			<view class="loadmore" >
+				<tui-loadmore  v-if="orderSize" :index="2"></tui-loadmore>
 				<tui-nomore v-else text="没有更多了"></tui-nomore>
 			</view>
 		</view>
@@ -293,9 +293,11 @@
 </script>
 
 <style lang="scss" scoped>
+	.bg{
+		background-color: black !important;
+	}
 	.home {
 		position: relative;
-
 		/**
 		 * 更改swiper提示点样式
 		 */
@@ -368,7 +370,7 @@
 
 			.swiperIcon {
 				width: 100%;
-				height: 340rpx;
+				height: 340rpx !important;
 
 				.swiperItem {
 					padding-bottom: 50rpx;

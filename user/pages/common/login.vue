@@ -1,10 +1,10 @@
 <template>
 	<view class="content">
 		<view class="topimg">
-			<image class="loginBox" :src="`${ossUrl}/common/logo.png`"></image>
+			<image class="loginBox" :src="`${ossUrl}/common/logo.png`" mode="aspectFill"></image>
 		</view>
 		<view class="topimg2">
-			<image style="height:544rpx;width: 544rpx;" :src="`${ossUrl}/common/loginbg.png`"></image>
+			<image style="height:544rpx;width: 544rpx;" :src="`${ossUrl}/common/loginbg.png`" mode="aspectFill"></image>
 		</view>
 		<view class="setbox">
 			<view class="moreInpbox">
@@ -27,10 +27,10 @@
 			</view>
 			<view class="selectBox">
 				<view style="width: 32rpx;height: 32rpx;padding-top: 6rpx;" @click="lookAgreement">
-					<image v-show="agreementType==false" style="height: 100%;width: 100%;"
-						:src="`${ossUrl}/mine/quanxian2.png`" mode=""></image>
-					<image v-show="agreementType==true" style="height: 100%;width: 100%;"
-						:src="`${ossUrl}/mine/quanxian1.png`" mode=""></image>
+					<image v-if="agreementType==false" style="height: 100%;width: 100%;"
+						:src="`${ossUrl}/mine/quanxian2.png`" mode="aspectFill"></image>
+					<image v-if="agreementType==true" style="height: 100%;width: 100%;"
+						:src="`${ossUrl}/mine/quanxian1.png`" mode="aspectFill"></image>
 				</view>
 				<view style="color: #262743;margin-left:10rpx;">已阅读并同意追风租车的<text style="color: #5A7EFF;"
 						@click="$open('/pages/common/userAgreement')">《用户协议》</text> </view>

@@ -32,11 +32,11 @@
 		</view>
 		<!-- #endif -->
 		<text class="uni-load-more__text" :style="{color: color}">
-			<text v-show="status === 'more'">{{contentText.contentdown}}</text>
-			<text v-show="status === 'loading'">{{contentText.contentrefresh}}</text>
-			<text v-show="status === 'noMore'">{{customNoMore ? customNoMore : contentText.contentnomore}}</text>
+			<text v-if="status === 'more'">{{contentText.contentdown}}</text>
+			<text v-if="status === 'loading'">{{contentText.contentrefresh}}</text>
+			<text v-if="status === 'noMore'">{{customNoMore ? customNoMore : contentText.contentnomore}}</text>
 			<text
-				v-show="!status || status === 'noData'">{{customNoData ? customNoData : contentText.contentnodata}}</text>
+				v-if="!status || status === 'noData'">{{customNoData ? customNoData : contentText.contentnodata}}</text>
 		</text>
 	</view>
 </template>

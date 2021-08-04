@@ -1,6 +1,6 @@
 <template>
 	<view class="perfect-information">
-		<image class="bg" :src="`${ossUrl}/common/res-success.png`"></image>
+		<image class="bg" :src="`${ossUrl}/common/res-success.png`" mode="aspectFill"></image>
 		<view class="info">为了您的用车安全，请先完善信息</view>
 		<view class="list">
 			<view class="item">

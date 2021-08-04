@@ -7,13 +7,13 @@
 					<view class="title">{{item.title}}</view>
 					<view class="tips">普票</view>
 				</view>
-				<image style="height: 32rpx;width: 20rpx;" :src="`${ossUrl}/mine/huiyou.png`"></image>
+				<image style="height: 32rpx;width: 20rpx;" :src="`${ossUrl}/mine/huiyou.png`" mode="aspectFill"></image>
 			</view>
 			<view class="num">{{item.taxNum}}</view>
 		</view>
 		<view class="btn-mat"></view>
 		<view class="btn" @click="$open('/pages/mine/invoiceInfo', {mode: 'add'})">添加新抬头</view>
-		<uni-load-more v-show="dataStatus==='noData'" :status="dataStatus" />
+		<uni-load-more v-if="dataStatus==='noData'" :status="dataStatus" />
 	</view>
 </template>
 

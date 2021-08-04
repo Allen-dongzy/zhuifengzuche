@@ -36,7 +36,7 @@
 				<input type="number" :maxlength="11" v-model="phone" placeholder="请输入电话" />
 			</view>
 		</view>
-		<view v-show="mode==='edit'" class="delete-btn" @click="invoiceDelete">删除该抬头</view>
+		<view v-if="mode==='edit'" class="delete-btn" @click="invoiceDelete">删除该抬头</view>
 		<view class="btn" @click="invoiceHandler">{{mode==='add' ? '添加' : '更新'}}</view>
 	</view>
 </template>
