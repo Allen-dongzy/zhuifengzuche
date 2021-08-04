@@ -1,5 +1,5 @@
 let config = {
-	mode: 'develop', // 项目模式 production release develop
+	mode: 'production', // 项目模式 production release develop
 	secretKey: '', // md5通信秘钥
 	productionHost: 'https://zuche.zdkj1.cn', // 正式域名
 	releaseHost: 'http://121.40.45.191:8201', // 测试域名 
