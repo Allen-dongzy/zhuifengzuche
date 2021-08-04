@@ -177,7 +177,8 @@
 		paymentPrecreate
 	} from '@/apis/payment'
 	import {
-		paymentAliPayFrozenMoney
+		paymentAliPayFrozenMoney,
+		paymentAliPayCallback
 	} from '@/apis/aliApis'
 	import {
 		throttle
@@ -400,23 +401,31 @@
 			}),
 			// 阿里冻结支付
 			aliTradePay(orderStr) {
-				// my.tradePay({
-				// 	orderStr,
-				// 	success: (res) => {
-				// 		console.log(res)
-				// 	},
-				// 	fail: (res) => {
-				// 		console.log(err)
-				// 	}
-				// })
 				my.tradePay({
-					orderStr: 'alipay_sdk=alipay-sdk-java-dynamicVersionNo&app_id=2021002157693546&biz_content=%7B%22amount%22%3A%220.02%22%2C%22extra_param%22%3A%22%7B%5C%22category%5C%22%3A%5C%22TRAD_RENT_CAR%5C%22%2C%5C%22serviceId%5C%22%3A%5C%222020111100000000000078532800%5C%22%7D%22%2C%22order_title%22%3A%22%E7%A7%9F%E8%BD%A6%E6%8A%BC%E9%87%91%E9%A2%84%E6%8E%88%E6%9D%83%22%2C%22out_order_no%22%3A%2220210804134056227153%22%2C%22out_request_no%22%3A%220833162710907324796585802066%22%2C%22payee_user_id%22%3A%222088931788241283%22%2C%22product_code%22%3A%22PRE_AUTH_ONLINE%22%7D&charset=utf-8&format=JSON&method=alipay.fund.auth.order.app.freeze&notify_url=https%3A%2F%2Fzuche.zdkj1.cn%2Flots-member%2Fpayment%2Fali-pay-callback&sign=EzMvZSNGfkkaFK6NkOZgulM2FcrywQuBzE8AqmLIgCSBL7MgRgOapummQ5nEZKYoqa2hAensdtofreJCyr3onJ6UdP38vQo3V0x7ymkUaKSuj9h7finglEojWK6mrwzd4nG35NibRVg8HO9rVdB0UX%2FdNysv0cG7xDnMLOSpvaJCDpxGt6HLpmJbPiQqsB%2FAIdqDuaVj3NXSieDrNP2sARDU8wHW2HPKQSAYUv%2FQdWGvvp%2BjOKfCWqws%2BjqNc%2B8tJv5OozJOo5xHGGaxRz8PFLNLTlu1cKJNDA2rU9pD6oWxDi92VkQuWi7u0jTNv35D3ZV3Hccfs5%2FB%2Fd21X%2FDlVw%3D%3D&sign_type=RSA2&timestamp=2021-08-04+13%3A52%3A57&version=1.0',
+					orderStr,
 					success: (res) => {
-						console.log(res)
+						this.paymentAliPayCallback(JSON.parse(res.result))
 					},
-					fail: (res) => {
+					fail: (err) => {
 						console.log(err)
 					}
+				})
+			},
+			// 自己冻结回调
+			async paymentAliPayCallback(info) {
+				const params = {
+					amount: info.alipay_fund_auth_order_app_freeze_response.amount,
+					outOrderNo: info.alipay_fund_auth_order_app_freeze_response.out_order_no,
+					authNo: info.alipay_fund_auth_order_app_freeze_response.auth_no,
+					fundAmount: info.alipay_fund_auth_order_app_freeze_response.fund_amount,
+					outRequestNo: info.alipay_fund_auth_order_app_freeze_response.out_request_no,
+					preAuthType: info.alipay_fund_auth_order_app_freeze_response.pre_auth_type,
+					creditAmount: info.alipay_fund_auth_order_app_freeze_response.credit_amount
+				}
+				const [err, res] = await paymentAliPayCallback(params)
+				if (err) return
+				this.$open('/pages/aliPage/result', {
+					result: info.alipay_fund_auth_order_app_freeze_response.code === '10000' ? 1 : 2
 				})
 			},
 			// 监听函数

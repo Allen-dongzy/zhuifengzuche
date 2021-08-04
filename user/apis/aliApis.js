@@ -21,3 +21,13 @@ export const paymentAliPayFrozenMoney = (data, loading = '') => { // 对接
 		loading
 	})
 }
+
+// 支付宝资金冻结回调
+export const paymentAliPayCallback = (data, loading = '') => { // 对接
+	return request({
+		url: 'payment/ali-pay-callback',
+		method: 'POST',
+		data,
+		loading
+	})
+}
