@@ -4,31 +4,29 @@
 			<image class="loginBox" :src="$util.fileUrl('/logo.png')"></image>
 		</view>
 		<view class="topimg2">
-			<image style="height:544rpx;width: 544rpx;" :src="$util.fileUrl('/loginbg.png')" mode=""></image>
+			<image style="height:544rpx;width: 544rpx;" :src="$util.fileUrl('/loginbg.png')" mode="aspectFill"></image>
 		</view>
 		<view class="setbox">
 
-			<input style="    background-color: #EFF0F3;
-			width: 86%;
-			margin: auto;
-			height: 96rpx;
-			padding-left: 20rpx;
-			border-radius: 10rpx;" v-model="phone" type="text" value="" placeholder="请输入手机号" />
+<view class="moreInpbox">
+	<input class="inpBox" style="width: 100%;border-radius: 10rpx;" v-model="phone" type="text" value="" placeholder="请输入手机号" />
+	</view>
+
 
 
 			<view class="textTitle">{{accountText}}</view>
 
 			<view class="moreInpbox">
-				<view style="width: 90%;" v-show="showpass==true">
-					<input v-model="password" type="password" class="inpBox" style="width: 95%;" placeholder="请填写密码" />
+				<view style="width: 90%;" v-if="showpass==true">
+					<input v-model="password" password class="inpBox" style="width: 95%;" placeholder="请填写密码" />
 				</view>
-				<view style="width: 90%;" v-show="showpass==false">
+				<view style="width: 90%;" v-if="showpass==false">
 					<input v-model="password" type="number" class="inpBox" style="width: 95%;" placeholder="请填写密码" />
 				</view>
-				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
-					mode="" @click="look"></image>
-				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
-					mode="" @click="look"></image>
+				<image v-if="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
+					mode="aspectFill" @click="look"></image>
+				<image v-if="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
+					mode="aspectFill" @click="look"></image>
 				<!-- </view> -->
 			</view>
 
@@ -40,10 +38,10 @@
 			</view>
 			<view class="selectBox">
 				<view style="width: 32rpx;height: 32rpx;" @click="selectbox">
-					<image v-show="selectType==false" style="height: 100%;width: 100%;"
-						:src="$util.fileUrl('/quanxian2.png')" mode=""></image>
-					<image v-show="selectType==true" style="height: 100%;width: 100%;"
-						:src="$util.fileUrl('/quanxian1.png')" mode=""></image>
+					<image v-if="selectType==false" style="height: 100%;width: 100%;"
+						:src="$util.fileUrl('/quanxian2.png')" mode="aspectFill"></image>
+					<image v-if="selectType==true" style="height: 100%;width: 100%;"
+						:src="$util.fileUrl('/quanxian1.png')" mode="aspectFill"></image>
 				</view>
 				<view style="color: #262743;">已阅读并同意追风租车的<text style="color: #5A7EFF;" @click="agreement">《用户协议》</text> </view>
 			</view>
@@ -73,6 +71,7 @@
 				showpass: true, //密码眼睛切换 false 关闭  true开启
 				password: '', //密码
 				phone: '', //手机号
+				inpType:'password'
 			}
 		},
 		methods: {
@@ -175,9 +174,9 @@
 		background-color: white;
 		width: 90%;
 		margin: auto;
-		margin-top: 450rpx;
+		margin-top: 420rpx;
 		border-radius: 20rpx;
-		padding: 60rpx 0px;
+		padding: 60rpx 0px 0rpx 0rpx;
 
 	}
 
@@ -192,9 +191,9 @@
 		display: flex;
 		align-items: center;
 		width: 86%;
-
 		margin: auto;
-		margin-top: 42rpx;
+		margin-top: 22rpx;
+		padding-bottom: 20rpx;
 	}
 
 	.moreInpbox {

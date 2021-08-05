@@ -192,7 +192,7 @@
 			},
 			async getmoney(e) {
 
-				const [err, res] = await getCertificates(this.info.order)
+				const [err, res] = await deliveryVehicleGet(this.info.order)
 				if (err) return
 				console.log(res)
 				this.payinfo = res.data
