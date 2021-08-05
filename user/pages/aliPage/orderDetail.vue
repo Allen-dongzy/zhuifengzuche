@@ -238,8 +238,8 @@
 				return str ? JSON.parse(str)[0] : ''
 			}
 		},
-		onLoad(e) {
-			if (e && e.info) this.info = JSON.parse(e.info)
+		onLoad() {
+			this.eventListener()
 		},
 		methods: {
 			// 请求订单详情
@@ -424,6 +424,12 @@
 				if (err) return
 				this.$open('/pages/aliPage/result', {
 					result: info.alipay_fund_auth_order_app_freeze_response.code === '10000' ? 1 : 2
+				})
+			},
+			// 监听事件
+			eventListener() {
+				uni.$on('getInfo', e => {
+					if (e && e.info) this.info = e.info
 				})
 			}
 		}

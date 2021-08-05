@@ -69,12 +69,15 @@
 					realName: this.name
 				}
 				const [err, res] = await rentalOrderAliPageQuery(params)
-				if (err || !res.data[0].id) return
+				if (err || !res.data || Object.keys(res.data).length === 0) return
 				this.$toast('查询成功，正在跳转...')
 				setTimeout(() => {
-					this.$open('/pages/aliPage/orderDetail', {
-						info: JSON.stringify(res.data[0])
-					})
+					this.$open('/pages/aliPage/orderDetail')
+					setTimeout(() => {
+						uni.$emit('getInfo', {
+							info: res.data
+						})
+					}, 500)
 				}, 800)
 			})
 		}
