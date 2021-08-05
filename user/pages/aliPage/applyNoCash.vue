@@ -73,7 +73,7 @@
 				this.$toast('查询成功，正在跳转...')
 				setTimeout(() => {
 					this.$open('/pages/aliPage/orderDetail', {
-						id: res.data[0].id
+						info: JSON.stringify(res.data[0])
 					})
 				}, 800)
 			})

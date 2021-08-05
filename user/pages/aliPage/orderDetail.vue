@@ -239,9 +239,7 @@
 			}
 		},
 		onLoad(e) {
-			if (e && e.id) this.id = e.id
-			if (this.id) this.rentalOrderOrderInfo()
-			this.eventListener()
+			if (e && e.info) this.info = JSON.parse(e.info)
 		},
 		methods: {
 			// 请求订单详情
@@ -426,13 +424,6 @@
 				if (err) return
 				this.$open('/pages/aliPage/result', {
 					result: info.alipay_fund_auth_order_app_freeze_response.code === '10000' ? 1 : 2
-				})
-			},
-			// 监听函数
-			eventListener() {
-				uni.$on('orderDetailRefresh', () => {
-					this.refresh()
-					uni.$emit('orderRefresh')
 				})
 			}
 		}
