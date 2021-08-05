@@ -93,6 +93,8 @@ i {
   font-style: normal;
 }
 
+/*  #ifndef  MP-ALIPAY  */
 [hidden] {
 	display: none !important;
 }
+/*  #endif  */
