@@ -78,7 +78,8 @@
 		</view>
 		<view class="sesame-box">
 			<view class="toast">
-				<image class="sesame" :src="`${ossUrl}/home/sesame.png`" mode="aspectFill"></image>芝麻分达<text>550</text>即可享受押金双免租车
+				<image class="sesame" :src="`${ossUrl}/home/sesame.png`" mode="aspectFill"></image>
+				芝麻分达<text>550</text>即可享受押金双免租车
 			</view>
 			<evan-switch v-if="freeAndState" v-model="rentFreeSwitch" active-color="#5A7EFF"></evan-switch>
 			<view v-if="!freeAndState" class="deposit-free" @click="openProcessPopup">
@@ -88,7 +89,8 @@
 		<view class="function-box">
 			<view class="item">
 				<view class="left" @click="$open('/pages/common/security')">
-					<view class="top">驾无忧保障<image class="question" :src="`${ossUrl}/order/question.png`" mode="aspectFill"></image>
+					<view class="top">驾无忧保障<image class="question" :src="`${ossUrl}/order/question.png`"
+							mode="aspectFill"></image>
 						<view class="price">￥{{info.clientVehicleVo.insurancePrice || 0}}/天</view>
 					</view>
 					<view class="bottom-text">添加一份无忧保障，添一份安心</view>
@@ -144,8 +146,8 @@
 				<view class="info">{{ bottomInfo }}</view>
 				<view class="bottom-info-mat"></view>
 				<view class="bottom-info">
-					<image class="icon" :src="selStatus ? `${ossUrl}/order/sel-ac.png` : `${ossUrl}/order/sel.png`" mode="aspectFill"
-						@click="tapIcon">
+					<image class="icon" :src="selStatus ? `${ossUrl}/order/sel-ac.png` : `${ossUrl}/order/sel.png`"
+						mode="aspectFill" @click="tapIcon">
 					</image>
 					已阅读并同意<text @click="$open('/pages/common/carRentalAgreement')">《用户租车协议》</text>
 				</view>
@@ -174,8 +176,8 @@
 					</view>
 				</view>
 				<view class="bottom-info">
-					<image class="icon" :src="selStatus ? `${ossUrl}/order/sel-ac.png` : `${ossUrl}/order/sel.png`" mode="aspectFill"
-						@click="tapIcon">
+					<image class="icon" :src="selStatus ? `${ossUrl}/order/sel-ac.png` : `${ossUrl}/order/sel.png`"
+						mode="aspectFill" @click="tapIcon">
 					</image>
 					已阅读并同意<text @click="$open('/pages/common/carRentalAgreement')">《用户租车协议》</text>
 				</view>
@@ -308,8 +310,8 @@
 			...mapState('app', ['platform'])
 		},
 		watch: {
-			acIndex(newVal) {
-				if (newVal !== 5 || this.invoiceList.length > 0) return
+			invoiceSwitch(newVal) {
+				if (this.acIndex !== 5 || !newVal || this.invoiceList.length > 0) return
 				this.emptyInvoiceModal()
 			}
 		},
@@ -374,7 +376,10 @@
 				const [err, res] = await this.$showModal({
 					content: '暂无发票抬头，立即添加？'
 				})
-				if (res !== 'confirm') return
+				if (res !== 'confirm') {
+					this.invoiceSwitch = false
+					return
+				}
 				this.$open('/pages/mine/invoiceInfo', {
 					mode: 'add'
 				})

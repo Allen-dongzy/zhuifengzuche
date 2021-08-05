@@ -5,7 +5,7 @@ import {
 // 时间戳转成日期
 const toDate = timestamp => {
 	if (!timestamp) return false
-	if (getType(timestamp) != 'number') return false
+	if (getType(timestamp) !== 'number') Number(timestamp)
 	const timeLen = timestamp.toString().length
 	if (timeLen != 10 && timeLen != 13) return false
 	let date = 0
@@ -52,6 +52,11 @@ const durationToTime = (difference, len = 13) => {
 	const second = difference
 	// 返回时间段
 	return [add0(date), add0(hour), add0(minute), add0(second)]
+}
+
+// 转换成兼容全平台的时间字符串
+const transCommonTime = (timeStr) => {
+	return timeStr.replace(/-/g, '/')
 }
 
 // 十以内补零
@@ -155,6 +160,7 @@ export {
 	toDate, // 时间戳转成日期
 	getDifference, // 现在到指定时间的时间差
 	durationToTime, // 时间差转时间段
+	transCommonTime, // 转换成兼容全平台的时间字符串
 	add0, // 十以内补零
 	getType, // 类型判断
 	hideMobile, // 隐藏手机号

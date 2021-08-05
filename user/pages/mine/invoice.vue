@@ -37,6 +37,7 @@
 		methods: {
 			// 获取用户发票抬头
 			async invoiceQueryByUser() {
+				this.list = []
 				this.dataStatus = 'loading'
 				const [err, res] = await invoiceQueryByUser()
 				if (err || !res.data || res.data.length === 0) {

@@ -7,7 +7,9 @@
 					<image :src="`${ossUrl}/order/refresh.png`" mode="aspectFill"></image>刷新
 				</view>
 			</view>
-			<view v-if="(info.orderStatus===0 || info.orderStatus===1) && info.countdown" class="info">{{info.countdown}}</view>
+			<view v-if="(info.orderStatus===0 || info.orderStatus===1) && info.countdown" class="info">
+				{{info.countdown}}
+			</view>
 			<view class="bottom">
 				<view class="btn-box">
 					<view v-if="info.orderStatus===0 || info.orderStatus===1 || info.orderStatus===2" class="btn white"
@@ -173,8 +175,10 @@
 
 		<view v-if="info.orderStatus===4 || info.orderStatus===100 || info.orderStatus===101" class="bottom-bar">
 			<view class="left">
-				<image v-if="info.orderStatus===4" class="icon" :src="`${ossUrl}/order/smile.png`" mode="aspectFill"></image>
-				<image v-if="info.orderStatus!==4" class="icon" :src="`${ossUrl}/order/price.png`" mode="aspectFill"></image>
+				<image v-if="info.orderStatus===4" class="icon" :src="`${ossUrl}/order/smile.png`" mode="aspectFill">
+				</image>
+				<image v-if="info.orderStatus!==4" class="icon" :src="`${ossUrl}/order/price.png`" mode="aspectFill">
+				</image>
 				<text v-if="info.orderStatus===4">追风租车祝您生活愉快</text>
 				<text v-if="info.orderStatus===100">违押金未退还</text>
 				<text v-if="info.orderStatus===101">半小时内免费取消，金额已原路退回</text>
@@ -231,7 +235,8 @@
 		paymentPrecreate
 	} from '@/apis/payment'
 	import {
-		throttle
+		throttle,
+		transCommonTime
 	} from '@/utils/tools'
 	import {
 		showModal
@@ -392,12 +397,17 @@
 			},
 			// 时间转日期时间周几
 			timeFormat(timeStr) {
+				timeStr = transCommonTime(timeStr)
 				const timeObj = new Date(timeStr)
 				const returnArr = []
 				returnArr.push(`${timeObj.getMonth() + 1}月${timeObj.getDate()}日`)
 				returnArr.push(this.week[timeObj.getDay()])
-				returnArr.push(`${timeObj.getHours()}:${timeObj.getMinutes()}`)
+				returnArr.push(`${this.add0(timeObj.getHours())}:${this.add0(timeObj.getMinutes())}`)
 				return returnArr
+			},
+			// 补0
+			add0(num) {
+				return num !== 0 ? num : '00'
 			},
 			// 刷新
 			refresh: throttle(function() {
