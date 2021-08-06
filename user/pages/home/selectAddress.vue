@@ -110,7 +110,6 @@
 				const [err, res] = await regionCityFindDeliveryArea(params)
 				if (err) return
 				this.areaList = res.data
-				// this.deliveryFindDeliveryPage()
 			},
 			// 触底加载
 			scrollToBottom() {

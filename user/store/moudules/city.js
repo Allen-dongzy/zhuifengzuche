@@ -5,6 +5,9 @@ import {
 	regionCityFindCityByLatLng
 } from '@/apis/regionCity'
 import ChinesePY from '@/utils/ChinesePY.min'
+import {
+	toast
+} from '@/utils/uni-tools'
 
 const city = {
 	namespaced: true,
@@ -126,10 +129,11 @@ const city = {
 				return
 			}
 			// 获取位置
-			const [locationErr, locationRes] = await uni.getLocation({
-				type: 'gcj02'
-			})
-			if (locationErr) return
+			const [locationErr, locationRes] = await uni.getLocation()
+			if (locationErr) {
+				toast(locationErr.errMsg)
+				return
+			}
 			// 获取城市信息
 			const params = {
 				lat: locationRes.latitude,
