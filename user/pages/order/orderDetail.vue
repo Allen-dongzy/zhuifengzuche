@@ -38,8 +38,9 @@
 				<image class="bg" :src="`${ossUrl}/order/order-bg.png`" mode="aspectFill"></image>
 				<view class="mask">
 					<view class="caption">{{statusShow}}</view>
-					<view v-if="info.orderStatus===3 || info.orderStatus===5" class="toast">{{info.countdown}}</view>
+					<view v-if="info.orderStatus===3" class="toast">{{info.countdown}}</view>
 					<view v-if="info.orderStatus===4" class="toast">请前往换车详情页面完成换车</view>
+					<view v-if="info.orderStatus===5" class="toast">请到前往还车中查看还车状态</view>
 					<view v-if="info.orderStatus===100" class="toast">感谢您对追风租车的信任，期待再次光临</view>
 					<view v-if="info.orderStatus===101" class="toast">您的订单已取消，感谢你使用追风租车</view>
 				</view>
@@ -870,6 +871,7 @@
 
 				.btn-box {
 					@include flex-row();
+					margin-left: 20rpx;
 
 					.btn {
 						@include box-h(60rpx);

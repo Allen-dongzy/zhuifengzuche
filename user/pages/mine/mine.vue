@@ -249,8 +249,7 @@
 		align-items: center;
 		width: 90%;
 		margin: auto;
-		margin-top: 20rpx;
-		padding: 30rpx 0rpx;
+		padding: 40rpx 0rpx;
 
 		&~.flex-box-left {
 			border-top: 2rpx solid #eff0f3;

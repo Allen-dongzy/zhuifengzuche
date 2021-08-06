@@ -238,7 +238,6 @@
 	.wait {
 		font-size: 24rpx;
 		color: #999999;
-		width: 90%;
 		text-align: center;
 	}
 
