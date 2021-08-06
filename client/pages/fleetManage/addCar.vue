@@ -1,9 +1,6 @@
 <template>
 	<view>
 		
-		   
-		
-		
 		<view class="flexBox" style="background-color: #EFF0F3;height: 140rpx;width: 100%;">
 			<view class="buleLine"></view>
 			<view class="title" style="margin-top: 0rpx;">填写车辆信息</view>
@@ -14,8 +11,8 @@
 				<view style="width: 80%;">
 					<picker  @change="bindPickerChange" :value="index" :range="list" :range-key="'name'"
 						class="pickerBox">
-						<label v-if="!log1" class="pickerText">{{carObj!=''?carObj.vehicleModelName:'请选择'}}</label>
-						<label v-else class="pickerText">{{list[index].name}}</label>
+						<view v-if="!log1" class="pickerText">{{carObj!=''?carObj.vehicleModelName:'请选择'}}</view>
+						<view v-else class="pickerText">{{list[index].name}}</view>
 					</picker>
 				</view>
 				<view style="width:15%;">
@@ -47,8 +44,8 @@
 				<view style="width: 80%;">
 					<picker @change="bindPickerChange1" :value="index1" :range="carStatus" :range-key="'name'"
 						class="pickerBox">
-						<label v-if="!log2" class="pickerText">请选择</label>
-						<label v-else class="pickerText">{{carStatus[index1].name}}</label>
+						<view v-if="!log2" class="pickerText">请选择</view>
+						<view v-else class="pickerText">{{carStatus[index1].name}}</view>
 					</picker>
 				</view>
 				<view style="width:15%;">
@@ -63,8 +60,8 @@
 				<view style="width: 80%;">
 					<picker mode="date" @change="selectpurchaseTime" :value="purchaseTime" :start="startDate"
 						:end="currentdate" class="pickerBox">
-						<label v-if="!log3" class="pickerText">请选择</label>
-						<label v-else class="pickerText">{{purchaseTime}}</label>
+						<view v-if="!log3" class="pickerText">请选择</view>
+						<view v-else class="pickerText">{{purchaseTime}}</view>
 					</picker>
 
 				</view>
@@ -109,8 +106,8 @@
 			<view style="width: 80%;">
 				<picker mode="date" @change="selectgetcard" :value="getcard" :start="startDate" :end="currentdate"
 					class="pickerBox">
-					<label v-if="!log4" class="pickerText">请选择</label>
-					<label v-else class="pickerText">{{getcard}}</label>
+					<view v-if="!log4" class="pickerText">请选择</view>
+					<view v-else class="pickerText">{{getcard}}</view>
 				</picker>
 
 			</view>
@@ -125,8 +122,8 @@
 			<view style="width: 80%;">
 				<picker mode="date" @change="setTime" :value="ceartTime" :start="startDate" :end="currentdate"
 					class="pickerBox">
-					<label v-if="!log5" class="pickerText">请选择</label>
-					<label v-else class="pickerText">{{ceartTime}}</label>
+					<view v-if="!log5" class="pickerText">请选择</view>
+					<view v-else class="pickerText">{{ceartTime}}</view>
 				</picker>
 
 			</view>
@@ -152,8 +149,8 @@
 				<view style="width: 80%;">
 					<picker mode="date" @change="selectRenewalTime" :value="RenewalTime" :start="startDate"
 						:end="endDate" class="pickerBox">
-						<label v-if="!log6" class="pickerText">请选择</label>
-						<label v-else class="pickerText">{{RenewalTime}}</label>
+						<view v-if="!log6" class="pickerText">请选择</view>
+						<view v-else class="pickerText">{{RenewalTime}}</view>
 					</picker>
 
 				</view>
@@ -196,8 +193,8 @@
 				<view style="width: 80%;">
 					<picker mode="date" @change="selectBusinessDate" :value="businessDate" :start="startDate"
 						:end="endDate" class="pickerBox">
-						<label v-if="!log7" class="pickerText">请选择</label>
-						<label v-else class="pickerText">{{businessDate}}</label>
+						<view v-if="!log7" class="pickerText">请选择</view>
+						<view v-else class="pickerText">{{businessDate}}</view>
 					</picker>
 
 				</view>
@@ -462,7 +459,7 @@
 				} else if (e == 2) {
 					this.businessList.splice(e, 1)
 				} else {
-					this.labelList.splice(e, 1)
+					this.viewList.splice(e, 1)
 				}
 			},
 			//获取车型

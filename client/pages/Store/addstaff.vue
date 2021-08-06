@@ -17,9 +17,9 @@
 				<view style="width: 90%;"><input v-model="password" :type="inpType" class="inpBox" style="width: 95%;"
 						placeholder="请填写密码" /></view>
 				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
-					mode="" @click="look"></image>
+					mode="aspectFill" @click="look"></image>
 				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
-					mode="" @click="look"></image>
+					mode="aspectFill" @click="look"></image>
 
 			</view>
 		</view>
@@ -30,9 +30,9 @@
 				<view class="blueLine"></view>
 				<view class="title" style="width:72%;">{{item.title}}</view>
 				<image style="height: 32rpx;width: 32rpx;" v-if="item.stuse==1" :src="$util.fileUrl('/quanxian1.png')"
-					@click="setlook1" mode=""></image>
+					@click="setlook1" mode="aspectFill"></image>
 				<image style="height: 32rpx;width: 32rpx;" v-else :src="$util.fileUrl('/quanxian2.png')"
-					@click="setlook1" mode=""></image>
+					@click="setlook1" mode="aspectFill"></image>
 				<view class="title">查看</view>
 			</view>
 			<view style="width: 100%;padding: 30rpx 0rpx">
@@ -40,9 +40,9 @@
 					style="display: inline-block;width: 33%;text-align: center;padding: 5rpx 0rpx;">
 					<view style="display: flex;align-items: center;">
 						<image style="height: 32rpx;width: 32rpx;" v-if="itemy.hasAuthorize==true"
-							:src="$util.fileUrl('/quanxian1.png')" @click="selectIndex(itemy.id)" mode=""></image>
+							:src="$util.fileUrl('/quanxian1.png')" @click="selectIndex(itemy.id)" mode="aspectFill"></image>
 						<image style="height: 32rpx;width: 32rpx;" v-else :src="$util.fileUrl('/quanxian2.png')"
-							@click="selectIndex(itemy.id)" mode=""></image>
+							@click="selectIndex(itemy.id)" mode="aspectFill"></image>
 						<view class="title">{{itemy.title}}</view>
 					</view>
 				</view>

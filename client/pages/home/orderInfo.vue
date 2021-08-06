@@ -11,14 +11,14 @@
 			<view v-for="(item,index) in info.adminOrderVehicleInfoVoList" :key="index">
 				<view class="flexBox">
 					<view class="carName">{{item.vehicleNumber}}</view>
-					<image style="width: 80rpx;height: 40rpx;" :src="$util.fileUrl('/yizhifu.png')" mode=""></image>
+					<image style="width: 80rpx;height: 40rpx;" :src="$util.fileUrl('/yizhifu.png')" mode="aspectFill"></image>
 				</view>
 				<view class="flexBox" style="border-bottom:2rpx dashed #999999;padding-bottom: 30rpx;">
 					<view class="carType">{{item.modelName}}</view>
 					<image v-show="carShow==false" style="width: 30rpx;height: 20rpx;"
-						:src="$util.fileUrl('/xiangxia.png')" @click="getcarInfo" mode=""></image>
+						:src="$util.fileUrl('/xiangxia.png')" @click="getcarInfo" mode="aspectFill"></image>
 					<image v-show="carShow==true" style="width: 30rpx;height: 20rpx;"
-						:src="$util.fileUrl('/xiangshang.png')" @click="getcarInfo" mode=""></image>
+						:src="$util.fileUrl('/xiangshang.png')" @click="getcarInfo" mode="aspectFill"></image>
 				</view>
 				<view v-show="carShow==true" style="border-bottom:2rpx dashed #999999;padding-bottom: 30rpx;">
 					<view class="flexBox">
@@ -34,7 +34,7 @@
 
 
 			<view class="flexBox">
-				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/time.png')" mode=""></image>
+				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/time.png')" mode="aspectFill"></image>
 				<view class="">{{info.rentBeginTime}}至{{info.rentEndTime}}</view>
 			</view>
 
@@ -63,9 +63,9 @@
 			<view class="flexBox">
 				<view class="carName">{{info.userRealName}}</view>
 				<image v-show="peopleShow==false" style="width: 30rpx;height: 20rpx;"
-					:src="$util.fileUrl('/xiangxia.png')" @click="getpeopleInfo" mode=""></image>
+					:src="$util.fileUrl('/xiangxia.png')" @click="getpeopleInfo" mode="aspectFill"></image>
 				<image v-show="peopleShow==true" style="width: 30rpx;height: 20rpx;"
-					:src="$util.fileUrl('/xiangshang.png')" @click="getpeopleInfo" mode=""></image>
+					:src="$util.fileUrl('/xiangshang.png')" @click="getpeopleInfo" mode="aspectFill"></image>
 			</view>
 			<view class="flexBox">
 				<view class="moreContent" style="text-align: left;" @click="phone(info.userPhone)">联系电话</view>
@@ -88,17 +88,17 @@
 				<view class="flexBox">
 					<view class="moreContent" style="text-align: left;width: 43%;">违章</view>
 					<view class="moreContent" style="width: 55%;">{{info.breakRulesString}}</view>
-					<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode=""></image>
+					<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode="aspectFill"></image>
 				</view>
 				<view class="flexBox">
 					<view class="moreContent" style="text-align: left;width: 43%;">事故</view>
 					<view class="moreContent" style="width: 55%;">{{info.accidentString}}</view>
-					<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode=""></image>
+					<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode="aspectFill"></image>
 				</view>
 				<view class="flexBox">
 					<view class="moreContent" style="text-align: left;width: 43%;">其他</view>
 					<view class="moreContent" style="width: 55%;">{{info.otherString}}</view>
-					<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode=""></image>
+					<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode="aspectFill"></image>
 				</view>
 			</view>
 		</view>
@@ -121,7 +121,7 @@
 			<view class="flexBox" v-show="moneyShow==false">
 				<view class="moreContent" style="width: 93%;color: #5A7EFF;">展开明细</view>
 				<image v-show="moneyShow==false" style="width: 30rpx;height: 20rpx;margin-left: 10rpx;"
-					:src="$util.fileUrl('/xiangxia.png')" @click="getmoneyInfo" mode=""></image>
+					:src="$util.fileUrl('/xiangxia.png')" @click="getmoneyInfo" mode="aspectFill"></image>
 			</view>
 			<view v-show="moneyShow==true" style="border-top:2rpx dashed #999999;margin-top: 20rpx;">
 				<view class="flexBox" v-for="(item,index) in info.orderPriceList" :key='index'>
@@ -132,7 +132,7 @@
 				<view class="flexBox">
 					<view class="moreContent" style="width: 93%;color: #5A7EFF;">收起明细</view>
 					<image style="width: 30rpx;height: 20rpx;margin-left: 10rpx;"
-						:src="$util.fileUrl('/xiangshang.png')" @click="getmoneyInfo" mode=""></image>
+						:src="$util.fileUrl('/xiangshang.png')" @click="getmoneyInfo" mode="aspectFill"></image>
 				</view>
 			</view>
 		</view>
@@ -144,9 +144,9 @@
 				<view class="moreTitle" style="width: 43%;text-align: right;" v-if="info.isInvoice==1">需要</view>
 				<view class="moreTitle" style="width: 43%;text-align: right;" v-else>不需要</view>
 				<image v-show="invoiceShow==false" style="width: 30rpx;height: 20rpx;margin-left: 10rpx;"
-					:src="$util.fileUrl('/xiangxia.png')" @click="getinvoiceInfo" mode=""></image>
+					:src="$util.fileUrl('/xiangxia.png')" @click="getinvoiceInfo" mode="aspectFill"></image>
 				<image v-show="invoiceShow==true" style="width: 30rpx;height: 20rpx;margin-left: 10rpx;"
-					:src="$util.fileUrl('/xiangshang.png')" @click="getinvoiceInfo" mode=""></image>
+					:src="$util.fileUrl('/xiangshang.png')" @click="getinvoiceInfo" mode="aspectFill"></image>
 			</view>
 			<view v-show="info.isInvoice==1">
 				<view v-show="invoiceShow==true">
@@ -196,7 +196,7 @@
 			<view class="flexBox">
 				<view class="moreTitle">下单时间</view>
 				<view class="moreContent" style="width:56%">{{info.createTime}}</view>
-				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode=""></image>
+				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode="aspectFill"></image>
 			</view>
 			<view class="flexBox">
 				<view class="moreTitle">所属门店</view>

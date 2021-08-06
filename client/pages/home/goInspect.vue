@@ -9,11 +9,11 @@
 		</view>
 		<view class="flexBox">
 			<view style="width: 50%;" class="flexBox">
-				<image style="width: 40rpx;height: 40rpx;" :src="$util.fileUrl('/km.png')" mode=""></image>
+				<image style="width: 40rpx;height: 40rpx;" :src="$util.fileUrl('/km.png')" mode="aspectFill"></image>
 				<view style="color: #5A7EFF;margin-left: 10rpx;">当前里程</view>
 			</view>
 			<view style="width: 50%;" class="flexBox">
-				<image style="width: 40rpx;height: 40rpx;" :src="$util.fileUrl('/you.png')" mode=""></image>
+				<image style="width: 40rpx;height: 40rpx;" :src="$util.fileUrl('/you.png')" mode="aspectFill"></image>
 				<view style="color: #5A7EFF;margin-left: 10rpx;">当前油量</view>
 			</view>
 		</view>
@@ -37,7 +37,7 @@
 				<view v-show="item.condition==0" class="ok">确认完好</view>
 				<view v-show="item.condition!=1" class="no">确认完好</view>
 				<image style="width: 32rpx;height: 16rpx;margin-left: 10rpx;" :src="$util.fileUrl('/xiangshang.png')"
-					mode=""></image>
+					mode="aspectFill"></image>
 			</view>
 
 			<view class="">
@@ -74,13 +74,13 @@
 		<view style="width: 90%;margin: auto;padding-bottom: 20rpx;border-bottom: 2rpx solid #EFF0F3;">
 			<view style="display: inline-block;width: 22%;margin: 20rpx 1%;position: relative;"
 				v-for="(item,index) in imgList" :key="index">
-				<image style="width:160rpx;height:160rpx;" :src="item" mode=""></image>
+				<image style="width:160rpx;height:160rpx;" :src="item" mode="aspectFill"></image>
 				<image style="width:36rpx;height:36rpx;position: absolute;top:-10rpx;right: -10rpx;"
 					:src="$util.fileUrl('/lancha.png')" @click="delImg(index)"></image>
 			</view>
 			<view style="display: inline-block;width: 22%;margin: 20rpx 1%;position: relative;">
 				<view @click="updataImg(1)">
-					<image style="width:160rpx;height:160rpx;" :src="$util.fileUrl('/guanxi.png')" mode=""></image>
+					<image style="width:160rpx;height:160rpx;" :src="$util.fileUrl('/guanxi.png')" mode="aspectFill"></image>
 				</view>
 			</view>
 		</view>
@@ -121,7 +121,7 @@
 		<view class="box1" v-show="imgshow==true">
 			<view class="blackText">请上传图片</view>
 			<image style="width:80%;height:350rpx;margin-left: 10%;margin-top: 30rpx;"
-				:src="$util.fileUrl('/guanxi.png')" mode="" @click="updataImg(0)"></image>
+				:src="$util.fileUrl('/guanxi.png')" mode="aspectFill" @click="updataImg(0)"></image>
 			<view class="flexBox" style="width: 100%;">
 				<view class="lanbox" @click="imgshow=false">取消</view>
 				<view class="lanbox1" style="margin-left: 57%;" @click="imgshow=false">确定</view>
@@ -133,7 +133,7 @@
 		<view class="Mask" v-show="imgshow1==true"></view>
 		<view class="box1" v-show="imgshow1==true">
 			<view class="blackText">查看图片</view>
-			<image style="width:80%;height:350rpx;margin-left: 10%;margin-top: 30rpx;" :src="badimgUrl" mode=""></image>
+			<image style="width:80%;height:350rpx;margin-left: 10%;margin-top: 30rpx;" :src="badimgUrl" mode="aspectFill"></image>
 			<view class="flexBox" style="width: 100%;">
 				<view class="lanbox" @click="imgshow1=false">取消</view>
 				<view class="lanbox1" style="margin-left: 29%;" @click="change()">修改</view>
