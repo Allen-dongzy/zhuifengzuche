@@ -871,6 +871,7 @@
 
 				.btn-box {
 					@include flex-row();
+					margin-left: 20rpx;
 
 					.btn {
 						@include box-h(60rpx);
