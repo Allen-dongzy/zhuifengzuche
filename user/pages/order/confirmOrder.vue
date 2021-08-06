@@ -487,7 +487,8 @@
 				if (err) return
 				this.$open('./orderPay', {
 					price: this.total,
-					reflect: JSON.stringify(res.data.reflect)
+					reflect: JSON.stringify(res.data.reflect),
+					rentalMoney: this.info.orderPriceInfo.rentalMoney || 0
 				}, 1)
 			},
 			// 监听时间

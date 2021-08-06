@@ -4,7 +4,7 @@
 			<view class="caption">实付租金</view>
 			<view class="price">￥<text>{{price}}</text></view>
 		</view>
-		<view class="toast">*取车时支付租车押金￥5000，可以取车时申请免押</view>
+		<view class="toast">*取车时支付租车押金￥{{rentalMoney || 0}}，可以取车时申请免押</view>
 		<view class="btn" @click="getCodeByWxCode">支&#32;付</view>
 	</view>
 </template>
@@ -23,13 +23,15 @@
 	export default {
 		data() {
 			return {
-				price: '',
+				price: '', // 钱
 				reflect: {}, // 支付信息
+				rentalMoney: '' // 租车押金
 			}
 		},
 		onLoad(e) {
 			if (e && e.price) this.price = e.price
 			if (e && e.reflect) this.reflect = JSON.parse(e.reflect)
+			if (e && e.rentalMoney) this.rentalMoney = e.rentalMoney
 		},
 		methods: {
 			// 微信平台是否有登录能力
