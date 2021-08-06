@@ -3,13 +3,16 @@
 		<view class="header">
 			<view :class="['item', {'ac': acTab === 0}]" @click="taptab(0)">默认</view>
 			<view :class="['item', {'ac': acTab === 1}]" @click="taptab(1)">
-				品牌<image class="arrow" :src="`${ossUrl}/home/${acTab === 1?'arrow-up':'arrow-down'}.png`" mode="aspectFill"></image>
+				品牌<image class="arrow" :src="`${ossUrl}/home/${acTab === 1?'arrow-up':'arrow-down'}.png`"
+					mode="aspectFill"></image>
 			</view>
 			<view :class="['item', {'ac': acTab === 2}]" @click="taptab(2)">
-				排档<image class="arrow" :src="`${ossUrl}/home/${acTab === 2?'arrow-up':'arrow-down'}.png`" mode="aspectFill"></image>
+				排档<image class="arrow" :src="`${ossUrl}/home/${acTab === 2?'arrow-up':'arrow-down'}.png`"
+					mode="aspectFill"></image>
 			</view>
 			<view :class="['item', {'ac': acTab === 3}]" @click="taptab(3)">
-				座位数<image class="arrow" :src="`${ossUrl}/home/${acTab === 3?'arrow-up':'arrow-down'}.png`" mode="aspectFill"></image>
+				座位数<image class="arrow" :src="`${ossUrl}/home/${acTab === 3?'arrow-up':'arrow-down'}.png`"
+					mode="aspectFill"></image>
 			</view>
 		</view>
 		<view class="header-mat"></view>
@@ -43,7 +46,8 @@
 					</view>
 					<view class="price-bar">
 						<view class="calendar" @click.stop="goPriceCalendar(index)">
-							<image class="icon-calendar" :src="`${ossUrl}/home/icon-calendar.png`" mode="aspectFill"></image>
+							<image class="icon-calendar" :src="`${ossUrl}/home/icon-calendar.png`" mode="aspectFill">
+							</image>
 							<text>价格日历</text>
 							<view class="arrow"></view>
 						</view>
@@ -71,7 +75,8 @@
 							<view :class="['item', {'ac': acModel === index}]" v-for="(item, index) in carModelList"
 								:key="index" @click="tapModel(index)">
 								<text>{{item.vehicleModelName}}</text>
-								<image v-if="acModel === index" class="hook" :src="`${ossUrl}/home/hook.png`" mode="aspectFill"></image>
+								<image v-if="acModel === index" class="hook" :src="`${ossUrl}/home/hook.png`"
+									mode="aspectFill"></image>
 							</view>
 							<uni-load-more v-if="brandDataStatus==='noData'" :status="brandDataStatus">
 							</uni-load-more>
@@ -559,10 +564,11 @@
 								margin-top: 24rpx;
 
 								.label {
-									@include box(62rpx, 34rpx, rgba(90, 126, 255, 0.10));
+									@include box-h(34rpx, rgba(90, 126, 255, 0.10));
 									@include flex-center;
 									@include font-set(16rpx, #5A7EFF, 700);
 									border-radius: 4rpx;
+									padding: 0 10rpx;
 
 									&~.label {
 										margin-left: 8rpx;
