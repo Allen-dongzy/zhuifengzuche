@@ -223,6 +223,8 @@
 				console.log(res)
 				this.$toast("操作成功")
 				setTimeout(() => {
+					
+					//租车押金  carRentalDeposit 违章押金illegalDeposit
 						if(this.info.carRentalDeposit>=this.info.illegalDeposit){
 						   uni.navigateTo({
 							url:'../advanceFreeze/advanceFreeze?id=0'+'&obj='+JSON.stringify(this.info)+'&pay='+JSON.stringify(res.data.reflect)

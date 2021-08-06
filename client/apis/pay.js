@@ -50,3 +50,13 @@ export const refundOfIllegalDeposit = (data, loading = '等待中') => {
 		loading
 	})
 }
+//支付宝 解冻
+// export const refundOfIllegalDeposit = (data, loading = '等待中') => {  
+// 	return request({
+// 		url: "return/vehicle/refundOfIllegalDeposit/"+data,
+// 		contentType: 'application/x-www-form-urlencoded',
+// 		method: 'GET',
+// 		data:{},
+// 		loading
+// 	})
+// } 
