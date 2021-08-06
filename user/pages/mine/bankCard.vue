@@ -3,7 +3,8 @@
 		<view class="box" v-for="(item, index) in list" :key="index" @click="selectCard(index)">
 			<view class="flex">
 				<view style="width: 90%;">{{item.bankName}}</view>
-				<image style="height: 44rpx;width: 44rpx;" :src="`${ossUrl}/mine/edit.png`" mode="aspectFill" @click="edit(index)">
+				<image style="height: 44rpx;width: 44rpx;" :src="`${ossUrl}/mine/edit.png`" mode="aspectFill"
+					@click.stop="edit(index)">
 				</image>
 			</view>
 			<view class="flex" style="margin: 30rpx 0px;">
@@ -14,14 +15,15 @@
 			</view>
 			<view class="bottom">
 				<text class="name">{{item.name}}</text>
-				<text class="default">设为默认</text>
+				<text v-if="item.isDefault === 0" class="default" @click.stop="bankCardEdit(index)">设为默认</text>
+				<text v-if="item.isDefault === 1" class="default red">默认</text>
 			</view>
 		</view>
 		<view v-if="dataStatus === 'noData'" class="empty">
 			<image class="bg" :src="`${ossUrl}/common/res-empty.png`" mode="aspectFill"></image>
 			<view class="text">暂无银行卡</view>
 		</view>
-		<view class="btn" @click="$open('/pages/mine/addCard')">添加银行卡</view>
+		<view class="btn" @click.stop="$open('/pages/mine/addCard')">添加银行卡</view>
 	</view>
 </template>
 
@@ -29,6 +31,12 @@
 	import {
 		receiptPaymentBankList
 	} from '@/apis/receiptPayment'
+	import {
+		bankCardEdit
+	} from '@/apis/bankCard'
+	import {
+		throttle
+	} from '@/utils/tools'
 
 	export default {
 		data() {
@@ -85,6 +93,23 @@
 				})
 				this.$close()
 			},
+			// 设置默认银行卡
+			bankCardEdit: throttle(async function(index) {
+				const params = {
+					id: this.list[index].id,
+					bankId: this.list[index].bankId,
+					bankName: this.list[index].bankName,
+					accountOpeningBranch: this.list[index].accountOpeningBranch,
+					name: this.list[index].name,
+					cardNumber: this.list[index].cardNumber,
+					isDefault: 1,
+					userSource: 1
+				}
+				const [err, res] = await bankCardEdit(params)
+				if (err) return
+				this.$toast('设置成功')
+				this.receiptPaymentBankList()
+			}),
 			// 获取段落
 			getSection(cardNumber) {
 				const bandSections = []
@@ -106,6 +131,10 @@
 
 <style lang="scss">
 	@import '@/static/scss/_mixin.scss';
+
+	page {
+		background-color: #fff;
+	}
 
 	.box {
 		box-shadow: 0px 0px 0px 5rpx rgba(114, 141, 244, 0.25);
@@ -155,6 +184,10 @@
 		line-height: 102rpx;
 		color: #5A7EFF;
 		font-size: 28rpx;
+		
+		&.red {
+			color: red;
+		}
 	}
 
 	.btn {

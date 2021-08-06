@@ -17,7 +17,7 @@
 						取消订单</view>
 					<view v-if="info.orderStatus===0" class="btn blue" @click="getCodeByWxCode">立即支付</view>
 					<view v-if="info.orderStatus===2" class="btn white"
-						@click="$open('/pages/common/goInspect', {mode:'edit', from: 'orderDetail', orderId: info.id, vehicleId: info.vehicleId})">
+						@click="$open('/pages/order/goInspect', {mode:'edit', from: 'orderDetail', orderId: info.id, vehicleId: info.vehicleId})">
 						查看车况
 					</view>
 				</view>

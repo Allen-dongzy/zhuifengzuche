@@ -69,7 +69,7 @@
 						<view v-if="item.orderStatus === 0" class="btn blue" @click.stop="getCodeByWxCode(index)">立即支付
 						</view>
 						<view v-if="item.orderStatus === 2" class="btn blue"
-							@click.stop="$open('/pages/common/goInspect', {mode:'edit', from: 'order', orderId: item.id, vehicleId: item.vehicleId})">
+							@click.stop="$open('/pages/order/goInspect', {mode:'edit', from: 'order', orderId: item.id, vehicleId: item.vehicleId})">
 							查看车况
 						</view>
 						<view v-if="item.orderStatus === 3  && !item.isLeaseRenewal" class="btn white"

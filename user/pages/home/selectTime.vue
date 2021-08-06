@@ -18,7 +18,7 @@
 				<view v-if="carAlsoDateShow" class="caption">{{carAlsoDateShow}}</view>
 				<view v-if="!carAlsoDateShow" class="caption" @click="$toast('请选择还车日期')">选择日期</view>
 				<view v-if="carAlsoDay || carAlsoTime" class="sub-caption">
-					<text v-if="carAlsoTime">{{carAlsoDay}}</text><text v-if="carAlsoDay">{{carAlsoTime}}</text>
+					<text v-if="carAlsoDay">{{carAlsoDay}}</text><text v-if="carAlsoTime">{{carAlsoTime}}</text>
 				</view>
 				<view v-if="!carAlsoDay && !carAlsoTime" class="sub-caption" @click="$toast('请选择还车时间')">选择时间</view>
 			</view>
@@ -58,6 +58,9 @@
 
 <script>
 	import validator from 'crazy-validator'
+	import {
+		transCommonTime
+	} from '@/utils/tools'
 
 	export default {
 		data() {
@@ -79,17 +82,30 @@
 				carAlsoDay: '', // 还车日是周几显示
 				carAlsoTime: '', // 还车时间显示
 				totalDate: 0, // 总天数
+				totalKey: true, // 是否能计算总天数
 				date: ''
 			}
 		},
 		watch: {
 			// 监听取车日期
 			takeCarDate(newVal) {
+				if (!newVal) return
 				this.takeCarDay = this.weekShow[new Date(newVal).getDay()]
+				this.getTotalDate()
 			},
 			// 监听取车日期
 			carAlsoDate(newVal) {
+				if (!newVal) return
 				this.carAlsoDay = this.weekShow[new Date(newVal).getDay()]
+				this.getTotalDate()
+			},
+			// 监听取车时间
+			takeCarTime(newVal) {
+				this.getTotalDate()
+			},
+			// 监听还车时间
+			carAlsoTime(newVal) {
+				this.getTotalDate()
 			}
 		},
 		computed: {
@@ -124,6 +140,20 @@
 				.split(' ')[0])
 		},
 		methods: {
+			// 获取总天数
+			getTotalDate() {
+				if (!this.takeCarDate || !this.carAlsoDate || !this.takeCarTime || !this.carAlsoTime || !this.totalKey)
+					return
+				const takeCarTime = transCommonTime(`${this.takeCarDate} ${this.takeCarTime}:00`)
+				const carAlsoTime = transCommonTime(`${this.carAlsoDate} ${this.carAlsoTime}:00`)
+				const takeCarTimeStamp = new Date(takeCarTime).getTime()
+				const carAlsoTimeStamp = new Date(carAlsoTime).getTime()
+				const diffidence = carAlsoTimeStamp - takeCarTimeStamp
+				const dateUnit = 86400000
+				let total = parseInt(diffidence / dateUnit)
+				if (diffidence % dateUnit !== 0) total++
+				this.totalDate = total
+			},
 			// 取车时间改变
 			takeCarTimeIndexChange(e) {
 				this.$set(this.takeCarTimeIndex, 0, e.detail.value[0])
@@ -153,7 +183,16 @@
 					this.takeCarDate = this.carAlsoDate
 					this.carAlsoDate = cacheDate
 				}
-				this.totalDate = e.range.data.length || 0
+				if (e.range.data.length === 0) {
+					this.totalKey = false
+					this.totalDate = 0
+					this.takeCarDate = ''
+					this.takeCarDay = ''
+					this.carAlsoDate = ''
+					this.carAlsoDay = ''
+				} else {
+					this.totalKey = true
+				}
 			},
 			// 清空
 			clear() {

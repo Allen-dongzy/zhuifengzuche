@@ -17,7 +17,7 @@
 				</view>
 			</view>
 			<view class="flexBox">
-				<view class="look" @click="$open('/pages/common/goInspect', {mode:'readonly', orderId, vehicleId})">
+				<view class="look" @click="$open('/pages/order/goInspect', {mode:'readonly', orderId, vehicleId})">
 					查看车况</view>
 				<view class="look" style="margin-left: 20rpx;"
 					@click="$open('/pages/common/contract', {mode:'readonly', orderId, vehicleId})">查看合同

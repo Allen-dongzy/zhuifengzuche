@@ -195,7 +195,12 @@
 					@click="$open('/pages/order/costDetail', {info: JSON.stringify(info.orderPriceInfo)})">
 					费用明细<view class="arrow"></view>
 				</view>
+				<!-- #ifdef MP-WEIXIN -->
 				<view class="btn" @click="sure()">立即租车</view>
+				<!-- #endif -->
+				<!-- #ifdef MP-ALIPAY -->
+				<view class="btn" @click="sure()">免押预定</view>
+				<!-- #endif -->
 			</view>
 		</view>
 		<!-- 弹窗-流程 -->
@@ -482,7 +487,8 @@
 				if (err) return
 				this.$open('./orderPay', {
 					price: this.total,
-					reflect: JSON.stringify(res.data.reflect)
+					reflect: JSON.stringify(res.data.reflect),
+					rentalMoney: this.info.orderPriceInfo.rentalMoney || 0
 				}, 1)
 			},
 			// 监听时间
@@ -528,7 +534,7 @@
 
 		.swiper,
 		.banner {
-			@include box(100%, 392rpx, #fff);
+			@include box(100%, 392rpx, #ddd);
 		}
 
 		.info-card {

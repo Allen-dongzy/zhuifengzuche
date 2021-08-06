@@ -93,7 +93,7 @@
 			this.addressMode = e.addressMode
 			this.city = JSON.parse(e.city)
 			this.regionCityFindDeliveryArea()
-			if (!this.$storage.get('token')) this.acIndex = 1
+			// if (!this.$storage.get('token')) this.acIndex = 1
 		},
 		mounted() {
 			this.setSystemInfo()
@@ -110,7 +110,6 @@
 				const [err, res] = await regionCityFindDeliveryArea(params)
 				if (err) return
 				this.areaList = res.data
-				// this.deliveryFindDeliveryPage()
 			},
 			// 触底加载
 			scrollToBottom() {

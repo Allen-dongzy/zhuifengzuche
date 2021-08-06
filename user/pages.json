@@ -250,7 +250,7 @@
 			"navigationBarTitleText": "签名"
 		}
 	}, {
-		"path": "pages/common/goInspect",
+		"path": "pages/order/goInspect",
 		"style": {
 			"navigationBarTitleText": "车况概览"
 		}
@@ -327,7 +327,7 @@
 			"path": "pages/order/order"
 		}, {
 			"name": "dzy", // dzy
-			"path": "pages/common/contract"
+			"path": "pages/order/goInspect"
 		}]
 	}
 }

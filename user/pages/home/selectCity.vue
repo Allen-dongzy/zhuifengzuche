@@ -168,8 +168,6 @@
 		},
 		onLoad(e) {
 			if (e && e.cityMode) this.cityMode = e.cityMode
-		},
-		created() {
 			// 城市
 			this.getCurrentCity()
 			this.getHotCity()

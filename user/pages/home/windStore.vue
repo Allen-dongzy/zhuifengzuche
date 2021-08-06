@@ -3,19 +3,21 @@
 		<view class="store-card" v-for="(item, index) in list" :key="index">
 			<view class="head">
 				<view class="base-info">
-					<image class="logo" :src="`${ossUrl}/common/cache-logo.png`" mode="aspectFill"></image>
+					<image class="logo" :src="item.shopImages" mode="aspectFill"></image>
 					<view class="title-box">
 						<view class="store-caption">{{item.name}}</view>
 						<view class="star-box">
-							<image class="star" :src="`${ossUrl}/common/icon-star.png`" mode="aspectFill" v-for="(item, index) in 4"
-								:key="index"></image>
+							<image class="star" :src="`${ossUrl}/common/icon-star.png`" mode="aspectFill"
+								v-for="(item, index) in 4" :key="index"></image>
 						</view>
 					</view>
 				</view>
 				<view class="btn-group">
-					<image class="btn" :src="`${ossUrl}/common/location-big.png`" mode="aspectFill" @click="openMap(item.lat,item.lon)">
+					<image class="btn" :src="`${ossUrl}/common/location-big.png`" mode="aspectFill"
+						@click="openMap(item.lat, item.lon, item.name, item.memberAddress)">
 					</image>
-					<image class="btn" :src="`${ossUrl}/common/phone-big.png`" mode="aspectFill" @click="phoneCall(item.memberPhone)">
+					<image class="btn" :src="`${ossUrl}/common/phone-big.png`" mode="aspectFill"
+						@click="phoneCall(item.memberPhone)">
 					</image>
 				</view>
 			</view>
@@ -38,7 +40,8 @@
 				<view class="bar">
 					<image class="icon" :src="`${ossUrl}/common/icon-home-black.png`" mode="aspectFill"></image>
 					<view class="description">门店地址：<text
-							@click="openMap(item.lat,item.lon)">{{item.memberAddress}}</text></view>
+							@click="openMap(item.lat, item.lon, item.name, item.memberAddress)">{{item.memberAddress}}</text>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -46,7 +49,6 @@
 </template>
 
 <script>
-	// import {} from '../../apis/shop.js'
 	import {
 		memberShopPageQuery
 	} from '../../apis/memberShop.js'
@@ -70,7 +72,6 @@
 				}
 				const [err, res] = await memberShopPageQuery()
 				if (err) return
-				console.log(res.data.list)
 				if (res.data.list.length == 0) {
 
 				} else {
@@ -86,24 +87,13 @@
 				})
 			},
 			// 打开地图
-			async openMap(q, e) {
-				console.log(q)
-				console.log(e)
-				// 获取位置
-
-
-
-				uni.openLocation({
-					latitude: parseFloat(q),
-					longitude: parseFloat(e),
-					success: function(e) {
-						console.log(e)
-						console.log('success');
-					},
-					fail: function(e) {
-						console.log(e)
-					}
-				});
+			async openMap(latitude, longitude, name, address) {
+				const [err, res] = await uni.openLocation({
+					latitude: Number(latitude),
+					longitude: Number(longitude),
+					name: name || '门店名称',
+					address: address || '门店地址',
+				})
 			}
 		}
 	}
@@ -131,7 +121,7 @@
 					@include flex-row();
 
 					.logo {
-						@include square(80rpx);
+						@include square(80rpx, #ddd);
 					}
 
 					.title-box {
