@@ -1,5 +1,9 @@
 <template>
 	<view>
+		
+		   
+		
+		
 		<view class="flexBox" style="background-color: #EFF0F3;height: 140rpx;width: 100%;">
 			<view class="buleLine"></view>
 			<view class="title" style="margin-top: 0rpx;">填写车辆信息</view>
