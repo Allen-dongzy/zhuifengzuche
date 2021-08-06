@@ -93,7 +93,7 @@
 			this.addressMode = e.addressMode
 			this.city = JSON.parse(e.city)
 			this.regionCityFindDeliveryArea()
-			if (!this.$storage.get('token')) this.acIndex = 1
+			// if (!this.$storage.get('token')) this.acIndex = 1
 		},
 		mounted() {
 			this.setSystemInfo()

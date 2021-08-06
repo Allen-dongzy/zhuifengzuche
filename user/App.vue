@@ -62,4 +62,7 @@
 
 <style lang="scss">
 	@import '@/static/scss/_reset.scss';
+	/*  #ifdef  MP-ALIPAY  */
+	@import '@/static/scss/_ali-reset.scss';
+	/*  #endif  */
 </style>

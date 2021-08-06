@@ -4,28 +4,30 @@
 			<view class="title">所属银行</view>
 			<view style="width: 40%;margin: auto;">
 				<picker class="pickerBox" @change="bankChange" :value="index" :range="bankList" range-key="name">
-					<view class="uni-input">{{index&&index>=0 ? bankList[index].name : (bank || '请选择所属银行')}}</view>
+					<view class="uni-input">
+						{{ bankList[index] && bankList[index].name ? bankList[index].name : (bank || '请选择所属银行')}}
+					</view>
 				</picker>
 			</view>
 		</view>
 		<view class="flexBox">
 			<view class="title">开户支行</view>
 			<view style="width: 40%;margin: auto;text-align: right;">
-				<input style="height: 100%;width: 100%;font-size: 24rpx;" v-model="branch" type="text" value=""
+				<input style="height: 100%;width: 100%;font-size: 24rpx;" v-model="branch" type="text"
 					placeholder-style="text-align: right;" placeholder="填写开户支行信息" />
 			</view>
 		</view>
 		<view class="flexBox">
 			<view class="title">开户姓名</view>
 			<view style="width: 40%;margin: auto;text-align: right;">
-				<input style="height: 100%;width: 100%;font-size: 24rpx;" v-model="name" type="text" value=""
+				<input style="height: 100%;width: 100%;font-size: 24rpx;" v-model="name" type="text"
 					placeholder-style="text-align: right;" placeholder="填写开户人姓名" />
 			</view>
 		</view>
 		<view class="flexBox">
 			<view class="title">银行卡号</view>
 			<view style="width: 40%;margin: auto;text-align: right;">
-				<input style="height: 100%;width: 100%;font-size: 24rpx;" v-model="cardNum" type="text" value=""
+				<input style="height: 100%;width: 100%;font-size: 24rpx;" v-model="cardNum" type="text"
 					placeholder-style="text-align: right;" placeholder="填写银行卡号" />
 			</view>
 		</view>
@@ -60,6 +62,11 @@
 				name: '', //姓名
 				cardNum: '', //卡号
 				type: 0, // 0新增 1编辑
+			}
+		},
+		computed: {
+			bankNameShow() {
+				return typeof(index) === 'number'
 			}
 		},
 		onLoad(e) {
@@ -187,6 +194,10 @@
 					this.$close()
 				}, 500)
 			}),
+			// 是否为数字
+			isNumber(num) {
+				return typeof(num) === 'number'
+			},
 			// 银行改变
 			bankChange: function(e) {
 				this.index = e.target.value
