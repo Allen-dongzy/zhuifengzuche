@@ -178,12 +178,11 @@
 			};
 		},
 		onLoad() {
-			
+			this.orderList=[]
+			this.getlist()
 		},
 		onShow() {
 			
-			this.orderList=[]
-	this.getlist()
 			this.getOrderList()
 		},
 		methods: {

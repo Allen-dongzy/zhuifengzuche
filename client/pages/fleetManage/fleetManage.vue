@@ -141,6 +141,7 @@
 		},
 		onShow() {
 			this.list=[]
+			this.page=1
 			this.getlist() //车list
 		},
 		methods: {

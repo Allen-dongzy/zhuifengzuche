@@ -107,16 +107,18 @@
 		<view class="box">
 			<view class="flexBox">
 				<view class="moreTitle">租金押金</view>
-				<view class="moreTitle" style="width: 15%;" v-if="info.depositType==1">未免押</view>
-				<view class="moreTitle" style="width: 15%;" v-else>全额免押</view>
-				<view class="moreContent" style="width: 20%;text-align: center;">¥60</view>
-				<view class="moreContent" style="width: 15%;color: #5A7EFF;">已支付</view>
+				<view class="moreTitle" style="width: 21%;" v-if="info.depositType==1">未免押</view>
+				<view class="moreTitle" style="width: 21%;" v-else>全额免押</view>
+				<view  class="moreContent" style="width: 20%;text-align: center;">¥{{info.rentalDeposit}}</view>
+				<view v-if="info.isPaymentRentalDeposit==0" class="moreContent" style="width: 15%;color: #5A7EFF;">未缴</view>
+				<view v-if="info.isPaymentRentalDeposit==1" class="moreContent" style="width: 15%;color: #5A7EFF;">已缴</view>
 			</view>
 			<view class="flexBox">
 				<view class="moreTitle" style="width: 65%;">租金总计</view>
 				<!-- <view class="moreTitle" style="width: 15%;">未免押</view> -->
-				<view class="moreContent" style="width: 20%;text-align: center;">¥60</view>
-				<view class="moreContent" style="width: 15%;color: #5A7EFF;">已支付</view>
+				<view class="moreContent" style="width: 20%;text-align: center;">¥{{info.orderDeposit}}</view>
+				<view v-if="info.payStatus==1" class="moreContent" style="width: 15%;color: #5A7EFF;">已支付</view>
+				<view v-else class="moreContent" style="width: 15%;color: #5A7EFF;">未支付</view>
 			</view>
 			<view class="flexBox" v-show="moneyShow==false">
 				<view class="moreContent" style="width: 93%;color: #5A7EFF;">展开明细</view>

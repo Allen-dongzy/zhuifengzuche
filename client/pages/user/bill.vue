@@ -3,7 +3,7 @@
 
 		<view class="topBox" v-if="search==false">
 	
-			<image style="width: 48rpx;height: 48rpx;" :src="$util.fileUrl('/time.png')" mode=""></image>
+			<image style="width: 48rpx;height: 48rpx;" :src="$util.fileUrl('/time.png')" mode="aspectFill"></image>
 			<view style="margin-left: 2%;">
 				<picker mode="date" :value="stardate" :start="startDate" :end="endDate" @change="starTime">
 					<view class="uni-input">{{stardate}}</view>
@@ -16,12 +16,12 @@
 			</view>
 			<view class="statusBox" style="margin-left: 22%;" @click="showSearch">
 				<view class="">搜索</view>
-				<image style="width:28rpx;height:28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode=""></image>
+				<image style="width:28rpx;height:28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode="aspectFill"></image>
 			</view>
 		</view>
 		
 		<view class="topNav" style="color: #8E8E93;font-size: 30rpx" v-if="search==true">
-			<input type="text" style="background-color:#EFF0F3;height: 70rpx;width: 500rpx;border-radius: 50rpx;padding-left: 20rpx;" value="" />
+			<input @input="onInput" v-model="searchVal"  placeholder="请输入车牌或者姓名" type="text" style="background-color:#EFF0F3;height: 70rpx;width: 500rpx;border-radius: 50rpx;padding-left: 20rpx;" value="" />
 			<view style="margin-left: 20rpx;" @click="showSearch">取消</view>
 		</view>
 		
@@ -55,12 +55,13 @@
 </template>
 
 <script>
+	import {
+		debounce
+	} from '@/utils/tools';
+	
 	export default {
 		data() {
-
 			return {
-	
-		
 				index: 0,
 				carList: [{type:0}, {type:1}],
 				list: [{
@@ -104,7 +105,8 @@
 				stardate: '开始时间',
 				enddate: '结束时间',
 				showStuse: false,
-				search:false
+				search:false,
+				searchVal:""
 			}
 		},
 		onLoad() {
@@ -120,7 +122,18 @@
 			}
 		},
 		methods: {
+			onInput: debounce(async function() {
+				let data = {
+					page: this.page,
+					size: this.size,
+					name: this.searchVal
+				}
+				const [err, res] = await vehicleModelPageQuery(data)
+				if (err) return
+				console.log(res)
+				this.list = res.data.list
 
+			}),
 			starTime: function(e) {
 				this.stardate = e.target.value
 			},
