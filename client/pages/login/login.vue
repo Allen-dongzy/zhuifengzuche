@@ -130,6 +130,8 @@
 
 					}
 					const [err, res] = await login(params)
+					console.log(res)
+					console.log(err)
 					if (err) return
 					this.$storage.set('token', res.data.token)
 					this.$toast('登录成功')
