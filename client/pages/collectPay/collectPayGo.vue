@@ -41,7 +41,7 @@
 
 		<view class="upimgbox">
 			<view class="imglistbox" v-for="(item,index) in info.image" :key='index'>
-				<image style="width:160rpx;height:160rpx;" :src="item" mode=""></image>
+				<image style="width:160rpx;height:160rpx;" :src="item" mode="aspectFill"></image>
 			</view>
 		</view>
 
@@ -62,11 +62,11 @@
 				</view>
 			
 				<view class="imglistbox" v-for="(item,index) in list" :key='index'>
-					<image style="width:160rpx;height:160rpx;" :src="item" mode=""></image>
-					<image class="lanClose" :src="$util.fileUrl('/lancha.png')" @click="delImg(index)" mode=""></image>
+					<image style="width:160rpx;height:160rpx;" :src="item" mode="aspectFill"></image>
+					<image class="lanClose" :src="$util.fileUrl('/lancha.png')" @click="delImg(index)" mode="aspectFill"></image>
 				</view>
 				<view class="upimg">
-					<image @click="getImg" style="width:160rpx;height:160rpx;" :src="$util.fileUrl('/guanxi.png')" mode="">
+					<image @click="getImg" style="width:160rpx;height:160rpx;" :src="$util.fileUrl('/guanxi.png')" mode="aspectFill">
 					</image>
 				</view>
 				
@@ -84,8 +84,8 @@
 			</view>
 
 			<view class="imglistbox" v-for="(item,index) in list" :key='index'>
-				<image style="width:160rpx;height:160rpx;" :src="item" mode=""></image>
-				<!-- <image class="lanClose" :src="$util.fileUrl('/lancha.png')" @click="delImg(index)" mode=""></image> -->
+				<image style="width:160rpx;height:160rpx;" :src="item" mode="aspectFill"></image>
+				<!-- <image class="lanClose" :src="$util.fileUrl('/lancha.png')" @click="delImg(index)" mode="aspectFill"></image> -->
 			</view>
 			<!-- 审核未通过 -->
 			<view class="reTitle" v-show="info.examineStatus==3">拒绝原因：{{info.reason}}</view>

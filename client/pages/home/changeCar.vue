@@ -76,14 +76,14 @@
 				<view class="garyText" style="width: 15%;" v-if="priceDifferenceinfo==''"></view>
 				<view class="garyText" style="width: 15%;" v-else="priceDifferenceinfo!=''">
 					¥{{priceDifferenceinfo.differenceOfPrices}}</view>
-				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode=""></image>
+				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode="aspectFill"></image>
 			</view>
 			<view style="height: 2rpx;width: 100%;background-color: #EFF0F3;margin: 20rpx 0rpx ;"></view>
 			<view class="flexBox" @click="priceShow=true">
 				<view class="blackText" style="width: 70%;">其他扣费</view>
 				<view class="garyText" style="width: 10%;"><text v-show="log2">{{list[index].name}}</text></view>
 				<view class="garyText" style="width: 15%;">{{setMoney}}</view>
-				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode=""></image>
+				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode="aspectFill"></image>
 			</view>
 		</view>
 
@@ -103,13 +103,13 @@
 						<view style="width: 80%;">
 							<picker @change="bindPickerChange1" :value="index" :range="list" :range-key="'name'"
 								class="pickerBox">
-								<label v-if="!log2" class="pickerText">请选择</label>
-								<label v-else class="pickerText">{{list[index].name}}</label>
+								<view v-if="!log2" class="pickerText">请选择</view>
+								<view v-else class="pickerText">{{list[index].name}}</view>
 							</picker>
 
 						</view>
 						<view style="width:15%;">
-							<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode="">
+							<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode="aspectFill">
 							</image>
 						</view>
 					</view>

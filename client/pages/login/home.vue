@@ -3,7 +3,7 @@
 		<image class="loginBox" :src="$util.fileUrl('/logo.png')"></image>
 		<view class="contentBox">
 			<view class="">
-				<image style="width: 204rpx;height: 204rpx;" :src="$util.fileUrl('/logo2.png')" mode=""></image>
+				<image style="width: 204rpx;height: 204rpx;" :src="$util.fileUrl('/logo2.png')" mode="aspectFill"></image>
 			</view>
 			<view style="width: 70%;">
 				<view class="title">欢迎入驻追风租车</view>
@@ -13,7 +13,7 @@
 		<view class="iconBox">
 			<view v-for="(item,index) in imgList" :key="inex" class="listBox">
 				<view class="">
-					<image style="width:80rpx;height: 80rpx;" :src="$util.fileUrl(item.img)" mode=""></image>
+					<image style="width:80rpx;height: 80rpx;" :src="$util.fileUrl(item.img)" mode="aspectFill"></image>
 				</view>
 				<view class="">{{item.title}}</view> 
 			</view>

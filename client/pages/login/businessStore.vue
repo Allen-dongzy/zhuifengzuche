@@ -2,21 +2,21 @@
 	<view class="">
 		<view class="topNav">
 			<view style="width: 5%;text-align: center;">
-				<image style="width: 20rpx;height: 20rpx;" :src="$util.fileUrl('/1.png')" mode=""></image>
+				<image style="width: 20rpx;height: 20rpx;" :src="$util.fileUrl('/1.png')" mode="aspectFill"></image>
 			</view>
 			<view style="font-size: 32rpx;">基本信息</view>
 			<view style="width: 10%;text-align: center;line-height: 3px;">
-				<image style="width: 10rpx;height: 10rpx;" :src="$util.fileUrl('/next2.png')" mode=""></image>
+				<image style="width: 10rpx;height: 10rpx;" :src="$util.fileUrl('/next2.png')" mode="aspectFill"></image>
 			</view>
 			<view style="width: 5%;text-align: center;">
-				<image style="width: 20rpx;height: 20rpx;" :src="$util.fileUrl('/2.png')" mode=""></image>
+				<image style="width: 20rpx;height: 20rpx;" :src="$util.fileUrl('/2.png')" mode="aspectFill"></image>
 			</view>
 			<view style="font-size: 32rpx;">证件信息</view>
 			<view style="width: 10%;text-align: center;line-height: 3px;">
-				<image style="width: 10rpx;height: 10rpx;" :src="$util.fileUrl('/next1.png')" mode=""></image>
+				<image style="width: 10rpx;height: 10rpx;" :src="$util.fileUrl('/next1.png')" mode="aspectFill"></image>
 			</view>
 			<view style="width: 5%;text-align: center;">
-				<image style="width: 20rpx;height: 20rpx;" :src="$util.fileUrl('/3-3.png')" mode=""></image>
+				<image style="width: 20rpx;height: 20rpx;" :src="$util.fileUrl('/3-3.png')" mode="aspectFill"></image>
 			</view>
 			<view style="font-size: 32rpx;color: #5A7EFF;">门店信息</view>
 		</view>
@@ -75,7 +75,7 @@
 			</view>
 
 			<view class="fromTitel">门店图片</view>
-			<image class="imgBox" @click="getImg(0)" :src="storeImg || $util.fileUrl('/upload_image@2x.png')" mode="">
+			<image class="imgBox" @click="getImg(0)" :src="storeImg || $util.fileUrl('/upload_image@2x.png')" mode="aspectFill">
 			</image>
 
 			<view class="fromTitel">负责人/法人</view>
@@ -88,25 +88,25 @@
 
 			<view class="title">门店图片-门头照片</view>
 			<view class="idCard">
-				<image class="imgBox1" :src="idCard1 || $util.fileUrl('/guanxi.png')" mode="" @click="getImg(1)">
+				<image class="imgBox1" :src="idCard1 || $util.fileUrl('/guanxi.png')" mode="aspectFill" @click="getImg(1)">
 				</image>
 			</view>
 
 			<view class="title">门店图片-店内照片</view>
 			<view class="idCard">
-				<image class="imgBox1" :src="idCard2 || $util.fileUrl('/guanxi.png')" mode="" @click="getImg(2)">
+				<image class="imgBox1" :src="idCard2 || $util.fileUrl('/guanxi.png')" mode="aspectFill" @click="getImg(2)">
 				</image>
 			</view>
 
 			<view class="title">门店图片-店铺室外照片</view>
 			<view class="idCard">
-				<image class="imgBox1" :src="idCard3 || $util.fileUrl('/guanxi.png')" mode="" @click="getImg(3)">
+				<image class="imgBox1" :src="idCard3 || $util.fileUrl('/guanxi.png')" mode="aspectFill" @click="getImg(3)">
 				</image>
 			</view>
 
 			<view class="title">对公账户开户许可证</view>
 			<view class="idCard">
-				<image class="imgBox1" :src="idCard4 || $util.fileUrl('/guanxi.png')" mode="" @click="getImg(4)">
+				<image class="imgBox1" :src="idCard4 || $util.fileUrl('/guanxi.png')" mode="aspectFill" @click="getImg(4)">
 				</image>
 			</view>
 

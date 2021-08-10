@@ -11,12 +11,12 @@
 				<view style="width: 90%;">
 					<picker @change="selectShen" :value="provinceIndex" :range="provinceList" :range-key="'name'"
 						class="pickerBox">
-						<label v-if="!log" class="pickerText">{{selectProvinceName!=''?selectProvinceName:'请选择'}}</label>
-						<label v-else class="pickerText">{{provinceList[provinceIndex].name}}</label>
+						<view v-if="!log" class="pickerText">{{selectProvinceName!=''?selectProvinceName:'请选择'}}</view>
+						<view v-else class="pickerText">{{provinceList[provinceIndex].name}}</view>
 					</picker>
 				</view>
 				<view style="width:10%;">
-					<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode=""></image>
+					<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode="aspectFill"></image>
 				</view>
 			</view>
 		</view>
@@ -28,12 +28,12 @@
 				<view style="width: 90%;">
 					<picker @change="selectShi" :value="cityIndex" :range="cityList" :range-key="'name'"
 						class="pickerBox">
-						<label v-if="!log1" class="pickerText">{{selectCityName!=''?selectCityName:'请选择'}}</label>
-						<label v-else class="pickerText">{{cityList[cityIndex].name}}</label>
+						<view v-if="!log1" class="pickerText">{{selectCityName!=''?selectCityName:'请选择'}}</view>
+						<view v-else class="pickerText">{{cityList[cityIndex].name}}</view>
 					</picker>
 				</view>
 				<view style="width:10%;">
-					<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode=""></image>
+					<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode="aspectFill"></image>
 				</view>
 			</view>
 		</view>
@@ -44,12 +44,12 @@
 				<view style="width: 90%;">
 					<picker @change="selectQu" :value="areaIndex" :range="areaList" :range-key="'name'"
 						class="pickerBox">
-						<label v-if="!log2" class="pickerText">{{selectAreaName!=''?selectAreaName:'请选择'}}</label>
-						<label v-else class="pickerText">{{areaList[areaIndex].name}}</label>
+						<view v-if="!log2" class="pickerText">{{selectAreaName!=''?selectAreaName:'请选择'}}</view>
+						<view v-else class="pickerText">{{areaList[areaIndex].name}}</view>
 					</picker>
 				</view>
 				<view style="width:10%;">
-					<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode=""></image>
+					<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode="aspectFill"></image>
 				</view>
 			</view>
 		</view>
@@ -90,12 +90,12 @@
 				<view style="width: 90%;">
 					<picker @change="pickerTransportation" :value="index" :range="TransportationList"
 						:range-key="'name'" class="pickerBox">
-						<label v-if="!log3" class="pickerText">{{indexName!=""?indexName:'请选择'}}</label>
-						<label v-else class="pickerText">{{TransportationList[index].name}}</label>
+						<view v-if="!log3" class="pickerText">{{indexName!=""?indexName:'请选择'}}</view>
+						<view v-else class="pickerText">{{TransportationList[index].name}}</view>
 					</picker>
 				</view>
 				<view style="width:10%;">
-					<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode=""></image>
+					<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode="aspectFill"></image>
 				</view>
 			</view>
 		</view>
@@ -167,8 +167,8 @@
 
 				//地图
 				id: 0, // 使用 marker点击事件 需要填写id
-				mapWidth: "300rpx",
-				mapHeight: "1000rpx",
+				mapWidth: "430rpx",
+				mapHeight: "300rpx",
 				windowWidth: "",
 				windowHeight: "",
 				textwidth: "",
@@ -367,7 +367,7 @@
 				uni.getSystemInfo({
 					success: function(res) {
 						that.windowWidth = '440rpx'
-						that.windowHeight = res.windowHeight
+						that.windowHeight ='300rpx'	
 						that.mapWidth = that.windowWidth
 						that.mapHeight = that.windowHeight - 80
 						that.textwidth = that.windowWidth

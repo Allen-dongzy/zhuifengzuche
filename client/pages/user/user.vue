@@ -3,7 +3,7 @@
 		<view class="nameBox">
 			<view @click="$open()">
 				<image style="height: 100rpx;width: 100rpx;border-radius: 50%;" :src="$util.fileUrl('/icon1.png')"
-					mode=""></image>
+					mode="aspectFill"></image>
 			</view>
 			<view v-show="$storage.get('token')" style="font-size: 40rpx;color: white;margin-left: 20rpx;">{{username}}
 			</view>

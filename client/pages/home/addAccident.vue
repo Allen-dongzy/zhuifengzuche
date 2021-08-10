@@ -4,8 +4,8 @@
 			<view class="title">事故类型</view>
 			<view class="flexBox" style="padding: 0rpx;">
 				<view v-for="(item,index) in list" class="flexBox" style="margin-right: 10%;" @click="select(index)">
-					<image v-show="item.status==true" style="width: 32rpx;height: 32rpx;margin-left: 5rpx;" :src="$util.fileUrl('/quanxian1.png')"  mode=""></image>
-					<image v-show="item.status==false" style="width: 32rpx;height: 32rpx;margin-left: 5rpx;" :src="$util.fileUrl('/quanxian2.png')"  mode=""></image>
+					<image v-show="item.status==true" style="width: 32rpx;height: 32rpx;margin-left: 5rpx;" :src="$util.fileUrl('/quanxian1.png')"  mode="aspectFill"></image>
+					<image v-show="item.status==false" style="width: 32rpx;height: 32rpx;margin-left: 5rpx;" :src="$util.fileUrl('/quanxian2.png')"  mode="aspectFill"></image>
 					<view style="margin-left: 10rpx;">{{item.name}}</view>
 				</view>
 			</view>
@@ -14,12 +14,12 @@
 			<view class="selectBox">
 				<view style="width: 90%;">
 					<picker mode="date" :value="enddate" :start="startDate" :end="endDate" @change="endTime">
-						<label v-if="!log1" class="pickerText">请选择</label>
-						<label v-else class="pickerText">{{enddate}}</label>
+						<view v-if="!log1" class="pickerText">请选择</view>
+						<view v-else class="pickerText">{{enddate}}</view>
 					</picker>
 				</view>
 				<view style="width:10%;">
-					<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode=""></image>
+					<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode="aspectFill"></image>
 				</view> 
 			</view>
 			
@@ -30,12 +30,12 @@
 			
 			<view class="title" >添加照片</view>
 			<view class="imgbox" v-for="(item,index) in imglist" :key='index'>
-				<image style="width:160rpx;height: 160rpx;" :src="item" mode=""></image>
+				<image style="width:160rpx;height: 160rpx;" :src="item" mode="aspectFill"></image>
 				<image style="width:36rpx;height: 36rpx;position:absolute;top: -10rpx;right: -10rpx;"
-					:src="$util.fileUrl('/lancha.png')" mode="" @click="del(index)"></image>
+					:src="$util.fileUrl('/lancha.png')" mode="aspectFill" @click="del(index)"></image>
 			</view>
 			<view class="imgbox" @click="getImg">
-				<image style="width:160rpx;height: 160rpx;" :src="$util.fileUrl('/guanxi.png')" mode=""></image>
+				<image style="width:160rpx;height: 160rpx;" :src="$util.fileUrl('/guanxi.png')" mode="aspectFill"></image>
 			</view>
 			
 		</view>

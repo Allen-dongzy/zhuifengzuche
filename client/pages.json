@@ -125,7 +125,7 @@
 		{
 			"path": "pages/login/home",
 			"style": {
-				"navigationBarTitleText": "登陆注册"
+				"navigationBarTitleText": "登录注册"
 			}
 		},
 		{
@@ -240,7 +240,7 @@
 		{
 			"path": "pages/login/login",
 			"style": {
-				"navigationBarTitleText": "登陆"
+				"navigationBarTitleText": "登录"
 			}
 		},
 		{
@@ -277,7 +277,7 @@
 		{
 			"path": "pages/login/businessStore",
 			"style": {
-				"navigationBarTitleText": "登陆注册-门店信息"
+				"navigationBarTitleText": "登录注册-门店信息"
 			}
 		},
 		{

@@ -8,7 +8,7 @@
 			<view class="name">{{obj.name}}</view>
 			<view class="flexBox" style="margin-top: 10rpx;">
 				<view style="color: #B2B2B2;font-size: 24rpx;width: 90%;">{{obj.address}}</view>
-				<image style="width:32rpx;height: 32rpx;" :src="$util.fileUrl('/map.png')" mode="" @click="mapSelect">
+				<image style="width:32rpx;height: 32rpx;" :src="$util.fileUrl('/map.png')" mode="aspectFill" @click="mapSelect">
 				</image>
 			</view>
 			<view style="font-size: 28rpx;padding: 20rpx 0rpx;border-bottom: 2rpx solid #EFF0F3;">

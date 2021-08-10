@@ -4,10 +4,10 @@
 			<view class="add" @click="add">新增+</view>
 			<view class="title" @click="select">筛选</view>
 			<image style="height:25rpx;width: 35rpx;margin-right: 30rpx;" @click="select"
-				:src="$util.fileUrl('/xiangxia.png')" mode="">
+				:src="$util.fileUrl('/xiangxia.png')" mode="aspectFill">
 			</image>
 			<view class="title" @click="showSearch">搜索</view>
-			<image style="height: 28rpx;width: 28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode=""
+			<image style="height: 28rpx;width: 28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode="aspectFill"
 				@click="showSearch"></image>
 		</view>
 
@@ -26,9 +26,9 @@
 				<view class="add">新增+</view>
 				<view class="title" @click="select">筛选</view>
 				<image style="height:25rpx;width: 35rpx;margin-right: 30rpx;" @click="select"
-					:src="$util.fileUrl('/xiangxia.png')" mode=""></image>
+					:src="$util.fileUrl('/xiangxia.png')" mode="aspectFill"></image>
 				<view class="title">搜索</view>
-				<image style="height: 28rpx;width: 28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode=""></image>
+				<image style="height: 28rpx;width: 28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode="aspectFill"></image>
 			</view>
 
 			<view class="popTitle">

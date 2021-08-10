@@ -22,14 +22,14 @@
 
 			<image v-show="payinfo.otherFeesPickCarPrice==0" style="width:48%;height: 186rpx;"
 				:src="$util.fileUrl('/shoukuan.png')" @click="$open('/pages/home/otherPay',{orderId:info.order})"
-				mode=""></image>
+				mode="aspectFill"></image>
 
 			<view class="pricebox" v-show="payinfo.otherFeesPickCarPrice!=0">
 				<view class="flexBox">
 					<view class="priceText">其他收款</view>
 					<view class="priceText1">已收取</view>
 					<image style="width:20rpx;height: 30rpx;margin-left: 2%;" :src=" $util.fileUrl('/heiyou.png')"
-						mode=""></image>
+						mode="aspectFill"></image>
 				</view>
 				<view style="font-size: 20rpx;margin-top: 20rpx;">¥<text
 						style="font-size: 48rpx;">{{payinfo.otherFeesPickCarPrice}}</text></view>
@@ -44,7 +44,7 @@
 					<view class="priceText">预收冻结</view>
 					<view class="priceText1">已收取</view>
 					<image style="width:20rpx;height: 30rpx;margin-left: 2%;" :src="$util.fileUrl('/heiyou.png')"
-						mode=""></image>
+						mode="aspectFill"></image>
 				</view>
 				<view style="font-size: 20rpx;margin-top: 20rpx;">¥<text
 						style="font-size: 48rpx;">{{payinfo.retreatRentalDeposit}}</text></view>

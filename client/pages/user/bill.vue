@@ -3,7 +3,7 @@
 
 		<view class="topBox" v-if="search==false">
 	
-			<image style="width: 48rpx;height: 48rpx;" :src="$util.fileUrl('/time.png')" mode=""></image>
+			<image style="width: 48rpx;height: 48rpx;" :src="$util.fileUrl('/time.png')" mode="aspectFill"></image>
 			<view style="margin-left: 2%;">
 				<picker mode="date" :value="stardate" :start="startDate" :end="endDate" @change="starTime">
 					<view class="uni-input">{{stardate}}</view>
@@ -16,7 +16,7 @@
 			</view>
 			<view class="statusBox" style="margin-left: 22%;" @click="showSearch">
 				<view class="">搜索</view>
-				<image style="width:28rpx;height:28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode=""></image>
+				<image style="width:28rpx;height:28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode="aspectFill"></image>
 			</view>
 		</view>
 		
