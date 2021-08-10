@@ -1,7 +1,7 @@
 <template>
 	<view class="">
 		<view class="imgbox">
-				<image style="width: 100%;height: 100%;"  :src="$util.fileUrl('/payed.png')" mode=""></image>
+				<image style="width: 100%;height: 100%;"  :src="$util.fileUrl('/payed.png')" mode="aspectFill"></image>
 		</view>
 		<view style="position: relative;">
 			<view class="bluebg"></view>

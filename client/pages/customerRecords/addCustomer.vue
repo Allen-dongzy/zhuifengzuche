@@ -8,7 +8,7 @@
 			<view style="width: 85%;">
 				<picker @change="selectStore" :value="indexStore" :range="list" :range-key="'name'"
 						class="pickerBox">
-						<label  class="pickerText">{{storeName!=''?storeName:'请选择'}}</label>
+						<view  class="pickerText">{{storeName!=''?storeName:'请选择'}}</view>
 					</picker>
 			</view>
 			<view style="width:10%;">
@@ -41,8 +41,8 @@
 				<view class="selectBox" @click="$open('/pages/customerRecords/selectCart')">
 					<view style="width: 85%;">
 						<view class="pickerBox">
-							<label v-if="true" class="pickerText">{{cartName || '请选择车辆'}}</label>
-							<label v-else class="pickerText"></label>
+							<view v-if="true" class="pickerText">{{cartName || '请选择车辆'}}</view>
+							<view v-else class="pickerText"></view>
 						</view>
 					</view>
 					<view style="width:10%;">

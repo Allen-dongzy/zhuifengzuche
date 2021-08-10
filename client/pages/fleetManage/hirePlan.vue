@@ -2,7 +2,7 @@
 	<view>
 
 		<view class="topNav" v-if="search==false">
-			<image style="width: 48rpx;height: 48rpx;" :src="$util.fileUrl('/time.png')" mode=""></image>
+			<image style="width: 48rpx;height: 48rpx;" :src="$util.fileUrl('/time.png')" mode="aspectFill"></image>
 			<view style="margin-left: 2%;">
 				<picker mode="date" :value="staredate" :start="startDate" :end="endDate" @change="starTime">
 					<view class="uni-input" v-if="staredate==''">请选择</view>
@@ -18,12 +18,12 @@
 			<view class="statusBox" @click="changestatus">
 				<view class="">状态</view>
 				<view class="">
-					<image style="width:32rpx;height: 16rpx;" :src="$util.fileUrl('/xiangxia.png')" mode=""></image>
+					<image style="width:32rpx;height: 16rpx;" :src="$util.fileUrl('/xiangxia.png')" mode="aspectFill"></image>
 				</view>
 			</view>
 			<view class="statusBox" @click="showSearch">
 				<view class="">搜索</view>
-				<image style="width:28rpx;height:28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode=""></image>
+				<image style="width:28rpx;height:28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode="aspectFill"></image>
 			</view>
 		</view>
 
@@ -104,7 +104,7 @@
 		</view>
 		<view class="box1" v-if="showStatus==true">
 			<view class="topNav" style="margin-bottom: 20rpx;">
-				<image style="width: 48rpx;height: 48rpx;" :src="$util.fileUrl('/time.png')" mode=""></image>
+				<image style="width: 48rpx;height: 48rpx;" :src="$util.fileUrl('/time.png')" mode="aspectFill"></image>
 				<view style="margin-left: 2%;">
 					<picker mode="date" :value="staredate" :start="startDate" :end="endDate" @change="starTime">
 						<view class="uni-input" v-if="staredate==''">请选择</view>
@@ -120,13 +120,13 @@
 				<view class="statusBox" @click="changestatus">
 					<view style="color:#5A7EFF">状态</view>
 					<view class="">
-						<image style="width:32rpx;height: 16rpx;" :src="$util.fileUrl('/xiangshang.png')" mode="">
+						<image style="width:32rpx;height: 16rpx;" :src="$util.fileUrl('/xiangshang.png')" mode="aspectFill">
 						</image>
 					</view>
 				</view>
 				<view class="statusBox" @click="showSearch">
 					<view class="">搜索</view>
-					<image style="width:28rpx;height:28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode=""></image>
+					<image style="width:28rpx;height:28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode="aspectFill"></image>
 				</view>
 			</view>
 			<view class="colorTitle"

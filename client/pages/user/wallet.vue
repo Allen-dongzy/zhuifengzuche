@@ -1,7 +1,7 @@
 <template>
 	<view class="wallet">
 		<view v-show="bankCardStatus === 1" class="addCard" @click="setCard(1)">
-			<image style="height: 36rpx;width: 36rpx;margin-left: 40rpx;" :src="$util.fileUrl('/addCard.png')" mode="">
+			<image style="height: 36rpx;width: 36rpx;margin-left: 40rpx;" :src="$util.fileUrl('/addCard.png')" mode="aspectFill">
 			</image>
 			<view style="margin-left: 10rpx;">添加银行卡</view>
 		</view>

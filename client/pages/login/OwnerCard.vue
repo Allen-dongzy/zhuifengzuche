@@ -2,14 +2,14 @@
 	<view class="">
 		<view class="topNav">
 			<view style="width: 5%;text-align: center;">
-				<image style="width: 20rpx;height: 20rpx;" :src="$util.fileUrl('/1.png')" mode=""></image>
+				<image style="width: 20rpx;height: 20rpx;" :src="$util.fileUrl('/1.png')" mode="aspectFill"></image>
 			</view>
 			<view style="font-size: 32rpx;">基本信息</view>
 			<view style="width: 10%;text-align: center;line-height: 3px;">
-				<image style="width: 10rpx;height: 10rpx;" :src="$util.fileUrl('/next1.png')" mode=""></image>
+				<image style="width: 10rpx;height: 10rpx;" :src="$util.fileUrl('/next1.png')" mode="aspectFill"></image>
 			</view>
 			<view style="width: 5%;text-align: center;">
-				<image style="width: 20rpx;height: 20rpx;" :src="$util.fileUrl('/2-2.png')" mode=""></image>
+				<image style="width: 20rpx;height: 20rpx;" :src="$util.fileUrl('/2-2.png')" mode="aspectFill"></image>
 			</view>
 			<view style="font-size: 32rpx;color: #5A7EFF;">证件信息</view>
 
@@ -22,8 +22,8 @@
 
 
 		<view class="idCard">
-			<image class="imgBox" :src="idCard1 || $util.fileUrl('/idCard1.png')" mode="" @click="getImg(1)"></image>
-			<image class="imgBox" :src="idCard2 || $util.fileUrl('/idCard2.png')" mode="" @click="getImg(2)"></image>
+			<image class="imgBox" :src="idCard1 || $util.fileUrl('/idCard1.png')" mode="aspectFill" @click="getImg(1)"></image>
+			<image class="imgBox" :src="idCard2 || $util.fileUrl('/idCard2.png')" mode="aspectFill" @click="getImg(2)"></image>
 		</view>
 		<view class="lineBox"></view>
 		<view class="flexbox">
@@ -31,8 +31,8 @@
 			<view class="title" style="text-align: right;color: #5A7EFF;" @click="open2">查看示例图</view>
 		</view>
 		<view class="idCard">
-			<image class="imgBox" :src="idCard3 || $util.fileUrl('/driver1.png')" mode="" @click="getImg(3)"></image>
-			<image class="imgBox" :src="idCard4 || $util.fileUrl('/driver2.png')" mode="" @click="getImg(4)"></image>
+			<image class="imgBox" :src="idCard3 || $util.fileUrl('/driver1.png')" mode="aspectFill" @click="getImg(3)"></image>
+			<image class="imgBox" :src="idCard4 || $util.fileUrl('/driver2.png')" mode="aspectFill" @click="getImg(4)"></image>
 		</view>
 		<view class="title">车牌号码</view>
 		<view class="idCard">
@@ -78,21 +78,21 @@
 
 		<uni-popup ref="popup" type="center" style="text-align: center;">
 			<view class="popTitle">拍照示例：身份证正面</view>
-			<image class="popImg" :src="$util.fileUrl('/idzheng.png')" mode=""></image>
+			<image class="popImg" :src="$util.fileUrl('/idzheng.png')" mode="aspectFill"></image>
 			<view class="popTitle">拍照示例：身份证反面</view>
-			<image class="popImg" :src="$util.fileUrl('/idfan.png')" mode=""></image>
+			<image class="popImg" :src="$util.fileUrl('/idfan.png')" mode="aspectFill"></image>
 			<view class="">
-				<image class="popclose" @click="close1" :src="$util.fileUrl('/shilica.png')" mode=""></image>
+				<image class="popclose" @click="close1" :src="$util.fileUrl('/shilica.png')" mode="aspectFill"></image>
 			</view>
 		</uni-popup>
 
 		<uni-popup ref="popup2" type="center" style="text-align: center;">
 			<view class="popTitle">拍照示例：行驶证正页</view>
-			<image class="popImg" :src="$util.fileUrl('/xszz.png')" mode=""></image>
+			<image class="popImg" :src="$util.fileUrl('/xszz.png')" mode="aspectFill"></image>
 			<view class="popTitle">拍照示例：行驶证副页</view>
-			<image class="popImg" :src="$util.fileUrl('/xszf.png')" mode=""></image>
+			<image class="popImg" :src="$util.fileUrl('/xszf.png')" mode="aspectFill"></image>
 			<view class="">
-				<image class="popclose" @click="close2" :src="$util.fileUrl('/shilica.png')" mode=""></image>
+				<image class="popclose" @click="close2" :src="$util.fileUrl('/shilica.png')" mode="aspectFill"></image>
 			</view>
 		</uni-popup>
 

@@ -5,7 +5,8 @@
 		<view class="flexBox">
 			<image class="day" :src="`${ossUrl}/common/daytime.png`" mode="aspectFill"></image>
 			<view class="dayTime" @click="openProcessPopup">{{dateShow || '选择日期'}}</view>
-			<image class="day" style="margin-left: 20%" :src="`${ossUrl}/common/icon-time.png`" mode="aspectFill"></image>
+			<image class="day" style="margin-left: 20%" :src="`${ossUrl}/common/icon-time.png`" mode="aspectFill">
+			</image>
 			<view class="dayTime">
 				<picker mode="time" @change="timeHandler" :start="startDate" :end="endDate" class="pickerBox">
 					<label class="pickerText">{{timeShow || '选择时间'}}</label>
@@ -74,7 +75,8 @@
 	} from '@/apis/sso'
 	import {
 		durationToTime,
-		throttle
+		throttle,
+		transCommonTime
 	} from '@/utils/tools'
 
 	export default {
@@ -172,8 +174,8 @@
 			},
 			// 获取续租总时间
 			getTotalTime() {
-				const targetTime = new Date(`${this.date} ${this.time}:00`).getTime()
-				const currentTime = new Date(this.lastEndTime).getTime()
+				const targetTime = new Date(transCommonTime(`${this.date} ${this.time}:00`)).getTime()
+				const currentTime = new Date(transCommonTime(this.lastEndTime)).getTime()
 				const diffTime = targetTime - currentTime
 				const [date, hour] = durationToTime(diffTime)
 				this.totalDate = date

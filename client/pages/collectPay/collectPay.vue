@@ -17,9 +17,9 @@
 					<view class="price" style="border-bottom: 0rpx;text-align: right;">¥{{item.money}}</view>
 				</view>
 				<view class="contentBottom">
-					<image class="xiangmuIcon" :src="$util.fileUrl('/xiangmu.png')" mode=""></image>
+					<image class="xiangmuIcon" :src="$util.fileUrl('/xiangmu.png')" mode="aspectFill"></image>
 					<view style="font-size: 24rpx;color: #C0C0C0;">{{item.projectName}}</view>
-					<image class="timeIcon" :src="$util.fileUrl('/time.png')" mode=""></image>
+					<image class="timeIcon" :src="$util.fileUrl('/time.png')" mode="aspectFill"></image>
 					<view class="time">{{item.createTime.slice(0,10)}}</view>
 				</view>
 			</view>
@@ -38,9 +38,9 @@
 				
 				<view class="price">¥{{item.money}}</view>
 				<view class="contentBottom">
-					<image class="xiangmuIcon" :src="$util.fileUrl('/xiangmu.png')" mode=""></image>
+					<image class="xiangmuIcon" :src="$util.fileUrl('/xiangmu.png')" mode="aspectFill"></image>
 					<view style="font-size: 24rpx;color: #C0C0C0;">{{item.projectName}}</view>
-					<image class="timeIcon" :src="$util.fileUrl('/time.png')" mode=""></image>
+					<image class="timeIcon" :src="$util.fileUrl('/time.png')" mode="aspectFill"></image>
 					<view class="time">{{item.createTime.slice(0,10)}}</view>
 				</view>
 			</view>
@@ -54,9 +54,9 @@
 					<view class="price" style="border-bottom: 0rpx;text-align: right;">¥{{item.money}}</view>
 				</view>
 				<view class="contentBottom">
-					<image class="xiangmuIcon" :src="$util.fileUrl('/xiangmu.png')" mode=""></image>
+					<image class="xiangmuIcon" :src="$util.fileUrl('/xiangmu.png')" mode="aspectFill"></image>
 					<view style="font-size: 24rpx;color: #C0C0C0;">{{item.projectName}}</view>
-					<image class="timeIcon" :src="$util.fileUrl('/time.png')" mode=""></image>
+					<image class="timeIcon" :src="$util.fileUrl('/time.png')" mode="aspectFill"></image>
 					<view class="time">{{item.createTime.slice(0,10)}}</view>
 				</view>
 			</view>
@@ -72,9 +72,9 @@
 				</view>
 				<view class="price">¥{{item.money}}</view>
 				<view class="contentBottom">
-					<image class="xiangmuIcon" :src="$util.fileUrl('/xiangmu.png')" mode=""></image>
+					<image class="xiangmuIcon" :src="$util.fileUrl('/xiangmu.png')" mode="aspectFill"></image>
 					<view style="font-size: 24rpx;color: #C0C0C0;">{{item.projectName}}</view>
-					<image class="timeIcon" :src="$util.fileUrl('/time.png')" mode=""></image>
+					<image class="timeIcon" :src="$util.fileUrl('/time.png')" mode="aspectFill"></image>
 					<view class="time">{{item.createTime.slice(0,10)}}</view>
 				</view>
 			</view>

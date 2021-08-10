@@ -1,7 +1,7 @@
 <template>
 	<view class="">
 		<view style="margin: auto;width: 220rpx;height: 220rpx;margin-top: 30vh;">
-			<image style="width: 100%;height: 100%;" :src="img" mode=""></image>
+			<image style="width: 100%;height: 100%;" :src="img" mode="aspectFill"></image>
 		</view>
 		<view style="width: 100%;text-align: center;font-size: 44rpx;margin-top: 30rpx;">¥{{setprice}}</view>
 		<!-- <view class="title">款项名称</view> -->

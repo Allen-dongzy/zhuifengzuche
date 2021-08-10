@@ -144,6 +144,7 @@
 				this.$storage.set('token', res.data.token)
 				this.$toast('登录成功')
 				this.getUserInfo()
+				uni.$emit('appRefresh')
 				setTimeout(() => {
 					this.$open('/pages/home/home', 3)
 				}, 500)
