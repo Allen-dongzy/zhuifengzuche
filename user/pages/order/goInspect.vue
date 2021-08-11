@@ -128,6 +128,7 @@
 			if (e && e.vehicleId) this.vehicleId = e.vehicleId
 			if (e && e.mode) this.mode = e.mode
 			if (e && e.from) this.from = e.from
+			this.mode = 'edit'
 			this.vehicleVehiclePreview()
 		},
 		methods: {
@@ -179,7 +180,6 @@
 				}, 500)
 			}),
 			sliderChange(e) {
-				console.log('value 发生变化：' + e.detail.value)
 				if (e.detail.value < 1) {
 					this.sliderColor = '#FC3736'
 				} else {
