@@ -179,11 +179,11 @@
 			};
 		},
 		onLoad() {
-			this.orderList=[]
+			
 			this.getlist()
 		},
 		onShow() {
-			
+			this.orderList=[]
 			this.getOrderList()
 		},
 		methods: {
