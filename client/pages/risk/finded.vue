@@ -1,7 +1,7 @@
 <template>
 	<view >
 		<view style="width: 90%;margin: auto;padding-top: 130rpx;">
-			<image style="height: 394rpx;width: 100%;position: relative;" :src="$util.fileUrl('/find.png')" mode=""></image>
+			<image style="height: 394rpx;width: 100%;position: relative;" :src="$util.fileUrl('/find.png')" mode="aspectFill"></image>
 			<view style="position: absolute;top: 170rpx;left: 40rpx;width: 90%;">
 				<view class="name">{{info.name}}</view>
 				<!-- <view class="text">性别：{{info.}}</view> -->
@@ -28,11 +28,11 @@
 		<view class="shareText">·········您可以分享到·········</view>
 		<view style="display: flex;align-items: center;justify-content: center;margin-top: 6vh;">
 			<view class="shareBox">
-				<image style="height: 96rpx;width: 96rpx;" :src="$util.fileUrl('/wx.png')" mode=""></image>
+				<image style="height: 96rpx;width: 96rpx;" :src="$util.fileUrl('/wx.png')" mode="aspectFill"></image>
 				<view class="">微信好友</view>
 			</view>
 			<view class="shareBox">
-				<image style="height: 96rpx;width: 96rpx;" :src="$util.fileUrl('/pyq.png')" mode=""></image>
+				<image style="height: 96rpx;width: 96rpx;" :src="$util.fileUrl('/pyq.png')" mode="aspectFill"></image>
 				<view class="">朋友圈</view>
 			</view>
 		</view>

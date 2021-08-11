@@ -5,7 +5,7 @@
 			<view class="garyText">¥{{item.price}}</view>
 		</view>
 		<view class="flexBox" style="margin-top: 30rpx;">
-			<image style="width:40rpx;height: 40rpx;" :src="$util.fileUrl('/othermoney.png')" mode=""></image>
+			<image style="width:40rpx;height: 40rpx;" :src="$util.fileUrl('/othermoney.png')" mode="aspectFill"></image>
 			<view style="margin-left: 2%;color: #5A7EFF;font-size: 28rpx;" @click="priceShow=true">添加收款</view>
 		</view>
 		<!-- 收费弹窗 -->
@@ -14,8 +14,8 @@
 		<view class="box1" v-show="priceShow==true">
 			<view class="blackText" style="padding: 20rpx 0rpx;">款项选择</view>
 			<picker @change="cityPicker" :value="cityIndex" :range="cityList" :range-key="'name'" class="pickerBox">
-				<label v-if="!log1" class="pickerText">请选择</label>
-				<label v-else class="pickerText">{{cityList[cityIndex].name}}</label>
+				<view v-if="!log1" class="pickerText">请选择</view>
+				<view v-else class="pickerText">{{cityList[cityIndex].name}}</view>
 			</picker>
 			<view class="blackText" style="padding: 20rpx 0rpx;">金额</view>
 			<input type="text"  v-model="selectPrice" placeholder="请输入金额"

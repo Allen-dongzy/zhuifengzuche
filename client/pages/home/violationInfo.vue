@@ -26,7 +26,7 @@
 				</view>
 				<view class="flexBox" style="margi:0rpx;padding:40rpx 0rpx;border-bottom: 2rpx solid #EFF0F3;">
 					<view class="blackText">单据照片</view>
-					<image style="width:200rpx;height: 120rpx;margin-left: 43%;" :src="info.rulesUrls" mode=""></image>
+					<image style="width:200rpx;height: 120rpx;margin-left: 43%;" :src="info.rulesUrls" mode="aspectFill"></image>
 				</view>
 				<view  style="margi:0rpx;padding:40rpx 0rpx;border-bottom: 2rpx solid #EFF0F3;">
 					<view class="blackText">备注信息</view>

@@ -21,10 +21,9 @@
 				<view class="item-header">
 					<view class="name-box">
 						<view class="name">
-							{{item.orderStatus === 1 || item.orderStatus === 2 ? item.carModelName.split('|')[0] : item.carModelName}}
+							{{item.orderStatus === 0 || item.orderStatus === 1 ? item.carModelName.split('|')[0] : item.carModelName}}
 						</view>
-						<view v-if="item.orderStatus === 0"
-							:class="['label-card', {'orange': item.orderStatus === 0}]">
+						<view v-if="item.orderStatus === 0" :class="['label-card', {'orange': item.orderStatus === 0}]">
 							<view class="top"></view>
 							<view class="line"></view>
 							<view class="box">未支付</view>
@@ -303,7 +302,13 @@
 			},
 			// 监听事件
 			eventListener() {
+				// 订单刷新
 				uni.$on('orderRefresh', () => {
+					this.init()
+					this.getorderList()
+				})
+				// app刷新
+				uni.$on('appRefresh', () => {
 					this.init()
 					this.getorderList()
 				})

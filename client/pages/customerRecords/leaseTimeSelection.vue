@@ -336,7 +336,7 @@
 			@include box-w(100%, #fff);
 			padding: 38rpx 32rpx 60rpx;
 			@include flex-row(space-between);
-
+			z-index: 50 !important;
 			.btn {
 				@include box(300rpx, 96rpx);
 				border-radius: 52rpx;

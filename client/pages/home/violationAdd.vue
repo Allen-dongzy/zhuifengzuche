@@ -4,7 +4,7 @@
 			<view class="flexBox" >
 				<view class="blackText">违章时间</view>
 					<xp-picker style="width: 65%;text-align: right;" mode="ymdhi" @confirm="confirm">{{time==""?'请选择时间':time}}</xp-picker>
-					<image style="width: 40rpx;height: 40rpx;margin-left: 5rpx;" :src="$util.fileUrl('/daytime.png')" @click="getcarInfo" mode=""></image>
+					<image style="width: 40rpx;height: 40rpx;margin-left: 5rpx;" :src="$util.fileUrl('/daytime.png')" @click="getcarInfo" mode="aspectFill"></image>
 			</view>
 			<view class="flexBox" >
 				<view class="blackText">违章地点</view>
@@ -36,7 +36,7 @@
 			<view class="flexBox" >
 				<view class="blackText">单据照片</view>
 				<view class="">
-					<image style="width: 200rpx;height: 120rpx;margin-left: 5rpx;" :src="imgbox || $util.fileUrl('/guanxi.png')"  @click="getImg()" mode=""></image>
+					<image style="width: 200rpx;height: 120rpx;margin-left: 5rpx;" :src="imgbox || $util.fileUrl('/guanxi.png')"  @click="getImg()" mode="aspectFill"></image>
 				</view>
 			</view>
 			<view style="padding: 30rpx 0rpx;">

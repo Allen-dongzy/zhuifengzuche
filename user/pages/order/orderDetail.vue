@@ -255,10 +255,10 @@
 		computed: {
 			// 总天数
 			totalDate() {
-				const startTime = new Date(this.info.rentBeginTime).getTime()
-				const endTime = new Date(this.info.rentEndTime).getTime()
+				const startTime = new Date(transCommonTime(this.info.rentBeginTime)).getTime()
+				const endTime = new Date(transCommonTime(this.info.rentEndTime)).getTime()
 				const diff = endTime - startTime
-				return parseInt(diff / 1000 / 60 / 60 / 24)
+				return diff % 86400000 === 0 ? diff / 86400000 : parseInt(diff / 86400000) + 1
 			},
 			// 状态显示
 			statusShow() {

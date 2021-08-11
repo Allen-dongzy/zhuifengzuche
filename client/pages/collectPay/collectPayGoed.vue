@@ -38,7 +38,7 @@
 			<view class="titleRight">{{info.remarks}}</view>
 		</view>
 		 <view style="width: 90%;margin: auto;border-bottom: 2rpx solid #EFF0F3;">
-		 	<image v-for="(item,index) in info.image" style="width: 160rpx;height: 160rpx;display: inline-block;margin: 10rpx;" :src="item" mode=""></image> 
+		 	<image v-for="(item,index) in info.image" style="width: 160rpx;height: 160rpx;display: inline-block;margin: 10rpx;" :src="item" mode="aspectFill"></image> 
 		 </view>
 		<view class="garyLine"></view>
 		<view class="flexbox">
@@ -50,7 +50,7 @@
 				<view class="titleLeft">确认时间</view>
 				<view class="titleRight">{{info.confirmTime}}</view>
 			</view>
-			<image v-for="(item,index) in info.examineImage" style="width: 160rpx;height: 160rpx;display: inline-block;margin: 10rpx;" :src="item" mode=""></image> 
+			<image v-for="(item,index) in info.examineImage" style="width: 160rpx;height: 160rpx;display: inline-block;margin: 10rpx;" :src="item" mode="aspectFill"></image> 
 		</view>
 		
 		<view class="flexbox" style="border: 0rpx;">

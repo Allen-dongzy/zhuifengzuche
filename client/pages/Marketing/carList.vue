@@ -3,7 +3,7 @@
 		<view class="flex sticky header" v-if="search==false">
 			<view class="flex" style="width: 100%;">
 				<view class="flex screen" style="text-align: left" @click="showModal" data-target="DrawerModalR">
-					<image style="height: 28rpx;width: 28rpx;" :src="$util.fileUrl('/loudou.png')" mode=""></image>
+					<image style="height: 28rpx;width: 28rpx;" :src="$util.fileUrl('/loudou.png')" mode="aspectFill"></image>
 					<p style="margin-left: 20rpx;">筛选</p>
 					<text class="cuIcon-unfold"></text>
 				</view>

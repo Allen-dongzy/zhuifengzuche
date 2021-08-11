@@ -4,7 +4,7 @@
 			<image class="loginBox" :src="$util.fileUrl('/logo.png')"></image>
 		</view>
 		<view class="topimg2">
-			<image style="height:544rpx;width: 544rpx;" :src="$util.fileUrl('/loginbg.png')" mode=""></image>
+			<image style="height:544rpx;width: 544rpx;" :src="$util.fileUrl('/loginbg.png')" mode="aspectFill"></image>
 		</view>
 		<view class="setbox">
 
@@ -31,9 +31,9 @@
 				</view>
 
 				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
-					mode="" @click="look"></image>
+					mode="aspectFill" @click="look"></image>
 				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
-					mode="" @click="look"></image>
+					mode="aspectFill" @click="look"></image>
 
 			</view>
 
@@ -44,9 +44,9 @@
 					<input v-model="password2" :type="inpType1" placeholder="请确认密码" class="inpBox" style="width: 95%;">
 				</view>
 				<image v-show="showpass1==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
-					mode="" @click="look1"></image>
+					mode="aspectFill" @click="look1"></image>
 				<image v-show="showpass1==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
-					mode="" @click="look1"></image>
+					mode="aspectFill" @click="look1"></image>
 
 			</view>
 

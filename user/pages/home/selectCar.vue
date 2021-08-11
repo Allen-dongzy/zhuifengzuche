@@ -153,7 +153,7 @@
 		data() {
 			return {
 				ossUrl: this.$ossUrl, // oss
-				acTab: 0, // 活动tab
+				acTab: 0, // 活动tab5
 				acClass: 0, // 活动分类
 				searchHeight: 0, // 搜索框高度
 				brandStatus: false, // 品牌状态
@@ -167,7 +167,7 @@
 				carClassList: [], // 租车类别列表 
 				carBrandList: [], // 租车品牌列表
 				carModelList: [], // 租车车型列表
-				carGearsList: ['自动挡', '手动挡'], // 租车排档列表
+				carGearsList: ['自动', '手动'], // 租车排档列表
 				carSeatList: [2, 5, 6, 7, 9], // 租车座位列表
 				carList: [], // 车辆列表
 				page: 1,
