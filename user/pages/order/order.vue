@@ -359,7 +359,7 @@
 
 			.item {
 				@include box-w(670rpx);
-				padding: 40rpx 40rpx 0;
+				padding: 40rpx 30rpx 0;
 				border-radius: 20rpx;
 				box-shadow: 0 0 8rpx 0 rgba(114, 141, 244, 0.25);
 
@@ -373,9 +373,9 @@
 
 					.name-box {
 						@include flex-row();
+						max-width: 450rpx;
 
 						.name {
-							max-width: 330rpx;
 							@include font-set(32rpx, #000, 700);
 							@include text-one;
 							line-height: 44rpx;
@@ -416,7 +416,7 @@
 						@include font-set(16rpx, #FC3736, 700);
 
 						text {
-							@include font-set(36rpx, #FC3736, 700) line-height: 48rpx;
+							@include font-set(34rpx, #FC3736, 700) line-height: 48rpx;
 						}
 					}
 				}
