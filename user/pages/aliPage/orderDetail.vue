@@ -182,7 +182,8 @@
 	} from '@/apis/aliApis'
 	import {
 		throttle,
-		transCommonTime
+		transCommonTime,
+		add0
 	} from '@/utils/tools'
 	import {
 		showModal
@@ -203,7 +204,7 @@
 				const startTime = new Date(transCommonTime(this.info.rentBeginTime)).getTime()
 				const endTime = new Date(transCommonTime(this.info.rentEndTime)).getTime()
 				const diff = endTime - startTime
-				return parseInt(diff / 1000 / 60 / 60 / 24)
+				return diff % 86400000 === 0 ? diff / 86400000 : parseInt(diff / 86400000) + 1
 			},
 			// 状态显示
 			statusShow() {
@@ -341,11 +342,12 @@
 			},
 			// 时间转日期时间周几
 			timeFormat(timeStr) {
+				timeStr = transCommonTime(timeStr.toString())
 				const timeObj = new Date(timeStr)
 				const returnArr = []
 				returnArr.push(`${timeObj.getMonth() + 1}月${timeObj.getDate()}日`)
 				returnArr.push(this.week[timeObj.getDay()])
-				returnArr.push(`${timeObj.getHours()}:${timeObj.getMinutes()}`)
+				returnArr.push(`${add0(timeObj.getHours())}:${add0(timeObj.getMinutes())}`)
 				return returnArr
 			},
 			// 刷新
@@ -392,7 +394,8 @@
 			// 支付宝资金冻结
 			paymentAliPayFrozenMoney: throttle(async function() {
 				const params = {
-					orderSn: this.info.orderSn
+					orderSn: this.info.orderSn,
+					amount: this.info.orderDeposit
 				}
 				const [err, res] = await paymentAliPayFrozenMoney(params)
 				if (err || !res.data.orderStr) return
@@ -431,6 +434,14 @@
 			eventListener() {
 				uni.$on('getInfo', e => {
 					if (e && e.info) this.info = e.info
+					const rentBeginTime = this.timeFormat(this.info.rentBeginTime)
+					this.info.takeCarDateShow = rentBeginTime[0]
+					this.info.takeCarDayShow = rentBeginTime[1]
+					this.info.takeCarTimeShow = rentBeginTime[2]
+					const rentEndTime = this.timeFormat(this.info.rentEndTime)
+					this.info.carAlsoDateShow = rentEndTime[0]
+					this.info.carAlsoDayShow = rentEndTime[1]
+					this.info.carAlsoTimeShow = rentEndTime[2]
 				})
 			}
 		}

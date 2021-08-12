@@ -56,7 +56,7 @@ const durationToTime = (difference, len = 13) => {
 
 // 转换成兼容全平台的时间字符串
 const transCommonTime = (timeStr) => {
-	return timeStr.replace(/-/g, '/')
+	return typeof timeStr === 'string' && timeStr.replace(/-/g, '/')
 }
 
 // 十以内补零
