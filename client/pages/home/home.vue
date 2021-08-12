@@ -182,6 +182,7 @@
 			};
 		},
 		onLoad() {
+			
 			this.getlist()
 		},
 		onShow() {
