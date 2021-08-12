@@ -35,12 +35,21 @@
 
 			<view class="flexBox">
 <<<<<<< HEAD
+<<<<<<< HEAD
 				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/time.png')" mode="aspectFill"></image>
 				<view class="">{{info.rentBeginTime}}至{{info.rentEndTime}}</view>
 =======
 				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/time.png')" mode=""></image>
 				<view class="">{{info.rentBeginTime.slice(0,10)}}至{{info.rentEndTime.slice(0,10)}}</view>
 >>>>>>> 999b107 (fix: fix bug)
+=======
+				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/time.png')" mode=""></image>
+				<view class="">{{info.rentBeginTime.slice(0,10)}}至{{info.rentEndTime.slice(0,10)}}</view>
+=======
+				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/time.png')" mode="aspectFill"></image>
+				<view class="">{{info.rentBeginTime}}至{{info.rentEndTime}}</view>
+>>>>>>> 7e55a0d473f3cd1b3a597f71d5d8db83385d3387
+>>>>>>> 6c3a095dc81fa17bc1f2a1662a56e9681de06416
 			</view>
 
 			<view class="flexBox" v-if="info.endDeliveryName==info.startDeliveryName">
