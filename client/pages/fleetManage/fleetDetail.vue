@@ -1,7 +1,9 @@
 <template>
 	<view class="fleetDetail">
 		<view class="flex-center swiperList">
-			<swiper class="swiper" indicator-dots :indicator-color="indicatorColor"
+			<swiper class="swiper"  autoplay="true"
+                    interval="2000" 
+                    duration="500" indicator-dots :indicator-color="indicatorColor"
 				:indicator-active-color="indicatorActiveColor">
 				<swiper-item class="flex flex-wrap swiperItem" v-for="(item,index) in carInfo.vehicleModelFiles"
 					:key='index'>

@@ -4,7 +4,8 @@
 			<swiper v-if="swiperInfo.length>0" class="swiper" :autoplay="true" :interval="3000" :circular="true"
 				@change="swiperChange">
 				<swiper-item v-for="(item ,index) in swiperInfo" :key="index">
-					<image class="banner" :src="item.content" mode="aspectFill" @click="$open('/pages/home/newbie')"></image>
+					<image class="banner" :src="item.content" mode="aspectFill" @click="$open('/pages/home/newbie')">
+					</image>
 				</swiper-item>
 			</swiper>
 			<view v-else class="banner-empty"></view>
@@ -226,6 +227,7 @@
 		methods: {
 			// 初始化
 			init() {
+				this.customerHomeBannerGetSpread()
 				if (this.$storage.get('token')) this.loginAfterRequest()
 			},
 			// 显示默认时间
@@ -422,6 +424,11 @@
 					this.carAlsoTimeShow = e.carAlsoTimeShow
 					this.carAlsoTime = e.carAlsoTime
 					this.totalDate = e.totalDate
+				})
+				// app刷新
+				uni.$on('appRefresh', () => {
+					this.customerHomeBannerGetSpread()
+					if (this.$storage.get('token')) this.loginAfterRequest()
 				})
 			}
 		}

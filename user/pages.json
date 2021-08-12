@@ -195,6 +195,11 @@
 			"navigationBarTitleText": ""
 		}
 	}, {
+		"path": "pages/order/goInspect",
+		"style": {
+			"navigationBarTitleText": "车况概览"
+		}
+	}, {
 		"path": "pages/common/login",
 		"style": {
 			"navigationBarTitleText": "注册登录"
@@ -248,11 +253,6 @@
 		"path": "pages/common/signIng",
 		"style": {
 			"navigationBarTitleText": "签名"
-		}
-	}, {
-		"path": "pages/order/goInspect",
-		"style": {
-			"navigationBarTitleText": "车况概览"
 		}
 	}, {
 		"path": "pages/order/returnCar",

@@ -182,7 +182,7 @@
 			this.getlist()
 		},
 		onShow() {
-			this.orderList=[] 
+			this.orderList=[]  
 			this.getOrderList()
 		},
 		methods: {

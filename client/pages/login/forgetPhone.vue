@@ -8,7 +8,7 @@
 		</view>
 		<view class="setbox">
 
-			<input style="    background-color: #EFF0F3;
+			<input style="background-color: #EFF0F3;
     width: 90%;
     margin: auto;
     height: 96rpx;

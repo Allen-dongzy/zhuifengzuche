@@ -499,10 +499,10 @@
 				})
 				// 优惠券更新
 				uni.$on('couponUpdate', (e) => {
-					this.info.orderPriceInfo.total = this.total -= Number(this.couponPrice)
+					this.info.orderPriceInfo.total = this.total += Number(this.couponPrice)
 					this.couponPrice = e.price
 					this.couponId = e.couponId
-					this.info.orderPriceInfo.total = this.total += Number(this.couponPrice)
+					this.info.orderPriceInfo.total = this.total -= Number(this.couponPrice)
 					this.info.orderPriceInfo.orderPriceList.forEach((item, index) => {
 						if (item.name === '优惠券减免') {
 							item.id = e.couponId
