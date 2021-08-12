@@ -1,12 +1,13 @@
 <template>
 	<view class="home">
 		<view class="flex-center tabList">
-			<swiper class="swiperIcon"  :indicator-dots="false" :indicator-color="indicatorColor"
-				:indicator-active-color="indicatorActiveColor" >
-				<swiper-item class="flex flex-wrap swiperItem" >
+			<swiper class="swiperIcon" :indicator-dots="false" :indicator-color="indicatorColor"
+				:indicator-active-color="indicatorActiveColor">
+				<swiper-item class="flex flex-wrap swiperItem">
 					<view v-for="(item,index) in swiperIcon" :key="index" class="flex-center flex-direction iconPanel"
 						@click="toHomeLevel(item.url)">
-						<image mode="aspectFill" style="height: 100rpx;width: 100rpx;" :src="$util.fileUrl(item.path)" lazy-load></image>
+						<image mode="aspectFill" style="height: 100rpx;width: 100rpx;" :src="$util.fileUrl(item.path)"
+							lazy-load></image>
 						<p>{{ item.text }}</p>
 					</view>
 				</swiper-item>
@@ -31,8 +32,7 @@
 						<view v-for="(item, index) in tabList" :key="index" class="flex flex-direction tab"
 							@click="tabClick(index)">
 							<p v-if="item.statusCount!=''" :style="{color: (item.check?'#5A7EFF':'#999999')}">
-								{{ item.orderStatus }}
-								{{item.statusCount}}
+								{{ item.orderStatus }}{{item.statusCount}}
 							</p>
 							<p v-else :style="{color: (item.check?'#5A7EFF':'#999999')}">{{ item.orderStatus }}</p>
 							<i v-if="item.check"></i>
@@ -41,7 +41,7 @@
 				</view>
 			</scroll-view>
 		</view>
-		<view class="flex-center flex-wrap panelList" >
+		<view class="flex-center flex-wrap panelList">
 			<view class="panel" v-for="(item,index) in orderList" :key="index" @click="lookinfo(index)">
 				<view class="header">
 					<view class="flex titlePanel">
@@ -65,8 +65,8 @@
 						<p class="name">{{item.carModel}}</p>
 						<view class="flex radioCheck">
 							<p>异地还车</p>
-							<switch disabled="true"  @change.stop="radioChange" class="switch" :class="(radio?'checked':'')"
-								:checked="(radio?true:false)"></switch>
+							<switch disabled="true" @change.stop="radioChange" class="switch"
+								:class="(radio?'checked':'')" :checked="(radio?true:false)"></switch>
 						</view>
 					</view>
 					<view class="flex timeText">
@@ -96,25 +96,28 @@
 							<p>联系客户</p>
 						</view>
 						<view class="flex">
-							<button :disabled="item.isCarTest==false" type="default" v-if="tabCheck==0" class="flex-center btn"  
+							<button :disabled="item.isCarTest==false" type="default" v-if="tabCheck==0"
+								class="flex-center btn"
 								@tap.stop="toHomeLevel1('/pages/home/goInspect?obj=',item)">出车检验</button>
-							<button type="default" :disabled="item.isVehicleCertificates==true" v-if="tabCheck==0" class="flex-center btn"
-								style="margin-left: 20rpx;"
+							<button type="default" :disabled="item.isVehicleCertificates==true" v-if="tabCheck==0"
+								class="flex-center btn" style="margin-left: 20rpx;"
 								@tap.stop="toHomeLevel1('/pages/home/deliverCar?type=1&obj=',item)">交付车辆</button>
 							<button type="default" v-if="tabCheck==1" class="flex-center btn"
 								@tap.stop="toHomeLevel1('/pages/home/deliverCar?type=2&obj=',item)">交车情况</button>
 							<button type="default" v-if="tabCheck==1" class="flex-center btn"
 								style="margin-left: 20rpx;"
-								@tap.stop="toHomeLevel1('/pages/home/inspectionCollect?obj=',item)" :disabled="item.isPaymentIllegalDeposit==1">检验收车</button>
+								@tap.stop="toHomeLevel1('/pages/home/inspectionCollect?obj=',item)"
+								:disabled="item.isPaymentIllegalDeposit==1">检验收车</button>
 							<button type="default" v-if="tabCheck==2" class="flex-center btn"
-								@tap.stop="toHomeLevel1('/pages/home/inspectionCollectInfo?obj=',item)" >收车详情</button>
-							<button type="default" v-if="tabCheck==2" class="flex-center btn bg-btn" @click.stop="backMoney(item.id)">退还押金</button>
+								@tap.stop="toHomeLevel1('/pages/home/inspectionCollectInfo?obj=',item)">收车详情</button>
+							<button type="default" v-if="tabCheck==2" class="flex-center btn bg-btn"
+								@click.stop="backMoney(item.id)">退还押金</button>
 						</view>
 					</view>
 				</view>
 			</view>
-			<view class="loadmore" >
-				<tui-loadmore  v-if="orderSize" :index="2"></tui-loadmore>
+			<view class="loadmore">
+				<tui-loadmore v-if="orderSize" :index="2"></tui-loadmore>
 				<tui-nomore v-else text="没有更多了"></tui-nomore>
 			</view>
 		</view>
@@ -174,16 +177,16 @@
 				orderSize: false,
 				page: 1,
 				size: 10,
-				orderList:[],
+				orderList: [],
 				status: 1, //0=未支付,1=等待送车,2=送车中,3=租用中,4=换车中,5=待收车,100=已完成,101=已取消,6=审核中
 			};
 		},
 		onLoad() {
-			
+
 			this.getlist()
 		},
 		onShow() {
-			this.orderList=[]
+			this.orderList = []
 			this.getOrderList()
 		},
 		methods: {
@@ -198,7 +201,7 @@
 				setTimeout(function() {
 					uni.stopPullDownRefresh();
 				}, 1000);
-			}, 
+			},
 			async getlist() {
 				console.log('pp')
 				const [err, res] = await getOrderStatus()
@@ -225,38 +228,38 @@
 				const [err, res] = await getOrderPageList(data)
 				if (err) return
 				console.log(res.data.list.length)
-				if(res.data.list.length==0){
-					
-				}else{
-					for(let i=0;i<res.data.list.length;i++){
+				if (res.data.list.length == 0) {
+
+				} else {
+					for (let i = 0; i < res.data.list.length; i++) {
 						this.orderList.push(res.data.list[i])
-						if(res.data.list[i].pickPlace==res.data.list[i].returnPlace){
-							this.radio=false
-						}else{
-							this.radio=true
+						if (res.data.list[i].pickPlace == res.data.list[i].returnPlace) {
+							this.radio = false
+						} else {
+							this.radio = true
 						}
 						this.$forceUpdate()
 					}
 				}
 			},
-			
-			async	backMoney(e){
-					const [err,res]=await refundOfIllegalDeposit(e)
-					if(err) return
-					this.$toast('退还成功')
-				},
+
+			async backMoney(e) {
+				const [err, res] = await refundOfIllegalDeposit(e)
+				if (err) return
+				this.$toast('退还成功')
+			},
 
 			/**
 			 * 状态切换
 			 */
 			tabClick(index) {
-				for(let i=0;i<this.tabList.length;i++){
+				for (let i = 0; i < this.tabList.length; i++) {
 					this.tabList[i].check = false;
 				}
 				this.tabList[index].check = true;
 				this.tabCheck = index;
 				this.status = this.tabList[index].id
-				this.orderList=[]
+				this.orderList = []
 				this.getOrderList()
 			},
 			/**
@@ -266,7 +269,7 @@
 			radioChange(e) {
 				this.radio = e.detail.value
 			},
-			toHomeLevel(e,q) {
+			toHomeLevel(e, q) {
 				console.log(e)
 				uni.navigateTo({
 					url: e,
@@ -274,29 +277,29 @@
 					animationDuration: 200
 				})
 			},
-			toHomeLevel1(e,q) {
+			toHomeLevel1(e, q) {
 				console.log(JSON.stringify(q))
 				console.log(e)
-				let data ={
-					order:q.id,
-					carnum:q.vehicleNumber,
-					vehicleId:q.vehicleId
+				let data = {
+					order: q.id,
+					carnum: q.vehicleNumber,
+					vehicleId: q.vehicleId
 				}
 				console.log(data)
 				uni.navigateTo({
-					url: e+JSON.stringify(data),
+					url: e + JSON.stringify(data),
 					animationType: 'pop-in',
 					animationDuration: 200
 				})
 			},
-			lookinfo(e) {				
+			lookinfo(e) {
 				uni.navigateTo({
-					url: './orderInfo?id='+this.orderList[e].id+'&type='+this.status,
+					url: './orderInfo?id=' + this.orderList[e].id + '&type=' + this.status,
 					animationDuration: 200,
 					animationType: 'pop-in'
 				})
 			},
-			call(e){
+			call(e) {
 				uni.makePhoneCall({
 					phoneNumber: e
 				})
@@ -306,11 +309,13 @@
 </script>
 
 <style lang="scss" scoped>
-	.bg{
+	.bg {
 		background-color: black !important;
 	}
+
 	.home {
 		position: relative;
+
 		/**
 		 * 更改swiper提示点样式
 		 */
