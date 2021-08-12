@@ -8,7 +8,7 @@
 			</view>
 			<view class="item">
 				<view class="caption">交易时间</view>
-				<view class="value">{{payTheVoucherRentalCarDeposit}}</view>
+				<view class="value">{{paymentVoucherTransactionTime}}</view>
 			</view>
 			<view class="item">
 				<view class="caption">经办人</view>
