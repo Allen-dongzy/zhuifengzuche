@@ -53,7 +53,7 @@
 				</view>
 			</view>
 		</view>
-
+ 
 		<view class="flexBoxContent">
 			<view style="width: 22%;text-align: left;">送车点名称</view>
 			<input class="inpBox" v-model="carPoint" type="text" value="" placeholder="请输入送车点名称" />

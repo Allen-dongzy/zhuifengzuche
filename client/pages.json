@@ -2,7 +2,8 @@
 	"pages": [{
 			"path": "pages/home/home",
 			"style": {
-				"navigationBarTitleText": "首页"
+				"navigationBarTitleText": "首页",
+				"enablePullDownRefresh":true
 			}
 		}, {
 			"path": "pages/customerRecords/addCustomer",

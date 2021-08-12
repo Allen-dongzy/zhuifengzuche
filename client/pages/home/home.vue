@@ -32,7 +32,7 @@
 							@click="tabClick(index)">
 							<p v-if="item.statusCount!=''" :style="{color: (item.check?'#5A7EFF':'#999999')}">
 								{{ item.orderStatus }}
-								<!-- {{item.statusCount}} -->
+								{{item.statusCount}}
 							</p>
 							<p v-else :style="{color: (item.check?'#5A7EFF':'#999999')}">{{ item.orderStatus }}</p>
 							<i v-if="item.check"></i>
@@ -187,7 +187,18 @@
 			this.getOrderList()
 		},
 		methods: {
-
+			//下拉刷新
+			onPullDownRefresh() {
+				this.page = 1
+				this.size = 10
+				this.status = 1
+				this.orderList = []
+				this.getlist()
+				this.getOrderList()
+				setTimeout(function() {
+					uni.stopPullDownRefresh();
+				}, 1000);
+			}, 
 			async getlist() {
 				console.log('pp')
 				const [err, res] = await getOrderStatus()
@@ -239,7 +250,9 @@
 			 * 状态切换
 			 */
 			tabClick(index) {
-				this.tabList[this.tabCheck].check = false;
+				for(let i=0;i<this.tabList.length;i++){
+					this.tabList[i].check = false;
+				}
 				this.tabList[index].check = true;
 				this.tabCheck = index;
 				this.status = this.tabList[index].id

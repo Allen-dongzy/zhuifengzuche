@@ -34,29 +34,8 @@
 
 
 			<view class="flexBox">
-<<<<<<< HEAD
-
 				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/time.png')" mode=""></image>
 				<view class="">{{info.rentBeginTime.slice(0,10)}}至{{info.rentEndTime.slice(0,10)}}</view>
-
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/time.png')" mode="aspectFill"></image>
-				<view class="">{{info.rentBeginTime}}至{{info.rentEndTime}}</view>
-=======
-				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/time.png')" mode=""></image>
-				<view class="">{{info.rentBeginTime.slice(0,10)}}至{{info.rentEndTime.slice(0,10)}}</view>
->>>>>>> 999b107 (fix: fix bug)
-=======
-				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/time.png')" mode=""></image>
-				<view class="">{{info.rentBeginTime.slice(0,10)}}至{{info.rentEndTime.slice(0,10)}}</view>
-=======
-				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/time.png')" mode="aspectFill"></image>
-				<view class="">{{info.rentBeginTime}}至{{info.rentEndTime}}</view>
->>>>>>> 7e55a0d473f3cd1b3a597f71d5d8db83385d3387
->>>>>>> 6c3a095dc81fa17bc1f2a1662a56e9681de06416
->>>>>>> d5d14a4f31da135654d86433c57564f7f66175a6
 			</view>
 
 			<view class="flexBox" v-if="info.endDeliveryName==info.startDeliveryName">
@@ -396,7 +375,8 @@
 				const [err,res]=await refundOfIllegalDeposit(this.info.id)
 				if(err) return
 				this.$toast('退还成功')
-			}
+			},
+			
 		}
 	}
 </script>
