@@ -31,8 +31,7 @@
 						<view v-for="(item, index) in tabList" :key="index" class="flex flex-direction tab"
 							@click="tabClick(index)">
 							<p v-if="item.statusCount!=''" :style="{color: (item.check?'#5A7EFF':'#999999')}">
-								{{ item.orderStatus }}
-								<!-- {{item.statusCount}} -->
+								{{ item.orderStatus }}{{item.statusCount}}
 							</p>
 							<p v-else :style="{color: (item.check?'#5A7EFF':'#999999')}">{{ item.orderStatus }}</p>
 							<i v-if="item.check"></i>
@@ -179,12 +178,11 @@
 			};
 		},
 		onLoad() {
+			
 			this.getlist()
 		},
 		onShow() {
-			
-			this.orderList=[]
-	
+			this.orderList=[] 
 			this.getOrderList()
 		},
 		methods: {
