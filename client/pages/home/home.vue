@@ -199,7 +199,7 @@
 				setTimeout(function() {
 					uni.stopPullDownRefresh();
 				}, 1000);
-			}, 
+			},
 			async getlist() {
 				console.log('pp')
 				const [err, res] = await getOrderStatus()
