@@ -194,9 +194,7 @@
 			onPullDownRefresh() {
 				this.page = 1
 				this.size = 10
-				this.status = 1
 				this.orderList = []
-				this.getlist()
 				this.getOrderList()
 				setTimeout(function() {
 					uni.stopPullDownRefresh();
