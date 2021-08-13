@@ -81,7 +81,7 @@
 			<view style="height: 2rpx;width: 100%;background-color: #EFF0F3;margin: 20rpx 0rpx ;"></view>
 			<view class="flexBox" @click="priceShow=true">
 				<view class="blackText" style="width: 70%;">其他扣费</view>
-				<view class="garyText" style="width: 10%;"><text v-show="log2">{{list[index].name}}</text></view>
+				<view class="garyText" style="width: 10%;"><text v-if="log2">{{list[index].name}}</text></view>
 				<view class="garyText" style="width: 15%;">{{setMoney}}</view>
 				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode="aspectFill"></image>
 			</view>
@@ -93,8 +93,8 @@
 
 
 		<!-- 弹窗 -->
-		<view class="Mask" v-show="priceShow==true"></view>
-		<view class="box1" v-show="priceShow==true">
+		<view class="Mask" v-if="priceShow==true"></view>
+		<view class="box1" v-if="priceShow==true">
 			<view class="blackText" style="margin-left: 5%;">扣费价格</view>
 			<view class="flexBox">
 

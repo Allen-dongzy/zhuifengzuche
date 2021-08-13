@@ -1,11 +1,11 @@
 <template>
 	<view class="wallet">
-		<view v-show="bankCardStatus === 1" class="addCard" @click="setCard(1)">
+		<view v-if="bankCardStatus === 1" class="addCard" @click="setCard(1)">
 			<image style="height: 36rpx;width: 36rpx;margin-left: 40rpx;" :src="$util.fileUrl('/addCard.png')" mode="aspectFill">
 			</image>
 			<view style="margin-left: 10rpx;">添加银行卡</view>
 		</view>
-		<view v-show="bankCardStatus === 2"
+		<view v-if="bankCardStatus === 2"
 			style="border: 2rpx solid rgba(114,141,244,0.25);border-radius: 20rpx;width: 90%;margin: auto;padding: 20rpx 0rpx;"
 			@click="setCard(2)">
 			<view class="title">管理银行卡</view>
@@ -72,7 +72,10 @@
 </script>
 
 <style lang="scss">
-	
+	page {
+	  background-color: #FFFFFF;
+	  height: 100vh;
+	}
 	.wallet {
 		padding-top: 30rpx;
 	}

@@ -183,6 +183,10 @@
 </script>
 
 <style>
+	page {
+	  background-color: #FFFFFF;
+	  height: 100vh;
+	}
 	.statusBox {
 		display: flex;
 		align-items: center;

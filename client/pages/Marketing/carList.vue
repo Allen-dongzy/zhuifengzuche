@@ -17,7 +17,8 @@
 		<!-- 搜索 -->
 		<view class="topNav" style="color: #8E8E93;font-size: 30rpx;" v-if="search==true">
 			<input type="text"
-				style="background-color:#EFF0F3;height: 70rpx;width: 500rpx;border-radius: 50rpx;padding-left: 20rpx;"
+				placeholder="请输入车牌"
+				style="background-color:#EFF0F3;height: 70rpx;width: 500rpx;border-radius: 50rpx;padding-left: 28rpx;padding-right: 28rpx;"
 				value="" />
 			<view style="margin-left: 20rpx;" @click="showSearch">取消</view>
 		</view>
@@ -70,7 +71,7 @@
 						<view style="font-size: 28rpx;margin-top: 40rpx;">{{item.carNumber}}</view>
 						<view style="margin-top: 12rpx;">{{item.brandName}} {{item.modelName}}</view>
 						<view class="flexBox">
-							<view class="iconBox"  v-for="(itemy,indexy) in item.platformVoList" v-show="itemy.thirdStatus==1" >{{itemy.thirdName}}</view>
+							<view class="iconBox"  v-for="(itemy,indexy) in item.platformVoList" v-if="itemy.thirdStatus==1" >{{itemy.thirdName}}</view>
 						</view>
 					</view>
 				</view>

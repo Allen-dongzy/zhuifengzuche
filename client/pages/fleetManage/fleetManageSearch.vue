@@ -16,21 +16,21 @@
 				<view v-for="(item, index) in list" :key="index" class="panel" @click="carInfo(item.id)">
 					<view class="flex titlePanel">
 						<p class="title">{{item.carNumber}}</p>
-						<p v-show="item.vehicleStatus==1" class="type">正常</p>
-						<p v-show="item.vehicleStatus==2" class="type">异常</p>
-						<p v-show="item.vehicleStatus==3" class="type">租赁中</p>
-						<p v-show="item.vehicleStatus==4" class="type">预留中</p>
+						<p v-if="item.vehicleStatus==1" class="type">正常</p>
+						<p v-if="item.vehicleStatus==2" class="type">异常</p>
+						<p v-if="item.vehicleStatus==3" class="type">租赁中</p>
+						<p v-if="item.vehicleStatus==4" class="type">预留中</p>
 					</view>
 					<p class="text">{{item.brandName}}丨{{item.gears}} {{item.capacity}}座 {{item.outputVolumeName}}</p>
 					<view class="flex detail">
-						<p class="oil" v-show="item.oil!=null">油量：62%</p>
+						<p class="oil" v-if="item.oil!=null">油量：62%</p>
 						<p class="car">车龄：{{item.carAge}}</p>
 					</view>
-					<view class="flex-center line" v-show="item.vehicleStatus==3">
+					<view class="flex-center line" v-if="item.vehicleStatus==3">
 						<i></i>
 					</view>
-					<p class="name" v-show="item.vehicleStatus==3">使用人：张全蛋</p>
-					<view class="flex timeText" v-show="item.vehicleStatus>2">
+					<p class="name" v-if="item.vehicleStatus==3">使用人：张全蛋</p>
+					<view class="flex timeText" v-if="item.vehicleStatus>2">
 						<text class="cuIcon-countdown"></text>
 						<p>05-25 14:48 至 05-30 14:48</p>
 					</view>

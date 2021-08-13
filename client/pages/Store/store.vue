@@ -1,6 +1,6 @@
 <template>
 	<view class="store">
-		<view class="home-bar" v-show="!searchMode">
+		<view class="home-bar" v-if="!searchMode">
 			<view class="add-label"></view>
 			<view class="function-box">
 				<view class="search-box" @tap="tapHeader">
@@ -9,10 +9,10 @@
 				</view>
 			</view>
 		</view>
-		<view class="search-bar" v-show="searchMode">
+		<view class="search-bar" v-if="searchMode">
 			<view class="serach-box">
 				<image class="search-icon" :src="`${filePath}/vehicleManage/search-big.png`"></image>
-				<input @input="inputChange" v-model="keyword" type="text" placeholder="请输入门店名称" placeholder-class="input">
+				<input @input="inputChange" style="background-color:#E6E6EA ;"  v-model="keyword" type="text" placeholder="请输入门店名称" placeholder-class="input">
 				<image class="clear" :src="`${filePath}/vehicleManage/clear.png`" @click="clear"></image>
 			</view>
 			<view class="cancel" @tap="tapHeader">取消</view>

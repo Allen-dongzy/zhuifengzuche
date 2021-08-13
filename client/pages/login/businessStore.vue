@@ -24,20 +24,20 @@
 		<view class="">
 			<view class="fromTitel">省份</view>
 			<picker class="pickerBox" @change="selectShen" :value="shenindex" :range="selectShenobj" range-key="name">
-				<view v-show="shenindex==-1" class="uni-input">请选择城市</view>
-				<view v-show="shenindex!=-1" class="uni-input">{{selectShenobj[shenindex].name}}</view>
+				<view v-if="shenindex==-1" class="uni-input">请选择城市</view>
+				<view v-if="shenindex!=-1" class="uni-input">{{selectShenobj[shenindex].name}}</view>
 			</picker>
 
 			<view class="fromTitel">城市</view>
 			<picker class="pickerBox" @change="selectShi" :value="shiindex" :range="selectorObj" range-key="name">
-				<view v-show="shiindex==-1" class="uni-input">请选择城市</view>
-				<view v-show="shiindex!=-1" class="uni-input">{{selectorObj[shiindex].name}}</view>
+				<view v-if="shiindex==-1" class="uni-input">请选择城市</view>
+				<view v-if="shiindex!=-1" class="uni-input">{{selectorObj[shiindex].name}}</view>
 			</picker>
 
 			<view class="fromTitel">区域</view>
 			<picker class="pickerBox" @change="selectQu" :value="quindex" :range="selectorquObj" range-key="name">
-				<view v-show="quindex==-1" class="uni-input">请选择区域</view>
-				<view v-show="quindex!=-1" class="uni-input">{{selectorquObj[quindex].name}}</view>
+				<view v-if="quindex==-1" class="uni-input">请选择区域</view>
+				<view v-if="quindex!=-1" class="uni-input">{{selectorquObj[quindex].name}}</view>
 			</picker>
 
 
@@ -56,14 +56,14 @@
 			<view class="timeBox">
 				<picker mode="time" style="width: 40%;height: 74rpx;" class="pickerBox" @change="pickerStar"
 					:value="indexStar">
-					<view v-show="indexStar==-1" class="uni-input" style="height: 74rpx;">请选择开始时间</view>
-					<view v-show="indexStar!=-1" class="uni-input" style="height: 74rpx;">{{indexStar}}</view>
+					<view v-if="indexStar==-1" class="uni-input" style="height: 74rpx;">请选择开始时间</view>
+					<view v-if="indexStar!=-1" class="uni-input" style="height: 74rpx;">{{indexStar}}</view>
 				</picker>
 
 				<picker mode="time" style="width: 40%;height: 74rpx;" class="pickerBox" @change="pickerEnd"
 					:value="indexEnd">
-					<view v-show="indexEnd==-1" class="uni-input" style="height: 74rpx;">请选择结束时间</view>
-					<view v-show="indexEnd!=-1" class="uni-input" style="height: 74rpx;">{{indexEnd}}</view>
+					<view v-if="indexEnd==-1" class="uni-input" style="height: 74rpx;">请选择结束时间</view>
+					<view v-if="indexEnd!=-1" class="uni-input" style="height: 74rpx;">{{indexEnd}}</view>
 				</picker>
 			</view>
 

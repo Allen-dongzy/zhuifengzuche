@@ -17,15 +17,15 @@
 					<view class="title">门店状态: <text
 							:style="{'color': info.status===0 ? '#999' : '#597DFE'}">{{info.status===0?'关闭':'开启'}}</text>
 					</view>
-					<view v-show="info.status===0" class="conten" style="color: #597DFE;" @click="openStore('开启')">开启门店
+					<view v-if="info.status===0" class="conten" style="color: #597DFE;" @click="openStore('开启')">开启门店
 					</view>
-					<view v-show="info.status===1" class="conten" style="color: #999;" @click="openStore('关闭')">关闭门店
+					<view v-if="info.status===1" class="conten" style="color: #999;" @click="openStore('关闭')">关闭门店
 					</view>
 				</view>
 			</view>
 			<view class="show-status" @click="$open('/pages/Store/storeRegister?id='+info.id)">
-				<text v-show="info.registrationStatus==0">未注册</text>
-				<text v-show="info.registrationStatus==1">已注册</text>
+				<text v-if="info.registrationStatus==0">未注册</text>
+				<text v-if="info.registrationStatus==1">已注册</text>
 				<view class="arrow"></view>
 			</view>
 		</view>
