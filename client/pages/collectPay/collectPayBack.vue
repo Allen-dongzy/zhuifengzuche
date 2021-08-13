@@ -6,8 +6,8 @@
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">平台</view>
-			<view v-show="info.platform==0" class="titleRight">追风租车</view>
-			<view v-show="info.platform==1" class="titleRight">其他租车OTA</view>
+			<view v-if="info.platform==0" class="titleRight">追风租车</view>
+			<view v-if="info.platform==1" class="titleRight">其他租车OTA</view>
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">项目</view>
@@ -59,7 +59,7 @@
 			</view>
 		</view>
 		
-		<button v-show="infotype.type==0" style="color: white;width: 80%;
+		<button v-if="infotype.type==0" style="color: white;width: 80%;
 					margin: auto;
 					margin-top: 50rpx;
 				    background-color: #5A7EFF;
@@ -68,7 +68,7 @@
 					line-height: 96rpx;
 				    height: 96rpx;" type="default" @click="getMoney">确认收款</button>
 
-		<view class="btn-box" v-show="infotype.type==1||roles[0].id==4 ">
+		<view class="btn-box" v-if="infotype.type==1||roles[0].id==4 ">
 			<view class="btn reject"  @click="changegetMoney(1)">拒绝</view>
 			<view class="btn confirm" @click="changegetMoney(2)">通过</view>
 		</view>

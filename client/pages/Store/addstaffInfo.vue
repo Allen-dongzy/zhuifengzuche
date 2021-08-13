@@ -21,9 +21,9 @@
 		<view class="moreInpbox">
 			<view style="width: 90%;"><input v-model="password" :type="inpType" class="inpBox" style="width: 95%;"
 					placeholder="请填写密码" /></view>
-			<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
+			<image v-if="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
 				mode="aspectFill" @click="look"></image>
-			<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
+			<image v-if="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
 				mode="aspectFill" @click="look"></image>
 	
 		</view>

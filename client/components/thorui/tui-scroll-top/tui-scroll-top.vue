@@ -1,5 +1,5 @@
 <template>
-	<view class="tui-scroll-top_box" v-show="isIndex || isShare || (visible && toggle)" :style="{ bottom: bottom + 'rpx', right: right + 'rpx' }">
+	<view class="tui-scroll-top_box" v-if="isIndex || isShare || (visible && toggle)" :style="{ bottom: bottom + 'rpx', right: right + 'rpx' }">
 		<view class="tui-scroll-top_item" v-if="isIndex" @tap.stop="goIndex">
 			<image class="tui-scroll-top_img" :src="indexIcon"></image>
 			<view class="tui-scroll-top_text">首页</view>
@@ -10,7 +10,7 @@
 		<view class="tui-scroll-top_item" :class="{ 'tui-scroll-item_top': isIndex }" v-if="isShare && customShare" @tap.stop="share">
 			<image class="tui-scroll-top_img" :src="shareIcon"></image>
 		</view>
-		<view class="tui-scroll-top_item" :class="{ 'tui-scroll-item_top': isIndex || isShare }" v-show="visible && toggle" @tap.stop="goTop">
+		<view class="tui-scroll-top_item" :class="{ 'tui-scroll-item_top': isIndex || isShare }" v-if="visible && toggle" @tap.stop="goTop">
 			<image class="tui-scroll-top_img" :src="topIcon"></image>
 			<view class="tui-scroll-top_text tui-color-white">顶部</view>
 		</view>

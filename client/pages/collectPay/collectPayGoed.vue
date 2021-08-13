@@ -1,13 +1,13 @@
 <template>
 	<view class="">
-		<view class="flexbox" v-show="info.platform==1">
+		<view class="flexbox" v-if="info.platform==1">
 			<view class="titleLeft">日期</view>
 			<view class="titleRight">{{info.localDate}}</view>
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">平台</view>
-			<view v-show="info.platform==0" class="titleRight">追风租车</view>
-			<view v-show="info.platform==1" class="titleRight">其他租车OTA</view>
+			<view v-if="info.platform==0" class="titleRight">追风租车</view>
+			<view v-if="info.platform==1" class="titleRight">其他租车OTA</view>
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">项目</view>

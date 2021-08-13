@@ -5,9 +5,9 @@
 				<image style="height: 100rpx;width: 100rpx;border-radius: 50%;" :src="$util.fileUrl('/icon1.png')"
 					mode="aspectFill"></image>
 			</view>
-			<view v-show="$storage.get('token')" style="font-size: 40rpx;color: white;margin-left: 20rpx;">{{username}}
+			<view v-if="$storage.get('token')" style="font-size: 40rpx;color: white;margin-left: 20rpx;">{{username}}
 			</view>
-			<view v-show="!$storage.get('token')" style="font-size: 40rpx;color: white;margin-left: 20rpx;"
+			<view v-if="!$storage.get('token')" style="font-size: 40rpx;color: white;margin-left: 20rpx;"
 				@click="$open('/pages/login/home', 2)">请登录</view>
 		</view>
 		<view class="allBox">
@@ -29,7 +29,7 @@
 			<view :class="['label', {'ac': total>0}]">{{ total }}</view>
 			<view class="arrow"></view>
 		</view>
-		<view v-show="$storage.get('token')" class="goout" @click="adminLogout">退出登录</view>
+		<view v-if="$storage.get('token')" class="goout" @click="adminLogout">退出登录</view>
 	</view>
 </template>
 
@@ -89,7 +89,10 @@
 
 <style lang="scss">
 	@import '@/static/scss/_mixin.scss';
-
+page {
+  background-color: #FFFFFF;
+  height: 100vh;
+}
 	.box {
 		height: 440rpx;
 		width: 100%;
@@ -168,6 +171,6 @@
 		width: 70%;
 		margin: auto;
 		border-radius: 50rpx;
-		margin-top: 48vh;
+		margin-top: 28vh;
 	}
 </style>

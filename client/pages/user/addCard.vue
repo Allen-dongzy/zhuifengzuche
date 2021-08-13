@@ -5,8 +5,8 @@
 			<view>
 				<picker class="pickerBox" @change="bindPickerChange" :value="index" :range="selectorObj"
 					range-key="name">
-					<view v-show="stuse==false" class="uni-input">{{bankName ? bankName : '请选择银行'}}</view>
-					<view v-show="stuse==true" class="uni-input">{{bankName}}</view>
+					<view v-if="stuse==false" class="uni-input">{{bankName ? bankName : '请选择银行'}}</view>
+					<view v-if="stuse==true" class="uni-input">{{bankName}}</view>
 				</picker>
 			</view>
 		</view>
@@ -39,20 +39,20 @@
 		</view>
 		<!-- <view style="width: 90%;margin: auto; ">
 			<view class="title" style="padding: 30rpx 0rpx;">商户关系证明</view>
-			<view v-show="pic" class="pic-box">
+			<view v-if="pic" class="pic-box">
 				<image class="pic" :src="pic" mode="aspectFill"></image>
 				<image class="delete"
 					src="https://zdkj-oss-bucket.oss-cn-hangzhou.aliyuncs.com/car-rental-user/common/lancha.png"
 					@click="deletePic">
 				</image>
 			</view>
-			<view v-show="!pic" class="pic-box">
+			<view v-if="!pic" class="pic-box">
 				<image class="pic" :src="$util.fileUrl('/guanxi.png')" @click="selPic"></image>
 			</view>
 		</view> -->
-		<view v-show="type==2" class="delete-btn" @click="bankCardDel">删除银行卡</view>
-		<view v-show="type==1" class="btn" type="default" @click="bankCardAdd">新增</view>
-		<view v-show="type==2" class="btn" type="default" @click="bankCardEdit">确定</view>
+		<view v-if="type==2" class="delete-btn" @click="bankCardDel">删除银行卡</view>
+		<view v-if="type==1" class="btn" type="default" @click="bankCardAdd">新增</view>
+		<view v-if="type==2" class="btn" type="default" @click="bankCardEdit">确定</view>
 	</view>
 </template>
 

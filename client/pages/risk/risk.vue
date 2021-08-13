@@ -8,8 +8,8 @@
 		<view class="find" @click="buyNum">购买次数</view>
 		<view class="num">剩余查询次数：{{num}}</view>
 
-		<view v-show="puy==true" class="Mask"></view>
-		<view v-show="puy==true" class="box1">
+		<view v-if="puy==true" class="Mask"></view>
+		<view v-if="puy==true" class="box1">
 			<view class="flexBox">
 				<view style="width: 90%;font-size: 30rpx;">购买次数</view>
 				<view style="width: 10%;font-size: 30rpx;color: #999999;" @click="buyNum">取消</view>

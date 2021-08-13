@@ -1,13 +1,13 @@
 <template>
 	<view class="">
-		<view class="flexbox" v-show="info.platform==1">
+		<view class="flexbox" v-if="info.platform==1">
 			<view class="titleLeft">日期</view>
 			<view class="titleRight">{{info.localDate}}</view>
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">平台</view>
-			<view v-show="info.platform==0" class="titleRight">追风租车</view>
-			<view v-show="info.platform==1" class="titleRight">其他租车OTA</view>
+			<view v-if="info.platform==0" class="titleRight">追风租车</view>
+			<view v-if="info.platform==1" class="titleRight">其他租车OTA</view>
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">项目</view>
@@ -54,7 +54,7 @@
 
 
 		
-		<view v-show="info.examineStatus==0 || info.examineStatus==3">
+		<view v-if="info.examineStatus==0 || info.examineStatus==3">
 			<view class="upimgbox" >
 				<view style="font-size: 28rpx;color: #000000;">
 					上传图片
@@ -71,13 +71,13 @@
 				</view>
 				
 				<!-- 审核未通过 -->
-				<view class="reTitle" v-show="info.examineStatus==3">拒绝原因：{{info.reason}}</view>
+				<view class="reTitle" v-if="info.examineStatus==3">拒绝原因：{{info.reason}}</view>
 			</view>
 		</view>
 
 
 
-		<view class="upimgbox" v-show="info.examineStatus==2  ">
+		<view class="upimgbox" v-if="info.examineStatus==2  ">
 			<view style="font-size: 28rpx;color: #000000;">
 				上传图片
 				<text style="color:#999999;font-size: 20rpx;">(辅助财务审核)</text>
@@ -88,27 +88,27 @@
 				<!-- <image class="lanClose" :src="$util.fileUrl('/lancha.png')" @click="delImg(index)" mode="aspectFill"></image> -->
 			</view>
 			<!-- 审核未通过 -->
-			<view class="reTitle" v-show="info.examineStatus==3">拒绝原因：{{info.reason}}</view>
+			<view class="reTitle" v-if="info.examineStatus==3">拒绝原因：{{info.reason}}</view>
 		</view>
 		
 		
 		
-<view v-show="infotype.type==0">
+<view v-if="infotype.type==0">
 	<!-- 待审核 -->
-	<button class="sure" type="default" @click="take(1)" v-show="info.examineStatus==0" >提交审核</button>
+	<button class="sure" type="default" @click="take(1)" v-if="info.examineStatus==0" >提交审核</button>
 	<!-- 审核未通过 -->
-	<button class="sure" type="default"  v-show="info.examineStatus==3" @click="take(1)">重新提交</button>
+	<button class="sure" type="default"  v-if="info.examineStatus==3" @click="take(1)">重新提交</button>
 	<!-- 普通店主审核 -->
-	<view class="colorTitle" style="margin: 20rpx 0rpx 60rpx 0rpx;" v-show="info.examineStatus==2 && roles[0].id==4">
+	<view class="colorTitle" style="margin: 20rpx 0rpx 60rpx 0rpx;" v-if="info.examineStatus==2 && roles[0].id==4">
 		<view class="setnull" @click="refuseBtn">拒绝</view>
 		<view class="pay" @click="take(3)">付款</view>
 	</view>
 </view>
 
 
-<view v-show="infotype.type==1">
+<view v-if="infotype.type==1">
 	<!-- 换车店主审核 -->
-	<view class="colorTitle" style="margin: 20rpx 0rpx 60rpx 0rpx;" v-show="roles[0].id==4">
+	<view class="colorTitle" style="margin: 20rpx 0rpx 60rpx 0rpx;" v-if="roles[0].id==4">
 		<view class="setnull" @click="refuseBtn">拒绝</view>
 		<view class="pay" @click="take(3)">通过</view>
 	</view>

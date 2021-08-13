@@ -2,7 +2,7 @@
 	<view>
 		<view class="box">
 			
-	<view class="flexBoxContent" v-show="roles[0].id==1">
+	<view class="flexBoxContent" v-if="roles[0].id==1">
 		<view class="title">门店</view>
 		<view class="selectBox" @click="">
 			<view style="width: 85%;">
