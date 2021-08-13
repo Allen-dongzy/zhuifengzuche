@@ -208,7 +208,6 @@
 						url: './addAccident?obj=' + JSON.stringify(this.info)
 					})
 				}
-
 			},
 			// 其他费用模态框确认
 			otherFeesModalConfirm() {
@@ -241,7 +240,6 @@
 						})
 					}
 				}, 800)
-
 			}
 		}
 	}

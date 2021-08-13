@@ -216,7 +216,6 @@
 				placeholder="请输入备注信息" disabled="true" />
 		</view>
 		<!-- 换车 -->
-
 		<!-- <view class="flexBox" v-if="type==5 || type==1">
 			<image style="width: 40rpx;height: 40rpx;margin-left: 80%;" :src="$util.fileUrl('/huanche.png')"></image>
 			<view class="moreContent" style="width: 10%;color: #5A7EFF;" @click="changeCar(info)">换车</view>
