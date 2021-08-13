@@ -69,8 +69,8 @@
 				<view class="note">{{ note }}</view>
 			</view>
 		</view>
-		<view  class="group">
-			<view class="add-record" >
+		<view class="group">
+			<view class="add-record">
 				<image class="icon" :src="`${filePath}/vehicleManage/add.png`"></image>
 				<text @click="openSelModal">添加记录</text>
 				<text style="margin-left: 50rpx;" @click="openSelModal1">查看</text>
@@ -118,7 +118,8 @@
 	import UniPopup from '@/components/uni-popup/uni-popup'
 
 	import {
-		backCar,settlement
+		backCar,
+		settlement
 	} from '@/apis/vehicle.js'
 	export default {
 		data() {
@@ -139,7 +140,7 @@
 				id: '', //订单id
 				info: '',
 				allprice: '',
-				returnTheCarEarly:''
+				returnTheCarEarly: ''
 			}
 		},
 		components: {
@@ -147,11 +148,11 @@
 		},
 		computed: {
 			all() {
-				if(this.breachContract==""){
-					this.breachContract=0
+				if (this.breachContract == "") {
+					this.breachContract = 0
 				}
 				this.allprice = parseFloat(this.info.overtimeFee) + parseFloat(this.returnTheCarEarly) + parseFloat(
-				this.breachContract) + parseFloat(this.delayingPayment) + parseFloat(this.otherFees)
+					this.breachContract) + parseFloat(this.delayingPayment) + parseFloat(this.otherFees)
 			}
 		},
 		onLoad(e) {
@@ -159,7 +160,7 @@
 			this.id = JSON.parse(e.obj).order
 		},
 		onShow() {
-			this.note=""
+			this.note = ""
 			this.backCar()
 		},
 		methods: {
@@ -172,7 +173,7 @@
 				this.breachContract = this.info.liquidatedDamages
 				this.delayingPayment = this.info.penalty
 				this.otherFees = this.info.otherFee
-				this.returnTheCarEarly= this.info.returnTheCarEarly
+				this.returnTheCarEarly = this.info.returnTheCarEarly
 			},
 			// 打开其他费用模态框
 			openOtherFeesModal() {
@@ -198,16 +199,16 @@
 			selModalConfirm(index) {
 				console.log(index)
 				this.closeSelModal()
-				if(index==0){
+				if (index == 0) {
 					uni.navigateTo({
-						url:'./addOther?obj='+JSON.stringify(this.info)
+						url: './addOther?obj=' + JSON.stringify(this.info)
 					})
-				}else{
+				} else {
 					uni.navigateTo({
-						url:'./addAccident?obj='+JSON.stringify(this.info)
+						url: './addAccident?obj=' + JSON.stringify(this.info)
 					})
 				}
-				
+
 			},
 			// 其他费用模态框确认
 			otherFeesModalConfirm() {
@@ -215,30 +216,32 @@
 				this.note = this.cacheNote
 				this.closeOtherFeesModal()
 			},
-		async	settlement(){
-			this.info.liquidatedDamages=this.breachContract
-			this.info.penalty=this.delayingPayment
-			this.info.otherFee=this.otherFees
-			this.info.totalAmount=this.allprice
-			
-				const [err,res] = await settlement(this.info)
-				if(err) return
+			async settlement() {
+				this.info.liquidatedDamages = this.breachContract
+				this.info.penalty = this.delayingPayment
+				this.info.otherFee = this.otherFees
+				this.info.totalAmount = this.allprice
+
+				const [err, res] = await settlement(this.info)
+				if (err) return
 				console.log(res)
 				this.$toast("操作成功")
 				setTimeout(() => {
-					
+
 					//租车押金  carRentalDeposit 违章押金illegalDeposit
-						if(this.info.carRentalDeposit>=this.info.illegalDeposit){
-						   uni.navigateTo({
-							url:'../advanceFreeze/advanceFreeze?id=0'+'&obj='+JSON.stringify(this.info)+'&pay='+JSON.stringify(res.data.reflect)
-						   })
-						}else{
-							uni.navigateTo({
-								url:'../advanceFreeze/advanceFreeze?id=5'+'&obj='+JSON.stringify(this.info)+'&pay='+JSON.stringify(res.data.reflect)
-							})
-						}
+					if (this.info.carRentalDeposit >= this.info.illegalDeposit) {
+						uni.navigateTo({
+							url: '../advanceFreeze/advanceFreeze?id=0' + '&obj=' + JSON.stringify(this
+								.info) + '&pay=' + JSON.stringify(res.data.reflect)
+						})
+					} else {
+						uni.navigateTo({
+							url: '../advanceFreeze/advanceFreeze?id=5' + '&obj=' + JSON.stringify(this
+								.info) + '&pay=' + JSON.stringify(res.data.reflect)
+						})
+					}
 				}, 800)
-		
+
 			}
 		}
 	}
