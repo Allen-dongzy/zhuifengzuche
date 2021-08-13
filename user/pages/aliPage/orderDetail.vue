@@ -422,7 +422,8 @@
 					fundAmount: info.alipay_fund_auth_order_app_freeze_response.fund_amount,
 					outRequestNo: info.alipay_fund_auth_order_app_freeze_response.out_request_no,
 					preAuthType: info.alipay_fund_auth_order_app_freeze_response.pre_auth_type,
-					creditAmount: info.alipay_fund_auth_order_app_freeze_response.credit_amount
+					creditAmount: info.alipay_fund_auth_order_app_freeze_response.credit_amount,
+					orderRecordType: 15
 				}
 				const [err, res] = await paymentAliPayCallback(params)
 				if (err) return
