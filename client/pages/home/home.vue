@@ -189,8 +189,9 @@
 			this.getOrderList()
 		},
 		methods: {
-			//下拉刷新
+		//下拉刷新
 			onPullDownRefresh() {
+				console.log('ppp')
 				this.page = 1
 				this.size = 10
 				this.orderList = []
@@ -198,7 +199,9 @@
 				setTimeout(function() {
 					uni.stopPullDownRefresh();
 				}, 1000);
-			},
+
+			}, 
+
 			async getlist() {
 				console.log('pp')
 				const [err, res] = await getOrderStatus()
