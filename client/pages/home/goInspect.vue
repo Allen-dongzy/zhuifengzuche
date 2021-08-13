@@ -34,8 +34,8 @@
 			<view class="grayLine"></view>
 			<view class="flexBox" style="padding: 10rpx 0rpx 30rpx 0rpx;">
 				<view class="blackText" style="width: 79%;">{{item.name}}</view>
-				<view v-show="item.condition==0" class="ok">确认完好</view>
-				<view v-show="item.condition!=1" class="no">确认完好</view>
+				<view v-if="item.condition==0" class="ok">确认完好</view>
+				<view v-if="item.condition!=1" class="no">确认完好</view>
 				<image style="width: 32rpx;height: 16rpx;margin-left: 10rpx;" :src="$util.fileUrl('/xiangshang.png')"
 					mode="aspectFill"></image>
 			</view>
@@ -94,8 +94,8 @@
 				    height: 96rpx;line-height: 96rpx;" type="default" @click="sure()">完成</button>
 
 		<!-- 里程弹窗 -->
-		<view class="Mask" v-show="mileage==true"></view>
-		<view class="box1" v-show="mileage==true">
+		<view class="Mask" v-if="mileage==true"></view>
+		<view class="box1" v-if="mileage==true">
 			<view class="blackText">当前里程数</view>
 			<input type="text" v-model="mileageNum" placeholder="请输入里程数"
 				style="background-color: #EFF0F3;height:74rpx;width: 100%;border-radius: 10rpx;padding-left: 20rpx;margin-top: 20rpx;" />
@@ -105,8 +105,8 @@
 			</view>
 		</view>
 		<!-- 油量弹窗 -->
-		<view class="Mask" v-show="Oil==true"></view>
-		<view class="box1" v-show="Oil==true">
+		<view class="Mask" v-if="Oil==true"></view>
+		<view class="box1" v-if="Oil==true">
 			<view class="blackText">当前油量</view>
 			<slider value="0" @change="sliderChange" backgroundColor="#EFF0F3" block-size="16"
 				:activeColor="sliderColor" step="0.5" min="0" max="10" show-value />
@@ -117,8 +117,8 @@
 		</view>
 
 		<!-- 损坏图片上传-->
-		<view class="Mask" v-show="imgshow==true"></view>
-		<view class="box1" v-show="imgshow==true">
+		<view class="Mask" v-if="imgshow==true"></view>
+		<view class="box1" v-if="imgshow==true">
 			<view class="blackText">请上传图片</view>
 			<image style="width:80%;height:350rpx;margin-left: 10%;margin-top: 30rpx;"
 				:src="$util.fileUrl('/guanxi.png')" mode="aspectFill" @click="updataImg(0)"></image>
@@ -130,8 +130,8 @@
 		</view>
 
 		<!--  查看损坏图片-->
-		<view class="Mask" v-show="imgshow1==true"></view>
-		<view class="box1" v-show="imgshow1==true">
+		<view class="Mask" v-if="imgshow1==true"></view>
+		<view class="box1" v-if="imgshow1==true">
 			<view class="blackText">查看图片</view>
 			<image style="width:80%;height:350rpx;margin-left: 10%;margin-top: 30rpx;" :src="badimgUrl" mode="aspectFill"></image>
 			<view class="flexBox" style="width: 100%;">

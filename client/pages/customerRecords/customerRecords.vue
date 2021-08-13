@@ -15,7 +15,7 @@
 			<view class="search-bar" v-show="searchMode">
 				<view class="serach-box">
 					<image class="search-icon" :src="`${filePath}/vehicleManage/search-big.png`"></image>
-					<input type="text" placeholder="请输入车牌号" placeholder-class="input" v-model="keyword"
+					<input type="text" placeholder="请输入车牌号" placeholder-class="input" v-model="keyword" style="background-color:#E6E6EA ;"
 						@input="inputSearch">
 					<image class="clear" :src="`${filePath}/vehicleManage/clear.png`" @click="clearSearch"></image>
 				</view>

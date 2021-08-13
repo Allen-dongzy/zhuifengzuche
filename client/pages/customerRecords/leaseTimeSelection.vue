@@ -2,12 +2,12 @@
 	<view class="lease-time-selection">
 		<view class="header">
 			<view class="left">
-				<view v-show="takeCarDateShow" class="caption">{{takeCarDateShow}}</view>
-				<view v-show="!takeCarDateShow" class="caption" @click="$toast('请选择取车日期')">选择日期</view>
-				<view v-show="takeCarDay || takeCarTime" class="sub-caption">
-					<text v-show="takeCarDay">{{takeCarDay}}</text><text v-show="takeCarTime">{{takeCarTime}}</text>
+				<view v-if="takeCarDateShow" class="caption">{{takeCarDateShow}}</view>
+				<view v-if="!takeCarDateShow" class="caption" @click="$toast('请选择取车日期')">选择日期</view>
+				<view v-if="takeCarDay || takeCarTime" class="sub-caption">
+					<text v-if="takeCarDay">{{takeCarDay}}</text><text v-if="takeCarTime">{{takeCarTime}}</text>
 				</view>
-				<view v-show="!takeCarDay && !takeCarTime" class="sub-caption" @click="$toast('请选择取车时间')">选择时间</view>
+				<view v-if="!takeCarDay && !takeCarTime" class="sub-caption" @click="$toast('请选择取车时间')">选择时间</view>
 			</view>
 			<view class="title">
 				<view class="left-arrow"></view>
@@ -15,17 +15,17 @@
 				<view class="right-arrow"></view>
 			</view>
 			<view class="right">
-				<view v-show="carAlsoDateShow" class="caption">{{carAlsoDateShow}}</view>
-				<view v-show="!carAlsoDateShow" class="caption" @click="$toast('请选择还车日期')">选择日期</view>
-				<view v-show="carAlsoDay || carAlsoTime" class="sub-caption">
-					<text v-show="carAlsoTime">{{carAlsoTime}}</text><text v-show="carAlsoDay">{{carAlsoDay}}</text>
+				<view v-if="carAlsoDateShow" class="caption">{{carAlsoDateShow}}</view>
+				<view v-if="!carAlsoDateShow" class="caption" @click="$toast('请选择还车日期')">选择日期</view>
+				<view v-if="carAlsoDay || carAlsoTime" class="sub-caption">
+					<text v-if="carAlsoTime">{{carAlsoTime}}</text><text v-if="carAlsoDay">{{carAlsoDay}}</text>
 				</view>
-				<view v-show="!carAlsoDay && !carAlsoTime" class="sub-caption" @click="$toast('请选择还车时间')">选择时间</view>
+				<view v-if="!carAlsoDay && !carAlsoTime" class="sub-caption" @click="$toast('请选择还车时间')">选择时间</view>
 			</view>
 		</view>
 		<uni-calendar :insert="true" :showMonth="false" :range="true" @change="calendarChange">
 		</uni-calendar>
-		<view class="date">{{takeCarDate}}{{takeCarTime}}<text v-show="takeCarDate!=''">——</text>{{carAlsoDate}}{{carAlsoTime}}</view>
+		<view class="date">{{takeCarDate}}{{takeCarTime}}<text v-if="takeCarDate!=''">——</text>{{carAlsoDate}}{{carAlsoTime}}</view>
 		<view class="picker-box">
 			<view class="picker-item">
 				<view class="caption">取车时间</view>

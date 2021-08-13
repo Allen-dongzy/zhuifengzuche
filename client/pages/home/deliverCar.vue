@@ -20,11 +20,11 @@
 		<view class="flexBox">
 			<!-- 其他收款 -->
 
-			<image v-show="payinfo.otherFeesPickCarPrice==0" style="width:48%;height: 186rpx;"
+			<image v-if="payinfo.otherFeesPickCarPrice==0" style="width:48%;height: 186rpx;"
 				:src="$util.fileUrl('/shoukuan.png')" @click="$open('/pages/home/otherPay',{orderId:info.order})"
 				mode="aspectFill"></image>
 
-			<view class="pricebox" v-show="payinfo.otherFeesPickCarPrice!=0">
+			<view class="pricebox" v-if="payinfo.otherFeesPickCarPrice!=0">
 				<view class="flexBox">
 					<view class="priceText">其他收款</view>
 					<view class="priceText1">已收取</view>
@@ -36,10 +36,10 @@
 			</view>
 
 			<!-- 押金 -->
-			<image v-show="payinfo.retreatRentalDeposit==0" style="width:48%;height: 186rpx;margin-left: 4%;"
+			<image v-if="payinfo.retreatRentalDeposit==0" style="width:48%;height: 186rpx;margin-left: 4%;"
 				:src="$util.fileUrl('/shoukuan1.png')"
 				@click="$open('/pages/home/payCode',{price:payinfo.rentalDeposit,orderId:info.order,type:2})"></image>
-			<view class="pricebox" style="margin-left: 4%;" v-show="payinfo.retreatRentalDeposit!=0">
+			<view class="pricebox" style="margin-left: 4%;" v-if="payinfo.retreatRentalDeposit!=0">
 				<view class="flexBox">
 					<view class="priceText">预收冻结</view>
 					<view class="priceText1">已收取</view>
@@ -56,7 +56,7 @@
 			style="padding: 30rpx;background-color: #EFF0F3;border-radius: 20rpx;height:220rpx;width: 90%;margin: 20rpx auto;" />
 
 
-		<button v-show="type==1" style=" color: white;
+		<button v-if="type==1" style=" color: white;
 				width: 90%;
 						margin: 20rpx auto;
 					    background-color: #5A7EFF;

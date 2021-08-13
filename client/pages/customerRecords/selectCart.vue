@@ -15,7 +15,7 @@
 			<view class="card" v-for="(item, index) in list" :key="index" @click="selectCart(index)">
 				<view class="caption">{{item.brandName}}({{item.carNumber}})</view>
 				<view class="description value">{{item.gears}}/{{item.outputVolumeName}}/{{item.capacity}}</view>
-				<view v-show="item.oil" class="oil-bar bar">
+				<view v-if="item.oil" class="oil-bar bar">
 					<view class="title">油量</view>
 					<view class="value">{{item.oil}}</view>
 				</view>

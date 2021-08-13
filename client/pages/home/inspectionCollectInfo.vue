@@ -11,8 +11,8 @@
 				<view class="content">
 					<view class="caption">支付方式</view>
 					<view class="info">{{info.paymentMethod==0?'全额免押':"未免押"}}
-						<text v-show="info.paymentMethod==0">{{info.preAcceptanceFreeze}}</text>
-						<text v-show="info.paymentMethod==1">{{info.carRentalDeposit}}</text>
+						<text v-if="info.paymentMethod==0">{{info.preAcceptanceFreeze}}</text>
+						<text v-if="info.paymentMethod==1">{{info.carRentalDeposit}}</text>
 					</view>
 				</view>
 			</view>

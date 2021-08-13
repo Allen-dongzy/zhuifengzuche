@@ -14,7 +14,7 @@
 		<!-- 搜索 -->
 		<view class="topNav" style="color: #8E8E93;font-size: 30rpx" v-if="search==true">
 			<input type="text" placeholder="请输入送车点" v-model="searchVal"
-				style="background-color:#EFF0F3;height: 70rpx;width: 580rpx;border-radius: 50rpx;padding-left: 20rpx;"
+				style="background-color:#EFF0F3;height: 70rpx;width: 580rpx;border-radius: 50rpx;padding-left: 28rpx;padding-right: 28rpx;"
 				@input="setSearch" />
 			<view style="margin-left: 20rpx;" @click="showSearch">取消</view>
 		</view>
