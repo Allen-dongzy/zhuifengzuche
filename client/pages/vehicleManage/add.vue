@@ -195,12 +195,12 @@
 		</view>
 		<view class="set-up-the-rent">
 			<view class="tab-header" v-if="weekType==1">
-				<view class="tab ac">周内价格</view>
-				<view class="tab" @click="select(2)">周末价格</view>
+				<view class="tab" @click="select(2)">周内价格</view>
+				<view class="tab ac" >周末价格</view>
 			</view>
 			<view class="tab-header" v-else>
-				<view class="tab" @click="select(1)">周内价格</view>
-				<view class="tab ac">周末价格</view>
+				<view class="tab ac">周内价格</view>
+				<view class="tab" @click="select(1)">周末价格</view>
 			</view>
 			<view class="input-box">
 				<view class="square" @click="reduce(2)">-10%</view>

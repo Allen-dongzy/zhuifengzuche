@@ -21,7 +21,7 @@
 					<input v-model="password" password class="inpBox" style="width: 95%;" placeholder="请填写密码" />
 				</view>
 				<view style="width: 90%;" v-if="showpass==false">
-					<input v-model="password" type="number" class="inpBox" style="width: 95%;" placeholder="请填写密码" />
+					<input v-model="password"  class="inpBox" style="width: 95%;" placeholder="请填写密码" />
 				</view>
 				<image v-if="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
 					mode="aspectFill" @click="look"></image>
