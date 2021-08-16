@@ -125,7 +125,7 @@
 				console.log(1111)
 					var  data={
 						id:this.info.id,
-						examineStatus:this.info.examineStatus,
+						examineStatus:1,
 						transactionType:this.info.transactionType,
 						money:this.info.money
 					}
@@ -156,7 +156,7 @@
 				}else{
 					var  data={
 						id:this.info.id,
-						examineStatus:this.info.examineStatus,
+						examineStatus:1,
 						transactionType:this.info.transactionType,
 						money:this.info.money,
 						type:1
