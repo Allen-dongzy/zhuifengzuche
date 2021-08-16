@@ -1,7 +1,7 @@
 import request from '@/request'
 
-// 支付宝资金解冻
-export const paymentAliPayCallback = (data, loading = '解冻中') => {
+// 支付宝资金冻结回调
+export const paymentAliPayCallback = (data, loading = '') => { // 对接
 	return request({
 		url: 'payment/ali-pay-callback',
 		method: 'POST',
@@ -11,9 +11,10 @@ export const paymentAliPayCallback = (data, loading = '解冻中') => {
 }
 
 // 支付宝资金冻结
-export const paymentAliPayFrozenMoney = (data, loading = '冻结中') => {
+export const paymentAliPayFrozenMoney = (data, loading = '冻结中') => { // 对接
 	return request({
 		url: 'payment/ali-pay-frozen-money',
+		contentType: 'application/x-www-form-urlencoded',
 		method: 'POST',
 		data,
 		loading

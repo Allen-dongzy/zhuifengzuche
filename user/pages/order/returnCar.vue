@@ -123,7 +123,9 @@
 				this.info = res.data
 				if (this.orderStatus !== 3) return
 				setTimeout(() => {
-					uni.$emit(`${this.from}Refresh`)
+					// uni.$emit(`${this.from}Refresh`)
+					uni.$emit('orderRefresh')
+					uni.$emit('orderDetailRefresh')
 				}, 500)
 			},
 			// 打开地图
@@ -160,7 +162,9 @@
 				const [err, res] = await returnVehicleReimburse(this.info.orderId)
 				if (err) return
 				this.$toast('结算成功！')
-				uni.$emit(`${this.from}Refresh`)
+				// uni.$emit(`${this.from}Refresh`)
+				uni.$emit('orderRefresh')
+				uni.$emit('orderDetailRefresh')
 				setTimeout(() => {
 					this.$close()
 				}, 500)
@@ -188,7 +192,9 @@
 				})
 				if (err) return
 				this.$toast('结算成功！')
-				uni.$emit(`${this.from}Refresh`)
+				// uni.$emit(`${this.from}Refresh`)
+				uni.$emit('orderRefresh')
+				uni.$emit('orderDetailRefresh')
 				setTimeout(() => {
 					this.$close()
 				}, 500)
