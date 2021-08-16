@@ -181,7 +181,8 @@
 				<image v-if="info.orderStatus!==4" class="icon" :src="`${ossUrl}/order/price.png`" mode="aspectFill">
 				</image>
 				<text v-if="info.orderStatus===4">追风租车祝您生活愉快</text>
-				<text v-if="info.orderStatus===100">违押金未退还</text>
+				<text
+					v-if="info.orderStatus===100">{{info.retreatIllegalDepositStatus === 0 ? '违章押金未退还' : '违章押金已退还'}}</text>
 				<text v-if="info.orderStatus===101">半小时内免费取消，金额已原路退回</text>
 			</view>
 			<view class="right">

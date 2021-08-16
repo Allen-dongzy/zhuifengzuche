@@ -34,7 +34,8 @@
 					<view class="bigblackText" style="color:#FC3736;">{{info.rulesScore}}</view>
 				</view>
 				<view v-if="info.payStatus" class="block">
-					<image style="width:80rpx;height:40rpx;" :src="`${ossUrl}/mine/yizhifu.png`" mode="aspectFill"></image>
+					<image style="width:80rpx;height:40rpx;" :src="`${ossUrl}/mine/yizhifu.png`" mode="aspectFill">
+					</image>
 				</view>
 			</view>
 		</view>
@@ -44,7 +45,7 @@
 				<view class="title">单据单号</view>
 				<view class="grayText" style="width: 80%;text-align: right;">{{info.rulesNo}}</view>
 			</view>
-			<view class="item">
+			<view v-if="info.rulesUrls" class="item">
 				<view class="title">单据照片</view>
 				<view class="grayText" style="width: 80%;text-align: right;">
 					<image style="width:200rpx;height:120rpx;background-color: #eee;" :src="info.rulesUrls"
