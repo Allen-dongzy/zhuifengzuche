@@ -19,12 +19,10 @@
 		getCodeByWxCode
 	} from '@/apis/sso'
 	import {
-		paymentPrecreate
-	} from '@/apis/payment'
-	import {
+		paymentPrecreate,
 		paymentAliPayFrozenMoney,
 		paymentAliPayCallback
-	} from '@/apis/aliApis'
+	} from '@/apis/payment'
 	import {
 		throttle
 	} from '@/utils/tools'
@@ -92,8 +90,8 @@
 			// 支付宝-发起冻结
 			paymentAliPayFrozenMoney: throttle(async function() {
 				const params = {
-					orderSn: this.info.orderSn,
-					amount: this.info.orderDeposit
+					orderSn: this.reflect.orderId,
+					amount: this.price
 				}
 				const [err, res] = await paymentAliPayFrozenMoney(params)
 				if (err || !res.data.orderStr) return
