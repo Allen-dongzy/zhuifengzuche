@@ -54,6 +54,7 @@
 				<view class="content">
 					<view class="caption">滞纳金</view>
 					<input v-if="mode===1" class="input" type="number" v-model="delayingPayment" placeholder="请填写滞纳金金额"
+
 						placeholder-style="font-size:28rpx;color:#b2b2b2;font-weight:100;" />
 					<view v-if="mode===0" class="input readonly">{{ delayingPayment || 'xxxxx' }}</view>
 				</view>
@@ -173,7 +174,9 @@
 				this.breachContract = this.info.liquidatedDamages
 				this.delayingPayment = this.info.penalty
 				this.otherFees = this.info.otherFee
-				this.returnTheCarEarly = this.info.returnTheCarEarly
+
+				this.returnTheCarEarly= this.info.returnTheCarEarly
+
 			},
 			// 打开其他费用模态框
 			openOtherFeesModal() {
@@ -199,16 +202,15 @@
 			selModalConfirm(index) {
 				console.log(index)
 				this.closeSelModal()
-				if (index == 0) {
+				if(index==0){
 					uni.navigateTo({
-						url: './addOther?obj=' + JSON.stringify(this.info)
+						url:'./addOther?obj='+JSON.stringify(this.info)
 					})
-				} else {
+				}else{
 					uni.navigateTo({
-						url: './addAccident?obj=' + JSON.stringify(this.info)
+						url:'./addAccident?obj='+JSON.stringify(this.info)
 					})
 				}
-
 			},
 			// 其他费用模态框确认
 			otherFeesModalConfirm() {
@@ -241,7 +243,6 @@
 						})
 					}
 				}, 800)
-
 			}
 		}
 	}

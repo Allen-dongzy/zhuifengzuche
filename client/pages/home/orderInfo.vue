@@ -217,27 +217,29 @@
 		</view>
 		<!-- 换车 -->
 
-		<!-- <view class="flexBox" v-if="type==5 || type==1">
+<!-- 		<view class="flexBox" v-if="type==5 || type==1">
 			<image style="width: 40rpx;height: 40rpx;margin-left: 80%;" :src="$util.fileUrl('/huanche.png')"></image>
 			<view class="moreContent" style="width: 10%;color: #5A7EFF;" @click="changeCar(info)">换车</view>
 		</view> -->
 		<view class="flexBox" v-if="type==100">
-		<view class="moreContent" style="width: 20%;color: #5A7EFF;margin-left: 55%;" @click="violation(1)">查看违章</view>
-		<view class="moreContent" style="width: 20%;color: #5A7EFF;" @click="violation(2)">添加违章</view>
-	</view>
-	<!-- 联系客户和出车检验 -->
-	<view class="flexBox" style="width: 90%;margin: 60rpx auto 30rpx auto;">
-			<image style="width: 32rpx;height: 32rpx;" mode="aspectFill" :src="$util.fileUrl('/phone@2x.png')"
-				@click="phone(info.userPhone)"></image>
+
+			<view class="moreContent" style="width: 20%;color: #5A7EFF;margin-left: 55%;" @click="violation(1)">查看违章</view>
+			<view class="moreContent" style="width: 20%;color: #5A7EFF;" @click="violation(2)">添加违章</view>
+		</view>
+		<!-- 联系客户和出车检验 -->
+		<view class="flexBox" style="width: 90%;margin: 60rpx auto 30rpx auto;">
+			<image style="width: 32rpx;height: 32rpx;" mode="aspectFill" :src="$util.fileUrl('/phone@2x.png')" @click="phone(info.userPhone)"></image>
 			<view style="color: #FFA05B;font-size: 24rpx;margin-left: 10rpx;">联系客户</view>
 			<view style="width: 75%;display: flex;align-items: center;justify-content: flex-end;">
 				<view v-if="type==5" class="lanbox" @click="deliverCar(2)">交车情况</view>
 				<view v-if="type==100" class="lanbox" @click="shoucheInfo">收车情况</view>
 				<!-- <view v-if="type==100" class="lanbox">结算佣金</view> -->
-			<view v-if="type==1" class="lanbox" @click="goInspect()">出车检验</view>
-			<view v-if="type==5 " class="lanbox" @click="jianyanshouche" :disabled="info.isPaymentIllegalDeposit==1">
-				检验收车</view>
-			<view :disabled="info.isVehicleCertificates==true" v-if="type==1" @click="deliverCar(1)" class="lanbox">交付车辆
+				<view v-if="type==1" class="lanbox"  @click="goInspect()">出车检验</view>
+				<view v-if="type==5 " class="lanbox" @click="jianyanshouche"
+					:disabled="info.isPaymentIllegalDeposit==1">检验收车</view>
+				<view :disabled="info.isVehicleCertificates==true" v-if="type==1" @click="deliverCar(1)"
+					class="lanbox">交付车辆</view>
+				<view v-if="type==100" class="lanbox1" @click="backMoney">退还押金</view>
 			</view>
 			<view v-if="type==100" class="lanbox1" @click="backMoney">退还押金</view>
 	</view>
