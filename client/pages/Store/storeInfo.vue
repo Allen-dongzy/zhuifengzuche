@@ -34,8 +34,8 @@
 			<view style="width: 90%;margin: auto;">
 				<view class="allFlex" style="margin-top: 20rpx;">
 					<view class="title" style="font-weight: bold;">门店信息</view>
-					<view class="conten" :style="{'color': businessStatus ? '#597DFE' : '#999'}">
-						{{ businessStatus ? '正在营业': '未在营业'}}
+					<view class="conten" :style="{'color': info.businessStatus ? '#597DFE' : '#999'}">
+						{{info.businessStatus ? '正在营业': '未在营业'}}
 					</view>
 				</view>
 				<view class="allFlex" style="margin-top: 20rpx;">

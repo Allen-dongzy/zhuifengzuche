@@ -106,8 +106,8 @@
 					subject: '收款',
 					payway: 3,
 					subPayway: 2,
-					// totalAmount: this.info.illegalDeposit,
-					totalAmount: 0.01,
+					totalAmount: this.info.illegalDeposit,
+					// totalAmount: 0.01,
 				}
 				const [err,res] = await precreate(data)
 				if(err) return

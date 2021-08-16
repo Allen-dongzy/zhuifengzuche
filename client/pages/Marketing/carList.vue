@@ -16,8 +16,12 @@
 		
 		<!-- 搜索 -->
 		<view class="topNav" style="color: #8E8E93;font-size: 30rpx;" v-if="search==true">
-			<input type="text"
-				style="background-color:#EFF0F3;height: 70rpx;width: 500rpx;border-radius: 50rpx;padding-left: 20rpx;"
+			<input 
+			@input="onInput"
+			v-model="searchVal"
+			type="text"
+				placeholder="请输入车牌"
+				style="background-color:#EFF0F3;height: 70rpx;width: 500rpx;border-radius: 50rpx;padding-left: 28rpx;padding-right: 28rpx;"
 				value="" />
 			<view style="margin-left: 20rpx;" @click="showSearch">取消</view>
 		</view>
@@ -84,7 +88,9 @@
 	import {
 		otaPageQuery
 	} from '@/apis/vehicle'
-	
+	import {
+		debounce
+	} from '@/utils/tools';
 	export default {
 		data() {
 			return {
@@ -123,6 +129,7 @@
 					status: false
 				}], // 排档列表
 				carList:[],//车辆列表
+				searchVal:''
 			}
 		},
 		onLoad() {
@@ -133,6 +140,18 @@
 			this.getBrand()
 		},
 		methods: {
+			onInput: debounce(async function() {
+				let data = {
+					page: this.page,
+					size: this.size,
+					searchField: this.searchVal
+				}
+				const [err, res] = await otaPageQuery(data)
+				if (err) return
+				console.log(res)
+				this.carList = res.data.list
+			
+			}),
 		async	otaPageQuery(){
 			let data={
 				page:this.page,
@@ -210,7 +229,7 @@
 				if (err) return
 				console.log(res)
 				this.$toast('查询成功')
-				this.list = res.data.list
+				this.carList = res.data.list
 			},
 			showSearch() {
 				if (this.search) {
