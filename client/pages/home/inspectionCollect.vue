@@ -45,7 +45,7 @@
 			<view class="item">
 				<view class="content">
 					<view class="caption">违约金</view>
-					<input v-show="mode===1" class="input" type="text" v-model="breachContract" placeholder="请填写违约金金额"
+					<input v-show="mode===1" class="input" type="number" v-model="breachContract" placeholder="请填写违约金金额"
 						placeholder-style="font-size:28rpx;color:#b2b2b2;font-weight:100;" />
 					<view v-show="mode===0" class="input readonly">{{ breachContract || 'xxxxx' }}</view>
 				</view>
@@ -53,7 +53,7 @@
 			<view class="item">
 				<view class="content">
 					<view class="caption">滞纳金</view>
-					<input v-show="mode===1" class="input" type="text" v-model="delayingPayment" placeholder="请填写滞纳金金额"
+					<input v-show="mode===1" class="input" type="number" v-model="delayingPayment" placeholder="请填写滞纳金金额"
 						placeholder-style="font-size:28rpx;color:#b2b2b2;font-weight:100;" />
 					<view v-show="mode===0" class="input readonly">{{ delayingPayment || 'xxxxx' }}</view>
 				</view>
@@ -147,6 +147,9 @@
 		},
 		computed: {
 			all() {
+				if(this.breachContract==""){
+					this.breachContract=0
+				}
 				this.allprice = parseFloat(this.info.overtimeFee) + parseFloat(this.returnTheCarEarly) + parseFloat(
 				this.breachContract) + parseFloat(this.delayingPayment) + parseFloat(this.otherFees)
 			}
