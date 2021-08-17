@@ -31,3 +31,14 @@ export const paymentAliPayCallback = (data, loading = '') => { // 对接
 		loading
 	})
 }
+
+// 资金授权撤销
+export const paymentAliPayFrozenCancel = (data, loading = '') => { // 对接
+	return request({
+		url: 'payment/ali-pay-frozen-cancel',
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'POST',
+		data,
+		loading
+	})
+}

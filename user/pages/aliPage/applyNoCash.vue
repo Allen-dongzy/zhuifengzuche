@@ -28,9 +28,9 @@
 	export default {
 		data() {
 			return {
-				name: '',
-				phone: '',
-				identity: ''
+				name: '何杰',
+				phone: '13996525699',
+				identity: '500233199303130011'
 			}
 		},
 		methods: {

@@ -178,7 +178,8 @@
 	} from '@/apis/payment'
 	import {
 		paymentAliPayFrozenMoney,
-		paymentAliPayCallback
+		paymentAliPayCallback,
+		paymentAliPayFrozenCancel
 	} from '@/apis/aliApis'
 	import {
 		throttle,
@@ -395,7 +396,7 @@
 			paymentAliPayFrozenMoney: throttle(async function() {
 				const params = {
 					orderSn: this.info.orderSn,
-					amount: this.info.orderDeposit
+					amount: this.info.rentalMoney
 				}
 				const [err, res] = await paymentAliPayFrozenMoney(params)
 				if (err || !res.data.orderStr) return
@@ -406,12 +407,24 @@
 				my.tradePay({
 					orderStr,
 					success: (res) => {
+						if (res.resultCode === '6001') {
+							this.paymentAliPayFrozenCancel()
+							return
+						}
 						this.paymentAliPayCallback(JSON.parse(res.result))
 					},
 					fail: (err) => {
 						console.log(err)
 					}
 				})
+			},
+			// 资金授权撤销
+			async paymentAliPayFrozenCancel() {
+				const params = {
+					orderSn: this.info.orderSn
+				}
+				const [err, res] = await paymentAliPayFrozenCancel(params)
+				if (err) return
 			},
 			// 自己冻结回调
 			async paymentAliPayCallback(info) {
