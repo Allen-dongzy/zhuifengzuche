@@ -19,7 +19,9 @@
 		getCodeByWxCode
 	} from '@/apis/sso'
 	import {
-		paymentPrecreate
+		paymentPrecreate,
+		paymentAliPayFrozenMoney,
+		paymentAliPayCallback
 	} from '@/apis/payment'
 	import {
 		throttle
@@ -78,6 +80,48 @@
 					provider: 'wxpay',
 					...wapPayRequest
 				})
+				if (err) return
+				this.$toast('租车成功！')
+				uni.$emit('orderRefresh')
+				setTimeout(() => {
+					this.$open('/pages/order/order', 3)
+				}, 500)
+			},
+			// 支付宝-发起冻结
+			paymentAliPayFrozenMoney: throttle(async function() {
+				const params = {
+					orderSn: this.reflect.orderId,
+					amount: this.price
+				}
+				const [err, res] = await paymentAliPayFrozenMoney(params)
+				if (err || !res.data.orderStr) return
+				this.aliTradePay(res.data.orderStr)
+			}),
+			// 支付宝-冻结支付
+			aliTradePay(orderStr) {
+				my.tradePay({
+					orderStr,
+					success: (res) => {
+						this.paymentAliPayCallback(JSON.parse(res.result))
+					},
+					fail: (err) => {
+						console.log(err)
+					}
+				})
+			},
+			// 支付宝-冻结回调
+			async paymentAliPayCallback(info) {
+				const params = {
+					amount: info.alipay_fund_auth_order_app_freeze_response.amount,
+					outOrderNo: info.alipay_fund_auth_order_app_freeze_response.out_order_no,
+					authNo: info.alipay_fund_auth_order_app_freeze_response.auth_no,
+					fundAmount: info.alipay_fund_auth_order_app_freeze_response.fund_amount,
+					outRequestNo: info.alipay_fund_auth_order_app_freeze_response.out_request_no,
+					preAuthType: info.alipay_fund_auth_order_app_freeze_response.pre_auth_type,
+					creditAmount: info.alipay_fund_auth_order_app_freeze_response.credit_amount,
+					orderRecordType: 15
+				}
+				const [err, res] = await paymentAliPayCallback(params)
 				if (err) return
 				this.$toast('租车成功！')
 				uni.$emit('orderRefresh')

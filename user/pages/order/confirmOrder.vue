@@ -491,11 +491,19 @@
 				}
 				const [err, res] = await rentalOrderCreateOrders(params)
 				if (err) return
+				// #ifdef MP-WEIXIN
 				this.$open('./orderPay', {
 					price: this.totalPrice,
 					reflect: JSON.stringify(res.data.reflect),
 					rentalMoney: this.info.orderPriceInfo.rentalMoney || 0
 				}, 1)
+				// #endif
+				// #ifdef MP-ALIPAY
+				this.$open('./orderPay', {
+					price: this.total,
+					orderSn: this.info.orderSn
+				}, 1)
+				// #endif
 			},
 			// 监听时间
 			eventListener() {
