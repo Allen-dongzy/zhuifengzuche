@@ -16,7 +16,14 @@
 		
 		<!-- 搜索 -->
 		<view class="topNav" style="color: #8E8E93;font-size: 30rpx;" v-if="search==true">
+<<<<<<< HEAD
 			<input type="text"
+=======
+			<input 
+			@input="onInput"
+			v-model="searchVal"
+			type="text"
+>>>>>>> feature-core
 				placeholder="请输入车牌"
 				style="background-color:#EFF0F3;height: 70rpx;width: 500rpx;border-radius: 50rpx;padding-left: 28rpx;padding-right: 28rpx;"
 				value="" />
@@ -78,6 +85,7 @@
 	</view>
 </template>
 
+<<<<<<< HEAD
 <script>
 	import {
 		vehicleBrandQueryAll
@@ -86,10 +94,23 @@
 		otaPageQuery
 	} from '@/apis/vehicle'
 	
+=======
+<script>
+	import {
+		vehicleBrandQueryAll
+	} from '@/apis/vehicleBrand'
+	import {
+		otaPageQuery
+	} from '@/apis/vehicle'
+	import {
+		debounce
+	} from '@/utils/tools';
+>>>>>>> feature-core
 	export default {
 		data() {
 			return {
 				modalName: '',
+<<<<<<< HEAD
 				search: false,
 				page:1,
 				size:10,
@@ -124,8 +145,46 @@
 					status: false
 				}], // 排档列表
 				carList:[],//车辆列表
+=======
+				search: false,
+				page:1,
+				size:10,
+				brandList: [], //品牌数组
+				brandId: '', //品牌Id
+				seatId: '', //座位Id
+				stallId: '', //排挡Id
+				seatList: [{
+					text: '2',
+					status: false
+				},{
+					text: '5',
+					status: false
+				},{
+					text: '6',
+					status: false
+				}, {
+					text: '7',
+					status: false
+				}, {
+					text: '9',
+					status: false
+				}], // 座位数列表
+				stallList: [{
+					text: '全部',
+					status: false
+				}, {
+					text: '手动',
+					status: false
+				}, {
+					text: '自动',
+					status: false
+				}], // 排档列表
+				carList:[],//车辆列表
+				searchVal:''
+>>>>>>> feature-core
 			}
 		},
+<<<<<<< HEAD
 		onLoad() {
 		
 		},
@@ -212,6 +271,99 @@
 				console.log(res)
 				this.$toast('查询成功')
 				this.list = res.data.list
+=======
+		methods: {
+			onInput: debounce(async function() {
+				let data = {
+					page: this.page,
+					size: this.size,
+					searchField: this.searchVal
+				}
+				const [err, res] = await otaPageQuery(data)
+				if (err) return
+				console.log(res)
+				this.carList = res.data.list
+			
+			}),
+		async	otaPageQuery(){
+			let data={
+				page:this.page,
+				size:this.size,
+			}
+				const [err,res] = await otaPageQuery(data)
+				if(err) return
+				this.carList=res.data.list
+				
+			},
+			//品牌
+			async getBrand() {
+				const [err, res] = await vehicleBrandQueryAll()
+				if (err) return
+				console.log(res)
+				this.brandList = res.data
+				for (let i = 0; i < this.brandList.length; i++) {
+					this.brandList[i].status = false
+				}
+			},
+			//选择排挡
+			selectStall(e) {
+				console.log(e)
+				for (let i = 0; i < this.stallList.length; i++) {
+					this.stallList[i].status = false
+				}
+				this.stallId = this.stallList[e].text
+				this.stallList[e].status = true
+			},
+			//选择座位数
+			selectSeat(e) {
+				for (let i = 0; i < this.seatList.length; i++) {
+					this.seatList[i].status = false
+				}
+			
+				this.seatId = this.seatList[e].text
+			
+				this.seatList[e].status = true
+			},
+			//选择品牌
+			selectBrand(e) {
+				console.log(e)
+				for (let i = 0; i < this.brandList.length; i++) {
+					this.brandList[i].status = false
+				}
+				this.brandList[e].status = true
+				this.$forceUpdate()
+				this.brandId = this.brandList[e].id
+			},
+			//清空
+			clearAll() {
+				for (let i = 0; i < this.brandList.length; i++) {
+					this.brandList[i].status = false
+				}
+				for (let i = 0; i < this.seatList.length; i++) {
+					this.seatList[i].status = false
+				}
+				for (let i = 0; i < this.stallList.length; i++) {
+					this.stallList[i].status = false
+				}
+			},
+			//确定
+			async sureSearch() {
+				if (this.stallId === "全部") {
+					this.stallId = ""
+				}
+				let data = {
+					page: this.page,
+					size: this.size,
+					brandId: this.brandId,
+					capacity: this.seatId,
+					gears: this.stallId,
+				}
+				const [err, res] = await otaPageQuery(data)
+				if (err) return
+				console.log(res)
+				this.$toast('查询成功')
+				this.carList = res.data.list
+>>>>>>> feature-core
 			},
 			showSearch() {
 				if (this.search) {

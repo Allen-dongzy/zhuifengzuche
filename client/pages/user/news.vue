@@ -1,11 +1,11 @@
 <template>
 	<view>
-		<view v-for="(item, index) in list.length" :key="index" class="box">
+		<view v-for="(item, index) in list" :key="index" class="box">
 			<view class="flexBox">
-				<view class="title">{{ item.title }}</view>
-				<view class="time">{{ item.createTime }}</view>
+				<view class="title">{{item.title}}</view>
+				<view class="time">{{item.createTime}}</view>
 			</view>
-			<view class="content">{{ item.content }}</view>
+			<view class="content">{{item.content}}</view>
 		</view>
 		<uni-load-more :status="dataStatus" />
 	</view>
@@ -85,14 +85,14 @@ page {
 	.title {
 		color: #000000;
 		font-size: 28rpx;
-		width: 70%;
+		width: 45%;
 
 	}
 
 	.time {
 		color: #999999;
 		font-size: 24rpx;
-		width: 30%;
+		width: 55%;
 		text-align: center;
 	}
 

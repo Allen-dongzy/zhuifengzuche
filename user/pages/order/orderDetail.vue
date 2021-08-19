@@ -1,5 +1,6 @@
 <template>
 	<view class="order-detail">
+		<view class="btn blue" @click="$open('/pages/order/returnCar')">前往还车</view>
 		<view v-if="info.orderStatus===0 || info.orderStatus===1 || info.orderStatus===2" class="top-panel-1">
 			<view v-if="info.orderStatus===1 || info.orderStatus===2" class="statu-bar">
 				<view class="status">{{statusShow}}</view>
@@ -297,8 +298,10 @@
 		},
 		onLoad(e) {
 			if (e && e.id) this.id = e.id
-			if (this.id) this.rentalOrderOrderInfo()
 			this.eventListener()
+		},
+		onShow() {
+			if (this.id) this.rentalOrderOrderInfo()
 		},
 		methods: {
 			// 请求订单详情
@@ -455,7 +458,6 @@
 			// 监听函数
 			eventListener() {
 				uni.$on('orderDetailRefresh', () => {
-					this.refresh()
 					uni.$emit('orderRefresh')
 				})
 			}

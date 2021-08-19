@@ -57,7 +57,7 @@
 		<view class="flexBox">
 			<view class="blackTitle">金额（元）</view>
 			<view style="width: 59%;">
-				<input class="grayTetx" type="number" v-model="money" placeholder="请填写金额" />
+				<input class="grayTetx" type="digit" v-model="money" placeholder="请填写金额" />
 			</view>
 		</view>
 		<view class="flexBox">

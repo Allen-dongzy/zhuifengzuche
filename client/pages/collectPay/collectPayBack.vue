@@ -109,6 +109,7 @@
 				if (err) return
 				this.info = res.data
 				this.info.image = JSON.parse(res.data.image)
+<<<<<<< HEAD
 			},
 			setMoney(){
 				this.money=true
@@ -175,6 +176,74 @@
 				}, 800)
 				
 			
+=======
+			},
+			setMoney(){
+				this.money=true
+			},
+			sure(){
+				console.log('11')
+				this.info.money=this.price
+				this.money=false
+				this.$forceUpdate()
+				
+			},
+			
+			getMoney:throttle(async function(e){
+				console.log(1111)
+					var  data={
+						id:this.info.id,
+						examineStatus:1,
+						transactionType:this.info.transactionType,
+						money:this.info.money
+					}
+				
+				
+				const [err,res] = await receiptPaymentAudit(data)
+				if(err) return
+				console.log(res)
+				this.$toast("操作成功")
+				setTimeout(() => {
+					uni.navigateBack({
+						delta:1
+					})
+				}, 800)
+				
+			
+			}),
+			
+			changegetMoney:throttle(async function(e){
+				if(e==1){
+					var  data={
+						id:this.info.id,
+						examineStatus:3,
+						transactionType:this.info.transactionType,
+						money:this.info.money,
+						type:1
+					}
+				}else{
+					var  data={
+						id:this.info.id,
+						examineStatus:1,
+						transactionType:this.info.transactionType,
+						money:this.info.money,
+						type:1
+					}
+				}
+				
+				
+				const [err,res] = await receiptPaymentAudit(data)
+				if(err) return
+				console.log(res)
+				this.$toast("操作成功")
+				setTimeout(() => {
+					uni.navigateBack({
+						delta:1
+					})
+				}, 800)
+				
+			
+>>>>>>> feature-core
 			}),
 		}
 	}

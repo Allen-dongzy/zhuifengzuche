@@ -35,7 +35,11 @@
 			<view class="flexBox" style="padding: 10rpx 0rpx 30rpx 0rpx;">
 				<view class="blackText" style="width: 79%;">{{item.name}}</view>
 				<view v-if="item.condition==0" class="ok">确认完好</view>
+<<<<<<< HEAD
 				<view v-if="item.condition!=1" class="no">确认完好</view>
+=======
+				<view  v-else class="no" @click="okSome(index)">确认完好</view>
+>>>>>>> feature-core
 				<image style="width: 32rpx;height: 16rpx;margin-left: 10rpx;" :src="$util.fileUrl('/xiangshang.png')"
 					mode="aspectFill"></image>
 			</view>
@@ -45,15 +49,15 @@
 				<view class="flexBox" v-for="(itemy,indexy) in item.children" :key='indexy'>
 					<view class="blackText">{{itemy.name}}<text class="garyText">{{itemy.description}}</text> </view>
 					<view v-if='itemy.condition===null' style="display: flex;align-items: center;width: 29%;">
-						<view class="selectOk" @click="setGood(itemy.id)">完好</view>
+						<view class="selectOk" @click="setGood(itemy.id,index)">完好</view>
 						<view class="selectNo" @click="setBad(itemy.id)">损坏</view>
 					</view>
 					<view v-if="itemy.condition===0" style="display: flex;align-items: center;width: 29%;">
-						<view class="statusOk" @click="setGood(itemy.id)">完好</view>
+						<view class="statusOk" @click="setGood(itemy.id,index)">完好</view>
 						<view class="selectNo" @click="setBad(itemy.id)">损坏</view>
 					</view>
 					<view v-if="itemy.condition===1" style="display: flex;align-items: center;width: 29%;">
-						<view class="selectOk" @click="setGood(itemy.id)">完好</view>
+						<view class="selectOk" @click="setGood(itemy.id,index)">完好</view>
 						<view class="lookImg" v-if="itemy.image" @click="lookImg(itemy.image,itemy.id)">查看图片</view>
 						<view class="lookImg" v-else @click="setBadImg(itemy.id)">上传图片</view>
 					</view>
@@ -177,6 +181,12 @@
 			this.getInfo()
 		},
 		methods: {
+			okSome(e){
+				this.goInspectInfo.goodsList[e].condition=0
+				for(let i=0;i<this.goInspectInfo.goodsList[e].children.length;i++){
+					this.goInspectInfo.goodsList[e].children[i].condition=0
+				}
+			},
 			async getInfo() {
 
 				const [err, res] = await queryGoods(this.info.vehicleId, this.info.order)
@@ -200,26 +210,40 @@
 			setOil() {
 				this.Oil = true
 			},
-			setGood(e) {
+			setGood(e,w) {
 				for (let i = 0; i < this.goInspectInfo.goodsList.length; i++) {
+					
 					for (let q = 0; q < this.goInspectInfo.goodsList[i].children.length; q++) {
 						if (e == this.goInspectInfo.goodsList[i].children[q].id) {
 							this.goInspectInfo.goodsList[i].children[q].condition = 0
 						}
 					}
 				}
+				
+			if(this.goInspectInfo.goodsList[w].children.every(item => item.condition==0)){
+				this.goInspectInfo.goodsList[w].condition=0
+			}else{
+				this.goInspectInfo.goodsList[w].condition=1
+			}
+
+
+		
 			},
 			setBad(e) {
 				console.log(e)
 				for (let i = 0; i < this.goInspectInfo.goodsList.length; i++) {
-					console.log(this.goInspectInfo.goodsList[i].children)
 					for (let q = 0; q < this.goInspectInfo.goodsList[i].children.length; q++) {
 						console.log(this.goInspectInfo.goodsList[i].children[q].id)
 						if (e == this.goInspectInfo.goodsList[i].children[q].id) {
 							this.goInspectInfo.goodsList[i].children[q].condition = 1
+							this.goInspectInfo.goodsList[i].condition = 1
 						}
 					}
 				}
+
+				
+				
+						
 			},
 			setBadImg(e) {
 				this.imgshow = true
@@ -274,6 +298,24 @@
 				console.log(this.oilNum)
 				console.log(this.imgList)
 				console.log(this.mark)
+				
+				if(this.mileageNum==""){
+					this.$toast("请填写公里数")
+					return false;
+				}else if(this.oilNum==""){
+					this.$toast("请填写油量数")
+					return false;
+				}
+				
+				for (let i = 0; i < this.goInspectInfo.goodsList.length; i++) {
+					for (let q = 0; q < this.goInspectInfo.goodsList[i].children.length; q++) {
+						if (this.goInspectInfo.goodsList[i].children[q].condition==null) {
+							this.$toast("请勾选车辆设备")
+							return false;
+						}
+					}
+				}
+				
 				let mark = {
 					image: JSON.stringify(this.imgList),
 					remarks: this.mark,

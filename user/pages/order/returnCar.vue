@@ -1,19 +1,21 @@
 <template>
 	<view class="">
+		<view class="btn blue" @click="go">返回</view>
 		<view class="box">
 			<view class="flexBox" style="margin-top: 30rpx;">
 				<view style="width:80%">
 					<view style="font-size: 36rpx;">{{info.deliveryVo.address}}</view>
 					<view class="flexBox" style="margin-top: 20rpx;">
-						<image style="width: 32rpx;height:34rpx;" :src="`${ossUrl}/common/icon-home-black.png`" mode="aspectFill"></image>
+						<image style="width: 32rpx;height:34rpx;" :src="`${ossUrl}/common/icon-home-black.png`"
+							mode="aspectFill"></image>
 						<view style="font-size: 28rpx;color:#000000;">门店地址：{{info.deliveryVo.address}}</view>
 					</view>
 				</view>
 				<view style="width:20%">
-					<image style="width: 44rpx;height:44rpx;" :src="`${ossUrl}/common/location-big.png`" mode="aspectFill"
-						@click="openMap"></image>
-					<image style="width: 44rpx;height:44rpx;margin-left: 30rpx;" :src="`${ossUrl}/common/phone-big.png`" mode="aspectFill"
-						@click="contactStore"></image>
+					<image style="width: 44rpx;height:44rpx;" :src="`${ossUrl}/common/location-big.png`"
+						mode="aspectFill" @click="openMap"></image>
+					<image style="width: 44rpx;height:44rpx;margin-left: 30rpx;" :src="`${ossUrl}/common/phone-big.png`"
+						mode="aspectFill" @click="contactStore"></image>
 				</view>
 			</view>
 			<view class="flexBox">
@@ -116,6 +118,13 @@
 			this.returnVehicle()
 		},
 		methods: {
+			go() {
+				uni.$emit('orderRefresh')
+				uni.$emit('orderDetailRefresh')
+				setTimeout(() => {
+					this.$close()
+				}, 500)
+			},
 			// 检验收车
 			async returnVehicle() {
 				const [err, res] = await returnVehicle(this.orderId)
@@ -195,6 +204,7 @@
 				// uni.$emit(`${this.from}Refresh`)
 				uni.$emit('orderRefresh')
 				uni.$emit('orderDetailRefresh')
+				console.log(111)
 				setTimeout(() => {
 					this.$close()
 				}, 500)
