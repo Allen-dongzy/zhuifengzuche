@@ -187,7 +187,7 @@
 		<view class="bottom">
 			<view class="price-info">
 				总计<view class="price">
-					￥<text>{{total ? total : 0}}</text>
+					￥<text>{{totalPrice}}</text>
 				</view>
 			</view>
 			<view class="func-box">
@@ -252,7 +252,6 @@
 			return {
 				ossUrl: this.$ossUrl, // oss
 				swiperInfo: [], // 轮播数据
-				total: '',
 				dotsStyles: {
 					bottom: 10,
 					backgroundColor: '#dadada',
@@ -290,6 +289,14 @@
 			}
 		},
 		computed: {
+			// 总价
+			totalPrice() {
+				const price = (this.info.orderPriceInfo ? Number(this.info.orderPriceInfo.totalAndCoupon) : 0) -
+					Number(this.couponPrice) +
+					(this.isInsurance ? Number(this.info.orderPriceInfo.insuranceMoney) : 0)
+				const total = price > 0 ? price.toFixed(2) : 0
+				return this.info.orderPriceInfo && this.couponPrice ? total : 0
+			},
 			// 底部内容
 			bottomInfo() {
 				let info = ''
@@ -318,6 +325,9 @@
 			invoiceSwitch(newVal) {
 				if (this.acIndex !== 5 || !newVal || this.invoiceList.length > 0) return
 				this.emptyInvoiceModal()
+			},
+			totalPrice(newVal) {
+				this.info.orderPriceInfo.total = newVal
 			}
 		},
 		components: {
@@ -406,8 +416,6 @@
 				if (!res.data || res.data.length === 0) return
 				this.couponPrice = res.data[0].discountAmount
 				this.couponId = res.data[0].id
-				const total = (this.info.orderPriceInfo.totalAndCoupon - this.couponPrice).toFixed(2)
-				this.total = total > 0 ? total : 0
 			},
 			// 轮播改变
 			swiperChange(e) {
@@ -442,9 +450,6 @@
 			selInsurance() {
 				this.isInsurance = !this.isInsurance
 				if (this.isInsurance == true) {
-					const total = (Number(this.total) + Number(this.info.orderPriceInfo
-						.insuranceMoney)).toFixed(2)
-					this.info.orderPriceInfo.total = this.total = total > 0 ? total : 0
 					this.info.orderPriceInfo.orderPriceList.push({
 						id: 99,
 						name: '驾无忧保险',
@@ -452,9 +457,6 @@
 						price: this.info.orderPriceInfo.insuranceMoney
 					})
 				} else {
-					const total = (Number(this.total) - Number(this.info.orderPriceInfo
-						.insuranceMoney)).toFixed(2)
-					this.info.orderPriceInfo.total = this.total = total > 0 ? total : 0
 					let current = -1
 					this.info.orderPriceInfo.orderPriceList.forEach((item, index) => {
 						if (item.name === '驾无忧保险') current = index
@@ -490,7 +492,7 @@
 				const [err, res] = await rentalOrderCreateOrders(params)
 				if (err) return
 				this.$open('./orderPay', {
-					price: this.total,
+					price: this.totalPrice,
 					reflect: JSON.stringify(res.data.reflect),
 					rentalMoney: this.info.orderPriceInfo.rentalMoney || 0
 				}, 1)
@@ -504,11 +506,7 @@
 				// 优惠券更新
 				uni.$on('couponUpdate', (e) => {
 					this.couponId = e.couponId
-					const previousCouponPrice = this.couponPrice
 					this.couponPrice = e.price
-					const diffPrice = this.couponPrice - previousCouponPrice
-					const total = (this.total - diffPrice).toFixed(2)
-					this.info.orderPriceInfo.total = this.total = total > 0 ? total : 0
 					this.info.orderPriceInfo.orderPriceList.forEach((item, index) => {
 						if (item.name === '优惠券减免') {
 							item.id = e.couponId

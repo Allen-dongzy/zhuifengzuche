@@ -50,7 +50,7 @@
 					<view v-if="item.pickPlace !== item.returnPlace" class="address">
 						<text>还车点</text>{{item.returnPlace}}
 					</view>
-					<view v-if="item.orderStatus === 100" class="info">违章押金未退还</view>
+					<view v-if="item.orderStatus === 100" class="info">{{item.retreatIllegalDepositStatus === 0 ? '违章押金未退还' : '违章押金已退还'}}</view>
 				</view>
 				<view class="bottom">
 					<view
