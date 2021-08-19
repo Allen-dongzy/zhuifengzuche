@@ -183,8 +183,10 @@
 			this.getlist()
 		},
 		onShow() {
+
 			this.orderList=[]
 			this.getOrderList()
+			
 		},
 		methods: {
 			//下拉刷新
@@ -192,7 +194,8 @@
 				this.page = 1
 				this.size = 10
 				this.status = 1
-				this.orderList = []
+				this.tabCheck=0
+				this.orderList = [] 
 				this.getlist()
 				this.getOrderList()
 				setTimeout(function() {

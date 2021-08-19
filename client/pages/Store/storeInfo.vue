@@ -198,6 +198,7 @@
 							} else {
 								this.info.status = e === '关闭' ? 0 : 1
 							}
+								this.memberShopFindInfoById()
 						}
 					}
 				})

@@ -294,6 +294,24 @@
 				console.log(this.oilNum)
 				console.log(this.imgList)
 				console.log(this.mark)
+				
+				if(this.mileageNum==""){
+					this.$toast("请填写公里数")
+					return false;
+				}else if(this.oilNum==""){
+					this.$toast("请填写油量数")
+					return false;
+				}
+				
+				for (let i = 0; i < this.goInspectInfo.goodsList.length; i++) {
+					for (let q = 0; q < this.goInspectInfo.goodsList[i].children.length; q++) {
+						if (this.goInspectInfo.goodsList[i].children[q].condition==null) {
+							this.$toast("请勾选车辆设备")
+							return false;
+						}
+					}
+				}
+				
 				let mark = {
 					image: JSON.stringify(this.imgList),
 					remarks: this.mark,
