@@ -49,7 +49,7 @@
 						<view class="ul">
 							<view class="li current" @click="selectCity(currentCity)">
 								<image class="icon" :src="`${ossUrl}/common/location.png`"></image>
-								{{currentCity.name}}
+								{{currentCity.name || ''}}
 							</view>
 						</view>
 					</view>
