@@ -414,6 +414,7 @@
 						this.paymentAliPayCallback(JSON.parse(res.result))
 					},
 					fail: (err) => {
+						this.paymentAliPayFrozenCancel()
 						console.log(err)
 					}
 				})
