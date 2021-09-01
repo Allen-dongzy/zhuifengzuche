@@ -244,7 +244,7 @@
 				this.brandDataStatus = 'loading'
 				const [err, res] = await vehicleQueryVehicleModels(this.takeCarAddress.id, this.carBrandList[this
 					.acBranch].id)
-				if (err) {
+				if (err || !res.data || res.data.length === 0) {
 					this.brandDataStatus = 'noData'
 					return
 				}
