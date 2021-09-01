@@ -164,7 +164,10 @@
 			}),
 			sendRegisterCode: throttle(async function() {
 				var that = this;
-
+				if(this.phone==""){
+						this.$toast('请填写手机号')
+						return false;
+				}
 				if (that.get_code_status == false) {
 					const params = {
 						phone: that.phone
