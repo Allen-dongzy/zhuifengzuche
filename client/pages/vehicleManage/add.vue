@@ -86,7 +86,7 @@
 			<view class="item">
 				<view class="caption">门数</view>
 					<picker  :value="doorIndex" :range="doorList" :range-key="'name'" @change="changedoor"
-						class="pickerBox" style="width: 520rpx;">	
+						class="pickerBox">
 						<view  class="pickerText">{{doorIndex!=''?doorList[doorIndex].name:'请选择'}}</view>
 					</picker>
 			</view>
@@ -861,6 +861,7 @@
 
 				.caption {
 					@include font-set(28rpx, #000, 700);
+					
 				}
 
 				.info {
@@ -1062,6 +1063,7 @@
 		font-size: 24rpx;
 		height: 74rpx;
 		border-radius: 10rpx;
+		width: 520rpx;
 	}
 
 	.pickerText {
@@ -1069,5 +1071,8 @@
 		line-height: 74rpx;
 		padding-left: 20rpx;
 		color: #999999;
+		width: 520rpx;
+		background-color: #EFF0F3;
+		border-radius: 10rpx;
 	}
 </style>
