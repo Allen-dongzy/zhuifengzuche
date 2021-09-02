@@ -71,7 +71,7 @@
 			<view class="local">
 				<input style="width: 43%;" v-model="longitude" class="inpBox" type="text" placeholder="请输入经度" />
 				<input style="width: 43%;margin-left: 4%;" v-model="latitude" class="inpBox" type="text"
-					placeholder="请输入经度" />
+					placeholder="请输入纬度" />
 			</view>
 
 			<view class="fromTitel">门店图片</view>
@@ -83,6 +83,11 @@
 
 			<view class="fromTitel">负责人/法人 电话</view>
 			<input class="inpBox" type="text" v-model="corporationNamePhone" placeholder="请填写负责人或者法人名称电话" />
+
+
+
+			<view class="fromTitel">车辆整备费</view>
+			<input class="inpBox" type="text" v-model="price" placeholder="请填写车辆整备费" />
 
 
 
@@ -175,6 +180,7 @@
 				idCard4: '', //对公账户开户许可证
 				corporationName: '', //法人姓名
 				corporationNamePhone: '', //法人电话
+				price:'',//车辆整备费
 			}
 		},
 		onLoad() {
@@ -219,6 +225,7 @@
 			},
 			async next() {
 
+
 			if(this.storeName==""){
 				this.$toast('请输入店名称')
 				return false;
@@ -249,8 +256,11 @@
 			}else if(this.corporationNamePhone==""){
 					this.$toast('请输入法人名字电话')
 					return false;
+			}else if(this.price==""){
+					this.$toast('请输入车辆整备费')
+					return false;
 			}
-
+			
 				this.obj.provinceCode = this.selectProvince
 				this.obj.cityCode = this.selectCity
 				this.obj.areaCode = this.selectArea
@@ -264,6 +274,7 @@
 				this.obj.shopImages = this.storeImg
 				this.obj.principal = this.corporationName
 				this.obj.principalPhone = this.corporationNamePhone
+				this.obj.serviceFee = this.price
 				this.obj.doorHeadPicture = this.idCard1
 				this.obj.inStorePicture = this.idCard2
 				this.obj.outdoorPictures = this.idCard3

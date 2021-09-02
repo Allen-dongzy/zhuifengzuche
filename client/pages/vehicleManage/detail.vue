@@ -46,6 +46,39 @@
 				</view>
 			</view>
 		</view>
+		
+		<view class="vehicle-nums">
+			<view class="header">
+				<view class="caption">
+					<view class="label"></view>
+					<text>其他信息</text>
+				</view>
+			</view>
+			<view class="list">
+				<view class="item">
+					<view class="caption">门数</view>
+					<view class="price">{{obj.doorsCount}}</view>
+				</view>
+				<view class="item">
+					<view class="caption">变速箱类型</view>
+					<view class="price">{{obj.gearboxType}}</view>
+				</view>
+				<view class="item">
+					<view class="caption">动力类型</view>
+					<view class="price">{{obj.powerType}}</view>
+				</view>
+				<view class="item">
+					<view class="caption">年款</view>
+					<view class="price">{{obj.vehicleYear}}</view>
+				</view>
+				<view class="item">
+					<view class="caption">燃油类型</view>
+					<view class="price">{{obj.fuelType}}</view>
+				</view>
+			</view>
+		</view>
+		
+		
 		<view class="rental">
 			<view class="header">
 				<view class="caption mini">
