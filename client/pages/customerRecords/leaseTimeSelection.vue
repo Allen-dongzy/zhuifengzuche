@@ -25,11 +25,9 @@
 		</view>
 		<uni-calendar :insert="true" :showMonth="false" :range="true" @change="calendarChange">
 		</uni-calendar>
-<<<<<<< HEAD
-		<view class="date">{{takeCarDate}} {{takeCarTime}}<text v-show="takeCarDate!=''">——</text>{{carAlsoDate}} {{carAlsoTime}}</view>
-=======
-		<view class="date">{{takeCarDate}}{{takeCarTime}}<text v-if="takeCarDate!=''">——</text>{{carAlsoDate}}{{carAlsoTime}}</view>
->>>>>>> 54e9414be14b7244a5c28be53917a1a5e05daad7
+		
+		<view class="date">{{takeCarDate}} {{takeCarTime}}<text v-if="takeCarDate!=''">——</text>{{carAlsoDate}} {{carAlsoTime}}</view>
+
 		<view class="picker-box">
 			<view class="picker-item">
 				<view class="caption">取车时间</view>

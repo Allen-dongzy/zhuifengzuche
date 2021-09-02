@@ -33,11 +33,9 @@
 				<view v-if="item.vehicleStatus==3" class="flex-center line">
 					<i></i>
 				</view>
-<<<<<<< HEAD
-				<p class="name" v-if="item.vehicleStatus==3">使用人：张全蛋</p>
-=======
+
 				<p class="name" v-if="item.vehicleStatus==3">使用人：{{item.customerName}}</p>
->>>>>>> feature-core
+				
 				<view class="flex timeText" v-if="item.vehicleStatus>2">
 					<text class="cuIcon-countdown"></text>
 					<p>{{item.rentBeginTime}} 至 {{item.rentEndTime}}</p>

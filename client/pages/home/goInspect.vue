@@ -35,11 +35,9 @@
 			<view class="flexBox" style="padding: 10rpx 0rpx 30rpx 0rpx;">
 				<view class="blackText" style="width: 79%;">{{item.name}}</view>
 				<view v-if="item.condition==0" class="ok">确认完好</view>
-<<<<<<< HEAD
-				<view v-if="item.condition!=1" class="no">确认完好</view>
-=======
+
 				<view  v-else class="no" @click="okSome(index)">确认完好</view>
->>>>>>> feature-core
+				
 				<image style="width: 32rpx;height: 16rpx;margin-left: 10rpx;" :src="$util.fileUrl('/xiangshang.png')"
 					mode="aspectFill"></image>
 			</view>
