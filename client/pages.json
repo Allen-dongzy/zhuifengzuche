@@ -196,6 +196,12 @@
 			}
 		},
 		{
+			"path": "pages/Store/editStore",
+			"style": {
+				"navigationBarTitleText": "编辑门店"
+			}
+		},
+		{
 			"path": "pages/Delivery/addPoint",
 			"style": {
 				"navigationBarTitleText": "添加送车点"
