@@ -62,8 +62,14 @@
 					<view class="title">推荐码：</view>
 					<view class="conten">{{info.note || '暂无'}}</view>
 				</view>
+				<view class="allFlex" style="margin-top: 20rpx;">
+					<view class="title">车辆整备费：</view>
+					<view class="conten">{{info.serviceFee || '暂无'}}</view>
+				</view>
 				<view class="allFlex" style="margin-top: 40rpx;">
-					<view class="point" style="margin-left: 50%;"
+					<view class="point" style="margin-left: 30%;" @click="$open('/pages/Store/editStore?id='+info.id)">
+						编辑门店</view>
+					<view class="point" style="margin-left: 20rpx;"
 						@click="$open('/pages/Store/storePoint', {shopId: info.id})">送车点管理</view>
 					<view class="point" style="margin-left: 20rpx;" @click="$open('/pages/Store/staff?id='+info.id)">
 						员工管理</view>
@@ -152,8 +158,11 @@
 		},
 		onLoad(e) {
 			if (e && e.id) this.id = e.id
-			this.memberShopFindInfoById()
+		
 			this.evaluatePageQuery()
+		},
+		onShow() {
+				this.memberShopFindInfoById()
 		},
 		onReachBottom() {
 			if (!this.requestKey) return

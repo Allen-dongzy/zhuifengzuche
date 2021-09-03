@@ -54,3 +54,25 @@ export const treeList = (data, loading = '') => { // 对接
 		loading
 	})
 }
+
+//获取注册门店详情
+export const getInfo = (data, loading = '') => { // 对接
+	return request({
+		url: "memberShop/findInfoById/"+data,
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'GET',
+		data:'',
+		loading
+	}) 
+}
+//编辑门店
+export const update = (data, loading = '') => { // 对接
+	return request({
+		url: "memberShop/update",
+		contentType: 'application/json',
+		method: 'POST',
+		data,
+		loading
+	})
+}
+
