@@ -71,6 +71,11 @@
 			// 切换头部
 			tapHeader() {
 				this.searchMode = !this.searchMode
+				this.page=1
+				this.size=10
+				this.keyword=""
+				this.list=[]
+				this.memberShopPageQuery()
 			},
 			// input变化
 			inputChange: debounce(function() {
