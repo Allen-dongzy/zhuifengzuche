@@ -400,6 +400,7 @@
 			position: fixed;
 			bottom: 0;
 			left: 0;
+			z-index: 9;
 			@include box-w(100%, #fff);
 			padding: 38rpx 32rpx 60rpx;
 			@include flex-row(space-between);

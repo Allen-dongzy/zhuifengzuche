@@ -5,7 +5,7 @@
 			<view style="width: 56%;">
 				<picker @change="platformChange" :value="platformIndex" :range="platformList" :range-key="'name'"
 					class="pickerBox">
-					<label class="grayTetx">{{platformIndex >= 0 ? platformList[platformIndex].name : '请选择' }}</label>
+					<view class="grayTetx">{{platformIndex >= 0 ? platformList[platformIndex].name : '请选择' }}</view>
 				</picker>
 			</view>
 			<image style="width:28rpx;height: 38rpx;" :src="`${ossUrl}/mine/huiyou.png`" mode="aspectFill"></image>
@@ -15,7 +15,7 @@
 			<view style="width: 56%;">
 				<picker @change="orderChange" :value="orderIndex" :range="orderList" :range-key="'show'"
 					class="pickerBox">
-					<label class="grayTetx">{{orderIndex >=0 ? orderList[orderIndex].show : '请选择'}}</label>
+					<view class="grayTetx">{{orderIndex >=0 ? orderList[orderIndex].show : '请选择'}}</view>
 				</picker>
 			</view>
 			<image style="width:28rpx;height: 38rpx;" :src="`${ossUrl}/mine/huiyou.png`" mode="aspectFill"></image>
@@ -25,7 +25,7 @@
 			<view style="width: 66%;padding-left:100rpx">
 				<picker mode="date" @change="dateChange" :value="timeDate" :start="startDate" :end="endDate"
 					class="pickerBox">
-					<label class="grayTetx">{{timeDate || '请选择'}}</label>
+					<view class="grayTetx">{{timeDate || '请选择'}}</view>
 				</picker>
 			</view>
 			<view style="width:4%;">
@@ -37,7 +37,7 @@
 			<view style="width: 56%;">
 				<picker @change="projectChange" :value="projectIndex" :range="projectList" :range-key="'name'"
 					class="pickerBox">
-					<label class="grayTetx">{{projectIndex >= 0 ? projectList[projectIndex].name : '请选择' }}</label>
+					<view class="grayTetx">{{projectIndex >= 0 ? projectList[projectIndex].name : '请选择' }}</view>
 				</picker>
 			</view>
 			<image style="width:28rpx;height: 38rpx;" :src="`${ossUrl}/mine/huiyou.png`"></image>
@@ -70,18 +70,18 @@
 			<view class="blackTitle">银行卡</view>
 			<view style="width: 56%;">
 				<picker class="pickerBox" :disabled="true">
-					<label
-						class="grayTetx">{{Object.keys(bankCard).length>0 ? `${bankCard.bankName} (${bankCard.name} 尾号${bankCard.cardNumber.slice(bankCard.cardNumber.length-4)})` : '请选择'}}</label>
+					<view
+						class="grayTetx">{{Object.keys(bankCard).length>0 ? `${bankCard.bankName} (${bankCard.name} 尾号${bankCard.cardNumber.slice(bankCard.cardNumber.length-4)})` : '请选择'}}</view>
 				</picker>
 			</view>
 			<image style="width:28rpx;height: 38rpx;" :src="`${ossUrl}/mine/huiyou.png`" mode="aspectFill"></image>
 		</view>
 		<view class="flexBox" style="border: none;">备注</view>
 		<view
-			style="background-color:#EFF0F3;margin-top: 20rpx;border-radius: 15rpx;width: 100%;height: 254rpx;padding: 20rpx;width: 93.5%;">
+			style="background-color:#EFF0F3;margin-top: 20rpx;border-radius: 15rpx;width: 100%;height: 274rpx;padding: 20rpx;width: 93.5%;">
 			<textarea style="padding-top:20rpx;height:114rpx;color: #999999;font-size: 24rpx;" v-model="remarks"
 				placeholder="请填写备注信息" />
-			<view>
+			<view style="margin-top: 20rpx;">
 				<view style="display: inline-block;width:120rpx;height: 120rpx;;margin-right:20rpx;position: relative;"
 					v-for="(item, index) in imgList" :key="index">
 					<view>

@@ -15,8 +15,8 @@
 			</view>
 			<view class="bottom">
 				<text class="name">{{item.name}}</text>
-				<text v-if="item.isDefault === 0" class="default" @click.stop="bankCardEdit(index)">设为默认</text>
 				<text v-if="item.isDefault === 1" class="default red">默认</text>
+				<text v-else class="default" @click.stop="bankCardEdit(index)">设为默认</text>
 			</view>
 		</view>
 		<view v-if="dataStatus === 'noData'" class="empty">

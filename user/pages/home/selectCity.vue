@@ -169,9 +169,11 @@
 		onLoad(e) {
 			if (e && e.cityMode) this.cityMode = e.cityMode
 			// 城市
-			this.getCurrentCity()
 			this.getHotCity()
 			this.getAllCity()
+		},
+		onShow() {
+			this.getCurrentCity()
 		},
 		methods: {
 			// city 获取所有城市，获取热门城市

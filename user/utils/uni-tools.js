@@ -48,6 +48,9 @@ const close = (num = 1) => {
 const toast = (info, isMask = false, position = 'bottom') => {
 	if (!info) return false
 	info = info.toString()
+	// #ifndef MP-WEIXIN || APP-PLUS
+	uni.hideToast()
+	// #endif
 	uni.showToast({
 		icon: 'none',
 		title: info,

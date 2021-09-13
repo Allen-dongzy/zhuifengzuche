@@ -1,10 +1,16 @@
 <template>
 	<view>
-		<view class="hand-canvas" :style="'height: '+canvas_height+'px;'">
-			<canvas style="width: 100%;height: 80vh;" class="hand-canvas__writing" disable-scroll="true"
-				@touchstart="uploadScaleStart" @touchmove="uploadScaleMove" @touchend="uploadScaleEnd"
-				canvas-id="handWriting">
-			</canvas>
+		<view class="hand-canvas" :style="'height: ' + canvas_height + 'px;'">
+			<canvas
+				style="width: 100%;height: 80vh;"
+				class="hand-canvas__writing"
+				disable-scroll="true"
+				@touchstart="uploadScaleStart"
+				@touchmove="uploadScaleMove"
+				@touchend="uploadScaleEnd"
+				canvas-id="handWriting"
+				id="handWriting"
+			></canvas>
 
 			<!--        <canvas class="hand-canvas__shadow" :style="'width: '+canvas_height+'px;'"
                 canvas-id="handWritingShadow">
@@ -14,115 +20,126 @@
 			<!--        <view @tap="retDraw" style="width:300rpx;height:96rpx;border-radius: 50rpx;">清除</view>
             <view @tap="subCanvas">签名</view> -->
 
-
-			<button @tap="retDraw"
+			<button
+				@tap="retDraw"
 				style=" color:#B2B2B2;width:300rpx;margin: auto; border: 2rpx solid #B2B2B2; border-radius: 50px;font-size: 32rpx; height: 96rpx;line-height: 96rpx; "
-				type="default">清除</button>
+				type="default"
+			>
+				清除
+			</button>
 
-			<button @tap="subCanvas"
+			<button
+				@tap="subCanvas"
 				style=" color: white;width:300rpx;margin: auto;background-color: #5A7EFF;border-radius: 50px;font-size: 32rpx;height: 96rpx;line-height: 96rpx; "
-				type="default">保存</button>
-
-
-
+				type="default"
+			>
+				保存
+			</button>
 		</view>
-
 	</view>
 </template>
 
 <script>
-	import Handwriting from "../../components/xgf-e-signature/e-signature.js"
-	import {
-		uploadFiles
-	} from '@/apis/oss'
+import Handwriting from '../../components/xgf-e-signature/e-signature.js'
+import { mapState } from 'vuex'
+import { uploadFiles } from '@/apis/oss'
 
-	let that = ''
-
-	export default {
-		data() {
-			return {
-				handwriting: '',
-				canvas_height: 0,
-				img_src: ''
-			}
+export default {
+	data() {
+		return {
+			handwriting: '',
+			canvas_height: 0,
+			img_src: ''
+		}
+	},
+	onLoad() {
+		this.initHeight()
+	},
+	computed: {
+		// 窗口高度
+		...mapState('app', ['screenHeight', 'windowHeight', 'titleBarHeight', 'statusBarHeight']),
+		// page高度
+		pageHeight() {
+			let height = null
+			/**
+			 * 微信：页面高度为导航栏以下，所以滑动区域高度为 -> 页面高度
+			 * 支付宝：页面高度为手机状态栏以下，所以滑动区域高度为 -> 屏幕高度 - 手机状态高度 - 页面导航栏高度
+			 */
+			// #ifdef MP-WEIXIN
+			height = this.windowHeight
+			// #endif
+			// #ifdef MP-ALIPAY
+			height = this.screenHeight - this.statusBarHeight - this.titleBarHeight
+			// #endif
+			return height
+		}
+	},
+	methods: {
+		initHeight() {
+			let canvas_height = 0
+			// 计算画布的高度和宽度
+			let view = uni.createSelectorQuery().select('.hand-canvas__writing')
+			view.boundingClientRect(data => {
+				let top = data.top
+				canvas_height = this.pageHeight - top - 100
+				this.canvas_height = canvas_height
+				/**
+					 *  初始化需传入三个参数 
+					 lineColor：  字体颜色 默认#1A1A1A 
+					 slideValue： 字体粗细 默认50（内置 0，25，50, 75, 100 5档粗细）
+					 canvasName： canvas的ID名 canvas-id
+					 signaturePattern： 设置签名模式是横屏，还是竖屏 默认landscape（内置landscape、portrait）
+					 canvasNameShadow：横屏时需要设置第二横屏canvas的ID名
+					 canvasHeight： canvas的高度
+					 canvasWidth: canvas的宽度*/
+				this.handwriting = new Handwriting({
+					lineColor: '#000',
+					slideValue: '50', // 0, 25, 50, 75, 100
+					canvasName: 'handWriting',
+					signaturePattern: 'portrait', //landscape:横屏；portrait：竖屏；
+					canvasNameShadow: 'handWritingShadow',
+					canvasHeight: canvas_height,
+					canvasWidth: data.width
+				})
+				// 内置函数
+				//this.handwriting.selectColorEvent(color);   // 传入颜色参数 改变字体颜色
+				//this.handwriting.selectSlideValue(slideValue);  // 传入粗细参数 0,25,50,75,100 改变字体粗细
+			}).exec()
 		},
-		onLoad() {
-			that = this
-
-			that.initHeight()
+		retDraw() {
+			this.handwriting.retDraw()
 		},
-		methods: {
-			initHeight: () => {
-				let canvas_height = 0
-				uni.getSystemInfo({
-					success(res) {
-						let phoneHeight = res.windowHeight;
-						console.log(res.windowHeight);
-						// 计算画布的高度和宽度
-						let view = uni.createSelectorQuery().select('.hand-canvas__writing');
-						view.boundingClientRect(data => {
-							console.log(data);
-							let top = data.top;
-							canvas_height = phoneHeight - top - 100;
-							console.log(`到顶部的距离===${data.top}`);
-							that.canvas_height = canvas_height
-
-							/**
-							 *  初始化需传入三个参数 
-							 lineColor：  字体颜色 默认#1A1A1A 
-							 slideValue： 字体粗细 默认50（内置 0，25，50, 75, 100 5档粗细）
-							 canvasName： canvas的ID名 canvas-id
-							 signaturePattern： 设置签名模式是横屏，还是竖屏 默认landscape（内置landscape、portrait）
-							 canvasNameShadow：横屏时需要设置第二横屏canvas的ID名
-							 canvasHeight： canvas的高度
-							 canvasWidth: canvas的宽度*/
-							that.handwriting = new Handwriting({
-								lineColor: 'black',
-								slideValue: '50', // 0, 25, 50, 75, 100
-								canvasName: 'handWriting',
-								signaturePattern: 'portrait', //landscape:横屏；portrait：竖屏；
-								canvasNameShadow: 'handWritingShadow',
-								canvasHeight: canvas_height,
-								canvasWidth: data.width
-							})
-
-							// 内置函数
-							//that.handwriting.selectColorEvent(color);   // 传入颜色参数 改变字体颜色
-							//that.handwriting.selectSlideValue(slideValue);  // 传入粗细参数 0,25,50,75,100 改变字体粗细
-						}).exec();
-					}
-				});
-
-			},
-			retDraw() {
-				that.handwriting.retDraw()
-			},
-			uploadScaleStart(event) {
-				//绑定到canvas的touchstart事件
-				that.handwriting.uploadScaleStart(event)
-			},
-			uploadScaleMove(event) {
-				//绑定到canvas的touchmove事件
-				that.handwriting.uploadScaleMove(event)
-			},
-			uploadScaleEnd(event) {
-				//绑定到canvas的uploadScaleEnd事件
-				that.handwriting.uploadScaleEnd(event)
-			},
-			subCanvas() {
-				that.handwriting.saveCanvas().then(async res => {
+		uploadScaleStart(event) {
+			//绑定到canvas的touchstart事件
+			this.handwriting.uploadScaleStart(event)
+		},
+		uploadScaleMove(event) {
+			//绑定到canvas的touchmove事件
+			this.handwriting.uploadScaleMove(event)
+		},
+		uploadScaleEnd(event) {
+			//绑定到canvas的uploadScaleEnd事件
+			this.handwriting.uploadScaleEnd(event)
+		},
+		subCanvas() {
+			this.handwriting
+				.saveCanvas()
+				.then(async res => {
 					const [uploadErr, uploadRes] = await uploadFiles([res])
-					if (uploadErr) return
-					that.img_src = uploadRes[0]
+					if (uploadErr) {
+						console.log(uploadErr)
+						return
+					}
+					this.img_src = uploadRes[0]
 					uni.$emit('refreshSign', {
-						sign: that.img_src
+						sign: this.img_src
 					})
 					this.$close()
-				}).catch(err => {
-					console.log(err);
-				});
-
-			},
+				})
+				.catch(err => {
+					console.log(err)
+				})
 		}
 	}
+}
 </script>
