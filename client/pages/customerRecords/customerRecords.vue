@@ -1,7 +1,7 @@
 <template>
 	<view class="">
 		<view class="box">
-			<view class="home-bar" v-show="!searchMode">
+			<view class="home-bar" v-if="!searchMode">
 				<view class="add-label" @click="$open('/pages/customerRecords/addCustomer')">
 					新增+
 				</view>
@@ -12,7 +12,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="search-bar" v-show="searchMode">
+			<view class="search-bar" v-if="searchMode">
 				<view class="serach-box">
 					<image class="search-icon" :src="`${filePath}/vehicleManage/search-big.png`"></image>
 					<input type="text" placeholder="请输入车牌号" placeholder-class="input" v-model="keyword" style="background-color:#E6E6EA ;"

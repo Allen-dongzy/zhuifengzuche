@@ -5,12 +5,12 @@
 			<view>
 				<picker class="pickerBox" @change="bindPickerChange" :value="index" :range="selectorObj"
 					range-key="name">
-					<view v-if="stuse==false" class="uni-input">{{bankName ? bankName : '请选择银行'}}</view>
-					<view v-if="stuse==true" class="uni-input">{{bankName}}</view>
+					<view  class="uni-input">{{bankName ? bankName : '请选择银行'}}</view>
+			
 				</picker>
 			</view>
 		</view>
-		<view class="flexBox">
+		<view class="flexBox"> 
 			<view class="title">开户支行</view>
 			<view>
 				<input class="input" placeholder-style="color:#999;" v-model="branch" type="text"
@@ -79,7 +79,7 @@
 		data() {
 			return {
 				selectorObj: [], //城市列表
-				stuse: false,
+			
 				index: 0,
 				bankName: '', // 银行
 				branch: '', //支行

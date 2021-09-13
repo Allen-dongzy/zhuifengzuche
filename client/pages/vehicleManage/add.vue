@@ -69,6 +69,55 @@
 				<input class="info" v-model="vehicleModel" type="text" placeholder="请填写车型"
 					placeholder-style="color:#999;" maxlength="80">
 			</view>
+			
+			
+			
+			
+			
+			
+			<view class="item">
+				<view class="caption">年款</view>
+
+				  <picker mode="date"  fields='year' :value="date" :start="startDate" :end="endDate" @change="bindDateChange" class="pickerBox" style="width: 520rpx;">	
+				                        <view class="pickerText">{{date}}年</view>
+				               </picker>
+			</view>
+			
+			<view class="item">
+				<view class="caption">门数</view>
+					<picker  :value="doorIndex" :range="doorList" :range-key="'name'" @change="changedoor"
+						class="pickerBox">
+						<view  class="pickerText">{{doorIndex!=''?doorList[doorIndex].name:'请选择'}}</view>
+					</picker>
+			</view>
+			<view class="item">
+				<view class="caption">变速箱类型</view>
+					<picker  :value="speedIndex" :range="speedList" :range-key="'name'" @change="changespeed"
+						class="pickerBox" style="width: 520rpx;">	
+						<view  class="pickerText">{{speedIndex!==''?speedList[speedIndex].name:'请选择'}}</view>
+					</picker>
+			</view>
+			<view class="item">
+				<view class="caption">动力类型</view>
+					<picker  :value="powerIndex" :range="powerList" :range-key="'name'" @change="changepower"
+						class="pickerBox" style="width: 520rpx;">	
+						<view  class="pickerText">{{powerIndex!==''?powerList[powerIndex].name:'请选择'}}</view>
+					</picker>
+			</view>
+		<view class="item">
+				<view class="caption">燃油类型</view>
+					<picker  :value="fuelIndex" :range="fuelList" :range-key="'name'"  @change="changefuel"
+						class="pickerBox" style="width: 520rpx;">	
+						<view  class="pickerText">{{fuelIndex!==''?fuelList[fuelIndex].name:'请选择'}}</view>
+					</picker>
+			</view>
+
+	
+
+			
+			
+			
+			
 			<view class="item">
 				<view class="caption">排档</view>
 				<tui-dropdown-list :show="stallKey" :top="80" :height="(76*stallList.length)+(40*2)">
@@ -262,7 +311,22 @@
 	} from '../../apis/memberShop'
 	export default {
 		data() {
+			    const currentDate = this.getDate({
+			            format: true
+			        })
 			return {
+				date: currentDate,
+				doorList:[{name:'2门'},{name:'3门'},{name:'4门'}],
+				doorIndex:2,
+				speedList:[{name:'自动'},{name:'手动'}],
+				speedIndex:0,
+				powerList:[{name:'燃油'},{name:'纯电动'},{name:'混合电动'}],
+				powerIndex:0,
+				fuelList:[{name:'汽油'},{name:'柴油'},{name:'电油混合'},{name:'电动'},{name:'其他类型'}],
+				fuelIndex:0,
+				
+				// -----
+				
 				storeShow: false, //门店显示或者隐藏
 				list: [], //门店列表
 				storeName: '', //门店值
@@ -321,7 +385,13 @@
 		computed: {
 			// 门店id
 			...mapState('user', ['shopId']),
-			...mapState('user', ['roles'])
+			...mapState('user', ['roles']),
+			        startDate() {
+			            return this.getDate('start');
+			        },
+			        endDate() {
+			            return this.getDate('end');
+			        }
 		},
 		watch: {
 			price(newVal) {
@@ -350,6 +420,26 @@
 			}
 		},
 		methods: {
+			//获取时间
+			 getDate(type) {
+			            const date = new Date();
+			            let year = date.getFullYear();
+			            let month = date.getMonth() + 1;
+			            let day = date.getDate();
+			
+			            if (type === 'start') {
+			                year = year - 60;
+			            } else if (type === 'end') {
+			                year = year + 2;
+			            }
+			            month = month > 9 ? month : '0' + month;
+			            day = day > 9 ? day : '0' + day;
+			            // return `${year}-${month}-${day}`;
+						  return `${year}`;
+			        },
+					     bindDateChange: function(e) {
+					            this.date = e.target.value
+					        },
 			//获取门店
 			async getStore() {
 				const [err, res] = await memberShopPageQuery()
@@ -405,7 +495,36 @@
 				this.weekExternal = res.data.weekExternal
 				this.weekWithin = res.data.weekWithin
 				this.price = res.data.weekWithin
-
+				
+				
+	
+				
+				for(let i=0;i<this.doorList.length;i++){
+					if(this.doorList[i].name==res.data.doorsCount){
+						this.doorIndex=i
+					}
+				}
+				
+				for(let q=0;q<this.speedList.length;q++){
+					if(this.speedList[q].name==res.data.gearboxType){
+						this.speedIndex=q
+					}
+				}
+				
+				for(let w=0;w<this.powerList.length;w++){
+					if(this.powerList[w].name==res.data.powerType){
+						this.powerIndex=w
+					}
+				}
+				
+				for(let r=0;r<this.fuelList.length;r++){
+					if(this.fuelList[r].name==res.data.fuelType){
+						this.fuelIndex=r
+					}
+				}
+				
+				
+				
 			},
 			//品牌
 			async getBrand() {
@@ -563,7 +682,25 @@
 				this.displacementId = this.displacementList[index].id
 				this.closeSelBox('displacement')
 			},
-
+			//选择门数
+			changedoor(e){
+				this.doorIndex=e.detail.value
+			},
+			//选择变速箱类型
+			changespeed(e){
+				this.speedIndex=e.detail.value
+			},
+			
+			//选择动力类型
+			changepower(e){
+				this.powerIndex=e.detail.value
+			},
+			
+			//选择燃油类型
+			changefuel(e){
+				this.fuelIndex=e.detail.value
+			},
+			
 
 			// 添加标签弹窗关
 			close(e) {
@@ -640,7 +777,12 @@
 						breakRulesMoney: this.breakRulesMoney,
 						weekExternal: this.weekExternal,
 						weekWithin: this.weekWithin,
-						memberShopId: this.storeId
+						memberShopId: this.storeId,
+						vehicleYear:this.date,
+					doorsCount:this.doorList[this.doorIndex].name,
+					gearboxType:this.speedList[this.speedIndex].name,
+					powerType:this.powerList[this.powerIndex].name,
+					fuelType:this.fuelList[this.fuelIndex].name 
 					}
 					const [err, res] = await insertVehicleModel(data)
 					if (err) return
@@ -666,7 +808,12 @@
 						breakRulesMoney: this.breakRulesMoney,
 						weekExternal: this.weekExternal,
 						weekWithin: this.weekWithin,
-						memberShopId: this.storeId
+						memberShopId: this.storeId,
+						vehicleYear:this.date,
+						doorsCount:this.doorList[this.doorIndex].name,
+						gearboxType:this.speedList[this.speedIndex].name,
+						powerType:this.powerList[this.powerIndex].name,
+						fuelType:this.fuelList[this.fuelIndex].name 
 					}
 					const [err, res] = await vehicleModelUpdate(data)
 					if (err) return
@@ -714,6 +861,7 @@
 
 				.caption {
 					@include font-set(28rpx, #000, 700);
+					
 				}
 
 				.info {
@@ -915,6 +1063,7 @@
 		font-size: 24rpx;
 		height: 74rpx;
 		border-radius: 10rpx;
+		width: 520rpx;
 	}
 
 	.pickerText {
@@ -922,5 +1071,8 @@
 		line-height: 74rpx;
 		padding-left: 20rpx;
 		color: #999999;
+		width: 520rpx;
+		background-color: #EFF0F3;
+		border-radius: 10rpx;
 	}
 </style>

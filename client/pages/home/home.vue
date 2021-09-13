@@ -186,12 +186,10 @@
 			this.getlist()
 		},
 		onShow() {
-<<<<<<< HEAD
-			this.orderList=[] 
-=======
+
 
 			this.orderList=[]
->>>>>>> feature-core
+
 			this.getOrderList()
 			
 		},
@@ -200,16 +198,13 @@
 			onPullDownRefresh() {
 				console.log('ppp')
 				this.page = 1
-<<<<<<< HEAD
-				this.size = 10
-				this.orderList = []
-=======
+
 				this.size = 10
 				this.status = 1
 				this.tabCheck=0
 				this.orderList = [] 
 				this.getlist()
->>>>>>> feature-core
+
 				this.getOrderList()
 				setTimeout(function() {
 					uni.stopPullDownRefresh();

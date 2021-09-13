@@ -1,43 +1,23 @@
 <template>
 	<view class="">
-		<view class="topNav">
-			<view style="width: 5%;text-align: center;">
-				<image style="width: 20rpx;height: 20rpx;" :src="$util.fileUrl('/1.png')" mode="aspectFill"></image>
-			</view>
-			<view style="font-size: 32rpx;">基本信息</view>
-			<view style="width: 10%;text-align: center;line-height: 3px;">
-				<image style="width: 10rpx;height: 10rpx;" :src="$util.fileUrl('/next2.png')" mode="aspectFill"></image>
-			</view>
-			<view style="width: 5%;text-align: center;">
-				<image style="width: 20rpx;height: 20rpx;" :src="$util.fileUrl('/2.png')" mode="aspectFill"></image>
-			</view>
-			<view style="font-size: 32rpx;">证件信息</view>
-			<view style="width: 10%;text-align: center;line-height: 3px;">
-				<image style="width: 10rpx;height: 10rpx;" :src="$util.fileUrl('/next1.png')" mode="aspectFill"></image>
-			</view>
-			<view style="width: 5%;text-align: center;">
-				<image style="width: 20rpx;height: 20rpx;" :src="$util.fileUrl('/3-3.png')" mode="aspectFill"></image>
-			</view>
-			<view style="font-size: 32rpx;color: #5A7EFF;">门店信息</view>
-		</view>
 
 		<view class="">
 			<view class="fromTitel">省份</view>
 			<picker class="pickerBox" @change="selectShen" :value="shenindex" :range="selectShenobj" range-key="name">
-				<view v-if="shenindex==-1" class="uni-input">请选择城市</view>
-				<view v-if="shenindex!=-1" class="uni-input">{{selectShenobj[shenindex].name}}</view>
+				<view v-show="shenindex==-1" class="uni-input">请选择城市</view>
+				<view v-show="shenindex!=-1" class="uni-input">{{selectShenobj[shenindex].name}}</view>
 			</picker>
 
 			<view class="fromTitel">城市</view>
 			<picker class="pickerBox" @change="selectShi" :value="shiindex" :range="selectorObj" range-key="name">
-				<view v-if="shiindex==-1" class="uni-input">请选择城市</view>
-				<view v-if="shiindex!=-1" class="uni-input">{{selectorObj[shiindex].name}}</view>
+				<view v-show="shiindex==-1" class="uni-input">请选择城市</view>
+				<view v-show="shiindex!=-1" class="uni-input">{{selectorObj[shiindex].name}}</view>
 			</picker>
 
 			<view class="fromTitel">区域</view>
 			<picker class="pickerBox" @change="selectQu" :value="quindex" :range="selectorquObj" range-key="name">
-				<view v-if="quindex==-1" class="uni-input">请选择区域</view>
-				<view v-if="quindex!=-1" class="uni-input">{{selectorquObj[quindex].name}}</view>
+				<view v-show="quindex==-1" class="uni-input">请选择区域</view>
+				<view v-show="quindex!=-1" class="uni-input">{{selectorquObj[quindex].name}}</view>
 			</picker>
 
 
@@ -56,14 +36,14 @@
 			<view class="timeBox">
 				<picker mode="time" style="width: 40%;height: 74rpx;" class="pickerBox" @change="pickerStar"
 					:value="indexStar">
-					<view v-if="indexStar==-1" class="uni-input" style="height: 74rpx;">请选择开始时间</view>
-					<view v-if="indexStar!=-1" class="uni-input" style="height: 74rpx;">{{indexStar}}</view>
+					<view v-show="indexStar==-1" class="uni-input" style="height: 74rpx;">请选择开始时间</view>
+					<view v-show="indexStar!=-1" class="uni-input" style="height: 74rpx;">{{indexStar}}</view>
 				</picker>
 
 				<picker mode="time" style="width: 40%;height: 74rpx;" class="pickerBox" @change="pickerEnd"
 					:value="indexEnd">
-					<view v-if="indexEnd==-1" class="uni-input" style="height: 74rpx;">请选择结束时间</view>
-					<view v-if="indexEnd!=-1" class="uni-input" style="height: 74rpx;">{{indexEnd}}</view>
+					<view v-show="indexEnd==-1" class="uni-input" style="height: 74rpx;">请选择结束时间</view>
+					<view v-show="indexEnd!=-1" class="uni-input" style="height: 74rpx;">{{indexEnd}}</view>
 				</picker>
 			</view>
 
@@ -134,6 +114,10 @@
 		open
 	} from '@/utils/uni-tools'
 	import {
+		getInfo,
+		update
+	} from '@/apis/shop.js';
+	import {
 		allFindCityList,
 		allFindProvincesList,
 		allFindAreasList
@@ -183,16 +167,59 @@
 				price:'',//车辆整备费
 			}
 		},
-		onLoad() {
-			// console.log(JSON.parse(e))
-			uni.$on('businessParams', (e) => {
-				console.log('--------')
-				console.log(e)
-				this.obj = e
-			})
+		onLoad(e) {
 			this.allFindProvincesList()
+			this.getInfo(e.id)
+			this.obj.id =e.id
 		},
 		methods: {
+			async getInfo(e) {
+				const [err, res] = await getInfo(e)
+				if (err || res.code !== 200) return
+				console.log(res.data)
+				for(let i=0;i<this.selectShenobj.length;i++){
+					if(res.data.provinceCode==this.selectShenobj[i].code){
+						this.shenindex=i
+					}
+				}
+				this.allFindCityList(res.data.cityCode,res.data.provinceCode)
+				this.allFindAreasList(res.data.areaCode,res.data.cityCode)
+				
+				 this.selectProvince=res.data.provinceCode
+				this.selectCity=res.data.cityCode
+				this.selectArea=res.data.areaCode
+			
+			
+				 this.storeName=res.data.name
+				 
+				 this.address=res.data.memberAddress
+				 
+				 this.storePhone=res.data.memberPhone 
+				 
+				 this.selectStar=res.data.beginTime
+			 this.selectEnd=res.data.endTime
+			 
+			 this.indexStar=res.data.beginTime
+			 this.indexEnd =res.data.endTime
+			 
+			 
+			 this.longitude=res.data.lon
+				this.latitude=res.data.lat
+				
+				this.storeImg=res.data.shopImages
+				
+				 this.corporationName=res.data.principal
+			 this.corporationNamePhone=res.data.principalPhone
+			 
+				 this.price=res.data.serviceFee
+				 
+				this.idCard1=res.data.doorHeadPicture
+				this.idCard2=res.data.inStorePicture
+				this.idCard3=res.data.outdoorPictures
+				this.idCard4=res.data.accountOpeningPermit
+				
+			},
+			
 			async allFindProvincesList() {
 				console.log('pp')
 				const [err, res] = await allFindProvincesList({})
@@ -210,6 +237,12 @@
 				if (err || res.code !== 200) return
 				console.log(res.data)
 				this.selectorObj = res.data
+				
+				for(let i=0;i<this.selectorObj.length;i++){
+					if(e==this.selectorObj[i].code){
+						this.shiindex=i
+					}
+				}
 			},
 			
 			async allFindAreasList(e,q) {
@@ -222,9 +255,13 @@
 				if (err || res.code !== 200) return
 				console.log(res.data)
 				this.selectorquObj = res.data
+				for(let i=0;i<this.selectorquObj.length;i++){
+					if(e==this.selectorquObj[i].areaCode){
+						this.quindex=i
+					}
+				}
 			},
 			async next() {
-
 
 			if(this.storeName==""){
 				this.$toast('请输入店名称')
@@ -261,6 +298,7 @@
 					return false;
 			}
 			
+				
 				this.obj.provinceCode = this.selectProvince
 				this.obj.cityCode = this.selectCity
 				this.obj.areaCode = this.selectArea
@@ -280,13 +318,10 @@
 				this.obj.outdoorPictures = this.idCard3
 				this.obj.accountOpeningPermit = this.idCard4
 				
-				const [err, res] = await shopOwnerRegister(this.obj)
+				const [err, res] = await update(this.obj)
 				if (err) return
 				console.log(res)
-				this.$toast('注册成功')
-				 setTimeout(() => {
-					 open('/pages/login/login', 2)
-				 },500)
+				this.$toast('修改成功')
 			},
 			selectShen: function(e) {
 				console.log('picker发送选择改变，携带值为', e.target.value)
