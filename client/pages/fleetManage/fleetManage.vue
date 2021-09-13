@@ -8,11 +8,11 @@
 			<view class="flex">
 				<view class="flex screen" @click="showModal" data-target="DrawerModalR">
 					<p>筛选</p>
-					<text class="cuIcon-unfold"></text>
+					<image style="width:28rpx;height:28rpx;" :src="$util.fileUrl('/loudou.png')" mode="aspectFill"></image>
 				</view>
 				<view class="flex search" @click="search">
 					<p>搜索</p>
-					<text class="cuIcon-search"></text>
+					<image style="width:28rpx;height:28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode="aspectFill"></image> 
 				</view>
 			</view>
 		</view>
@@ -37,7 +37,7 @@
 				<p class="name" v-if="item.vehicleStatus==3">使用人：{{item.customerName}}</p>
 				
 				<view class="flex timeText" v-if="item.vehicleStatus>2">
-					<text class="cuIcon-countdown"></text>
+					<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/time.png')" mode="aspectFill"></image>
 					<p>{{item.rentBeginTime}} 至 {{item.rentEndTime}}</p>
 				</view>
 			</view>

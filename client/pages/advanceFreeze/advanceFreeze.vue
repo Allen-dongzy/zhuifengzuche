@@ -107,7 +107,7 @@
 					reflect:this.payInfo,
 					orderId:this.info.orderId,
 					subject: '收款',
-					payway: 3,
+					payway: 2,
 					subPayway: 2,
 					totalAmount:this.info.makeUpAnIllegalDeposit,
 					// totalAmount: 0.01,

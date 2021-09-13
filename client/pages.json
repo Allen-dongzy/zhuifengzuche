@@ -1,11 +1,16 @@
 {
-	"pages": [{
+	"pages": [	{
 			"path": "pages/home/home",
 			"style": {
 				"navigationBarTitleText": "首页",
 				"enablePullDownRefresh":true
 			}
 		}, {
+			"path": "pages/login/businessCard",
+			"style": {
+				"navigationBarTitleText": "商家注册-证件"
+			}
+		},{
 			"path": "pages/customerRecords/addCustomer",
 			"style": {
 				"navigationBarTitleText": "客户记录"
@@ -168,7 +173,7 @@
 		{
 			"path": "pages/Store/addstaff",
 			"style": {
-				"navigationBarTitleText": "员工管理1"
+				"navigationBarTitleText": "员工详情管理" 
 			}
 		},
 		{
@@ -287,12 +292,7 @@
 				"navigationBarTitleText": "登录注册-门店信息"
 			}
 		},
-		{
-			"path": "pages/login/businessCard",
-			"style": {
-				"navigationBarTitleText": "商家注册-证件"
-			}
-		},
+	
 		{
 			"path": "pages/login/business",
 			"style": {

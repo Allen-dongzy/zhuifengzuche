@@ -700,28 +700,60 @@
 			},
 			selectpurchaseTime(e) {
 				this.log3 = true
-				this.purchaseTime = e.target.value
+				console.log(e.target.value)
+				if(e.target.value.indexOf("/") != -1){
+					e.target.value=e.target.value.replace(/\//g,'-');
+					this.purchaseTime = e.target.value
+				}else{
+					this.purchaseTime = e.target.value
+				}
+				
+				
 			},
 
 			selectgetcard: function(e) {
 				console.log(e.target.value)
 				this.log4 = true
-				this.getcard = e.target.value
+				
+				if(e.target.value.indexOf("/") != -1){
+					e.target.value=e.target.value.replace(/\//g,'-');
+					this.getcard = e.target.value
+				}else{
+					this.getcard = e.target.value
+				}
 			},
 
 
 
 			setTime: function(e) {
 				this.log5 = true
-				this.ceartTime = e.target.value
+			
+				if(e.target.value.indexOf("/") != -1){
+					e.target.value=e.target.value.replace(/\//g,'-');
+					this.ceartTime = e.target.value
+				}else{
+					this.ceartTime = e.target.value
+				}
 			},
 			selectRenewalTime(e) {
 				this.log6 = true
-				this.RenewalTime = e.target.value
+				
+				if(e.target.value.indexOf("/") != -1){
+					e.target.value=e.target.value.replace(/\//g,'-');
+					this.RenewalTime = e.target.value
+				}else{
+					this.RenewalTime = e.target.value
+				}
 			},
 			selectBusinessDate: function(e) {
 				this.log7 = true
-				this.businessDate = e.target.value
+				
+				if(e.target.value.indexOf("/") != -1){
+					e.target.value=e.target.value.replace(/\//g,'-');
+					this.businessDate = e.target.value
+				}else{
+					this.businessDate = e.target.value
+				}
 			},
 			getDate(type) {
 				const date = new Date();

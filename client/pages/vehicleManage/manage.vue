@@ -294,7 +294,6 @@
 	@import '@/static/scss/_mixin.scss';
 
 	.manage {
-
 		.home-bar,
 		.search-bar {
 			position: fixed;

@@ -89,7 +89,7 @@
 				puy: false,
 				selectNum: 0, //选择的套餐角标
 				buyinfo: '', //购买需要的参数
-				num:'',//剩余次数
+				num: '', //剩余次数
 			}
 		},
 
@@ -97,11 +97,11 @@
 			this.findQueryNum()
 		},
 		methods: {
-		async	findQueryNum(){
+			async findQueryNum() {
 
 				const [err, res] = await findQueryNum()
 				console.log(res)
-				this.num=res.data
+				this.num = res.data
 			},
 			findOne() {
 				console.log('pp')
@@ -140,6 +140,27 @@
 			},
 			// 授权
 			getCodeByWxCode: throttle(async function(index) {
+
+
+
+				// #ifdef MP-ALIPAY
+				const [loginErr, loginRes] = await uni.login({
+					provider: 'alipay'
+				})
+				if (loginErr) return
+				console.log(loginRes)
+				const params = {
+					code: loginRes.code,
+					loginType: 2
+				}
+				const [err, res] = await getCodeByWxCode(params)
+				if (err) return
+				this.precreate(res.data.user_id)
+				// #endif
+
+
+				// #ifdef MP-WEIXIN
+
 				const [loginErr, loginRes] = await uni.login({
 					provider: 'weixin'
 				})
@@ -151,12 +172,14 @@
 				const [err, res] = await getCodeByWxCode(params)
 				if (err) return
 				this.precreate(res.data.openid)
+				// #endif
+
 			}),
 
 			async precreate(e) {
 				let data = {
 					payerUid: e,
-					payway: 3,
+					payway: 2,
 					reflect: this.buyinfo,
 					subPayway: 4,
 					subject: '风控',
@@ -173,7 +196,13 @@
 			// 支付
 			async pay(wapPayRequest) {
 				const [err, res] = await uni.requestPayment({
-					provider: 'wxpay',
+					// #ifdef MP-WEIXIN
+						provider: 'wxpay',
+					// #endif
+					
+					// #ifdef MP-ALIPAY
+						provider: 'alipay',
+					// #endif
 					...wapPayRequest
 				})
 				if (err) return
