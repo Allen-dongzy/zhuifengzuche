@@ -78,10 +78,10 @@
 		</view>
 		<view class="flexBox" style="border: none;">备注</view>
 		<view
-			style="background-color:#EFF0F3;margin-top: 20rpx;border-radius: 15rpx;width: 100%;height: 254rpx;padding: 20rpx;width: 93.5%;">
+			style="background-color:#EFF0F3;margin-top: 20rpx;border-radius: 15rpx;width: 100%;height: 274rpx;padding: 20rpx;width: 93.5%;">
 			<textarea style="padding-top:20rpx;height:114rpx;color: #999999;font-size: 24rpx;" v-model="remarks"
 				placeholder="请填写备注信息" />
-			<view>
+			<view style="margin-top: 20rpx;">
 				<view style="display: inline-block;width:120rpx;height: 120rpx;;margin-right:20rpx;position: relative;"
 					v-for="(item, index) in imgList" :key="index">
 					<view>

@@ -435,7 +435,9 @@
 			openMap(index) {
 				uni.openLocation({
 					latitude: Number(this.carList[index].lat),
-					longitude: Number(this.carList[index].lon)
+					longitude: Number(this.carList[index].lon),
+					name: this.carList[index].name,
+					address: this.carList[index].address
 				})
 			}
 		}

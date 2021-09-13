@@ -63,7 +63,9 @@ const user = {
 			if (phone) state.phone = phone
 			if (realName) state.realName = realName
 			if (username) state.username = username
-			storage.set('userinfo', info)
+			Object.keys(info).forEach(key => {
+				storage.set(key, info[key], 'userinfo')
+			})
 		},
 		// 清空用户信息
 		clearInfo(state) {

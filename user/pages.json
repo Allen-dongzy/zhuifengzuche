@@ -298,7 +298,10 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarBackgroundColor": "#FFFFFF",
-		"backgroundColor": "#F8F8F8"
+		"backgroundColor": "#F8F8F8",
+		"mp-alipay": {
+			"allowsBounceVertical": "NO"
+		}
 	},
 	"tabBar": {
 		"color": "#200E32",
