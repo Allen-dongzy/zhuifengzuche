@@ -141,6 +141,10 @@
 <style lang="scss">
 	@import '@/static/scss/_mixin.scss';
 
+page{
+	background-color: white !important;
+	height: 100vh;
+}
 	.box {
 		width: 100%;
 

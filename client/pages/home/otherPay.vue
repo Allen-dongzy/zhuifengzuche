@@ -96,6 +96,10 @@
 </script>
 
 <style>
+	page{
+		background-color: white;
+		height: 100vh;
+	}
 	.flexBox1 {
 		display: flex;
 		align-items: center;

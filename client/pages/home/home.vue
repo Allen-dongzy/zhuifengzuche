@@ -70,7 +70,7 @@
 						</view>
 					</view>
 					<view class="flex timeText">
-						<text class="cuIcon-countdown"></text>
+						<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/time.png')" mode="aspectFill"></image>
 						<p>{{item.rentBeginTime}} 至 {{item.rentEndTime}}</p>
 					</view>
 					<view class="flex location" v-if="radio==true">

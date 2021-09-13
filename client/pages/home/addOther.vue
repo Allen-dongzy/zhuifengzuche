@@ -8,7 +8,7 @@
 						<view v-if="!log1" class="pickerText">请选择</view>
 						<view v-else class="pickerText">{{enddate}}</view>
 					</picker>
-				</view>
+				</view>   
 				<view style="width:10%;">
 					<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode="aspectFill"></image>
 				</view>

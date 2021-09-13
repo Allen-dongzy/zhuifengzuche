@@ -210,6 +210,7 @@
 		padding-left: 20rpx;
 		font-size: 24rpx;
 		color: #999999;
+		width: 100%;
 	}
 
 	.flexbox {

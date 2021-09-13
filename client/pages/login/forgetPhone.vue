@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view class="topimg">
-			<image class="loginBox" :src="$util.fileUrl('/logo.png')"></image>
+			<image class="loginBox" :src="$util.fileUrl('/logo.png')" mode="aspectFill"></image>
 		</view>
 		<view class="topimg2">
 			<image style="height:544rpx;width: 544rpx;" :src="$util.fileUrl('/loginbg.png')" mode="aspectFill"></image>
@@ -10,7 +10,8 @@
 
 			<input style="background-color: #EFF0F3;
     width: 90%;
-    margin: auto;
+	margin-left: 5%;
+	font-size: 24rpx;
     height: 96rpx;
     border-radius: 10rpx;padding-left: 20rpx;" type="text" v-model="phone" placeholder="请输入手机号" />
 
@@ -101,16 +102,16 @@
 		methods: {
 
 			updatePassword: throttle(async function() {
-				if(this.code==""){
+				if (this.code == "") {
 					this.$toast('请输入验证码')
 					return false;
-				}else if(this.phone==""){
+				} else if (this.phone == "") {
 					this.$toast('请输入手机号')
 					return false;
-				}else if(this.password1==""){
+				} else if (this.password1 == "") {
 					this.$toast('请输入密码')
 					return false;
-				}else if(this.password2==""){
+				} else if (this.password2 == "") {
 					this.$toast('请输入确认密码')
 					return false;
 				}
@@ -190,7 +191,6 @@
 
 	.content {
 		background-color: #5A7EFF;
-		height: 100vh;
 		width: 100%;
 	}
 

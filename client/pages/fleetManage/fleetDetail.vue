@@ -39,7 +39,7 @@
 			</view>
 			<view class="flex rentDetail" @click="lookinfo">
 				<p>详情</p>
-				<text class="cuIcon-right"></text>
+				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode="aspectFill"></image>
 			</view>
 		</view>
 		<view class="line"></view>

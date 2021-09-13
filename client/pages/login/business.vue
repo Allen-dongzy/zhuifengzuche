@@ -68,8 +68,11 @@
 
 			<view class="fromTitel">密码</view>
 			<view class="moreInpbox" style="margin-top: 20rpx;">
-				<view style="width: 90%;"><input v-model="password" maxlength="20" :type="inpType" class="inpBox"
+				<view style="width: 90%;" v-if="showpass==false"><input v-model="password" maxlength="20" password class="inpBox"
 						style="width: 95%;margin-top: 0rpx;" placeholder="请填写密码" /></view>
+				<view style="width: 90%;" v-if="showpass==true"><input v-model="password" maxlength="20"  class="inpBox"
+							style="width: 95%;margin-top: 0rpx;" placeholder="请填写密码" /></view>	
+						
 				<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
 				<image v-if="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
 					mode="aspectFill" @click="look"></image>

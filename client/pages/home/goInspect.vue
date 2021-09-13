@@ -259,7 +259,7 @@
 			},
 			updataImg(e) {
 				uni.chooseImage({
-					count: 3,
+					count: 1,
 					sizeType: ['original', 'compressed'],
 					sourceType: ['camera', 'album'], //camera 拍照 album 相册
 					success: async (res) => {
@@ -282,7 +282,7 @@
 					},
 					fail() {
 						uni.showToast({
-							title: "拍照或引用相册失败",
+							title: "",
 							duration: 2000
 						})
 					}

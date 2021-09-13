@@ -5,11 +5,11 @@
 				<view class="flex screen" style="text-align: left" @click="showModal" data-target="DrawerModalR">
 					<image style="height: 28rpx;width: 28rpx;" :src="$util.fileUrl('/loudou.png')" mode="aspectFill"></image>
 					<p style="margin-left: 20rpx;">筛选</p>
-					<text class="cuIcon-unfold"></text>
+					<!-- <text class="cuIcon-unfold"></text> -->
 				</view>
 				<view class="flex search" style="text-align: right" @click="showSearch">
 					<p style="margin-left: 61%;">搜索</p>
-					<text class="cuIcon-search"></text>
+					<image style="width:28rpx;height:28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode="aspectFill"></image> 
 				</view>
 			</view>
 		</view>

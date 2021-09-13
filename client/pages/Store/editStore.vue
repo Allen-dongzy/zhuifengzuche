@@ -4,20 +4,20 @@
 		<view class="">
 			<view class="fromTitel">省份</view>
 			<picker class="pickerBox" @change="selectShen" :value="shenindex" :range="selectShenobj" range-key="name">
-				<view v-show="shenindex==-1" class="uni-input">请选择城市</view>
-				<view v-show="shenindex!=-1" class="uni-input">{{selectShenobj[shenindex].name}}</view>
+			<!-- 	<view v-if="shenindex==-1" class="uni-input">请选择城市</view> -->
+				<view  class="uni-input">{{selectShenobj[shenindex].name}}</view>
 			</picker>
 
 			<view class="fromTitel">城市</view>
 			<picker class="pickerBox" @change="selectShi" :value="shiindex" :range="selectorObj" range-key="name">
-				<view v-show="shiindex==-1" class="uni-input">请选择城市</view>
-				<view v-show="shiindex!=-1" class="uni-input">{{selectorObj[shiindex].name}}</view>
+		<!-- 		<view v-if="shiindex==-1" class="uni-input">请选择城市</view> -->
+				<view  class="uni-input">{{selectorObj[shiindex].name}}</view>
 			</picker>
 
 			<view class="fromTitel">区域</view>
 			<picker class="pickerBox" @change="selectQu" :value="quindex" :range="selectorquObj" range-key="name">
-				<view v-show="quindex==-1" class="uni-input">请选择区域</view>
-				<view v-show="quindex!=-1" class="uni-input">{{selectorquObj[quindex].name}}</view>
+				
+				<view class="uni-input">{{selectorquObj[quindex].name}}</view>
 			</picker>
 
 
@@ -36,21 +36,21 @@
 			<view class="timeBox">
 				<picker mode="time" style="width: 40%;height: 74rpx;" class="pickerBox" @change="pickerStar"
 					:value="indexStar">
-					<view v-show="indexStar==-1" class="uni-input" style="height: 74rpx;">请选择开始时间</view>
-					<view v-show="indexStar!=-1" class="uni-input" style="height: 74rpx;">{{indexStar}}</view>
+					
+					<view  class="uni-input1" style="height: 74rpx;">{{indexStar}}</view>
 				</picker>
 
 				<picker mode="time" style="width: 40%;height: 74rpx;" class="pickerBox" @change="pickerEnd"
 					:value="indexEnd">
-					<view v-show="indexEnd==-1" class="uni-input" style="height: 74rpx;">请选择结束时间</view>
-					<view v-show="indexEnd!=-1" class="uni-input" style="height: 74rpx;">{{indexEnd}}</view>
+				
+					<view class="uni-input1" style="height: 74rpx;">{{indexEnd}}</view>
 				</picker>
 			</view>
 
 			<view class="fromTitel">地图经纬度</view>
 			<view class="local">
-				<input style="width: 43%;" v-model="longitude" class="inpBox" type="text" placeholder="请输入经度" />
-				<input style="width: 43%;margin-left: 4%;" v-model="latitude" class="inpBox" type="text"
+				<input style="font-size:24rpx ;" v-model="longitude" class="uni-input1" type="text" placeholder="请输入经度" />
+				<input style="font-size: 24rpx;margin-left: 4%;" v-model="latitude" class="uni-input1" type="text"
 					placeholder="请输入纬度" />
 			</view>
 
@@ -67,7 +67,7 @@
 
 
 			<view class="fromTitel">车辆整备费</view>
-			<input class="inpBox" type="text" v-model="price" placeholder="请填写车辆整备费" />
+			<input class="inpBox" type="number" v-model="price" placeholder="请填写车辆整备费" />
 
 
 
@@ -179,6 +179,7 @@
 				console.log(res.data)
 				for(let i=0;i<this.selectShenobj.length;i++){
 					if(res.data.provinceCode==this.selectShenobj[i].code){
+						console.log(i)
 						this.shenindex=i
 					}
 				}
@@ -406,7 +407,7 @@
 		border-radius: 10rpx;
 		height: 74rpx;
 		width: 90%;
-		margin: auto;
+		margin-left: 5%;
 		font-size: 24rpx;
 		color: #999999;
 		padding-left: 20rpx;
@@ -430,7 +431,28 @@
 		color: #999999;
 		margin-top: 20rpx;
 	}
-
+	.uni-input{
+		width: 90%;
+		height: 74rpx;
+		line-height: 74rpx;
+		margin: auto;
+		background: #EFF0F3;
+		border-radius: 10rpx;
+		padding-left: 20rpx;
+		color: #999999;
+		margin-top: 20rpx;
+	}
+	.uni-input1{
+		width: 39%;
+		height: 74rpx;
+		line-height: 74rpx;
+		margin: auto;
+		background: #EFF0F3;
+		border-radius: 10rpx;
+		padding-left: 20rpx;
+		color: #999999;
+		margin-top: 20rpx;
+	}
 	.timeBox {
 		display: flex;
 		justify-items: center;
@@ -450,11 +472,6 @@
 		margin: 20px 0rpx 0rpx 5%;
 	}
 
-	.uni-input {
-		height: 74rpx;
-		line-height: 74rpx;
-		font-size: 24rpx;
-	}
 
 
 	.title {
