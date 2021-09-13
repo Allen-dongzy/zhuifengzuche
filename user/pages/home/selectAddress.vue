@@ -148,10 +148,11 @@ export default {
 				size: this.size,
 				cityCode: this.city.code,
 				areaCode: this.areaList[this.acIndex].areaCode,
-				name: this.keyword ? this.keyword : null,
-				lat: this.areaList[this.acIndex].lat ? this.areaList[this.acIndex].lat : null,
-				lon: this.areaList[this.acIndex].lng ? this.areaList[this.acIndex].lng : null
+				name: this.keyword ? this.keyword : '',
+				lat: this.areaList[this.acIndex].lat ? this.areaList[this.acIndex].lat : '',
+				lon: this.areaList[this.acIndex].lng ? this.areaList[this.acIndex].lng : ''
 			}
+			console.log(params)
 			const [err, res] = await deliveryFindDeliveryPage(params)
 			if (err) {
 				if (this.page > 1) this.dataStatus = 'noMore'

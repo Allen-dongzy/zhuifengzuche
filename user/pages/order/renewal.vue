@@ -8,8 +8,8 @@
 			<image class="day" style="margin-left: 20%" :src="`${ossUrl}/common/icon-time.png`" mode="aspectFill">
 			</image>
 			<view class="dayTime">
-				<picker mode="time" @change="timeHandler" :start="startDate" :end="endDate" class="pickerBox">
-					<label class="pickerText">{{timeShow || '选择时间'}}</label>
+				<picker mode="time" @change="timeHandler" class="pickerBox">
+					<view class="pickerText">{{timeShow || '选择时间'}}</view>
 				</picker>
 			</view>
 		</view>
@@ -98,14 +98,6 @@
 				priceList: [], // 费用列表
 				reflect: {}, // 付费回调
 				mode: '', // 模式
-			}
-		},
-		computed: {
-			startDate() {
-				return this.getDate('start');
-			},
-			endDate() {
-				return this.getDate('end');
 			}
 		},
 		filters: {
@@ -241,6 +233,7 @@
 			// 获取当前日期
 			getDate(type) {
 				const date = new Date();
+				console.log(date)
 				let year = date.getFullYear();
 				let month = date.getMonth() + 1;
 				let day = date.getDate();
@@ -250,8 +243,9 @@
 				} else if (type === 'end') {
 					year = year + 2;
 				}
-				month = month > 9 ? month : '0' + month;;
+				month = month > 9 ? month : '0' + month;
 				day = day > 9 ? day : '0' + day;
+				console.log(year)
 				return `${year}-${month}-${day}`;
 			},
 		}

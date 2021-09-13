@@ -54,7 +54,12 @@ class Handwriting {
         console.log('start');
         let e = event.mp
         console.log(e.touches[0])
-        if (e.type != 'touchstart') return false;
+		// #ifdef MP-WEIXIN
+		if (e.type != 'touchstart') return false;
+		// #endif
+		// #ifdef MP-ALIPAY
+		if (e.type != 'touchStart') return false;
+		// #endif
         this.ctx.setFillStyle(this.lineColor); // 初始线条设置颜色
         this.ctx.setGlobalAlpha(this.transparent); // 设置半透明
         this.currentPoint = {
@@ -80,9 +85,14 @@ class Handwriting {
     }
     // 笔迹移动
     uploadScaleMove(event) {
-        // console.log('move');
+        console.log('move');
         let e = event.mp
-        if (e.type != 'touchmove') return false;
+		// #ifdef MP-WEIXIN
+		if (e.type != 'touchmove') return false;
+		// #endif
+		// #ifdef MP-ALIPAY
+		if (e.type != 'touchMove') return false;
+		// #endif
         if (e.cancelable) {
             // 判断默认行为是否已经被禁用
             if (!e.defaultPrevented) {
@@ -129,7 +139,12 @@ class Handwriting {
     // 笔迹结束
     uploadScaleEnd(event) {
         let e = event.mp
-        if (e.type != 'touchend') return 0;
+		// #ifdef MP-WEIXIN
+		if (e.type != 'touchend') return false;
+		// #endif
+		// #ifdef MP-ALIPAY
+		if (e.type != 'touchEnd') return false;
+		// #endif
         console.log(e);
         let point = {
             x: e.changedTouches[0].x,
