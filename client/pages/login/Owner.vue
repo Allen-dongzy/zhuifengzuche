@@ -63,14 +63,17 @@
 
 			<view class="fromTitel">密码</view>
 			<view class="moreInpbox">
-				<view style="width: 90%;"><input v-model="password" maxlength="20" :type="inpType" class="inpBox" style="width: 95%;"
+				<view style="width: 90%;" v-if="showpass==true"><input v-model="password" maxlength="20" type="text" class="inpBox" style="width: 95%;"
 						placeholder="请填写密码" /></view>
-				<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
+						
+				<view style="width: 90%;" v-if="showpass==false"><input v-model="password" maxlength="20" type="password" password class="inpBox" style="width: 95%;"
+					placeholder="请填写密码" /></view>
+			
 				<image v-if="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
 					mode="aspectFill" @click="look"></image>
 				<image v-if="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
 					mode="aspectFill" @click="look"></image>
-				<!-- </view> -->
+
 			</view>
 
 
@@ -126,6 +129,7 @@
 		onLoad() {
 
 		},
+	
 		methods: {
 			look() {
 				console.log('ppp')
@@ -134,7 +138,7 @@
 					this.inpType = 'password'
 				} else {
 					this.showpass = true
-					this.inpType = 'number'
+					this.inpType = 'text'
 				}
 			},
 			sendRegisterCode: throttle(async function() {

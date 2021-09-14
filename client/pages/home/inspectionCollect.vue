@@ -11,8 +11,8 @@
 				<view class="content">
 					<view class="caption">支付方式</view>
 					<view class="info">{{info.paymentMethod==0?'全额免押':"未免押"}}
-						<text v-if="info.paymentMethod==0">{{info.preAcceptanceFreeze}}</text>
-						<text v-if="info.paymentMethod==1">{{info.carRentalDeposit}}</text>
+						<text v-show="info.paymentMethod==0">{{info.preAcceptanceFreeze}}</text>
+						<text v-show="info.paymentMethod==1">{{info.carRentalDeposit}}</text>
 					</view>
 				</view>
 			</view>
@@ -45,36 +45,32 @@
 			<view class="item">
 				<view class="content">
 					<view class="caption">违约金</view>
-
-					<input v-if="mode===1" class="input"  type="digit"  v-model="breachContract" placeholder="请填写违约金金额"
-
+					<input v-show="mode===1" class="input"  type="digit"  v-model="breachContract" placeholder="请填写违约金金额"
 						placeholder-style="font-size:28rpx;color:#b2b2b2;font-weight:100;" />
-					<view v-if="mode===0" class="input readonly">{{ breachContract || 'xxxxx' }}</view>
+					<view v-show="mode===0" class="input readonly">{{ breachContract || 'xxxxx' }}</view>
 				</view>
 			</view>
 			<view class="item">
 				<view class="content">
 					<view class="caption">滞纳金</view>
-
-					<input v-if="mode===1" class="input"  type="digit"  v-model="delayingPayment" placeholder="请填写滞纳金金额"
-
+					<input v-show="mode===1" class="input"  type="digit"  v-model="delayingPayment" placeholder="请填写滞纳金金额"
 						placeholder-style="font-size:28rpx;color:#b2b2b2;font-weight:100;" />
-					<view v-if="mode===0" class="input readonly">{{ delayingPayment || 'xxxxx' }}</view>
+					<view v-show="mode===0" class="input readonly">{{ delayingPayment || 'xxxxx' }}</view>
 				</view>
 			</view>
 			<view :class="['item', {'other': otherFees}]">
 				<view class="content">
 					<view class="caption">其他费用</view>
-					<view v-if="mode===1" class="input" @click="openOtherFeesModal">
+					<view v-show="mode===1" class="input" @click="openOtherFeesModal">
 						{{ otherFees ? '￥'+otherFees : '请填写其他费用'}} >
 					</view>
-					<view v-if="mode===0" class="input readonly">{{ '￥'+ (otherFees || 'xxxxx') }}</view>
+					<view v-show="mode===0" class="input readonly">{{ '￥'+ (otherFees || 'xxxxx') }}</view>
 				</view>
 				<view class="note">{{ note }}</view>
 			</view>
 		</view>
-		<view class="group">
-			<view class="add-record">
+		<view  class="group">
+			<view class="add-record" >
 				<image class="icon" :src="`${filePath}/vehicleManage/add.png`"></image>
 				<text @click="openSelModal">添加记录</text>
 				<text style="margin-left: 50rpx;" @click="openSelModal1">查看</text>
@@ -85,8 +81,8 @@
 			<view class="info">
 				总计 <text class="price">￥<text class="price-big">{{allprice.toFixed(2)}}</text></text>
 			</view>
-			<view v-if="mode===0" class="look">查看记录</view>
-			<view v-if="mode===1" class="btn" @click="settlement">确认结算</view>
+			<view v-show="mode===0" class="look">查看记录</view>
+			<view v-show="mode===1" class="btn" @click="settlement">确认结算</view>
 		</view>
 
 		<uni-popup ref="otherFeesPopup" type="center">
@@ -122,8 +118,7 @@
 	import UniPopup from '@/components/uni-popup/uni-popup'
 
 	import {
-		backCar,
-		settlement
+		backCar,settlement
 	} from '@/apis/vehicle.js'
 	export default {
 		data() {
@@ -144,26 +139,34 @@
 				id: '', //订单id
 				info: '',
 				allprice: '',
-				returnTheCarEarly: ''
+				returnTheCarEarly:''
 			}
 		},
 		components: {
 			UniPopup
 		},
 		computed: {
-
 			all() {
 				if(this.breachContract==""){
-					this.breachContract=0
+					// this.breachContract=""
+					var x =0
+				}else{
+					var x =this.breachContract
 				}
 				if(this.delayingPayment==""){
-					this.delayingPayment=0
+					// this.delayingPayment=0
+					var y =0
+				}else{
+					var y =this.delayingPayment
 				}
 				if(this.otherFees==""){
-					this.otherFees=0
+					// this.otherFees=0
+						var w =this.otherFees
+				}else{
+					var w =0
 				}
 				this.allprice = parseFloat(this.info.overtimeFee) + parseFloat(this.returnTheCarEarly) + parseFloat(
-					this.breachContract) + parseFloat(this.delayingPayment) + parseFloat(this.otherFees)
+				x) + parseFloat(y) + parseFloat(w)
 			}
 		},
 		onLoad(e) {
@@ -171,9 +174,19 @@
 			this.id = JSON.parse(e.obj).order
 		},
 		onShow() {
-			this.note = ""
+			this.note=""
 			this.backCar()
 		},
+		mounted() {
+		            let inputEle = document.querySelector('.input input')    
+		            inputEle.addEventListener('blur',function(){    
+		                document.body.scrollIntoView()    
+		            })   
+					 let inputEle1 = document.querySelector('.textarea textarea')
+					 inputEle1.addEventListener('blur',function(){    
+					     document.body.scrollIntoView()    
+					 })  
+		        },
 		methods: {
 			async backCar() {
 
@@ -184,7 +197,7 @@
 				this.breachContract = this.info.liquidatedDamages
 				this.delayingPayment = this.info.penalty
 				this.otherFees = this.info.otherFee
-				this.returnTheCarEarly = this.info.returnTheCarEarly
+				this.returnTheCarEarly= this.info.returnTheCarEarly
 			},
 			// 打开其他费用模态框
 			openOtherFeesModal() {
@@ -210,15 +223,16 @@
 			selModalConfirm(index) {
 				console.log(index)
 				this.closeSelModal()
-				if (index == 0) {
+				if(index==0){
 					uni.navigateTo({
-						url: './addOther?obj=' + JSON.stringify(this.info)
+						url:'./addOther?obj='+JSON.stringify(this.info)
 					})
-				} else {
+				}else{
 					uni.navigateTo({
-						url: './addAccident?obj=' + JSON.stringify(this.info)
+						url:'./addAccident?obj='+JSON.stringify(this.info)
 					})
 				}
+				
 			},
 			// 其他费用模态框确认
 			otherFeesModalConfirm() {
@@ -226,31 +240,30 @@
 				this.note = this.cacheNote
 				this.closeOtherFeesModal()
 			},
-			async settlement() {
-				this.info.liquidatedDamages = this.breachContract
-				this.info.penalty = this.delayingPayment
-				this.info.otherFee = this.otherFees
-				this.info.totalAmount = this.allprice
-
-				const [err, res] = await settlement(this.info)
-				if (err) return
+		async	settlement(){
+			this.info.liquidatedDamages=this.breachContract
+			this.info.penalty=this.delayingPayment
+			this.info.otherFee=this.otherFees
+			this.info.totalAmount=this.allprice
+			
+				const [err,res] = await settlement(this.info)
+				if(err) return
 				console.log(res)
 				this.$toast("操作成功")
 				setTimeout(() => {
-
+					
 					//租车押金  carRentalDeposit 违章押金illegalDeposit
-					if (this.info.carRentalDeposit >= this.info.illegalDeposit) {
-						uni.navigateTo({
-							url: '../advanceFreeze/advanceFreeze?id=0' + '&obj=' + JSON.stringify(this
-								.info) + '&pay=' + JSON.stringify(res.data.reflect)
-						})
-					} else {
-						uni.navigateTo({
-							url: '../advanceFreeze/advanceFreeze?id=5' + '&obj=' + JSON.stringify(this
-								.info) + '&pay=' + JSON.stringify(res.data.reflect)
-						})
-					}
+						if(this.info.carRentalDeposit>=this.info.illegalDeposit){
+						   uni.navigateTo({
+							url:'../advanceFreeze/advanceFreeze?id=0'+'&obj='+JSON.stringify(this.info)+'&pay='+JSON.stringify(res.data.reflect)
+						   })
+						}else{
+							uni.navigateTo({
+								url:'../advanceFreeze/advanceFreeze?id=5'+'&obj='+JSON.stringify(this.info)+'&pay='+JSON.stringify(res.data.reflect)
+							})
+						}
 				}, 800)
+		
 			}
 		}
 	}

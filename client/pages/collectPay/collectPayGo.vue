@@ -21,9 +21,14 @@
 			<view class="titleLeft">店员</view>
 			<view class="titleRight">{{info.staffName}}</view>
 		</view>
-		<view class="flexbox">
+		
+		<view class="flexbox" v-if="info.examineStatus==2">
 			<view class="titleLeft">金额(元)</view>
-			<view class="titleRight">¥{{info.money}}</view>
+			<view class="titleRight" @click="setMoney">¥{{info.money}}</view>
+		</view>
+		<view class="flexbox" v-else>
+			<view class="titleLeft">金额(元)</view>
+			<view class="titleRight" >¥{{info.money}}</view>
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">付款人</view>
@@ -130,7 +135,7 @@
 			</view>
 			<view style="width: 90%;margin: auto;">
 				<view style="display: inline-block;width: 50%;">
-					<view class="close">取消</view>
+					<view class="close" @click="refuse=false">取消</view>
 				</view>
 				<view style="display: inline-block;width: 50%;">
 					<view class="yes" @click="take(2)">确定</view>
@@ -145,15 +150,15 @@
 		<view v-if="money==true" class="box1">
 			<view style="width: 90%;margin: auto;font-size:32rpx;padding: 20rpx 0rpx;">修改金额</view>
 			<view style="width: 90%;margin: auto;">
-				<input value="" style="background-color:#EFF0F3;padding-left: 20rpx;height: 74rpx;border-radius: 10rpx;"
+				<input v-model="info.money" style="background-color:#EFF0F3;padding-left: 20rpx;height: 74rpx;border-radius: 10rpx;;width:100%"
 					placeholder="请输入修改金额" />
 			</view>
 			<view style="width: 90%;margin: auto;">
 				<view style="display: inline-block;width: 50%;">
-					<view class="close">取消</view>
+					<view class="close" @click="money=false">取消</view>
 				</view>
 				<view style="display: inline-block;width: 50%;">
-					<view class="yes">确定</view>
+					<view class="yes" @click="money=false">确定</view>
 				</view>
 			</view>
 		</view>
@@ -198,6 +203,12 @@
 			this.infotype=JSON.parse(e.obj)
 			this.findOneById()
 		},
+		mounted() {
+		            let inputEle = document.querySelector('.textarea textarea')    
+		            inputEle.addEventListener('blur',function(){    
+		                document.body.scrollIntoView()    
+		            })    
+		        },
 		methods: {
 			async findOneById() {
 				const [err, res] = await findOneById(this.id)
@@ -211,6 +222,9 @@
 						this.list=this.info.examineImage
 				}
 			
+			},
+			setMoney(){
+				this.money=true
 			},
 			getImg(e) {
 				uni.chooseImage({
@@ -246,20 +260,23 @@
 						id:this.info.id,
 						examineStatus:this.info.examineStatus,
 						examineImage:JSON.stringify(this.list),
-						transactionType:this.info.transactionType
+						transactionType:this.info.transactionType,
+						money:this.info.money
 					}
 				}else if(e==2){
 					var  data={
 						id:this.info.id,
 						examineStatus:3,
 						transactionType:this.info.transactionType,
-						reason:this.reason
+						reason:this.reason,
+						money:this.info.money
 					}
 				}else{
 					var  data={
 						id:this.info.id,
 						examineStatus:1,
 						transactionType:this.info.transactionType,
+						money:this.info.money
 					}
 				}
 	
