@@ -1,13 +1,13 @@
 <template>
 	<view class="">
-		<view class="flexbox" v-show="info.platform==1">
+		<view class="flexbox" v-if="info.platform==1">
 			<view class="titleLeft">日期</view>
 			<view class="titleRight">{{info.localDate}}</view>
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">平台</view>
-			<view v-show="info.platform==0" class="titleRight">追风租车</view>
-			<view v-show="info.platform==1" class="titleRight">其他租车OTA</view>
+			<view v-if="info.platform==0" class="titleRight">追风租车</view>
+			<view v-if="info.platform==1" class="titleRight">其他租车OTA</view>
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">项目</view>
@@ -21,9 +21,13 @@
 			<view class="titleLeft">店员</view>
 			<view class="titleRight">{{info.staffName}}</view>
 		</view>
-		<view class="flexbox">
+		<view class="flexbox" v-if="info.examineStatus==2">
 			<view class="titleLeft">金额(元)</view>
-			<view class="titleRight">¥{{info.money}}</view>
+			<view class="titleRight" @click="setMoney">¥{{info.money}}</view>
+		</view>
+		<view class="flexbox" v-else>
+			<view class="titleLeft">金额(元)</view>
+			<view class="titleRight" >¥{{info.money}}</view>
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">付款人</view>
@@ -54,7 +58,7 @@
 
 
 		
-		<view v-show="info.examineStatus==0 || info.examineStatus==3">
+		<view v-if="info.examineStatus==0 || info.examineStatus==3">
 			<view class="upimgbox" >
 				<view style="font-size: 28rpx;color: #000000;">
 					上传图片
@@ -71,13 +75,13 @@
 				</view>
 				
 				<!-- 审核未通过 -->
-				<view class="reTitle" v-show="info.examineStatus==3">拒绝原因：{{info.reason}}</view>
+				<view class="reTitle" v-if="info.examineStatus==3">拒绝原因：{{info.reason}}</view>
 			</view>
 		</view>
 
 
 
-		<view class="upimgbox" v-show="info.examineStatus==2  ">
+		<view class="upimgbox" v-if="info.examineStatus==2  ">
 			<view style="font-size: 28rpx;color: #000000;">
 				上传图片
 				<text style="color:#999999;font-size: 20rpx;">(辅助财务审核)</text>
@@ -88,27 +92,27 @@
 				<!-- <image class="lanClose" :src="$util.fileUrl('/lancha.png')" @click="delImg(index)" mode="aspectFill"></image> -->
 			</view>
 			<!-- 审核未通过 -->
-			<view class="reTitle" v-show="info.examineStatus==3">拒绝原因：{{info.reason}}</view>
+			<view class="reTitle" v-if="info.examineStatus==3">拒绝原因：{{info.reason}}</view>
 		</view>
 		
 		
 		
-<view v-show="infotype.type==0">
+<view v-if="infotype.type==0">
 	<!-- 待审核 -->
-	<button class="sure" type="default" @click="take(1)" v-show="info.examineStatus==0" >提交审核</button>
+	<button class="sure" type="default" @click="take(1)" v-if="info.examineStatus==0" >提交审核</button>
 	<!-- 审核未通过 -->
-	<button class="sure" type="default"  v-show="info.examineStatus==3" @click="take(1)">重新提交</button>
+	<button class="sure" type="default"  v-if="info.examineStatus==3" @click="take(1)">重新提交</button>
 	<!-- 普通店主审核 -->
-	<view class="colorTitle" style="margin: 20rpx 0rpx 60rpx 0rpx;" v-show="info.examineStatus==2 && roles[0].id==4">
+	<view class="colorTitle" style="margin: 20rpx 0rpx 60rpx 0rpx;" v-if="info.examineStatus==2 && roles[0].id==4">
 		<view class="setnull" @click="refuseBtn">拒绝</view>
 		<view class="pay" @click="take(3)">付款</view>
 	</view>
 </view>
 
 
-<view v-show="infotype.type==1">
+<view v-if="infotype.type==1">
 	<!-- 换车店主审核 -->
-	<view class="colorTitle" style="margin: 20rpx 0rpx 60rpx 0rpx;" v-show="roles[0].id==4">
+	<view class="colorTitle" style="margin: 20rpx 0rpx 60rpx 0rpx;" v-if="roles[0].id==4">
 		<view class="setnull" @click="refuseBtn">拒绝</view>
 		<view class="pay" @click="take(3)">通过</view>
 	</view>
@@ -130,7 +134,7 @@
 			</view>
 			<view style="width: 90%;margin: auto;">
 				<view style="display: inline-block;width: 50%;">
-					<view class="close">取消</view>
+					<view class="close" @click="refuse=false">取消</view>
 				</view>
 				<view style="display: inline-block;width: 50%;">
 					<view class="yes" @click="take(2)">确定</view>
@@ -145,15 +149,15 @@
 		<view v-if="money==true" class="box1">
 			<view style="width: 90%;margin: auto;font-size:32rpx;padding: 20rpx 0rpx;">修改金额</view>
 			<view style="width: 90%;margin: auto;">
-				<input value="" style="background-color:#EFF0F3;padding-left: 20rpx;height: 74rpx;border-radius: 10rpx;"
+				<input v-model="info.money" style="background-color:#EFF0F3;padding-left: 20rpx;height: 74rpx;border-radius: 10rpx;width:100%"
 					placeholder="请输入修改金额" />
 			</view>
 			<view style="width: 90%;margin: auto;">
 				<view style="display: inline-block;width: 50%;">
-					<view class="close">取消</view>
+					<view class="close" @click="money=false">取消</view>
 				</view>
 				<view style="display: inline-block;width: 50%;">
-					<view class="yes">确定</view>
+					<view class="yes" @click="money=false">确定</view>
 				</view>
 			</view>
 		</view>
@@ -212,6 +216,9 @@
 				}
 			
 			},
+			setMoney(){
+				this.money=true
+			},
 			getImg(e) {
 				uni.chooseImage({
 					count: 9,
@@ -246,20 +253,23 @@
 						id:this.info.id,
 						examineStatus:this.info.examineStatus,
 						examineImage:JSON.stringify(this.list),
-						transactionType:this.info.transactionType
+						transactionType:this.info.transactionType,
+						money:this.info.money
 					}
 				}else if(e==2){
 					var  data={
 						id:this.info.id,
 						examineStatus:3,
 						transactionType:this.info.transactionType,
-						reason:this.reason
+						reason:this.reason,
+						money:this.info.money
 					}
 				}else{
 					var  data={
 						id:this.info.id,
 						examineStatus:1,
 						transactionType:this.info.transactionType,
+						money:this.info.money
 					}
 				}
 	

@@ -119,6 +119,10 @@
 			}
 		},
 		onLoad() {
+			
+		},
+		onShow() {
+			this.orderList=[]
 			this.receiptPaymentPageQuery()
 		},
 		methods: {

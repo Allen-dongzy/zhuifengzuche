@@ -146,19 +146,28 @@
 			UniPopup
 		},
 		computed: {
-			all() {
-				if(this.breachContract==""){
-					this.breachContract=0
-				}
-				if(this.delayingPayment==""){
-					this.delayingPayment=0
-				}
-				if(this.otherFees==""){
-					this.otherFees=0
-				}
-				this.allprice = parseFloat(this.info.overtimeFee) + parseFloat(this.returnTheCarEarly) + parseFloat(
-				this.breachContract) + parseFloat(this.delayingPayment) + parseFloat(this.otherFees)
-			}
+	all() {
+		if(this.breachContract==""){
+			// this.breachContract=""
+			var x =0
+		}else{
+			var x =this.breachContract
+		}
+		if(this.delayingPayment==""){
+			// this.delayingPayment=0
+			var y =0
+		}else{
+			var y =this.delayingPayment
+		}
+		if(this.otherFees==""){
+			// this.otherFees=0
+				var w =this.otherFees
+		}else{
+			var w =0
+		}
+		this.allprice = parseFloat(this.info.overtimeFee) + parseFloat(this.returnTheCarEarly) + parseFloat(
+		x) + parseFloat(y) + parseFloat(w)
+	}
 		},
 		onLoad(e) {
 			console.log(e.obj)
