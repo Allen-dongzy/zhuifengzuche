@@ -23,7 +23,7 @@
 			<view class="flexleft">付款人</view>
 			<view class="flexright">{{ info.payer }}</view>
 		</view>
-		<view class="flexBox">
+		<view v-if="type === 0" class="flexBox">
 			<view class="flexleft">银行卡</view>
 			<view v-if="info.bankCardVO" class="flexright">{{ info.bankCardVO.bankName }} {{ info.bankCardVO.cardNumber }}</view>
 		</view>

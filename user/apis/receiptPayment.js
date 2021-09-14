@@ -1,12 +1,12 @@
 import request from '@/request'
 
 // 银行卡列表
-export const receiptPaymentBankList = (id, loading = '') => { // 对接
+export const receiptPaymentBankList = (data, loading = '') => { // 对接
 	return request({
 		url: 'receiptPayment/bankList',
 		contentType: 'application/x-www-form-urlencoded',
 		method: 'POST',
-		data: {},
+		data,
 		loading
 	})
 }
@@ -23,12 +23,12 @@ export const receiptPaymentFindOneById = (id, loading = '') => { // 对接
 }
 
 // 订单列表
-export const receiptPaymentOrderList = (id, loading = '') => { // 对接
+export const receiptPaymentOrderList = (data, loading = '') => { // 对接
 	return request({
 		url: 'receiptPayment/orderList',
 		contentType: 'application/x-www-form-urlencoded',
 		method: 'POST',
-		data: {},
+		data,
 		loading
 	})
 }

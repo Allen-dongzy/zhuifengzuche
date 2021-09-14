@@ -113,7 +113,8 @@ export default {
 				...wapPayRequest
 			}
 			const [err, res] = await uni.requestPayment(params)
-			if (err) {
+			if (err || (res && res.resultCode === '6001')) {
+				this.$toast('用户取消支付')
 				this.paymentAliPayThawMoney()
 				return
 			}

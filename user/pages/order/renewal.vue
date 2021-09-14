@@ -250,7 +250,10 @@
 					...wapPayRequest
 				}
 				const [err, res] = await uni.requestPayment(params)
-				if (err) return
+				if (err || (res && res.resultCode === '6001')) {
+					this.$toast('用户取消支付')
+					return
+				}
 				this.$toast('续租成功！')
 				if (this.mode === 'order') uni.$emit('orderRefresh')
 				if (this.mode === 'orderDetail') uni.$emit('orderDetailRefresh')
