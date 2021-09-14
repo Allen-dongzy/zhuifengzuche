@@ -32,13 +32,14 @@
 					</view>
 				</view>
 			</view>
-			<uni-load-more :status="dataStatus" />
+			<load-more :status="dataStatus" info="暂无优惠券"/>
 		</view>
 	</view>
 	</view>
 </template>
 
 <script>
+	import LoadMore from '@/components/load-more/load-more'
 	import {
 		couponQueryPage
 	} from '@/apis/coupon'
@@ -72,6 +73,9 @@
 				dataStatus: '', // more loading noMore noData
 				selectType: '', // home:首页跳转进来 goods:订单跳转进来
 			}
+		},
+		components: {
+			LoadMore
 		},
 		onLoad(e) {
 			if (e && e.selectType) this.selectType = e.selectType

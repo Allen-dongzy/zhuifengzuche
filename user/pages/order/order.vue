@@ -114,15 +114,12 @@
 				</view>
 			</view>
 		</view>
-		<view v-if="dataStatus !== 'noData'"><uni-load-more :status="dataStatus" /></view>
-		<view v-if="dataStatus === 'noData'" class="empty">
-			<image class="bg" :src="`${ossUrl}/common/res-empty.png`" mode="aspectFill"></image>
-			<view class="text">暂无订单</view>
-		</view>
+		<load-more :status="dataStatus" info="暂无订单" />
 	</view>
 </template>
 
 <script>
+import LoadMore from '@/components/load-more/load-more'
 import { rentalOrderPageQuery, rentalOrderRenewCarRentalPriceCheck } from '@/apis/rentalOrder'
 import { listManager, showModal } from '@/utils/uni-tools'
 import { throttle } from '@/utils/tools'
@@ -142,6 +139,9 @@ export default {
 			touchIndex: null,
 			payerUid: '' // 平台
 		}
+	},
+	components: {
+		LoadMore
 	},
 	filters: {
 		// 车状态显示
@@ -244,13 +244,13 @@ export default {
 			// #ifdef MP-WEIXIN
 			const provider = 'weixin'
 			// #endif
-			
+
 			// #ifdef MP-ALIPAY
 			const provider = 'alipay'
 			// #endif
-			
+
 			this.touchIndex = index
-					
+
 			const [loginErr, loginRes] = await uni.login({
 				provider
 			})
@@ -266,12 +266,12 @@ export default {
 			}
 			const [err, res] = await getCodeByWxCode(params)
 			if (err) return
-			
+
 			// #ifdef MP-WEIXIN
 			this.payerUid = res.data.openid
 			this.paymentPrecreate()
 			// #endif
-			
+
 			// #ifdef MP-ALIPAY
 			this.payerUid = res.data.user_id
 			this.paymentAliPayFrozenMoney()
@@ -435,6 +435,7 @@ export default {
 .order {
 	.header {
 		position: fixed;
+		z-index: 9999;
 		@include box(100%, 118rpx, #fff);
 		@include flex-row();
 

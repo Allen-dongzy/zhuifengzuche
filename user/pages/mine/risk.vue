@@ -130,22 +130,45 @@
 			},
 			// 授权
 			getCodeByWxCode: throttle(async function(index) {
+				// #ifdef MP-WEIXIN
+				const provider = 'weixin'
+				// #endif
+				
+				// #ifdef MP-ALIPAY
+				const provider = 'alipay'
+				// #endif
+				
 				const [loginErr, loginRes] = await uni.login({
-					provider: 'weixin'
+					provider
 				})
 				if (loginErr) return
 				const params = {
 					code: loginRes.code,
+					// #ifdef MP-WEIXIN
 					loginType: 1
+					// #endif
+					// #ifdef MP-ALIPAY
+					loginType: 2
+					// #endif
 				}
 				const [err, res] = await getCodeByWxCode(params)
 				if (err) return
+				// #ifdef MP-WEIXIN
 				this.paymentPrecreate(res.data.openid)
+				// #endif
+				// #ifdef MP-ALIPAY
+				this.paymentPrecreate(res.data.user_id)
+				// #endif
 			}),
-			async paymentPrecreate(e) {
+			async paymentPrecreate(payerUid) {
 				let data = {
-					payerUid: e,
-					payway: 3,
+					payerUid,
+					// #ifdef MP-WEIXIN
+					payway: '3',
+					// #endif
+					// #ifdef MP-ALIPAY
+					payway: '2',
+					// #endif
 					reflect: this.buyinfo,
 					subPayway: 4,
 					subject: '风控',
@@ -157,10 +180,16 @@
 			},
 			// 支付
 			async pay(wapPayRequest) {
-				const [err, res] = await uni.requestPayment({
+				const params = {
+					// #ifdef MP-WEIXIN
 					provider: 'wxpay',
+					// #endif
+					// #ifdef MP-ALIPAY
+					provider: 'alipay',
+					// #endif
 					...wapPayRequest
-				})
+				}
+				const [err, res] = await uni.requestPayment(params)
 				if (err) return
 				this.$toast('购买成功！')
 				this.findQueryNum()
