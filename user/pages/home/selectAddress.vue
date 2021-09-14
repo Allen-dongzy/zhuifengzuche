@@ -8,7 +8,7 @@
 			<view v-if="searchKey" class="search-box">
 				<view class="search-content">
 					<image class="icon-search" :src="`${ossUrl}/common/search.png`" mode="aspectFill"></image>
-					<input type="text" placeholder="景点、地址寻找附件送车点" v-model="keyword" @input="keywordChange" />
+					<input type="text" placeholder="景点、地址寻找附件送车点" v-model="keyword" @input="keywordChange" :enableNative="false" />
 					<image v-if="keyword" class="icon-delete" :src="`${ossUrl}/common/delete.png`" mode="aspectFill" @click="clearKeyword"></image>
 				</view>
 				<view class="btn" @click="toggleSearchBox">取消</view>

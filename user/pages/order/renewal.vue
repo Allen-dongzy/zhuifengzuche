@@ -211,14 +211,19 @@
 				}
 				const [err, res] = await getCodeByWxCode(params)
 				if (err) return
+				// #ifdef MP-WEIXIN
 				this.paymentPrecreate(res.data.openid)
+				// #endif
+				// #ifdef MP-ALIPAY
+				this.paymentPrecreate(res.data.user_id)
+				// #endif
 			}),
 			// 发起支付
-			async paymentPrecreate(openId) {
+			async paymentPrecreate(payerUid) {
 				const params = {
 					reflect: this.reflect,
 					orderId: this.orderId,
-					payerUid: openId,
+					payerUid,
 					// #ifdef MP-WEIXIN
 					payway: '3',
 					// #endif

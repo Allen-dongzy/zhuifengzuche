@@ -153,11 +153,16 @@
 				}
 				const [err, res] = await getCodeByWxCode(params)
 				if (err) return
+				// #ifdef MP-WEIXIN
 				this.paymentPrecreate(res.data.openid)
+				// #endif
+				// #ifdef MP-ALIPAY
+				this.paymentPrecreate(res.data.user_id)
+				// #endif
 			}),
-			async paymentPrecreate(e) {
+			async paymentPrecreate(payerUid) {
 				let data = {
-					payerUid: e,
+					payerUid,
 					// #ifdef MP-WEIXIN
 					payway: '3',
 					// #endif
