@@ -99,7 +99,7 @@
 		<view class="Mask" v-if="mileage==true"></view>
 		<view class="box1" v-if="mileage==true">
 			<view class="blackText">当前里程数</view>
-			<input type="text" v-model="mileageNum" placeholder="请输入里程数"
+			<input  v-model="mileageNum" type="number" placeholder="请输入里程数"
 				style="background-color: #EFF0F3;height:74rpx;width: 100%;border-radius: 10rpx;padding-left: 20rpx;margin-top: 20rpx;" />
 			<view class="flexBox" style="width: 100%;">
 				<view class="lanbox" @click="mileage=false">取消</view>
@@ -468,7 +468,7 @@
 
 	.box1 {
 		width: 80%;
-		position: absolute;
+		position: fixed;
 		padding: 20rpx 40rpx;
 		background-color: white;
 		top: 30vh;
