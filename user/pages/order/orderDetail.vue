@@ -305,13 +305,17 @@ export default {
 	onShow() {
 		if (this.id) this.rentalOrderOrderInfo()
 	},
+	onPullDownRefresh() {
+		this.rentalOrderOrderInfo('refresh')
+	},
 	methods: {
 		// 请求订单详情
-		async rentalOrderOrderInfo() {
+		async rentalOrderOrderInfo(key) {
 			const params = {
 				orderId: this.id
 			}
 			const [err, res] = await rentalOrderOrderInfo(params)
+			if (key === 'refresh') uni.stopPullDownRefresh()
 			if (err) return
 			this.info = res.data
 			const rentBeginTime = this.timeFormat(this.info.rentBeginTime)
@@ -371,11 +375,11 @@ export default {
 			// #ifdef MP-WEIXIN
 			const provider = 'weixin'
 			// #endif
-			
+
 			// #ifdef MP-ALIPAY
 			const provider = 'alipay'
 			// #endif
-			
+
 			const [loginErr, loginRes] = await uni.login({
 				provider
 			})
@@ -391,12 +395,12 @@ export default {
 			}
 			const [err, res] = await getCodeByWxCode(params)
 			if (err) return
-			
+
 			// #ifdef MP-WEIXIN
 			this.payerUid = res.data.openid
 			this.paymentPrecreate()
 			// #endif
-			
+
 			// #ifdef MP-ALIPAY
 			this.payerUid = res.data.user_id
 			this.paymentAliPayFrozenMoney()
@@ -437,7 +441,8 @@ export default {
 				...wapPayRequest
 			}
 			const [err, res] = await uni.requestPayment(params)
-			if (err) {
+			if (err || (res && res.resultCode === '6001')) {
+				this.$toast('用户取消支付')
 				this.paymentAliPayThawMoney()
 				return
 			}

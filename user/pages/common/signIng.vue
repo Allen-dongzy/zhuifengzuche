@@ -2,7 +2,7 @@
 	<view>
 		<view class="hand-canvas" :style="'height: ' + canvas_height + 'px;'">
 			<canvas
-				style="width: 100%;height: 80vh;"
+				style="width: 100%;height: 100%;"
 				class="hand-canvas__writing"
 				disable-scroll="true"
 				@touchstart="uploadScaleStart"
@@ -16,7 +16,8 @@
                 canvas-id="handWritingShadow">
             </canvas> -->
 		</view>
-		<view style="display: flex;align-items: center;justify-content: center;">
+		<view class="line"></view>
+		<view style="position:absolute; bottom: 40rpx; left: 50%; transform: translateX(-50%); width: 100%; display: flex;align-items: center;justify-content: center;">
 			<!--        <view @tap="retDraw" style="width:300rpx;height:96rpx;border-radius: 50rpx;">清除</view>
             <view @tap="subCanvas">签名</view> -->
 
@@ -143,3 +144,15 @@ export default {
 	}
 }
 </script>
+
+<style lang="scss">
+.hand-canvas {
+	background-color: #fff;
+}
+.line {
+	width:100%;
+	height: 1px;
+	margin-top: 1px;
+	background-color: #ccc;
+}
+</style>

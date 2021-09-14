@@ -225,12 +225,10 @@ export default {
 		},
 		//触发开始
 		touchStart(e) {
-			console.log(1)
 			// console.log(e);
 		},
 		//移动时
 		touchMove(e) {
-			console.log(2)
 			uni.vibrateShort()
 			let y = e.touches[0].clientY
 			let offsettop = e.currentTarget.offsetTop
@@ -251,12 +249,10 @@ export default {
 		},
 		//触发结束
 		touchEnd() {
-			console.log(3)
 			this.toIndex = this.tipsLetter
 		},
 		//移动开始获取字母，并放大提示
 		getLetter(e) {
-			console.log(4)
 			uni.vibrateShort()
 			let { id } = e.currentTarget
 			this.tipsLetter = id
@@ -269,7 +265,6 @@ export default {
 		},
 		//移动结束设置字母，赋值到toIndex
 		setLetter() {
-			console.log(5)
 			this.toIndex = this.tipsLetter
 		},
 		//提示字母转换
