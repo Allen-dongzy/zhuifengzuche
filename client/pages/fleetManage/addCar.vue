@@ -381,6 +381,12 @@
 			}
 
 		},
+		mounted() {
+		            let inputEle = document.querySelector('.input input')    
+		            inputEle.addEventListener('blur',function(){    
+		                document.body.scrollIntoView()    
+		            })    
+		        },
 		methods: {
 			//获取时间
 		 getNowFormatDate(){

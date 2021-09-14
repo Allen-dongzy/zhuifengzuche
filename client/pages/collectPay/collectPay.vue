@@ -119,6 +119,10 @@
 			}
 		},
 		onLoad() {
+			// this.receiptPaymentPageQuery()
+		},
+		onShow() {
+			this.orderList=[]
 			this.receiptPaymentPageQuery()
 		},
 		methods: {
@@ -216,7 +220,8 @@
 		margin: auto;
 		border: 2rpx solid rgba(114, 141, 244, 0.25);
 		border-radius: 20rpx;
-		margin-top: 30rpx;
+		margin-top: 20rpx;
+		margin-bottom: 20rpx;
 	}
 
 	.carNum {

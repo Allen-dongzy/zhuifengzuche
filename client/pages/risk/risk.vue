@@ -206,9 +206,10 @@
 					...wapPayRequest
 				})
 				if (err) return
-				this.$toast('购买成功！')
+				
 				this.findQueryNum()
 			},
+			
 
 
 		}

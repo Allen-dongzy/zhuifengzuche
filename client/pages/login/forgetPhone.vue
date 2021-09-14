@@ -27,8 +27,12 @@
 			<view class="textTitle">{{codeText}}</view>
 
 			<view class="moreInpbox">
-				<view style="width: 90%;">
-					<input :type="inpType" v-model="password1" placeholder="请输入密码" class="inpBox" style="width: 95%;" />
+				<view style="width: 90%;" v-if="showpass==false">
+					<input type="password" password v-model="password1" placeholder="请输入密码" class="inpBox" style="width: 95%;" />
+				</view>
+				
+				<view style="width: 90%;" v-if="showpass==true">
+					<input type="tetx" v-model="password1" placeholder="请输入密码" class="inpBox" style="width: 95%;" />
 				</view>
 
 				<image v-if="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
@@ -41,9 +45,18 @@
 			<view class="textTitle">{{password}}</view>
 
 			<view class="moreInpbox">
-				<view style="width: 90%;">
-					<input v-model="password2" :type="inpType1" placeholder="请确认密码" class="inpBox" style="width: 95%;">
+	
+				
+				<view style="width: 90%;" v-if="showpass1==false">
+					<input type="password" password v-model="password2" placeholder="请确认密码" class="inpBox" style="width: 95%;" />
 				</view>
+				
+				<view style="width: 90%;" v-if="showpass1==true">
+					<input type="tetx" v-model="password2" placeholder="请确认密码" class="inpBox" style="width: 95%;" />
+				</view>
+				
+				
+				
 				<image v-if="showpass1==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
 					mode="aspectFill" @click="look1"></image>
 				<image v-if="showpass1==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
@@ -165,7 +178,7 @@
 					this.inpType = 'password'
 				} else {
 					this.showpass = true
-					this.inpType = 'number'
+					this.inpType = 'text'
 				}
 			},
 			look1() {
@@ -175,7 +188,7 @@
 					this.inpType1 = 'password'
 				} else {
 					this.showpass1 = true
-					this.inpType1 = 'number'
+					this.inpType1 = 'text'
 				}
 			},
 		}

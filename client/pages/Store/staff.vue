@@ -39,6 +39,9 @@
 		},
 		onLoad(e) {
 			this.id= e.id
+			
+		},
+		onShow() {
 			this.employeelist()
 		},
 		methods: {
@@ -93,6 +96,10 @@
 </script>
 
 <style>
+	page{
+		background-color: white;
+		height: 100vh;
+	}
 	.flexBox{
 		display: flex;
 		align-items: center;
