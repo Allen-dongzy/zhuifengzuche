@@ -387,7 +387,7 @@
 		                document.body.scrollIntoView()    
 		            })    
 		        },
-		methods: {
+		methods: { 
 			//获取时间
 		 getNowFormatDate(){
 				var date = new Date();

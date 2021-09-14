@@ -4,7 +4,7 @@
 		<view class="flexBox" style="margin-top: 30rpx;">
 			<image style="width:48%;height: 186rpx;" :src="idCard1|| $util.fileUrl('/idCard1.png')"
 				@click="updataImg(1)"></image>
-			<image style="width:48%;height: 186rpx;margin-left: 4%;" :src="idCard2 || $util.fileUrl('/idCard1.png')"
+			<image style="width:48%;height: 186rpx;margin-left: 4%;" :src="idCard2 || $util.fileUrl('/idCard2.png')"
 				@click="updataImg(2)"></image>
 		</view>
 
