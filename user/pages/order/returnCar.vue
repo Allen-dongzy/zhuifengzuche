@@ -119,7 +119,6 @@ export default {
 			this.info = res.data
 			if (this.orderStatus !== 3) return
 			setTimeout(() => {
-				// uni.$emit(`${this.from}Refresh`)
 				uni.$emit('orderRefresh')
 				uni.$emit('orderDetailRefresh')
 			}, 500)

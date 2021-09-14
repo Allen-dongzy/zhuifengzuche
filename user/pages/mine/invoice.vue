@@ -13,11 +13,12 @@
 		</view>
 		<view class="btn-mat"></view>
 		<view class="btn" @click="$open('/pages/mine/invoiceInfo', {mode: 'add'})">添加新抬头</view>
-		<uni-load-more v-if="dataStatus==='noData'" :status="dataStatus" />
+		<load-more :status="dataStatus" info="暂无发票"/>
 	</view>
 </template>
 
 <script>
+	import LoadMore from '@/components/load-more/load-more'
 	import {
 		invoiceQueryByUser
 	} from '@/apis/invoice'
@@ -29,6 +30,9 @@
 				list: [],
 				dataStatus: ''
 			}
+		},
+		components: {
+			LoadMore
 		},
 		onLoad(e) {
 			this.invoiceQueryByUser()

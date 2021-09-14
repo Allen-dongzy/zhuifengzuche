@@ -11,13 +11,14 @@
 			<view class="grayTetx">{{item.carNumber}}丨{{item.createTime ? item.createTime.split(' ')[0] : ''}}</view>
 			<view class="redText">¥ {{item.money}}</view>
 		</view>
-		<uni-load-more :status="dataStatus" />
+		<load-more :status="dataStatus" :info="`暂无${type===0 ? '收款' : '付款'}记录`"/>
 		<view class="btn-mat"></view>
 		<view class="btn" @click="gopay">{{`发起${type===0 ? '收款' : '付款'}`}}</view>
 	</view>
 </template>
 
 <script>
+	import LoadMore from '@/components/load-more/load-more'
 	import {
 		receiptPaymentPageQuery
 	} from '@/apis/receiptPayment'
@@ -35,6 +36,9 @@
 				list: [],
 				type: null, // 0:收款 1:付款
 			}
+		},
+		components: {
+			LoadMore
 		},
 		filters: {
 			statusFilter(status, type) {

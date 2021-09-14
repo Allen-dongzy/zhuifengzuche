@@ -28,7 +28,7 @@
 						<view class="arrow"></view>
 					</view>
 				</view>
-				<uni-load-more :status="dataStatus" />
+				<load-more :status="dataStatus" info="暂无送车点" />
 			</scroll-view>
 		</view>
 		<!-- 搜索列表 -->
@@ -41,11 +41,12 @@
 				</view>
 			</view>
 		</view>
-		<uni-load-more v-if="searchKey" :status="dataStatus" />
+		<load-more v-if="searchKey" :status="dataStatus" info="暂无送车点" />
 	</view>
 </template>
 
 <script>
+import LoadMore from '@/components/load-more/load-more'
 import { mapState, mapActions } from 'vuex'
 import { regionCityFindDeliveryArea } from '@/apis/regionCity'
 import { deliveryFindDeliveryPage } from '@/apis/delivery'
@@ -69,6 +70,9 @@ export default {
 			searchHeight: 0, // 搜索框高度
 			keyword: '' // 关键字
 		}
+	},
+	components: {
+		LoadMore
 	},
 	computed: {
 		// 窗口高度
@@ -111,6 +115,7 @@ export default {
 			const [err, res] = await regionCityFindDeliveryArea(params)
 			if (err) return
 			this.areaList = res.data
+			this.deliveryFindDeliveryPage()
 		},
 		// 触底加载
 		scrollToBottom() {
@@ -152,19 +157,25 @@ export default {
 				lat: this.areaList[this.acIndex].lat ? this.areaList[this.acIndex].lat : '',
 				lon: this.areaList[this.acIndex].lng ? this.areaList[this.acIndex].lng : ''
 			}
-			console.log(params)
-			const [err, res] = await deliveryFindDeliveryPage(params)
-			if (err) {
+			try {
+				const [err, res] = await deliveryFindDeliveryPage(params)
+				if (!res) {
+					if (this.page > 1) this.dataStatus = 'noMore'
+					else this.dataStatus = 'noData'
+					this.requestKey = false
+					return
+				}
+				const { requestKey, dataStatus, isRender } = listManager(res.data.list, this.page, this.size)
+				this.requestKey = requestKey
+				this.dataStatus = dataStatus
+				if (!isRender) return
+				this.carAddressList = [...this.carAddressList, ...res.data.list]
+			} catch (e) {
+				this.$toast('500')
 				if (this.page > 1) this.dataStatus = 'noMore'
 				else this.dataStatus = 'noData'
 				this.requestKey = false
-				return
 			}
-			const { requestKey, dataStatus, isRender } = listManager(res.data.list, this.page, this.size)
-			this.requestKey = requestKey
-			this.dataStatus = dataStatus
-			if (!isRender) return
-			this.carAddressList = [...this.carAddressList, ...res.data.list]
 		},
 		// 获取搜索框高度
 		getSearchHeight() {

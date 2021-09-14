@@ -7,11 +7,12 @@
 			</view>
 			<view class="content">{{item.content}}</view>
 		</view>
-		<uni-load-more :status="dataStatus" />
+		<load-more :status="dataStatus" info="暂无消息通知"/>
 	</view>
 </template>
 
 <script>
+	import LoadMore from '@/components/load-more/load-more'
 	import {
 		messagePageQuery
 	} from '@/apis/message'
@@ -28,6 +29,9 @@
 				dataStatus: '',
 				list: []
 			}
+		},
+		components: {
+			LoadMore
 		},
 		onLoad() {
 			this.messagePageQuery()
