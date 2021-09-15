@@ -13,7 +13,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="allFlex head-bottom">
+				<view class="allFlex head-bottom" v-if="roles[0].id==1 || id==shopId">
 					<view class="title">门店状态: <text
 							:style="{'color': info.status===0 ? '#999' : '#597DFE'}">{{info.status===0?'关闭':'开启'}}</text>
 					</view>
@@ -23,7 +23,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="show-status" @click="$open('/pages/Store/storeRegister?id='+info.id)">
+			<view v-if="roles[0].id==1 || id==shopId"  class="show-status" @click="$open('/pages/Store/storeRegister?id='+info.id)">
 				<text v-show="info.registrationStatus==0">未注册</text>
 				<text v-show="info.registrationStatus==1">已注册</text>
 				<view class="arrow"></view>
@@ -67,11 +67,11 @@
 					<view class="conten">{{info.serviceFee || '暂无'}}</view>
 				</view>
 				<view class="allFlex" style="margin-top: 40rpx;">
-					<view class="point" style="margin-left: 30%;" @click="$open('/pages/Store/editStore?id='+info.id)">
+					<view v-if="roles[0].id==1 || id==shopId" class="point" style="margin-left: 30%;" @click="$open('/pages/Store/editStore?id='+info.id)">
 						编辑门店</view>
-					<view class="point" style="margin-left: 20rpx;"
-						@click="$open('/pages/Store/storePoint', {shopId: info.id})">送车点管理</view>
-					<view class="point" style="margin-left: 20rpx;" @click="$open('/pages/Store/staff?id='+info.id)">
+					<view v-if="roles[0].id==1 || id==shopId" class="point" style="margin-left: 20rpx;" @click="$open('/pages/Store/storePoint', {shopId: info.id})">
+						送车点管理</view>
+					<view v-if="roles[0].id==1 || id==shopId" class="point" style="margin-left: 20rpx;" @click="$open('/pages/Store/staff?id='+info.id)">
 						员工管理</view>
 				</view>
 			</view>
@@ -112,7 +112,9 @@
 	import {
 		listManager
 	} from '@/utils/uni-tools'
-
+	import {
+		mapState
+	} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -154,7 +156,9 @@
 					// 排除以上情况则为营业时间
 					return true
 				}
-			}
+			},
+			...mapState('user', ['shopId']),
+			...mapState('user', ['roles'])
 		},
 		onLoad(e) {
 			if (e && e.id) this.id = e.id

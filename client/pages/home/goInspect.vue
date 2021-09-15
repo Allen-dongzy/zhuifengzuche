@@ -308,7 +308,12 @@
 						if (this.goInspectInfo.goodsList[i].children[q].condition==null) {
 							this.$toast("请勾选车辆设备")
 							return false;
-						}
+						}else if(this.goInspectInfo.goodsList[i].children[q].condition==1){
+						       if(this.goInspectInfo.goodsList[i].children[q].image==null){
+						        this.$toast("损坏部位请上传图片")
+						        return false;
+						       }
+						      }
 					}
 				}
 				
