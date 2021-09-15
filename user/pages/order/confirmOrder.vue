@@ -494,7 +494,12 @@ export default {
 				couponId: this.couponId,
 				invoiceId: this.invoiceId,
 				isInsurance: this.isInsuranceId ? 1 : 0,
+				// #ifdef MP-WEIXIN
 				orderSource: 0,
+				// #endif
+				// #ifdef MP-ALIPAY
+				orderSource: 1,
+				// #endif
 				pickPlace: this.takeId,
 				returnPlace: this.backId,
 				remark: this.remark,

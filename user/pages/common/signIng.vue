@@ -1,41 +1,17 @@
 <template>
 	<view>
-		<view class="hand-canvas" :style="'height: ' + canvas_height + 'px;'">
-			<canvas
-				style="width: 100%;height: 100%;"
-				class="hand-canvas__writing"
-				disable-scroll="true"
-				@touchstart="uploadScaleStart"
-				@touchmove="uploadScaleMove"
-				@touchend="uploadScaleEnd"
-				canvas-id="handWriting"
-				id="handWriting"
-			></canvas>
-
-			<!--        <canvas class="hand-canvas__shadow" :style="'width: '+canvas_height+'px;'"
-                canvas-id="handWritingShadow">
-            </canvas> -->
-		</view>
-		<view class="line"></view>
-		<view style="position:absolute; bottom: 40rpx; left: 50%; transform: translateX(-50%); width: 100%; display: flex;align-items: center;justify-content: center;">
-			<!--        <view @tap="retDraw" style="width:300rpx;height:96rpx;border-radius: 50rpx;">清除</view>
-            <view @tap="subCanvas">签名</view> -->
-
-			<button
-				@tap="retDraw"
-				style=" color:#B2B2B2;width:300rpx;margin: auto; border: 2rpx solid #B2B2B2; border-radius: 50px;font-size: 32rpx; height: 96rpx;line-height: 96rpx; "
-				type="default"
-			>
-				清除
-			</button>
-
-			<button
-				@tap="subCanvas"
-				style=" color: white;width:300rpx;margin: auto;background-color: #5A7EFF;border-radius: 50px;font-size: 32rpx;height: 96rpx;line-height: 96rpx; "
-				type="default"
-			>
-				保存
-			</button>
+		<canvas
+			class="hand-canvas__writing"
+			disable-scroll="true"
+			@touchstart="uploadScaleStart"
+			@touchmove="uploadScaleMove"
+			@touchend="uploadScaleEnd"
+			canvas-id="handWriting"
+			id="handWriting"
+		></canvas>
+		<view class="bottom-box">
+			<view class="btn clear" @tap="retDraw">清除</view>
+			<view class="btn save" @tap="subCanvas">保存</view>
 		</view>
 	</view>
 </template>
@@ -146,13 +122,43 @@ export default {
 </script>
 
 <style lang="scss">
-.hand-canvas {
+.hand-canvas__writing {
+	width: 100%;
+	height: 100vh;
+	display: block;
+	box-sizing: border-box;
 	background-color: #fff;
 }
-.line {
-	width:100%;
-	height: 1px;
-	margin-top: 1px;
-	background-color: #ccc;
+
+.bottom-box {
+	position: fixed;
+	bottom: 40rpx;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 999;
+	width: 100%;
+	height: 180rpx;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	.btn {
+		width: 300rpx;
+		height: 100rpx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		box-sizing: border-box;
+		border-radius: 50px;
+		font-size: 32rpx;
+		&.clear {
+			background-color: #ffffff;
+			border: 2rpx solid #b2b2b2;
+			color: #b2b2b2;
+		}
+		&.save {
+			background-color: #5a7eff;
+			color: #ffffff;
+		}
+	}
 }
 </style>
