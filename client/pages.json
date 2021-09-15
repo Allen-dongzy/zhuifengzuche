@@ -5,6 +5,11 @@
 				"navigationBarTitleText": "首页",
 				"enablePullDownRefresh":true
 			}
+		},{
+			"path": "pages/home/goInspect",
+			"style": {
+				"navigationBarTitleText": "出车检验"
+			}
 		}, {
 			"path": "pages/login/businessCard",
 			"style": {
@@ -74,12 +79,7 @@
 				"navigationBarTitleText": "交付车辆"
 			}
 		},
-		{
-			"path": "pages/home/goInspect",
-			"style": {
-				"navigationBarTitleText": "出车检验"
-			}
-		},
+		
 		{
 			"path": "pages/home/changeCar",
 			"style": {

@@ -41,7 +41,7 @@
 
 			<view class="flexBox" v-if="info.endDeliveryName==info.startDeliveryName">
 				<view class="getset">取还</view>
-				<view class="address">郑家院子追风1店</view>
+				<view class="address">{{info.memberShopName}}</view>
 				<view class="otherBack">异地还车</view>
 				<switch disabled="true" class="switch" :class="(radio?'checked':'')" :checked="(radio?true:false)">
 				</switch>
@@ -363,19 +363,29 @@
 				let data = {
 					order: this.info.id,
 				}
-
+				
 				uni.navigateTo({
 					url: './inspectionCollectInfo?obj=' + JSON.stringify(data)
 				})
 			},
 			violation(e) {
-				if (e == 1) {
+				var URI=""
+				if(JSON.stringify(this.info).indexOf('%') > -1) {
+					  console.log(URI)
+					  
+				    URI =  JSON.stringify(this.info).replace(/%/g,'%25')
+					   console.log(URI)
+				  }else{
+					  URI =  JSON.stringify(this.info)
+				  }
+				  
+				if (e == 1) {				  
 					uni.navigateTo({
-						url: './violation?obj=' + JSON.stringify(this.info)
+						url: './violation?obj=' + URI
 					})
 				} else {
 					uni.navigateTo({
-						url: './violationAdd?type=1&obj=' + JSON.stringify(this.info)
+						url: './violationAdd?type=1&obj=' + URI
 					})
 				}
 			},

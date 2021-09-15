@@ -11,8 +11,8 @@
 				<view class="content">
 					<view class="caption">支付方式</view>
 					<view class="info">{{info.paymentMethod==0?'全额免押':"未免押"}}
-						<text v-show="info.paymentMethod==0">{{info.preAcceptanceFreeze}}</text>
-						<text v-show="info.paymentMethod==1">{{info.carRentalDeposit}}</text>
+						<text v-if="info.paymentMethod==0">{{info.preAcceptanceFreeze}}</text>
+						<text v-if="info.paymentMethod==1">{{info.carRentalDeposit}}</text>
 					</view>
 				</view>
 			</view>
@@ -45,26 +45,26 @@
 			<view class="item">
 				<view class="content">
 					<view class="caption">违约金</view>
-					<input v-show="mode===1" class="input"  type="digit"  v-model="breachContract" placeholder="请填写违约金金额"
+					<input v-if="mode===1" class="input"  type="digit"  v-model="breachContract" placeholder="请填写违约金金额"
 						placeholder-style="font-size:28rpx;color:#b2b2b2;font-weight:100;" />
-					<view v-show="mode===0" class="input readonly">{{ breachContract || 'xxxxx' }}</view>
+					<view v-if="mode===0" class="input readonly">{{ breachContract || 'xxxxx' }}</view>
 				</view>
 			</view>
 			<view class="item">
 				<view class="content">
 					<view class="caption">滞纳金</view>
-					<input v-show="mode===1" class="input"  type="digit"  v-model="delayingPayment" placeholder="请填写滞纳金金额"
+					<input v-if="mode===1" class="input"  type="digit"  v-model="delayingPayment" placeholder="请填写滞纳金金额"
 						placeholder-style="font-size:28rpx;color:#b2b2b2;font-weight:100;" />
-					<view v-show="mode===0" class="input readonly">{{ delayingPayment || 'xxxxx' }}</view>
+					<view v-if="mode===0" class="input readonly">{{ delayingPayment || 'xxxxx' }}</view>
 				</view>
 			</view>
 			<view :class="['item', {'other': otherFees}]">
 				<view class="content">
 					<view class="caption">其他费用</view>
-					<view v-show="mode===1" class="input" @click="openOtherFeesModal">
+					<view v-if="mode===1" class="input" @click="openOtherFeesModal">
 						{{ otherFees ? '￥'+otherFees : '请填写其他费用'}} >
 					</view>
-					<view v-show="mode===0" class="input readonly">{{ '￥'+ (otherFees || 'xxxxx') }}</view>
+					<view v-if="mode===0" class="input readonly">{{ '￥'+ (otherFees || 'xxxxx') }}</view>
 				</view>
 				<view class="note">{{ note }}</view>
 			</view>
@@ -81,8 +81,8 @@
 			<view class="info">
 				总计 <text class="price">￥<text class="price-big">{{allprice.toFixed(2)}}</text></text>
 			</view>
-			<view v-show="mode===0" class="look">查看记录</view>
-			<view v-show="mode===1" class="btn" @click="settlement">确认结算</view>
+			<view v-if="mode===0" class="look">查看记录</view>
+			<view v-if="mode===1" class="btn" @click="settlement">确认结算</view>
 		</view>
 
 		<uni-popup ref="otherFeesPopup" type="center">

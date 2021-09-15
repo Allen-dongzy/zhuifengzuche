@@ -101,7 +101,7 @@
 								@tap.stop="toHomeLevel1('/pages/home/goInspect?obj=',item)">出车检验</button>
 							<button type="default" :disabled="item.isVehicleCertificates==true" v-if="tabCheck==0"
 								class="flex-center btn" style="margin-left: 20rpx;"
-								@tap.stop="toHomeLevel1('/pages/home/deliverCar?type=1&obj=',item)">交付车辆</button>
+								@tap.stop="toHomeLevel2(item)">交付车辆</button>
 							<button type="default" v-if="tabCheck==1" class="flex-center btn"
 								@tap.stop="toHomeLevel1('/pages/home/deliverCar?type=2&obj=',item)">交车情况</button>
 							<button type="default" v-if="tabCheck==1" class="flex-center btn"
@@ -301,6 +301,22 @@
 					animationType: 'pop-in',
 					animationDuration: 200
 				})
+			},
+			
+			toHomeLevel2(q){
+			
+				if(q.isCarTest==false){
+					let data = {
+						order: q.id,
+						carnum: q.vehicleNumber,
+						vehicleId: q.vehicleId
+					}
+					uni.navigateTo({
+						url: '/pages/home/deliverCar?type=1&obj='+ JSON.stringify(data),
+					})
+				}else{
+					this.$toast('请先出车检验')
+				}
 			},
 			lookinfo(e) {
 				uni.navigateTo({

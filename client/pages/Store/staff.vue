@@ -6,8 +6,8 @@
 			<image style="width:28rpx;height:28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode="aspectFill" @click="showSearch"></image>
 		</view>
 		 
-		<view class="topNav" style="color: #8E8E93;font-size: 30rpx" v-if="search==true">
-			<input@input="setSearch" v-model="searchVal" type="text" style="background-color:#EFF0F3;height: 60rpx;width: 500rpx;border-radius: 50rpx;padding-left: 20rpx;" value="" />
+		<view class="topNav" style="color: #8E8E93;font-size: 30rpx;border-radius: 50rpx;padding-top: 20rpx;" v-if="search==true">
+			<input@input="setSearch" v-model="searchVal" type="text" style="background-color:#EFF0F3;height: 60rpx;width: 400rpx;border-radius: 50rpx;padding: 0rpx 20rpx;" value="" />
 			<view style="margin-left: 20rpx;" @click="showSearch">取消</view>
 		</view>
 		<view class="flexBox" v-for="(item,index) in list"  style="height: 120rpx;border-bottom: 2rpx solid #EFF0F3;" @click="lookinfo(item)"> 

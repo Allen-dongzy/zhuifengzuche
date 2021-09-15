@@ -368,7 +368,7 @@
 		border-top: 1px solid #FFFFFF;
 		border-bottom: 1px solid #FFFFFF;
 		background-color: white;
-		top: 30vh;
+		top: 20vh;
 		left: 5%;
 		border-radius: 20rpx;
 	}

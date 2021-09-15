@@ -87,9 +87,12 @@
 				for(let i=0;i<this.list.length;i++){
 					allprice+=Number(this.list[i].price)
 				}
-				uni.navigateTo({
-					url:'./payCode?orderId='+this.orderId+'&price='+allprice+'&type='+1
-				})
+				if(allprice!=0){
+					uni.navigateTo({
+						url:'./payCode?orderId='+this.orderId+'&price='+allprice+'&type='+1
+					})
+				}
+		
 			}
 		}
 	}
