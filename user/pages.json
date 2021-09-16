@@ -316,6 +316,11 @@
 		"style": {
 			"navigationBarTitleText": "驾无忧保障"
 		}
+	}, {
+		"path": "pages/common/thaw/thaw",
+		"style": {
+			"navigationBarTitleText": "免押解冻(测试)"
+		}
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

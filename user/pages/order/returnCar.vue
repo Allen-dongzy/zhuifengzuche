@@ -131,7 +131,9 @@ export default {
 			// 打开位置
 			uni.openLocation({
 				latitude,
-				longitude
+				longitude,
+				name: this.info.deliveryVo.name,
+				address: this.info.deliveryVo.address
 			})
 		},
 		// 授权
@@ -175,7 +177,7 @@ export default {
 			if (err) return
 			this.$toast('结算成功！')
 			uni.$emit('orderRefresh')
-			uni.$emit('orderDetailRefresh')
+			uni.$emit('orderDetailRefresh') 
 			setTimeout(() => {
 				this.$close()
 			}, 500)

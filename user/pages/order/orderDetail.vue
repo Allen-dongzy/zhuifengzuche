@@ -502,10 +502,10 @@ export default {
 				amount: info.alipay_fund_auth_order_app_freeze_response.amount,
 				outOrderNo: info.alipay_fund_auth_order_app_freeze_response.out_order_no,
 				authNo: info.alipay_fund_auth_order_app_freeze_response.auth_no,
-				fundAmount: info.alipay_fund_auth_order_app_freeze_response.fund_amount,
+				fundAmount: info.alipay_fund_auth_order_app_freeze_response.fund_amount || info.alipay_fund_auth_order_app_freeze_response.amount,
 				outRequestNo: info.alipay_fund_auth_order_app_freeze_response.out_request_no,
-				preAuthType: info.alipay_fund_auth_order_app_freeze_response.pre_auth_type,
-				creditAmount: info.alipay_fund_auth_order_app_freeze_response.credit_amount,
+				preAuthType: info.alipay_fund_auth_order_app_freeze_response.pre_auth_type || 'CREDIT_AUTH',
+				creditAmount: info.alipay_fund_auth_order_app_freeze_response.credit_amount || info.alipay_fund_auth_order_app_freeze_response.amount,
 				orderRecordType: 15
 			}
 			const [err, res] = await paymentAliPayCallback(params)

@@ -67,7 +67,7 @@
 		</view>
 		<view class="flexBox" style="border: none;">备注</view>
 		<view style="background-color:#EFF0F3;margin-top: 20rpx;border-radius: 15rpx;width: 100%;padding: 20rpx;width: 93.5%;">
-			<textarea style="padding:20rpx;height:114rpx;color: #999999;font-size: 24rpx;" v-model="remarks" placeholder="请填写备注信息" />
+			<textarea style="padding:20rpx;height:114rpx;color: #999999;font-size: 24rpx;" v-model="remarks" placeholder="请填写备注信息" :enableNative="false" />
 			<view style="margin-top: 20rpx;">
 				<view style="display: inline-block;width:120rpx;height: 120rpx;;margin-right:20rpx;position: relative;" v-for="(item, index) in imgList" :key="index">
 					<view>
@@ -288,17 +288,23 @@ export default {
 			if (!this.checkPayment()) return
 			const params = {
 				platform: this.platformList[this.platformIndex].id,
-				localDate: this.timeDate,
 				projectId: this.projectList[this.projectIndex].id,
-				orderId: this.orderList[this.orderIndex].id,
 				carNumber: this.carNumber,
 				staffName: this.staffName,
 				money: this.money,
 				payer: this.payer,
-				bankId: this.bankCard.id,
 				transactionType: this.type,
 				remarks: this.remarks,
 				image: JSON.stringify(this.imgList)
+			}
+			if (Object.keys(this.bankCard).length>0) {
+				params.bankId = this.bankCard.id
+			}
+			if (this.platformIndex === 0) {
+				params.orderId = this.orderList[this.orderIndex].id
+			}
+			if (this.platformIndex === 1) {
+				params.localDate = this.timeDate
 			}
 			const [err, res] = await receiptPaymentPayment(params)
 			if (err) return
