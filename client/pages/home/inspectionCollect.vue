@@ -161,9 +161,10 @@
 		}
 		if(this.otherFees==""){
 			// this.otherFees=0
-				var w =this.otherFees
+				var w =0
 		}else{
-			var w =0
+			
+			var w =this.otherFees
 		}
 		this.allprice = parseFloat(this.info.overtimeFee) + parseFloat(this.returnTheCarEarly) + parseFloat(
 		x) + parseFloat(y) + parseFloat(w)
