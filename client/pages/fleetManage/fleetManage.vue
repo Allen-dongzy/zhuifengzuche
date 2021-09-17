@@ -27,7 +27,7 @@
 				</view>
 				<p class="text">{{item.brandName}}丨{{item.gears}} {{item.capacity}}座 {{item.outputVolumeName}}</p>
 				<view class="flex detail">
-					<p class="oil" v-if="item.oil!=null">油量：62%</p>
+					<p class="oil" v-if="item.oil!=null">油量：{{item.oil*10}}%</p>
 					<p class="car">车龄：{{item.carAge}}</p>
 				</view>
 				<view v-if="item.vehicleStatus==3" class="flex-center line">

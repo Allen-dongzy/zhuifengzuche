@@ -53,15 +53,13 @@
 
 		<view class="title">发证日期</view>
 		<picker mode="date" style="height: 74rpx;" class="pickerBox" @change="pickerStar" :value="indexStar">
-			<view v-if="indexStar==-1" class="uni-input" style="height: 74rpx;line-height: 73rpx;">请选择开始时间</view>
-			<view v-if="indexStar!=-1" class="uni-input" style="height: 74rpx;line-height: 73rpx;">{{indexStar}}
+			<view class="uni-input" style="height: 74rpx;line-height: 73rpx;">{{indexStar==-1?'请选择开始时间':indexStar}}
 			</view>
-		</picker>
+		</picker> 
 
 		<view class="title">注册日期</view>
 		<picker mode="date" style="height: 74rpx;" class="pickerBox" @change="pickerCreat" :value="indexCreat">
-			<view v-if="indexCreat==-1" class="uni-input" style="height: 74rpx;line-height: 73rpx;">请选择开始时间</view>
-			<view v-if="indexCreat!=-1" class="uni-input" style="height: 74rpx;line-height: 73rpx;">{{indexCreat}}
+			<view  class="uni-input" style="height: 74rpx;line-height: 73rpx;">{{indexCreat==-1?'请选择开始时间':indexCreat}}
 			</view>
 		</picker>
 

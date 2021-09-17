@@ -33,6 +33,13 @@
 			<view class="titleLeft">备注</view>
 			<view class="titleRight">{{info.remarks}}</view>
 		</view>
+		
+		<view class="upimgbox">
+			<view class="imglistbox" v-for="(item,index) in info.image" :key='index'>
+				<image style="width:160rpx;height:160rpx;" :src="item" mode="aspectFill"></image>
+			</view>
+		</view>
+		
 		<view class="garyLine"></view>
 		<view class="flexbox" style="border-bottom: 0rpx;">
 			<view class="titleLeft">提交时间</view>
@@ -276,5 +283,18 @@
 				color: #FC3736;
 			}
 		}
+	}
+	
+	.upimgbox {
+		width: 90%;
+		margin: auto;
+		padding: 20rpx 0rpx;
+	}
+	
+	.imglistbox {
+		display: inline-block;
+		width: 22%;
+		margin: 20rpx 1%;
+		position: relative;
 	}
 </style>
