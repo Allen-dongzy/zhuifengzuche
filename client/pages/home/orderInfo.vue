@@ -234,7 +234,7 @@
 				<view v-if="type==100" class="lanbox" @click="shoucheInfo">收车情况</view>
 				<!-- <view v-if="type==100" class="lanbox">结算佣金</view> -->
 			<view v-if="type==1" class="lanbox" @click="goInspect()">出车检验</view>
-			<view v-if="type==5 " class="lanbox" @click="jianyanshouche" :disabled="info.isPaymentIllegalDeposit==1">
+			<view v-if="type==5 && info.orderStatus==5" class="lanbox" @click="jianyanshouche" :disabled="info.isPaymentIllegalDeposit==1">
 				检验收车</view>
 			<view :disabled="info.isVehicleCertificates==true" v-if="type==1" @click="deliverCar(1)" class="lanbox">交付车辆
 			</view>
@@ -347,6 +347,27 @@
 					url: './deliverCar?type=' + e + '&obj=' + JSON.stringify(data)
 				})
 			},
+			
+			// deliverCar(e) {
+				
+			// 	if(q.isCarTest==false){
+			// 		let data = {
+			// 			order: this.info.id,
+			// 			carnum: this.info.vehicleNumber,
+			// 			vehicleId: this.info.vehicleId
+			// 		}
+			
+			// 		uni.navigateTo({
+			// 			url: './deliverCar?type=' + e + '&obj=' + JSON.stringify(data)
+			// 		})
+			// 	}else{
+			// 		this.$toast('请先出车检验')
+			// 	}
+				
+				
+			// },
+			
+			
 			//检验收车
 			jianyanshouche() {
 				let data = {

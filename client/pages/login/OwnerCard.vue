@@ -52,14 +52,14 @@
 		</view>
 
 		<view class="title">发证日期</view>
-		<picker mode="date" style="height: 74rpx;" class="pickerBox" @change="pickerStar" :value="indexStar">
-			<view class="uni-input" style="height: 74rpx;line-height: 73rpx;">{{indexStar==-1?'请选择开始时间':indexStar}}
+		<picker mode="date"  @change="pickerStar" :value="indexStar">
+			<view class="nameBox" style="height: 74rpx;line-height: 73rpx;width: 90%;margin:20rpx auto auto auto;">{{indexStar==''?'请选择开始时间':indexStar}}
 			</view>
 		</picker> 
 
 		<view class="title">注册日期</view>
-		<picker mode="date" style="height: 74rpx;" class="pickerBox" @change="pickerCreat" :value="indexCreat">
-			<view  class="uni-input" style="height: 74rpx;line-height: 73rpx;">{{indexCreat==-1?'请选择开始时间':indexCreat}}
+		<picker mode="date" @change="pickerCreat" :value="indexCreat">
+			<view  class="nameBox"style="height: 74rpx;line-height: 73rpx;width: 90%;margin:20rpx auto auto auto;">{{indexCreat==''?'请选择开始时间':indexCreat}}
 			</view>
 		</picker>
 
@@ -123,8 +123,8 @@
 				index: -1, //选择城市角标
 				
 				obj:{},//上一页数据
-				indexStar: -1,//发证时间
-				indexCreat: -1,//注册时间
+				indexStar: '',//发证时间
+				indexCreat: '',//注册时间
 				idCard1: '',//身份证正面
 				idCard2: '',//身份证背面
 				idCard3: '',//行驶证正
@@ -200,11 +200,11 @@
 			
 			pickerStar: function(e) {
 				console.log('picker发送选择改变，携带值为', e.target.value)
-				this.indexStar = e.target.value
+				this.indexStar = e.target.value.replace(/\//g,'-');
 			},
 			pickerCreat: function(e) {
 				console.log('picker发送选择改变，携带值为', e.target.value)
-				this.indexCreat = e.target.value
+				this.indexCreat = e.target.value.replace(/\//g,'-');
 			},
 			// 身份证开
 			open1() {
@@ -293,9 +293,11 @@
 		background-color: #EFF0F3;
 		height: 74rpx;
 		border-radius: 10rpx;
-		padding-left: 20rpx;
+		padding:0rpx 20rpx;
 		font-size: 24rpx;
 		color: #999999;
+		width: 100%;
+		
 	}
 
 	.lineBox {
