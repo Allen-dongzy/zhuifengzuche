@@ -336,36 +336,35 @@
 				})
 			},
 			//交车情况
-			deliverCar(e) {
-				let data = {
-					order: this.info.id,
-					carnum: this.info.vehicleNumber,
-					vehicleId: this.info.vehicleId
-				}
-
-				uni.navigateTo({
-					url: './deliverCar?type=' + e + '&obj=' + JSON.stringify(data)
-				})
-			},
-			
 			// deliverCar(e) {
-				
-			// 	if(q.isCarTest==false){
-			// 		let data = {
-			// 			order: this.info.id,
-			// 			carnum: this.info.vehicleNumber,
-			// 			vehicleId: this.info.vehicleId
-			// 		}
-			
-			// 		uni.navigateTo({
-			// 			url: './deliverCar?type=' + e + '&obj=' + JSON.stringify(data)
-			// 		})
-			// 	}else{
-			// 		this.$toast('请先出车检验')
+			// 	let data = {
+			// 		order: this.info.id,
+			// 		carnum: this.info.vehicleNumber,
+			// 		vehicleId: this.info.vehicleId
 			// 	}
-				
-				
+
+			// 	uni.navigateTo({
+			// 		url: './deliverCar?type=' + e + '&obj=' + JSON.stringify(data)
+			// 	})
 			// },
+			
+			deliverCar(e) {
+				if(this.info.isCarTest==false){
+					let data = {
+						order: this.info.id,
+						carnum: this.info.vehicleNumber,
+						vehicleId: this.info.vehicleId
+					}
+			
+					uni.navigateTo({
+						url: './deliverCar?type=' + e + '&obj=' + JSON.stringify(data)
+					})
+				}else{
+					this.$toast('请先出车检验')
+				}
+				
+				
+			},
 			
 			
 			//检验收车

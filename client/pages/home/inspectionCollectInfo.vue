@@ -68,7 +68,7 @@
 			<view class="info">
 				总计 <text class="price">￥<text class="price-big">{{Math.round(allprice*Math.pow(10, 2))/100}} </text></text>
 			</view>
-			<view  class="look">查看记录</view>
+			<!-- <view  class="look">查看记录</view> -->
 		</view>
 
 
