@@ -226,7 +226,7 @@
 				<view v-show="type==100" class="lanbox" @click="shoucheInfo">收车情况</view>
 				<!-- <view v-show="type==100" class="lanbox">结算佣金</view> -->
 				<view v-show="type==1" class="lanbox"  @click="goInspect()">出车检验</view>
-				<view v-show="type==5 " class="lanbox" @click="jianyanshouche"
+				<view v-show="type==5 && info.orderStatus==5" class="lanbox" @click="jianyanshouche"
 					:disabled="info.isPaymentIllegalDeposit==1">检验收车</view>
 				<view :disabled="info.isVehicleCertificates==true" v-show="type==1" @click="deliverCar(1)"
 					class="lanbox">交付车辆</view>

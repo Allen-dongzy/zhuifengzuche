@@ -103,7 +103,7 @@
 								@tap.stop="toHomeLevel2(item)">交付车辆</button>
 							<button type="default" v-if="tabCheck==1" class="flex-center btn"
 								@tap.stop="toHomeLevel1('/pages/home/deliverCar?type=2&obj=',item)">交车情况</button>
-							<button type="default" v-if="tabCheck==1" class="flex-center btn"
+							<button type="default" v-if="tabCheck==1 && item.orderStatus==5" class="flex-center btn"
 								style="margin-left: 20rpx;"
 								@tap.stop="toHomeLevel1('/pages/home/inspectionCollect?obj=',item)" :disabled="item.isPaymentIllegalDeposit==1">检验收车</button>
 							<button type="default" v-if="tabCheck==2" class="flex-center btn"
