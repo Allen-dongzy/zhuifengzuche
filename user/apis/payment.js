@@ -22,9 +22,9 @@ export const paymentAliPayFrozenMoney = (data, loading = '冻结中') => { // �
 }
 
 // 支付宝资金解冻
-export const paymentAliPayThawMoney = (data, loading = '') => { // 对接
+export const paymentCancelPay = (data, loading = '') => { // 对接
 	return request({
-		url: 'payment/ali-pay-thaw-money',
+		url: 'payment/cancel-pay',
 		contentType: 'application/x-www-form-urlencoded',
 		method: 'POST',
 		data,

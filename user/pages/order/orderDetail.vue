@@ -242,7 +242,7 @@
 <script>
 import { rentalOrderOrderInfo, rentalOrderCancelOrderByUser, rentalOrderCancelOrderByUserGet, rentalOrderRenewCarRentalPriceCheck } from '@/apis/rentalOrder'
 import { getCodeByWxCode } from '@/apis/sso'
-import { paymentPrecreate, paymentAliPayFrozenMoney, paymentAliPayCallback, paymentAliPayFrozenCancel, paymentAliPayThawMoney } from '@/apis/payment'
+import { paymentPrecreate, paymentAliPayFrozenMoney, paymentAliPayCallback, paymentAliPayFrozenCancel, paymentCancelPay } from '@/apis/payment'
 import { throttle, transCommonTime } from '@/utils/tools'
 import { showModal } from '@/utils/uni-tools'
 
@@ -424,7 +424,7 @@ export default {
 			}
 			const [err, res] = await paymentPrecreate(params)
 			if (err) {
-				this.paymentAliPayThawMoney()
+				this.paymentCancelPay()
 				return
 			}
 			this.pay(res.data.wapPayRequest)
@@ -443,7 +443,7 @@ export default {
 			const [err, res] = await uni.requestPayment(params)
 			if (err || (res && res.resultCode === '6001')) {
 				this.$toast('用户取消支付')
-				this.paymentAliPayThawMoney()
+				this.paymentCancelPay()
 				return
 			}
 			this.$toast('租车成功！')
@@ -487,12 +487,12 @@ export default {
 			this.$toast('撤销免押成功！')
 		},
 		//  支付宝-免押资金解冻
-		async paymentAliPayThawMoney() {
+		async paymentCancelPay() {
 			const params = {
 				orderSn: this.info.orderSn,
 				amount: Number(this.info.rentalMoney)
 			}
-			const [err, res] = await paymentAliPayThawMoney(params)
+			const [err, res] = await paymentCancelPay(params)
 			if (err) return
 			this.$toast('支付失败！')
 		},

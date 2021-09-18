@@ -4,12 +4,12 @@
 		<br />
 		<input type="text" v-model="orderSn" placeholder="请输入订单编号" />
 		<br />
-		<view class="btn" @click="paymentAliPayThawMoney">解冻</view>
+		<view class="btn" @click="paymentCancelPay">解冻</view>
 	</view>
 </template>
 
 <script>
-import { paymentAliPayThawMoney } from '@/apis/payment'
+import { paymentCancelPay } from '@/apis/payment'
 import { throttle } from '@/utils/tools'
 
 export default {
@@ -21,7 +21,7 @@ export default {
 	},
 	methods: {
 		//  支付宝-免押资金解冻
-		paymentAliPayThawMoney: throttle(async function() {
+		paymentCancelPay: throttle(async function() {
 			if (!this.amount) {
 				this.$toast('请输入冻结金额')
 				return
@@ -35,7 +35,7 @@ export default {
 				amount: Number(this.amount),
 				orderSn: this.orderSn
 			}
-			const [err, res] = await paymentAliPayThawMoney(params)
+			const [err, res] = await paymentCancelPay(params)
 			uni.hideLoading()
 			console.log(res)
 			console.log(err)

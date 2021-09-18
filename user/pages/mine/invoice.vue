@@ -11,9 +11,9 @@
 			</view>
 			<view class="num">{{item.taxNum}}</view>
 		</view>
+		<load-more :status="dataStatus" info="暂无发票"/>
 		<view class="btn-mat"></view>
 		<view class="btn" @click="$open('/pages/mine/invoiceInfo', {mode: 'add'})">添加新抬头</view>
-		<load-more :status="dataStatus" info="暂无发票"/>
 	</view>
 </template>
 
@@ -48,6 +48,7 @@
 					this.dataStatus = 'noData'
 					return
 				}
+				this.dataStatus = 'noMore'
 				this.list = res.data
 			},
 			// 监听事件

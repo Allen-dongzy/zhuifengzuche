@@ -124,7 +124,7 @@ import { rentalOrderPageQuery, rentalOrderRenewCarRentalPriceCheck } from '@/api
 import { listManager, showModal } from '@/utils/uni-tools'
 import { throttle } from '@/utils/tools'
 import { getCodeByWxCode } from '@/apis/sso'
-import { paymentPrecreate, paymentAliPayFrozenMoney, paymentAliPayCallback, paymentAliPayFrozenCancel, paymentAliPayThawMoney } from '@/apis/payment'
+import { paymentPrecreate, paymentAliPayFrozenMoney, paymentAliPayCallback, paymentAliPayFrozenCancel, paymentCancelPay } from '@/apis/payment'
 
 export default {
 	data() {
@@ -295,7 +295,7 @@ export default {
 			}
 			const [err, res] = await paymentPrecreate(params)
 			if (err) {
-				this.paymentAliPayThawMoney()
+				this.paymentCancelPay()
 				return
 			}
 			this.pay(res.data.wapPayRequest)
@@ -314,7 +314,7 @@ export default {
 			const [err, res] = await uni.requestPayment(params)
 			if (err || (res && res.resultCode === '6001')) {
 				this.$toast('用户取消支付')
-				this.paymentAliPayThawMoney()
+				this.paymentCancelPay()
 				return
 			}
 			this.$toast('租车成功！')
@@ -357,13 +357,13 @@ export default {
 			if (err) return
 			this.$toast('撤销免押成功！')
 		},
-		//  支付宝-免押资金解冻
-		async paymentAliPayThawMoney() {
+		// 支付宝-免押资金解冻
+		async paymentCancelPay() {
 			const params = {
 				orderSn: this.list[this.touchIndex].orderSn,
 				amount: Number(this.list[this.touchIndex].rentalDeposit)
 			}
-			const [err, res] = await paymentAliPayThawMoney(params)
+			const [err, res] = await paymentCancelPay(params)
 			if (err) return
 			this.$toast('支付失败！')
 		},
