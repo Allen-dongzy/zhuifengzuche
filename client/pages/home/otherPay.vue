@@ -10,8 +10,8 @@
 		</view>
 		<!-- 收费弹窗 -->
 
-		<view class="Mask" v-show="priceShow==true"></view>
-		<view class="box1" v-show="priceShow==true">
+		<view class="Mask" v-if="priceShow==true"></view>
+		<view class="box1" v-if="priceShow==true">
 			<view class="blackText" style="padding: 20rpx 0rpx;">款项选择</view>
 			<picker @change="cityPicker" :value="cityIndex" :range="cityList" :range-key="'name'" class="pickerBox">
 				<view v-if="!log1" class="pickerText">请选择</view>
@@ -88,17 +88,21 @@
 					allprice+=Number(this.list[i].price)
 				}
 				if(allprice!=0){
-				     uni.navigateTo({
-				      url:'./payCode?orderId='+this.orderId+'&price='+allprice+'&type='+1
-				     })
-				    }
-			
+
+					uni.navigateTo({
+						url:'./payCode?orderId='+this.orderId+'&price='+allprice+'&type='+1
+					})
+				}
 			}
 		}
 	}
 </script>
 
 <style>
+	page{
+		background-color: white;
+		height: 100vh;
+	}
 	.flexBox1 {
 		display: flex;
 		align-items: center;

@@ -1,47 +1,49 @@
 <template>
 	<view class="free-and-apply">
-		<view v-show="cacheCode==0 || cacheCode==2 || cacheCode==3 || cacheCode==4|| cacheCode==6" class="top">
-			<image v-show="cacheCode!==4" class="bg" :src="`${filePath}/payed.png`"></image>
-			<image v-show="cacheCode==4" class="bg" :src="`${filePath}/vehicleManage/error.png`"></image>
+		<view v-if="cacheCode==0 || cacheCode==2 || cacheCode==3 || cacheCode==4|| cacheCode==6" class="top">
+			<image v-if="cacheCode!==4" class="bg" :src="`${filePath}/payed.png`"></image>
+			<image v-if="cacheCode==4" class="bg" :src="`${filePath}/vehicleManage/error.png`"></image>
 			<view class="card">
 				<view class="card-content">
-					<view v-show="cacheCode==2" class="caption">已全额免押</view>
-					<view v-show="cacheCode==3" class="caption">已免押</view>
-					<view v-show="cacheCode==4" class="caption">免押失败</view>
-					<view v-show="cacheCode==6" class="caption">已收取</view>
+					<view v-if="cacheCode==2" class="caption">已全额免押</view>
+					<view v-if="cacheCode==3" class="caption">已免押</view>
+					<view v-if="cacheCode==4" class="caption">免押失败</view>
+					<view v-if="cacheCode==6" class="caption">已收取</view>
 					<view class="show-bar">
 						<text class="info">违章押金</text>
 						<text class="price">￥<text class="price-nums">{{info.illegalDeposit}}</text></text>
 					</view>
-					<view v-show="cacheCode==0" class="show-bar">
+					<view v-if="cacheCode==0" class="show-bar">
 						<text class="info">违章押金</text>
 						<text class="why">租押转违押</text>
 					</view>
 				</view>
 			</view>
 		</view>
-		<view v-show="cacheCode==1 || cacheCode==7" class="center">
-			<!-- <image class="qr-code" v-show="cacheCode==1" src="https://img1.baidu.com/it/u=2877499757,3239316825&fm=224&fmt=auto&gp=0.jpg"
+
+		<view v-if="cacheCode==1 || cacheCode==7" class="center">
+			<!-- <image class="qr-code" v-if="cacheCode==1" src="https://img1.baidu.com/it/u=2877499757,3239316825&fm=224&fmt=auto&gp=0.jpg"
 				mode="aspectFill"></image> -->
-			<image class="qr-code" v-show="cacheCode==7" :src="orderStatus.qrCode" mode="aspectFill"></image>
-			<view v-show="cacheCode==1" class="price">￥{{info.illegalDeposit}}</view>
-			<view v-show="cacheCode==7" class="price">￥{{info.makeUpAnIllegalDeposit}}</view>
-			<view v-show="cacheCode==1" class="btn">违章押金免押</view>
-			<view v-show="cacheCode==7" class="btn">违章押金</view>
+			<image class="qr-code" v-if="cacheCode==7" :src="orderStatus.qrCode" mode="aspectFill"></image>
+			<view v-if="cacheCode==1" class="price">￥{{info.illegalDeposit}}</view>
+			<view v-if="cacheCode==7" class="price">￥{{info.makeUpAnIllegalDeposit}}</view>
+			<view v-if="cacheCode==1" class="btn">违章押金免押</view>
+			<view v-if="cacheCode==7" class="btn">违章押金</view>
 		</view>
-		<view v-show="cacheCode==5" class="result">
+		<view v-if="cacheCode==5" class="result">
 			<image class="bg" :src="`${filePath}/payed.png`"></image>
 			<view class="caption">收车成功！</view>
 			<view class="sub-caption">请告知客户立即付款</view>
 		</view>
-		<view v-show="cacheCode==0" class="bottom-btn" @click="sure()">退还租押，收取违押</view>
-		<view v-show="cacheCode==1" class="bottom-btn" @click="depositType">查看是否免押</view>
-		<view v-show="cacheCode==2" class="bottom-btn" @click="close">关闭</view>
-		<view v-show="cacheCode==3" class="bottom-btn">收取剩余押金</view>
-		<view v-show="cacheCode==4" class="bottom-btn" @click="getyajing">收取押金</view>
-		<view v-show="cacheCode==5" class="bottom-btn" @click="getViolation">收取违章押金</view>
-		<view v-show="cacheCode==6" class="bottom-btn" @click="close">关闭</view>
-		<view v-show="cacheCode==7" class="bottom-btn" @click="lookMoney">查看是否到账</view>
+
+		<view v-if="cacheCode==0" class="bottom-btn" @click="sure()">退还租押，收取违押</view>
+		<view v-if="cacheCode==1" class="bottom-btn" @click="depositType">查看是否免押</view>
+		<view v-if="cacheCode==2" class="bottom-btn" @click="close">关闭</view>
+		<view v-if="cacheCode==3" class="bottom-btn">收取剩余押金</view>
+		<view v-if="cacheCode==4" class="bottom-btn" @click="getyajing">收取押金</view>
+		<view v-if="cacheCode==5" class="bottom-btn" @click="getViolation">收取违章押金</view>
+		<view v-if="cacheCode==6" class="bottom-btn" @click="close">关闭</view>
+		<view v-if="cacheCode==7" class="bottom-btn" @click="lookMoney">查看是否到账</view>
 	</view>
 </template>
 
@@ -105,7 +107,7 @@
 					reflect:this.payInfo,
 					orderId:this.info.orderId,
 					subject: '收款',
-					payway: 3,
+					payway: 2,
 					subPayway: 2,
 					totalAmount:this.info.makeUpAnIllegalDeposit,
 					// totalAmount: 0.01,
@@ -132,7 +134,11 @@
 	}
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
+	page{
+		background-color: white;
+		height: 100vh;
+	}
 	@import '@/static/scss/_mixin.scss';
 
 	.free-and-apply {

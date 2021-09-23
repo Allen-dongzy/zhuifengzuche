@@ -1,6 +1,6 @@
 <template>
 	<view class="manage">
-		<view class="home-bar" v-show="!searchMode">
+		<view class="home-bar" v-if="!searchMode">
 			<view class="add-label" @tap="goAdd">
 				新增+
 			</view>
@@ -15,10 +15,10 @@
 				</view>
 			</view>
 		</view>
-		<view class="search-bar" v-show="searchMode">
+		<view class="search-bar" v-if="searchMode">
 			<view class="serach-box">
 				<image class="search-icon" :src="`${filePath}/vehicleManage/search-big.png`"></image>
-				<input @input="onInput" v-model="searchVal" type="text" placeholder="请输入车型" placeholder-class="input">
+				<input @input="onInput" v-model="searchVal" type="text" placeholder="请输入车型" placeholder-class="input" style="background-color:#E6E6EA ;">
 				<image class="clear" :src="`${filePath}/vehicleManage/clear.png`"></image>
 			</view>
 			<view class="cancel" @tap="tapHeader">取消</view>
@@ -294,7 +294,6 @@
 	@import '@/static/scss/_mixin.scss';
 
 	.manage {
-
 		.home-bar,
 		.search-bar {
 			position: fixed;

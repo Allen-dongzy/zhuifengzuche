@@ -11,16 +11,17 @@
 			<view v-for="(item,index) in info.adminOrderVehicleInfoVoList" :key="index">
 				<view class="flexBox">
 					<view class="carName">{{item.vehicleNumber}}</view>
-					<image style="width: 80rpx;height: 40rpx;" :src="$util.fileUrl('/yizhifu.png')" mode="aspectFill"></image>
+					<image style="width: 80rpx;height: 40rpx;" :src="$util.fileUrl('/yizhifu.png')" mode="aspectFill">
+					</image>
 				</view>
 				<view class="flexBox" style="border-bottom:2rpx dashed #999999;padding-bottom: 30rpx;">
 					<view class="carType">{{item.modelName}}</view>
-					<image v-show="carShow==false" style="width: 30rpx;height: 20rpx;"
+					<image v-if="carShow==false" style="width: 30rpx;height: 20rpx;"
 						:src="$util.fileUrl('/xiangxia.png')" @click="getcarInfo" mode="aspectFill"></image>
-					<image v-show="carShow==true" style="width: 30rpx;height: 20rpx;"
+					<image v-if="carShow==true" style="width: 30rpx;height: 20rpx;"
 						:src="$util.fileUrl('/xiangshang.png')" @click="getcarInfo" mode="aspectFill"></image>
 				</view>
-				<view v-show="carShow==true" style="border-bottom:2rpx dashed #999999;padding-bottom: 30rpx;">
+				<view v-if="carShow==true" style="border-bottom:2rpx dashed #999999;padding-bottom: 30rpx;">
 					<view class="flexBox">
 						<view class="moreTitle">车身颜色</view>
 						<view class="moreContent">{{item.vehicleColour}}</view>
@@ -34,13 +35,13 @@
 
 
 			<view class="flexBox">
-				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/time.png')" mode=""></image>
+				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/time.png')" mode="aspectFill"></image>
 				<view class="">{{info.rentBeginTime.slice(0,10)}}至{{info.rentEndTime.slice(0,10)}}</view>
 			</view>
 
 			<view class="flexBox" v-if="info.endDeliveryName==info.startDeliveryName">
 				<view class="getset">取还</view>
-				<view class="address">郑家院子追风1店</view>
+				<view class="address">{{info.memberShopName}}</view>
 				<view class="otherBack">异地还车</view>
 				<switch disabled="true" class="switch" :class="(radio?'checked':'')" :checked="(radio?true:false)">
 				</switch>
@@ -62,16 +63,16 @@
 		<view class="box">
 			<view class="flexBox">
 				<view class="carName">{{info.userRealName}}</view>
-				<image v-show="peopleShow==false" style="width: 30rpx;height: 20rpx;"
+				<image v-if="peopleShow==false" style="width: 30rpx;height: 20rpx;"
 					:src="$util.fileUrl('/xiangxia.png')" @click="getpeopleInfo" mode="aspectFill"></image>
-				<image v-show="peopleShow==true" style="width: 30rpx;height: 20rpx;"
+				<image v-if="peopleShow==true" style="width: 30rpx;height: 20rpx;"
 					:src="$util.fileUrl('/xiangshang.png')" @click="getpeopleInfo" mode="aspectFill"></image>
 			</view>
 			<view class="flexBox">
 				<view class="moreContent" style="text-align: left;" @click="phone(info.userPhone)">联系电话</view>
 				<view class="moreContent" style="color:#5A7EFF ;" @click="phone">{{info.userPhone}}</view>
 			</view>
-			<view v-show="peopleShow==true">
+			<view v-if="peopleShow==true">
 				<view class="flexBox">
 					<view class="moreContent" style="text-align: left;">身份证号码</view>
 					<view class="moreContent">{{info.userIdCard}}</view>
@@ -88,17 +89,20 @@
 				<view class="flexBox">
 					<view class="moreContent" style="text-align: left;width: 43%;">违章</view>
 					<view class="moreContent" style="width: 55%;">{{info.breakRulesString}}</view>
-					<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode="aspectFill"></image>
+					<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode="aspectFill">
+					</image>
 				</view>
 				<view class="flexBox">
 					<view class="moreContent" style="text-align: left;width: 43%;">事故</view>
 					<view class="moreContent" style="width: 55%;">{{info.accidentString}}</view>
-					<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode="aspectFill"></image>
+					<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode="aspectFill">
+					</image>
 				</view>
 				<view class="flexBox">
 					<view class="moreContent" style="text-align: left;width: 43%;">其他</view>
 					<view class="moreContent" style="width: 55%;">{{info.otherString}}</view>
-					<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode="aspectFill"></image>
+					<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode="aspectFill">
+					</image>
 				</view>
 			</view>
 		</view>
@@ -109,9 +113,11 @@
 				<view class="moreTitle">租金押金</view>
 				<view class="moreTitle" style="width: 21%;" v-if="info.depositType==1">未免押</view>
 				<view class="moreTitle" style="width: 21%;" v-else>全额免押</view>
-				<view  class="moreContent" style="width: 20%;text-align: center;">¥{{info.rentalDeposit}}</view>
-				<view v-if="info.isPaymentRentalDeposit==0" class="moreContent" style="width: 15%;color: #5A7EFF;">未缴</view>
-				<view v-if="info.isPaymentRentalDeposit==1" class="moreContent" style="width: 15%;color: #5A7EFF;">已缴</view>
+				<view class="moreContent" style="width: 20%;text-align: center;">¥{{info.rentalDeposit}}</view>
+				<view v-if="info.isPaymentRentalDeposit==0" class="moreContent" style="width: 15%;color: #5A7EFF;">未缴
+				</view>
+				<view v-if="info.isPaymentRentalDeposit==1" class="moreContent" style="width: 15%;color: #5A7EFF;">已缴
+				</view>
 			</view>
 			<view class="flexBox">
 				<view class="moreTitle" style="width: 65%;">租金总计</view>
@@ -120,12 +126,12 @@
 				<view v-if="info.payStatus==1" class="moreContent" style="width: 15%;color: #5A7EFF;">已支付</view>
 				<view v-else class="moreContent" style="width: 15%;color: #5A7EFF;">未支付</view>
 			</view>
-			<view class="flexBox" v-show="moneyShow==false">
+			<view class="flexBox" v-if="moneyShow==false">
 				<view class="moreContent" style="width: 93%;color: #5A7EFF;">展开明细</view>
-				<image v-show="moneyShow==false" style="width: 30rpx;height: 20rpx;margin-left: 10rpx;"
+				<image v-if="moneyShow==false" style="width: 30rpx;height: 20rpx;margin-left: 10rpx;"
 					:src="$util.fileUrl('/xiangxia.png')" @click="getmoneyInfo" mode="aspectFill"></image>
 			</view>
-			<view v-show="moneyShow==true" style="border-top:2rpx dashed #999999;margin-top: 20rpx;">
+			<view v-if="moneyShow==true" style="border-top:2rpx dashed #999999;margin-top: 20rpx;">
 				<view class="flexBox" v-for="(item,index) in info.orderPriceList" :key='index'>
 					<view class="moreTitle">{{item.name}}</view>
 					<view class="moreContent">¥{{item.price}}</view>
@@ -145,13 +151,13 @@
 				<view class="moreTitle">发票抬头</view>
 				<view class="moreTitle" style="width: 43%;text-align: right;" v-if="info.isInvoice==1">需要</view>
 				<view class="moreTitle" style="width: 43%;text-align: right;" v-else>不需要</view>
-				<image v-show="invoiceShow==false" style="width: 30rpx;height: 20rpx;margin-left: 10rpx;"
+				<image v-if="invoiceShow==false" style="width: 30rpx;height: 20rpx;margin-left: 10rpx;"
 					:src="$util.fileUrl('/xiangxia.png')" @click="getinvoiceInfo" mode="aspectFill"></image>
-				<image v-show="invoiceShow==true" style="width: 30rpx;height: 20rpx;margin-left: 10rpx;"
+				<image v-if="invoiceShow==true" style="width: 30rpx;height: 20rpx;margin-left: 10rpx;"
 					:src="$util.fileUrl('/xiangshang.png')" @click="getinvoiceInfo" mode="aspectFill"></image>
 			</view>
-			<view v-show="info.isInvoice==1">
-				<view v-show="invoiceShow==true">
+			<view v-if="info.isInvoice==1">
+				<view v-if="invoiceShow==true">
 					<view class="flexBox" style="border-top:2rpx dashed #EFF0F3;padding-top: 30rpx;">
 						<view class="moreTitle">发票抬头</view>
 						<view class="moreContent">{{info.invoiceTitle}}</view>
@@ -195,7 +201,8 @@
 			<view class="flexBox">
 				<view class="moreTitle">下单时间</view>
 				<view class="moreContent" style="width:56%">{{info.createTime}}</view>
-				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode="aspectFill"></image>
+				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode="aspectFill">
+				</image>
 			</view>
 			<view class="flexBox">
 				<view class="moreTitle">所属门店</view>
@@ -209,31 +216,33 @@
 				placeholder="请输入备注信息" disabled="true" />
 		</view>
 		<!-- 换车 -->
-<!-- 		<view class="flexBox" v-show="type==5 || type==1">
+		<!-- <view class="flexBox" v-if="type==5 || type==1">
 			<image style="width: 40rpx;height: 40rpx;margin-left: 80%;" :src="$util.fileUrl('/huanche.png')"></image>
 			<view class="moreContent" style="width: 10%;color: #5A7EFF;" @click="changeCar(info)">换车</view>
 		</view> -->
-		<view class="flexBox" v-show="type==100">
-			<view class="moreContent" style="width: 20%;color: #5A7EFF;margin-left: 55%;" @click="violation(1)">查看违章</view>
-			<view class="moreContent" style="width: 20%;color: #5A7EFF;" @click="violation(2)">添加违章</view>
-		</view>
-		<!-- 联系客户和出车检验 -->
-		<view class="flexBox" style="width: 90%;margin: 60rpx auto 30rpx auto;">
-			<image style="width: 32rpx;height: 32rpx;" :src="$util.fileUrl('/phone@2x.png')" @click="phone(info.userPhone)"></image>
+		<view class="flexBox" v-if="type==100">
+		<view class="moreContent" style="width: 20%;color: #5A7EFF;margin-left: 55%;" @click="violation(1)">查看违章</view>
+		<view class="moreContent" style="width: 20%;color: #5A7EFF;" @click="violation(2)">添加违章</view>
+	</view>
+	<!-- 联系客户和出车检验 -->
+	<view class="flexBox" style="width: 90%;margin: 60rpx auto 30rpx auto;">
+			<image style="width: 32rpx;height: 32rpx;" mode="aspectFill" :src="$util.fileUrl('/phone@2x.png')"
+				@click="phone(info.userPhone)"></image>
 			<view style="color: #FFA05B;font-size: 24rpx;margin-left: 10rpx;">联系客户</view>
 			<view style="width: 75%;display: flex;align-items: center;justify-content: flex-end;">
-				<view v-show="type==5" class="lanbox" @click="deliverCar(2)">交车情况</view>
-				<view v-show="type==100" class="lanbox" @click="shoucheInfo">收车情况</view>
-				<!-- <view v-show="type==100" class="lanbox">结算佣金</view> -->
-				<view v-show="type==1" class="lanbox"  @click="goInspect()">出车检验</view>
-				<view v-show="type==5 && info.orderStatus==5" class="lanbox" @click="jianyanshouche"
-					:disabled="info.isPaymentIllegalDeposit==1">检验收车</view>
-				<view :disabled="info.isVehicleCertificates==true" v-show="type==1" @click="deliverCar(1)"
-					class="lanbox">交付车辆</view>
-				<view v-show="type==100" class="lanbox1" @click="backMoney">退还押金</view>
+
+				<view v-if="type==5" class="lanbox" @click="deliverCar(2)">交车情况</view>
+				<view v-if="type==100" class="lanbox" @click="shoucheInfo">收车情况</view>
+				<!-- <view v-if="type==100" class="lanbox">结算佣金</view> -->
+			<view v-if="type==1" class="lanbox" @click="goInspect()">出车检验</view>
+			<view v-if="type==5 && info.orderStatus==5" class="lanbox" @click="jianyanshouche" :disabled="info.isPaymentIllegalDeposit==1">
+				检验收车</view>
+			<view :disabled="info.isVehicleCertificates==true" v-if="type==1" @click="deliverCar(1)" class="lanbox">交付车辆
 			</view>
-			<!-- 待支付 按钮都不要    已取消 按钮都不要    已完成  100 结算 收车 退还      待收车 5 交车 检验       待送车 1 出车 交付-->
-		</view>
+			<view v-if="type==100" class="lanbox1" @click="backMoney">退还押金</view>
+	</view>
+	<!-- 待支付 按钮都不要    已取消 按钮都不要    已完成  100 结算 收车 退还      待收车 5 交车 检验       待送车 1 出车 交付-->
+	</view>
 	</view>
 </template>
 
@@ -255,7 +264,7 @@
 				type: '', //订单类型
 			}
 		},
-		
+
 		onLoad(e) {
 			console.log(e)
 			this.orderInfo(e.id)
@@ -305,16 +314,16 @@
 				});
 			},
 			changeCar(e) {
-				
+
 				uni.navigateTo({
-					url: './changeCar?obj='+JSON.stringify(this.info),
+					url: './changeCar?obj=' + JSON.stringify(this.info),
 					animationDuration: 200,
 					animationType: 'pop-in'
 				})
 			},
 			//出车检验
 			goInspect() {
-				if(this.info.isCarTest==true){
+				if (this.info.isCarTest == true) {
 					return false;
 				}
 				let data = {
@@ -369,7 +378,7 @@
 					url: './inspectionCollect?obj=' + JSON.stringify(data)
 				})
 			},
-			shoucheInfo(){
+			shoucheInfo() {
 				let data = {
 					order: this.info.id,
 				}
@@ -378,23 +387,33 @@
 					url: './inspectionCollectInfo?obj=' + JSON.stringify(data)
 				})
 			},
-			violation(e){
-				if(e==1){
+			violation(e) {
+				var URI=""
+				if(JSON.stringify(this.info).indexOf('%') > -1) {
+					  console.log(URI)
+					  
+				    URI =  JSON.stringify(this.info).replace(/%/g,'%25')
+					   console.log(URI)
+				  }else{
+					  URI =  JSON.stringify(this.info)
+				  }
+				  
+				if (e == 1) {				  
 					uni.navigateTo({
-						url:'./violation?obj='+JSON.stringify(this.info)
+						url: './violation?obj=' + URI
 					})
-				}else{
+				} else {
 					uni.navigateTo({
-						url:'./violationAdd?type=1&obj='+JSON.stringify(this.info)
+						url: './violationAdd?type=1&obj=' + URI
 					})
 				}
 			},
-		async	backMoney(){
-				const [err,res]=await refundOfIllegalDeposit(this.info.id)
-				if(err) return
+			async backMoney() {
+				const [err, res] = await refundOfIllegalDeposit(this.info.id)
+				if (err) return
 				this.$toast('退还成功')
 			},
-			
+
 		}
 	}
 </script>

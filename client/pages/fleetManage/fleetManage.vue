@@ -8,11 +8,11 @@
 			<view class="flex">
 				<view class="flex screen" @click="showModal" data-target="DrawerModalR">
 					<p>筛选</p>
-					<text class="cuIcon-unfold"></text>
+					<image style="width:28rpx;height:28rpx;" :src="$util.fileUrl('/loudou.png')" mode="aspectFill"></image>
 				</view>
 				<view class="flex search" @click="search">
 					<p>搜索</p>
-					<text class="cuIcon-search"></text>
+					<image style="width:28rpx;height:28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode="aspectFill"></image> 
 				</view>
 			</view>
 		</view>
@@ -27,15 +27,17 @@
 				</view>
 				<p class="text">{{item.brandName}}丨{{item.gears}} {{item.capacity}}座 {{item.outputVolumeName}}</p>
 				<view class="flex detail">
-					<p class="oil" v-if="item.oil!=null">油量：62%</p>
+					<p class="oil" v-if="item.oil!=null">油量：{{item.oil*10}}%</p>
 					<p class="car">车龄：{{item.carAge}}</p>
 				</view>
 				<view v-if="item.vehicleStatus==3" class="flex-center line">
 					<i></i>
 				</view>
+
 				<p class="name" v-if="item.vehicleStatus==3">使用人：{{item.customerName}}</p>
+				
 				<view class="flex timeText" v-if="item.vehicleStatus>2">
-					<text class="cuIcon-countdown"></text>
+					<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/time.png')" mode="aspectFill"></image>
 					<p>{{item.rentBeginTime}} 至 {{item.rentEndTime}}</p>
 				</view>
 			</view>

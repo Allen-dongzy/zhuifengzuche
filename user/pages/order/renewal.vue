@@ -8,8 +8,8 @@
 			<image class="day" style="margin-left: 20%" :src="`${ossUrl}/common/icon-time.png`" mode="aspectFill">
 			</image>
 			<view class="dayTime">
-				<picker mode="time" @change="timeHandler" :start="startDate" :end="endDate" class="pickerBox">
-					<label class="pickerText">{{timeShow || '选择时间'}}</label>
+				<picker mode="time" @change="timeHandler" class="pickerBox">
+					<view class="pickerText">{{timeShow || '选择时间'}}</view>
 				</picker>
 			</view>
 		</view>
@@ -98,14 +98,6 @@
 				priceList: [], // 费用列表
 				reflect: {}, // 付费回调
 				mode: '', // 模式
-			}
-		},
-		computed: {
-			startDate() {
-				return this.getDate('start');
-			},
-			endDate() {
-				return this.getDate('end');
 			}
 		},
 		filters: {
@@ -197,25 +189,47 @@
 			},
 			// 授权
 			getCodeByWxCode: throttle(async function() {
+				// #ifdef MP-WEIXIN
+				const provider = 'weixin'
+				// #endif
+				
+				// #ifdef MP-ALIPAY
+				const provider = 'alipay'
+				// #endif
 				const [loginErr, loginRes] = await uni.login({
-					provider: 'weixin'
+					provider
 				})
 				if (loginErr) return
 				const params = {
 					code: loginRes.code,
+					// #ifdef MP-WEIXIN
 					loginType: 1
+					// #endif
+					// #ifdef MP-ALIPAY
+					loginType: 2
+					// #endif
 				}
 				const [err, res] = await getCodeByWxCode(params)
 				if (err) return
+				// #ifdef MP-WEIXIN
 				this.paymentPrecreate(res.data.openid)
+				// #endif
+				// #ifdef MP-ALIPAY
+				this.paymentPrecreate(res.data.user_id)
+				// #endif
 			}),
 			// 发起支付
-			async paymentPrecreate(openId) {
+			async paymentPrecreate(payerUid) {
 				const params = {
 					reflect: this.reflect,
 					orderId: this.orderId,
-					payerUid: openId,
+					payerUid,
+					// #ifdef MP-WEIXIN
 					payway: '3',
+					// #endif
+					// #ifdef MP-ALIPAY
+					payway: '2',
+					// #endif
 					subPayway: '4',
 					subject: '续租',
 					totalAmount: this.totalPrice
@@ -226,11 +240,20 @@
 			},
 			// 支付
 			async pay(wapPayRequest) {
-				const [err, res] = await uni.requestPayment({
+				const params = {
+					// #ifdef MP-WEIXIN
 					provider: 'wxpay',
+					// #endif
+					// #ifdef MP-ALIPAY
+					provider: 'alipay',
+					// #endif
 					...wapPayRequest
-				})
-				if (err) return
+				}
+				const [err, res] = await uni.requestPayment(params)
+				if (err || (res && res.resultCode === '6001')) {
+					this.$toast('用户取消支付')
+					return
+				}
 				this.$toast('续租成功！')
 				if (this.mode === 'order') uni.$emit('orderRefresh')
 				if (this.mode === 'orderDetail') uni.$emit('orderDetailRefresh')
@@ -241,6 +264,7 @@
 			// 获取当前日期
 			getDate(type) {
 				const date = new Date();
+				console.log(date)
 				let year = date.getFullYear();
 				let month = date.getMonth() + 1;
 				let day = date.getDate();
@@ -250,8 +274,9 @@
 				} else if (type === 'end') {
 					year = year + 2;
 				}
-				month = month > 9 ? month : '0' + month;;
+				month = month > 9 ? month : '0' + month;
 				day = day > 9 ? day : '0' + day;
+				console.log(year)
 				return `${year}-${month}-${day}`;
 			},
 		}

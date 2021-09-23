@@ -4,8 +4,8 @@
 			<view class="title">事故类型</view>
 			<view class="flexBox" style="padding: 0rpx;">
 				<view v-for="(item,index) in list" class="flexBox" style="margin-right: 10%;" @click="select(index)">
-					<image v-show="item.status==true" style="width: 32rpx;height: 32rpx;margin-left: 5rpx;" :src="$util.fileUrl('/quanxian1.png')"  mode="aspectFill"></image>
-					<image v-show="item.status==false" style="width: 32rpx;height: 32rpx;margin-left: 5rpx;" :src="$util.fileUrl('/quanxian2.png')"  mode="aspectFill"></image>
+					<image v-if="item.status==true" style="width: 32rpx;height: 32rpx;margin-left: 5rpx;" :src="$util.fileUrl('/quanxian1.png')"  mode="aspectFill"></image>
+					<image v-if="item.status==false" style="width: 32rpx;height: 32rpx;margin-left: 5rpx;" :src="$util.fileUrl('/quanxian2.png')"  mode="aspectFill"></image>
 					<view style="margin-left: 10rpx;">{{item.name}}</view>
 				</view>
 			</view>
@@ -125,7 +125,8 @@
 			},
 			endTime: function(e) {
 				this.log1=true
-				this.enddate = e.target.value+' 00:00:00'
+				console.log(e)
+				this.enddate = e.target.value.replace(/\//g,'-')+' 00:00:00'
 			},
 			getDate(type) {
 				const date = new Date();

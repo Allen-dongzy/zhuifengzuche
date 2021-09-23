@@ -68,7 +68,7 @@
 			<view class="blackText" style="width: 10%;">备注</view>
 			<view class="garyText">请添加备注&上传车辆其他的照片</view>
 		</view>
-		<textarea v-model="mark" placeholder="请输入备注信息"
+		<textarea :adjust-position="true" v-model="mark" placeholder="请输入备注信息"
 			style="padding: 20rpx;width: 90%;margin: auto;background-color: #EFF0F3;height:220rpx;border-radius: 20rpx;margin-top: 30rpx;" />
 
 		<view style="width: 90%;margin: auto;padding-bottom: 20rpx;border-bottom: 2rpx solid #EFF0F3;">
@@ -176,6 +176,12 @@
 			this.info = JSON.parse(e.obj)
 			this.getInfo()
 		},
+		mounted() {
+		            let inputEle = document.querySelector('.textarea textarea')    
+		            inputEle.addEventListener('blur',function(){    
+		                document.body.scrollIntoView()    
+		            })    
+		        },
 		methods: {
 			okSome(e){
 				this.goInspectInfo.goodsList[e].condition=0
@@ -309,13 +315,15 @@
 							this.$toast("请勾选车辆设备")
 							return false;
 						}else if(this.goInspectInfo.goodsList[i].children[q].condition==1){
-						       if(this.goInspectInfo.goodsList[i].children[q].image==null){
-						        this.$toast("损坏部位请上传图片")
-						        return false;
-						       }
-						      }
+							if(this.goInspectInfo.goodsList[i].children[q].image==null){
+								this.$toast("损坏部位请上传图片")
+								return false;
+							}
+						}
 					}
 				}
+				
+		
 				
 				let mark = {
 					image: JSON.stringify(this.imgList),
@@ -467,6 +475,7 @@
 		height: 100vh;
 		width: 100%;
 		top: 0px;
+		z-index: 99;
 	}
 
 	.box1 {
@@ -476,6 +485,7 @@
 		background-color: white;
 		top: 30vh;
 		left: 10%;
+		z-index: 99;
 	}
 
 	.lanbox {

@@ -63,10 +63,10 @@
 </script>
 
 <style>
-	page {
-		background-color: #EFF0F3;
-	}
-
+page {
+  background-color: #FFFFFF;
+  height: 100vh;
+}
 	.box {
 		width: 90%;
 		margin: auto;

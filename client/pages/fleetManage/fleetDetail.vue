@@ -23,10 +23,10 @@
 			<view class="flex statusPanel">
 				<p class="status">状态</p>
 				<view class="flex statusText">
-					<p v-show="carInfo.vehicleStatus==1">正常</p>
-					<p v-show="carInfo.vehicleStatus==2">异常</p>
-					<p v-show="carInfo.vehicleStatus==3">租赁中</p>
-					<p v-show="carInfo.vehicleStatus==4">预留中</p>
+					<p v-if="carInfo.vehicleStatus==1">正常</p>
+					<p v-if="carInfo.vehicleStatus==2">异常</p>
+					<p v-if="carInfo.vehicleStatus==3">租赁中</p>
+					<p v-if="carInfo.vehicleStatus==4">预留中</p>
 					<!-- <text class="cuIcon-right"></text> -->
 				</view>
 			</view>
@@ -39,7 +39,7 @@
 			</view>
 			<view class="flex rentDetail" @click="lookinfo">
 				<p>详情</p>
-				<text class="cuIcon-right"></text>
+				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/heiyou.png')" mode="aspectFill"></image>
 			</view>
 		</view>
 		<view class="line"></view>
@@ -53,11 +53,11 @@
 					<p class="title">车身颜色</p>
 					<p class="text">{{carInfo.colour}}</p>
 				</view>
-				<view class="flex carText" v-show="carInfo.mileage!=null">
+				<view class="flex carText" v-if="carInfo.mileage!=null">
 					<p class="title">当前里程</p>
 					<p class="text">{{carInfo.mileage}}km</p>
 				</view>
-				<view class="flex carText" v-show="carInfo.oil!=null">
+				<view class="flex carText" v-if="carInfo.oil!=null">
 					<p class="title">当前油量</p>
 					<p class="text">{{carInfo.oil}}%</p>
 				</view>
@@ -161,8 +161,8 @@
 			@click="next">编辑</button>
 
 		<!-- 租凭计划弹框 -->
-		<view class="mask" v-show="planShow==true" @click="lookinfo()"></view>
-		<view class="frame" v-show="planShow==true">
+		<view class="mask" v-if="planShow==true" @click="lookinfo()"></view>
+		<view class="frame" v-if="planShow==true">
 			<view class="carName">
 				<view class="buleLine"> </view>
 				<view class="">
@@ -171,11 +171,11 @@
 			</view>
 			<view class="statusBox">
 				<view v-for="(item,index) in list" class="frameBox">
-					<view v-show="item.planStatus==1" class="frameTitle">已预定</view>
-					<view v-show="item.planStatus==2" class="frameTitle">租赁中</view>
-					<view v-show="item.planStatus==3" class="frameTitle">预留</view>
-					<view v-show="item.planStatus==4" class="frameTitle">客户使用</view>
-					<view v-show="item.planStatus==5" class="frameTitle">证件过期</view>
+					<view v-if="item.planStatus==1" class="frameTitle">已预定</view>
+					<view v-if="item.planStatus==2" class="frameTitle">租赁中</view>
+					<view v-if="item.planStatus==3" class="frameTitle">预留</view>
+					<view v-if="item.planStatus==4" class="frameTitle">客户使用</view>
+					<view v-if="item.planStatus==5" class="frameTitle">证件过期</view>
 					<view class="frameTime">{{item.planStartTime.slice(0,16)}}至{{item.planEndTime.slice(0,16)}}</view>
 				</view>
 			</view>

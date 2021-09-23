@@ -1,9 +1,15 @@
 <template>
 	<view class="">
 		<view class="box">
+			
 			<view class="flexBox" >
 				<view class="blackText">违章时间</view>
-					<xp-picker style="width: 65%;text-align: right;" mode="ymdhi" @confirm="confirm">{{time==""?'请选择时间':time}}</xp-picker>
+					<view style="width: 63%;text-align: right;" @click="dateOpen('hopeBeginTime', hopeBeginTime)">
+					    <text class="text1" v-if="hopeBeginTime">{{ hopeBeginTime }}</text>
+					    <text class="text1 color3" v-else>请选择</text>
+					</view>
+					<my-datetime ref="dateTimePop" @ok="timeOk"></my-datetime>
+					
 					<image style="width: 40rpx;height: 40rpx;margin-left: 5rpx;" :src="$util.fileUrl('/daytime.png')" @click="getcarInfo" mode="aspectFill"></image>
 			</view>
 			<view class="flexBox" >
@@ -55,12 +61,18 @@
 </template>
 
 <script>
-	
+	import myDatetime from '@/components/my-datetime/my-datetime'
 	import {uploadFiles} from '@/apis/oss';
 	import {breakRulesInsert,breakRulesUpdate}from '@/apis/breakRules'
 	export default {
+		    components: {
+		      'my-datetime': myDatetime
+		    },
 		data() {
 			return {
+				  hopeBeginTime: '',
+				                dateKey: '',
+								
 				time:'',
 				place:'',
 				behavior:'',
@@ -82,7 +94,7 @@
 				this.info=JSON.parse(e.obj)
 			}else{
 				this.info=JSON.parse(e.obj)
-				this.time=JSON.parse(e.obj).rulesTime
+				this.hopeBeginTime=JSON.parse(e.obj).rulesTime
 				this.place=JSON.parse(e.obj).rulesAddress
 				this.behavior=JSON.parse(e.obj).rulesName
 				this.authority=JSON.parse(e.obj).gatherOffice
@@ -95,13 +107,20 @@
 				
 		},
 		methods: {
-			show() {
-				this.$refs.picker.show()
-			},
-			confirm(e) {
-				console.log(e)
-				this.time=e.value+":00"
-			},
+			  // 开启弹窗
+			        dateOpen (key, date) {
+			            this.dateKey = key
+			            this.$refs.dateTimePop.open(date || '');
+			        },
+			        // 关闭弹窗
+			        timeOk (str, obj) {
+			            console.log(str, obj)
+			            this[this.dateKey] = str || ''
+			        },
+					
+					
+
+	
 			getImg(e) {
 				uni.chooseImage({
 					count: 1,
@@ -126,7 +145,7 @@
 		async	next(){
 			if(this.type==1){
 				let data={
-					rulesTime:this.time,
+					rulesTime:this.hopeBeginTime,
 					rulesAddress:this.place,
 					rulesName:this.behavior,
 					gatherOffice:this.authority,
@@ -147,7 +166,7 @@
 				}, 800)
 			}else{
 				let data={
-					rulesTime:this.time,
+					rulesTime:this.hopeBeginTime,
 					rulesAddress:this.place,
 					rulesName:this.behavior,
 					gatherOffice:this.authority,

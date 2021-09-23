@@ -6,7 +6,8 @@ import {
 } from '@/apis/regionCity'
 import ChinesePY from '@/utils/ChinesePY.min'
 import {
-	toast
+	toast,
+	showModal
 } from '@/utils/uni-tools'
 
 const city = {
@@ -131,7 +132,15 @@ const city = {
 			// 获取位置
 			const [locationErr, locationRes] = await uni.getLocation()
 			if (locationErr) {
-				toast(locationErr.errMsg)
+				const [err, res] = await uni.getSetting()
+				if (res.authSetting['scope.userLocation'] === false) {
+					const [btnErr, btnRes] = await showModal({
+						content: '位置权限未打开，是否打开位置权限？'
+					})
+					if (btnRes === 'confirm') uni.openSetting()
+				} else {
+					toast(locationErr.errMsg)
+				}
 				return
 			}
 			// 获取城市信息

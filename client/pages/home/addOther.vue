@@ -8,7 +8,7 @@
 						<view v-if="!log1" class="pickerText">请选择</view>
 						<view v-else class="pickerText">{{enddate}}</view>
 					</picker>
-				</view>
+				</view>   
 				<view style="width:10%;">
 					<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode="aspectFill"></image>
 				</view>
@@ -104,7 +104,7 @@
 			},
 			endTime(e) {  
 				this.log1 = true
-				this.enddate = e.target.value+' 00:00:00'
+				this.enddate = e.target.value.replace(/\//g,'-')+' 00:00:00'
 			},
 			getDate(type) {
 				const date = new Date();

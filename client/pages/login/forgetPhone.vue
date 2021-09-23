@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view class="topimg">
-			<image class="loginBox" :src="$util.fileUrl('/logo.png')"></image>
+			<image class="loginBox" :src="$util.fileUrl('/logo.png')" mode="aspectFill"></image>
 		</view>
 		<view class="topimg2">
 			<image style="height:544rpx;width: 544rpx;" :src="$util.fileUrl('/loginbg.png')" mode="aspectFill"></image>
@@ -10,7 +10,8 @@
 
 			<input style="background-color: #EFF0F3;
     width: 90%;
-    margin: auto;
+	margin-left: 5%;
+	font-size: 24rpx;
     height: 96rpx;
     border-radius: 10rpx;padding-left: 20rpx;" type="text" v-model="phone" placeholder="请输入手机号" />
 
@@ -26,13 +27,17 @@
 			<view class="textTitle">{{codeText}}</view>
 
 			<view class="moreInpbox">
-				<view style="width: 90%;">
-					<input :type="inpType" v-model="password1" placeholder="请输入密码" class="inpBox" style="width: 95%;" />
+				<view style="width: 90%;" v-if="showpass==false">
+					<input type="password" password v-model="password1" placeholder="请输入密码" class="inpBox" style="width: 95%;" />
+				</view>
+				
+				<view style="width: 90%;" v-if="showpass==true">
+					<input type="text" v-model="password1" placeholder="请输入密码" class="inpBox" style="width: 95%;" />
 				</view>
 
-				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
+				<image v-if="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
 					mode="aspectFill" @click="look"></image>
-				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
+				<image v-if="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
 					mode="aspectFill" @click="look"></image>
 
 			</view>
@@ -40,12 +45,21 @@
 			<view class="textTitle">{{password}}</view>
 
 			<view class="moreInpbox">
-				<view style="width: 90%;">
-					<input v-model="password2" :type="inpType1" placeholder="请确认密码" class="inpBox" style="width: 95%;">
+	
+				
+				<view style="width: 90%;" v-if="showpass1==false">
+					<input type="password" password v-model="password2" placeholder="请确认密码" class="inpBox" style="width: 95%;" />
 				</view>
-				<image v-show="showpass1==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
+				
+				<view style="width: 90%;" v-if="showpass1==true">
+					<input type="text" v-model="password2" placeholder="请确认密码" class="inpBox" style="width: 95%;" />
+				</view>
+				
+				
+				
+				<image v-if="showpass1==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
 					mode="aspectFill" @click="look1"></image>
-				<image v-show="showpass1==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
+				<image v-if="showpass1==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
 					mode="aspectFill" @click="look1"></image>
 
 			</view>
@@ -101,16 +115,16 @@
 		methods: {
 
 			updatePassword: throttle(async function() {
-				if(this.code==""){
+				if (this.code == "") {
 					this.$toast('请输入验证码')
 					return false;
-				}else if(this.phone==""){
+				} else if (this.phone == "") {
 					this.$toast('请输入手机号')
 					return false;
-				}else if(this.password1==""){
+				} else if (this.password1 == "") {
 					this.$toast('请输入密码')
 					return false;
-				}else if(this.password2==""){
+				} else if (this.password2 == "") {
 					this.$toast('请输入确认密码')
 					return false;
 				}
@@ -164,7 +178,7 @@
 					this.inpType = 'password'
 				} else {
 					this.showpass = true
-					this.inpType = 'number'
+					this.inpType = 'text'
 				}
 			},
 			look1() {
@@ -174,7 +188,7 @@
 					this.inpType1 = 'password'
 				} else {
 					this.showpass1 = true
-					this.inpType1 = 'number'
+					this.inpType1 = 'text'
 				}
 			},
 		}
@@ -190,7 +204,6 @@
 
 	.content {
 		background-color: #5A7EFF;
-		height: 100vh;
 		width: 100%;
 	}
 

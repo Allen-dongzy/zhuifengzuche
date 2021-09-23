@@ -5,17 +5,18 @@
 				<view class="flex screen" style="text-align: left" @click="showModal" data-target="DrawerModalR">
 					<image style="height: 28rpx;width: 28rpx;" :src="$util.fileUrl('/loudou.png')" mode="aspectFill"></image>
 					<p style="margin-left: 20rpx;">筛选</p>
-					<text class="cuIcon-unfold"></text>
+					<!-- <text class="cuIcon-unfold"></text> -->
 				</view>
 				<view class="flex search" style="text-align: right" @click="showSearch">
 					<p style="margin-left: 61%;">搜索</p>
-					<text class="cuIcon-search"></text>
+					<image style="width:28rpx;height:28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode="aspectFill"></image> 
 				</view>
 			</view>
 		</view>
 		
 		<!-- 搜索 -->
 		<view class="topNav" style="color: #8E8E93;font-size: 30rpx;" v-if="search==true">
+
 			<input 
 			@input="onInput"
 			v-model="searchVal"
@@ -74,12 +75,13 @@
 						<view style="font-size: 28rpx;margin-top: 40rpx;">{{item.carNumber}}</view>
 						<view style="margin-top: 12rpx;">{{item.brandName}} {{item.modelName}}</view>
 						<view class="flexBox">
-							<view class="iconBox"  v-for="(itemy,indexy) in item.platformVoList" v-show="itemy.thirdStatus==1" >{{itemy.thirdName}}</view>
+							<view class="iconBox"  v-for="(itemy,indexy) in item.platformVoList" v-if="itemy.thirdStatus==1" >{{itemy.thirdName}}</view>
 						</view>
 					</view>
 				</view>
 	</view>
 </template>
+
 
 <script>
 	import {
@@ -91,6 +93,7 @@
 	import {
 		debounce
 	} from '@/utils/tools';
+
 	export default {
 		data() {
 			return {
@@ -132,13 +135,12 @@
 				searchVal:''
 			}
 		},
-		onLoad() {
-		
-		},
+
 		onShow() {
 			this.otaPageQuery()	
 			this.getBrand()
 		},
+
 		methods: {
 			onInput: debounce(async function() {
 				let data = {
@@ -230,6 +232,7 @@
 				console.log(res)
 				this.$toast('查询成功')
 				this.carList = res.data.list
+
 			},
 			showSearch() {
 				if (this.search) {

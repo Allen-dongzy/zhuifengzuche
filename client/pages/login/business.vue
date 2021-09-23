@@ -25,16 +25,25 @@
 
 
 			<view class="fromTitel">姓名</view>
-			<input class="inpBox" v-model="name" maxlength="10" type="text" placeholder="请填写姓名" />
+			<view class="alibox">
+				<input class="inpBox" style="width: 100%;" v-model="name" maxlength="10" type="text" placeholder="请填写姓名" />
+			</view>
+			
 
 
 
 			<view class="fromTitel">身份证号码 </view>
-			<input class="inpBox" v-model="idCard" maxlength="18" type="text" placeholder="请填写身份证号码" />
+			<view class="alibox">
+				<input class="inpBox" style="width: 100%;" v-model="idCard" maxlength="18" type="text" placeholder="请填写身份证号码" />
+			</view>
+			
 
 
 			<view class="fromTitel">手机号</view>
-			<input class="inpBox" v-model="phone" maxlength="11" type="text" placeholder="请填写手机号码" />
+			<view class="alibox">
+				<input class="inpBox" style="width: 100%;" v-model="phone" maxlength="11" type="text" placeholder="请填写手机号码" />
+			</view>
+			
 
 
 
@@ -50,18 +59,24 @@
 
 
 			<view class="fromTitel">邮箱</view>
-			<input class="inpBox" v-model="email" maxlength="50" type="text" placeholder="请填写邮箱" />
+			<view class="alibox">
+				<input style="width: 100%;" class="inpBox" v-model="email" maxlength="50" type="text" placeholder="请填写邮箱" />
+			</view>
+			
 
 
 
 			<view class="fromTitel">密码</view>
 			<view class="moreInpbox" style="margin-top: 20rpx;">
-				<view style="width: 90%;"><input v-model="password" maxlength="20" :type="inpType" class="inpBox"
+				<view style="width: 90%;" v-if="showpass==false"><input v-model="password" maxlength="20" password class="inpBox"
 						style="width: 95%;margin-top: 0rpx;" placeholder="请填写密码" /></view>
+				<view style="width: 90%;" v-if="showpass==true"><input v-model="password" maxlength="20"  class="inpBox"
+							style="width: 95%;margin-top: 0rpx;" placeholder="请填写密码" /></view>	
+						
 				<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
-				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
+				<image v-if="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
 					mode="aspectFill" @click="look"></image>
-				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
+				<image v-if="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
 					mode="aspectFill" @click="look"></image>
 				<!-- </view> -->
 			</view>
@@ -229,5 +244,8 @@
 		width: 90%;
 		margin: auto;
 		border-radius: 10rpx;
+	}
+	.alibox{
+		width: 90%;margin: auto
 	}
 </style>

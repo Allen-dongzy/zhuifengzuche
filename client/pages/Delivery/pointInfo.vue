@@ -60,13 +60,15 @@
 			},
 			mapSelect() {
 				// 打开位置
-				console.log(1)
+				console.log(this.obj)
 				console.log(parseFloat(this.obj.lat))
 				console.log(parseFloat(this.obj.lon))
 
 				 uni.openLocation({
 				            latitude:parseFloat(this.obj.lat),
 				            longitude:parseFloat(this.obj.lon),
+							name:this.obj.name,
+							address: this.obj.address,
 				            success: function (e) {
 								console.log(e)
 				                console.log('success');
@@ -82,6 +84,10 @@
 </script>
 
 <style>
+	page{
+		background-color: white;
+		height: 100vh;
+	}
 	.blueLine {
 		background-color: #5A7EFF;
 		width: 8rpx;

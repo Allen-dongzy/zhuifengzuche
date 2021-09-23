@@ -2,7 +2,7 @@
 	<view>
 		<view class="box">
 			
-	<view class="flexBoxContent" v-show="roles[0].id==1">
+	<view class="flexBoxContent" v-if="roles[0].id==1">
 		<view class="title">门店</view>
 		<view class="selectBox" @click="">
 			<view style="width: 85%;">
@@ -58,7 +58,7 @@
 			<view class="flexBox">
 				<view class="title">金额</view>
 				<view class="item">
-					<input class="inpBox" type="number" v-model="price" placeholder="请填写金额" />
+					<input class="inpBox" type="digit" v-model="price" placeholder="请填写金额" />
 				</view>
 			</view>
 			<view style="display: flex;margin-top: 30rpx;">

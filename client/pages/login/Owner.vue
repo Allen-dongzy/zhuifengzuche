@@ -18,17 +18,26 @@
 
 
 			<view class="fromTitel">姓名</view>
-			<input class="inpBox" v-model="name" maxlength="10" type="text" placeholder="请填写姓名" />
+			<view class="alibox">
+				<input class="inpBox"  style="width: 100%;" v-model="name" maxlength="10" type="text" placeholder="请填写姓名" />	
+			</view>
+			
 
 
 
 			<view class="fromTitel">身份证号码 </view>
-			<input class="inpBox" v-model="idCard" maxlength="18" type="text" placeholder="请填写身份证号码" />
+			<view class="alibox">
+				<input class="inpBox" style="width: 100%;" v-model="idCard" maxlength="18" type="text" placeholder="请填写身份证号码" />
+			</view>
+			
 
 
 
 			<view class="fromTitel">手机号</view>
-			<input class="inpBox" v-model="phone" maxlength="11" type="text" placeholder="请填写手机号码" />
+			<view class="alibox">
+				<input class="inpBox" style="width: 100%;" v-model="phone" maxlength="11" type="text" placeholder="请填写手机号码" />
+			</view>
+			
 
 
 
@@ -44,29 +53,39 @@
 
 
 			<view class="fromTitel">邮箱</view>
-			<input class="inpBox" v-model="email" maxlength="50" type="text" placeholder="请填写邮箱" />
+			
+			<view class="alibox">
+				<input class="inpBox" style="width: 100%;"  v-model="email" maxlength="50" type="text" placeholder="请填写邮箱" />
+			</view>
+			
 
 
 
 			<view class="fromTitel">密码</view>
 			<view class="moreInpbox">
-				<view style="width: 90%;"><input v-model="password" maxlength="20" :type="inpType" class="inpBox" style="width: 95%;"
+				<view style="width: 90%;" v-if="showpass==true"><input v-model="password" maxlength="20" type="text" class="inpBox" style="width: 95%;"
 						placeholder="请填写密码" /></view>
-				<!-- <view style="width: 20%;background-color: #EFF0F3;color: #5A7EFF;font-size: 24rpx;"> -->
-				<image v-show="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
+						
+				<view style="width: 90%;" v-if="showpass==false"><input v-model="password" maxlength="20" type="password" password class="inpBox" style="width: 95%;"
+					placeholder="请填写密码" /></view>
+			
+				<image v-if="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
 					mode="aspectFill" @click="look"></image>
-				<image v-show="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
+				<image v-if="showpass==false" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/kai.png')"
 					mode="aspectFill" @click="look"></image>
-				<!-- </view> -->
+
 			</view>
 
 
 			<view class="fromTitel">推荐码 </view>
-			<input class="inpBox" v-model="recommendCode" maxlength="10" type="text" placeholder="请填写推荐码" />
+			<view class="alibox">
+				<input class="inpBox" style="width: 100%;" v-model="recommendCode" maxlength="10" type="text" placeholder="请填写推荐码" />
+			</view>	
+			
 
 
 			<button style=" color: white;
-		width: 80%;
+				width: 80%;
 				margin: 40rpx auto;
 			    background-color: #5A7EFF;
 			    border-radius: 50px;
@@ -110,6 +129,7 @@
 		onLoad() {
 
 		},
+	
 		methods: {
 			look() {
 				console.log('ppp')
@@ -118,7 +138,7 @@
 					this.inpType = 'password'
 				} else {
 					this.showpass = true
-					this.inpType = 'number'
+					this.inpType = 'text'
 				}
 			},
 			sendRegisterCode: throttle(async function() {
@@ -223,5 +243,8 @@
 		width: 90%;
 		margin: auto;
 		border-radius: 10rpx;
+	}
+	.alibox{
+		width: 90%;margin: auto
 	}
 </style>

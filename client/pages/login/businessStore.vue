@@ -20,56 +20,57 @@
 			</view>
 			<view style="font-size: 32rpx;color: #5A7EFF;">门店信息</view>
 		</view>
-
+		
 		<view class="">
 			<view class="fromTitel">省份</view>
 			<picker class="pickerBox" @change="selectShen" :value="shenindex" :range="selectShenobj" range-key="name">
-				<view v-show="shenindex==-1" class="uni-input">请选择城市</view>
-				<view v-show="shenindex!=-1" class="uni-input">{{selectShenobj[shenindex].name}}</view>
+				<view  class="uni-input">{{shenindex!=-1?selectShenobj[shenindex].name:'请选择城市'}}</view>
 			</picker>
-
+		
 			<view class="fromTitel">城市</view>
 			<picker class="pickerBox" @change="selectShi" :value="shiindex" :range="selectorObj" range-key="name">
-				<view v-show="shiindex==-1" class="uni-input">请选择城市</view>
-				<view v-show="shiindex!=-1" class="uni-input">{{selectorObj[shiindex].name}}</view>
-			</picker>
-
+				<view  class="uni-input">{{shiindex!=-1?selectorObj[shiindex].name:'请选择城市'}}</view>
+			</picker> 
+		
 			<view class="fromTitel">区域</view>
 			<picker class="pickerBox" @change="selectQu" :value="quindex" :range="selectorquObj" range-key="name">
-				<view v-show="quindex==-1" class="uni-input">请选择区域</view>
-				<view v-show="quindex!=-1" class="uni-input">{{selectorquObj[quindex].name}}</view>
+				
+				<view  class="uni-input">{{quindex!=-1?selectorquObj[quindex].name:'请选择区域'}}</view>
 			</picker>
-
-
-
-
+		
+		
+		
+		
 			<view class="fromTitel">门店名称</view>
 			<input class="inpBox" v-model="storeName" type="text" placeholder="请填写门店名字" />
-
+		
 			<view class="fromTitel">门店地址</view>
 			<input class="inpBox" v-model="address" type="text" placeholder="请填写门店地址" />
-
+		
 			<view class="fromTitel">门店电话</view>
 			<input class="inpBox" v-model="storePhone" type="text" placeholder="请填写门店电话" />
-
+		
 			<view class="fromTitel">营业时间</view>
 			<view class="timeBox">
-				<picker mode="time" style="width: 40%;height: 74rpx;" class="pickerBox" @change="pickerStar"
-					:value="indexStar">
-					<view v-show="indexStar==-1" class="uni-input" style="height: 74rpx;">请选择开始时间</view>
-					<view v-show="indexStar!=-1" class="uni-input" style="height: 74rpx;">{{indexStar}}</view>
+				<picker mode="time" style="width: 40%;height: 74rpx;" class="pickerBox" @change="pickerStar" :value="indexStar">
+		
+					<view  class="uni-input" style="height: 74rpx;width: 43%;margin: 0px 4% 0px 5%;">{{indexStar}}</view>
 				</picker>
+		
 
-				<picker mode="time" style="width: 40%;height: 74rpx;" class="pickerBox" @change="pickerEnd"
-					:value="indexEnd">
-					<view v-show="indexEnd==-1" class="uni-input" style="height: 74rpx;">请选择结束时间</view>
-					<view v-show="indexEnd!=-1" class="uni-input" style="height: 74rpx;">{{indexEnd}}</view>
+				   
+				<picker mode="time" style="width: 40%;height: 74rpx;" class="pickerBox" @change="pickerEnd" :value="indexEnd">
+					
+					<view  class="uni-input" style="height: 74rpx;width: 43%;margin: 0px 0px 0px 0%;">{{indexEnd}}</view>
 				</picker>
 			</view>
+		
+		
+		
 
 			<view class="fromTitel">地图经纬度</view>
 			<view class="local">
-				<input style="width: 43%;" v-model="longitude" class="inpBox" type="text" placeholder="请输入经度" />
+				<input style="width: 43%;margin-left: 0%;" v-model="longitude" class="inpBox" type="text" placeholder="请输入经度" />
 				<input style="width: 43%;margin-left: 4%;" v-model="latitude" class="inpBox" type="text"
 					placeholder="请输入纬度" />
 			</view>
@@ -159,8 +160,8 @@
 				shenindex: -1, //选择省角标
 				shiindex: -1, //选择市角标
 				quindex: -1, //选择区角标
-				indexStar: -1, //开始时间角标
-				indexEnd: -1, //结束时间角标
+				indexStar: '00:00', //开始时间角标
+				indexEnd: '00:00', //结束时间角标
 				obj: {}, //传递的全部数据
 
 				selectProvince: '', //选择的省
@@ -181,6 +182,7 @@
 				corporationName: '', //法人姓名
 				corporationNamePhone: '', //法人电话
 				price:'',//车辆整备费
+	
 			}
 		},
 		onLoad() {
@@ -193,6 +195,7 @@
 			this.allFindProvincesList()
 		},
 		methods: {
+			
 			async allFindProvincesList() {
 				console.log('pp')
 				const [err, res] = await allFindProvincesList({})
@@ -224,6 +227,7 @@
 				this.selectorquObj = res.data
 			},
 			async next() {
+
 
 			if(this.storeName==""){
 				this.$toast('请输入店名称')
@@ -364,26 +368,26 @@
 		width: 100%;
 		border-bottom: 20rpx solid #EFF0F3;
 	}
-
+	
 	.inpBox {
 		background-color: #EFF0F3;
 		border-radius: 10rpx;
 		height: 74rpx;
 		width: 90%;
-		margin: auto;
+		margin-left: 5%;
 		font-size: 24rpx;
 		color: #999999;
 		padding-left: 20rpx;
 		margin-top: 20rpx;
 	}
-
+	
 	.fromTitel {
 		width: 90%;
 		margin: auto;
 		margin-top: 40rpx;
 	}
-
-
+	
+	
 	.pickerBox {
 		width: 90%;
 		height: 74rpx;
@@ -394,52 +398,68 @@
 		color: #999999;
 		margin-top: 20rpx;
 	}
-
+	.uni-input{
+		width: 90%;
+		height: 74rpx;
+		line-height: 74rpx;
+		margin: auto;
+		background: #EFF0F3;
+		border-radius: 10rpx;
+		padding-left: 20rpx;
+		color: #999999;
+		margin-top: 20rpx;
+	}
+	.uni-input1{
+		width: 39%;
+		height: 74rpx;
+		line-height: 74rpx;
+		margin: auto;
+		background: #EFF0F3;
+		border-radius: 10rpx;
+		padding-left: 20rpx;
+		color: #999999;
+		margin-top: 20rpx;
+	}
 	.timeBox {
 		display: flex;
 		justify-items: center;
 		align-items: center;
 		margin-top: 20rpx;
 	}
-
+	
 	.local {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 	}
-
+	
 	.imgBox {
 		height: 186rpx;
 		width: 44%;
 		margin: 20px 0rpx 0rpx 5%;
 	}
-
-	.uni-input {
-		height: 74rpx;
-		line-height: 74rpx;
-		font-size: 24rpx;
-	}
-
-
+	
+	
+	
 	.title {
-
+	
 		color: black;
 		font-size: 28rpx;
 		width: 90%;
 		margin: auto;
 		margin-top: 40rpx;
-
+	
 	}
-
+	
 	.idCard {
 		width: 90%;
 		margin: auto;
 		padding-top: 20rpx;
 	}
-
+	
 	.imgBox1 {
 		height: 186rpx;
 		width: 44%;
-
+	
 	}
 </style>

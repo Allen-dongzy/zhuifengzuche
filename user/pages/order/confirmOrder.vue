@@ -41,7 +41,12 @@
 						<view class="address">门店地址：{{ info.pickPlace.address }}</view>
 					</view>
 					<view class="btn-box">
-						<image class="btn" :src="`${ossUrl}/common/location-big.png`" mode="aspectFill" @click="openMap(info.pickPlace.lat, info.pickPlace.lon)"></image>
+						<image
+							class="btn"
+							:src="`${ossUrl}/common/location-big.png`"
+							mode="aspectFill"
+							@click="openMap(info.pickPlace.lat, info.pickPlace.lon, info.pickPlace.name, info.pickPlace.address)"
+						></image>
 					</view>
 				</view>
 			</view>
@@ -53,7 +58,12 @@
 						<view class="address">门店地址：{{ info.pickPlace.address }}</view>
 					</view>
 					<view class="btn-box">
-						<image class="btn" :src="`${ossUrl}/common/location-big.png`" mode="aspectFill" @click="openMap(info.pickPlace.lat, info.pickPlace.lon)"></image>
+						<image
+							class="btn"
+							:src="`${ossUrl}/common/location-big.png`"
+							mode="aspectFill"
+							@click="openMap(info.pickPlace.lat, info.pickPlace.lon, info.pickPlace.name, info.pickPlace.address)"
+						></image>
 					</view>
 				</view>
 				<view class="caption top">还车</view>
@@ -63,7 +73,12 @@
 						<view class="address">门店地址：{{ info.returnPlace.address }}</view>
 					</view>
 					<view class="btn-box">
-						<image class="btn" :src="`${ossUrl}/common/location-big.png`" mode="aspectFill" @click="openMap(info.returnPlace.lat, info.returnPlace.lon)"></image>
+						<image
+							class="btn"
+							:src="`${ossUrl}/common/location-big.png`"
+							mode="aspectFill"
+							@click="openMap(info.returnPlace.lat, info.returnPlace.lon, info.pickPlace.name, info.pickPlace.address)"
+						></image>
 					</view>
 				</view>
 			</view>
@@ -290,7 +305,7 @@ export default {
 				Number(this.couponPrice) +
 				(this.isInsurance ? Number(this.info.orderPriceInfo.insuranceMoney) : 0)
 			const total = price > 0 ? price.toFixed(2) : 0
-			return this.info.orderPriceInfo && this.couponPrice ? total : 0
+			return this.info.orderPriceInfo && (this.couponPrice !== null || this.couponPrice !== undefined) ? total : 0
 		},
 		// 底部内容
 		bottomInfo() {
@@ -434,12 +449,14 @@ export default {
 			this.$refs.processPopup.close()
 		},
 		// 打开地图
-		async openMap(latitude, longitude) {
+		async openMap(latitude, longitude, name, address) {
 			latitude = Number(latitude)
 			longitude = Number(longitude)
 			uni.openLocation({
 				latitude,
-				longitude
+				longitude,
+				name,
+				address
 			})
 		},
 		// 选择保险
@@ -477,7 +494,12 @@ export default {
 				couponId: this.couponId,
 				invoiceId: this.invoiceId,
 				isInsurance: this.isInsuranceId ? 1 : 0,
+				// #ifdef MP-WEIXIN
 				orderSource: 0,
+				// #endif
+				// #ifdef MP-ALIPAY
+				orderSource: 1,
+				// #endif
 				pickPlace: this.takeId,
 				returnPlace: this.backId,
 				remark: this.remark,
@@ -487,7 +509,6 @@ export default {
 			}
 			const [err, res] = await rentalOrderCreateOrders(params)
 			if (err) return
-			// #ifdef MP-WEIXIN
 			this.$open(
 				'./orderPay',
 				{
@@ -497,17 +518,6 @@ export default {
 				},
 				1
 			)
-			// #endif
-			// #ifdef MP-ALIPAY
-			this.$open(
-				'./orderPay',
-				{
-					price: this.totalPrice,
-					orderSn: this.info.orderSn
-				},
-				1
-			)
-			// #endif
 		},
 		// 监听时间
 		eventListener() {
@@ -646,7 +656,7 @@ page {
 				@include flex-row();
 
 				.home {
-					@include square(24rpx);
+					@include box(28rpx, 24rpx);
 				}
 
 				.address {

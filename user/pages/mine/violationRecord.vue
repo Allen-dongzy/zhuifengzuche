@@ -24,11 +24,12 @@
 				<view class="bigblackText" style="color:#FC3736;">{{item.rulesScore}}</view>
 			</view>
 		</view>
-		<uni-load-more :status="dataStatus" />
+		<load-more :status="dataStatus" info="暂无违章记录"/>
 	</view>
 </template>
 
 <script>
+	import LoadMore from '@/components/load-more/load-more'
 	import {
 		breakRulesPageNewQuery
 	} from '@/apis/breakRules'
@@ -45,6 +46,9 @@
 				requestKey: true,
 				list: []
 			}
+		},
+		components: {
+			LoadMore
 		},
 		onLoad() {
 			this.breakRulesPageNewQuery()

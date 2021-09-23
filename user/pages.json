@@ -3,19 +3,31 @@
 		"path": "pages/home/home",
 		"style": {
 			"navigationBarTitleText": "追风租车",
-			"enablePullDownRefresh": true
+			"enablePullDownRefresh": true,
+			"mp-alipay": {
+				"allowsBounceVertical": "YES"
+			}
 		}
 	}, {
 		"path": "pages/order/order",
 		"style": {
 			"navigationBarTitleText": "订单列表",
-			"enablePullDownRefresh": true
+			"enablePullDownRefresh": true,
+			"mp-alipay": {
+				"allowsBounceVertical": "YES"
+			}
 		}
 	}, {
 		"path": "pages/mine/mine",
 		"style": {
 			"navigationStyle": "custom",
-			"enablePullDownRefresh": true
+			"enablePullDownRefresh": true,
+			"navigationBarTitleText": "",
+			"mp-alipay": {
+				"allowsBounceVertical": "YES",
+				"transparentTitle": "always", //支付宝
+				"titlePenetrate": "YES" //支付宝
+			}
 		}
 	}, {
 		"path": "pages/home/selectTime",
@@ -56,7 +68,10 @@
 		"path": "pages/common/storeComment",
 		"style": {
 			"navigationBarTitleText": "查看评论",
-			"enablePullDownRefresh": true
+			"enablePullDownRefresh": true,
+			"mp-alipay": {
+				"allowsBounceVertical": "YES"
+			}
 		}
 	}, {
 		"path": "pages/home/priceCalendar",
@@ -71,7 +86,11 @@
 	}, {
 		"path": "pages/order/orderDetail",
 		"style": {
-			"navigationBarTitleText": "订单详情"
+			"navigationBarTitleText": "订单详情",
+			"enablePullDownRefresh": true,
+			"mp-alipay": {
+				"allowsBounceVertical": "YES"
+			}
 		}
 	}, {
 		"path": "pages/order/costDetail",
@@ -142,7 +161,10 @@
 		"path": "pages/mine/violationRecord",
 		"style": {
 			"navigationBarTitleText": "违章记录",
-			"enablePullDownRefresh": true
+			"enablePullDownRefresh": true,
+			"mp-alipay": {
+				"allowsBounceVertical": "YES"
+			}
 		}
 	}, {
 		"path": "pages/mine/violationInfo",
@@ -298,7 +320,10 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarBackgroundColor": "#FFFFFF",
-		"backgroundColor": "#F8F8F8"
+		"backgroundColor": "#F8F8F8",
+		"mp-alipay": {
+			"allowsBounceVertical": "NO"
+		}
 	},
 	"tabBar": {
 		"color": "#200E32",

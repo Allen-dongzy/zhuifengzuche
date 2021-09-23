@@ -83,7 +83,7 @@
 						<view v-if="item.orderStatus === 0" class="btn blue" @click.stop="getCodeByWxCode(index)">立即支付</view>
 						<!-- #endif -->
 						<!-- #ifdef MP-ALIPAY -->
-						<view v-if="item.orderStatus === 0" class="btn blue" @click.stop="paymentAliPayFrozenMoney(index)">免押支付</view>
+						<view v-if="item.orderStatus === 0" class="btn blue" @click.stop="getCodeByWxCode(index)">免押支付</view>
 						<!-- #endif -->
 						<view
 							v-if="item.orderStatus === 2"
@@ -114,20 +114,17 @@
 				</view>
 			</view>
 		</view>
-		<view v-if="dataStatus !== 'noData'"><uni-load-more :status="dataStatus" /></view>
-		<view v-if="dataStatus === 'noData'" class="empty">
-			<image class="bg" :src="`${ossUrl}/common/res-empty.png`" mode="aspectFill"></image>
-			<view class="text">暂无订单</view>
-		</view>
+		<load-more :status="dataStatus" info="暂无订单" />
 	</view>
 </template>
 
 <script>
+import LoadMore from '@/components/load-more/load-more'
 import { rentalOrderPageQuery, rentalOrderRenewCarRentalPriceCheck } from '@/apis/rentalOrder'
 import { listManager, showModal } from '@/utils/uni-tools'
 import { throttle } from '@/utils/tools'
 import { getCodeByWxCode } from '@/apis/sso'
-import { paymentPrecreate, paymentAliPayFrozenMoney, paymentAliPayCallback, paymentAliPayFrozenCancel } from '@/apis/payment'
+import { paymentPrecreate, paymentAliPayFrozenMoney, paymentAliPayCallback, paymentAliPayFrozenCancel, paymentAliPayThawMoney } from '@/apis/payment'
 
 export default {
 	data() {
@@ -138,8 +135,13 @@ export default {
 			size: 10,
 			dataStatus: '', // more laoding noMore noData
 			reqeuestKey: true,
-			list: []
+			list: [],
+			touchIndex: null,
+			payerUid: '' // 平台
 		}
+	},
+	components: {
+		LoadMore
 	},
 	filters: {
 		// 车状态显示
@@ -233,82 +235,139 @@ export default {
 				mode: 'order'
 			})
 		}),
-		// 微信-授权
+		/**
+		 * 微信：getCodeByWxCode -> paymentPrecreate -> pay
+		 * 支付宝：getCodeByWxCode -> paymentAliPayFrozenMoney -> aliTradePay -> paymentAliPayCallback -> paymentPrecreate -> pay
+		 */
+		// 微信/支付宝-授权
 		getCodeByWxCode: throttle(async function(index) {
+			// #ifdef MP-WEIXIN
+			const provider = 'weixin'
+			// #endif
+
+			// #ifdef MP-ALIPAY
+			const provider = 'alipay'
+			// #endif
+
+			this.touchIndex = index
+
 			const [loginErr, loginRes] = await uni.login({
-				provider: 'weixin'
+				provider
 			})
 			if (loginErr) return
 			const params = {
 				code: loginRes.code,
+				// #ifdef MP-WEIXIN
 				loginType: 1
+				// #endif
+				// #ifdef MP-ALIPAY
+				loginType: 2
+				// #endif
 			}
 			const [err, res] = await getCodeByWxCode(params)
 			if (err) return
-			this.paymentPrecreate(res.data.openid, index)
+
+			// #ifdef MP-WEIXIN
+			this.payerUid = res.data.openid
+			this.paymentPrecreate()
+			// #endif
+
+			// #ifdef MP-ALIPAY
+			this.payerUid = res.data.user_id
+			this.paymentAliPayFrozenMoney()
+			// #endif
 		}),
-		// 微信-发起支付
-		async paymentPrecreate(openId, index) {
+		// 租金-发起支付
+		async paymentPrecreate() {
 			const params = {
-				reflect: this.list[index].reflect,
-				orderId: this.list[index].id,
-				payerUid: openId,
+				reflect: this.list[this.touchIndex].reflect,
+				orderId: this.list[this.touchIndex].id,
+				payerUid: this.payerUid,
+				// #ifdef MP-WEIXIN
 				payway: '3',
+				// #endif
+				// #ifdef MP-ALIPAY
+				payway: '2',
+				// #endif
 				subPayway: '4',
 				subject: '租车定金',
-				totalAmount: this.list[index].orderDeposit
+				totalAmount: this.list[this.touchIndex].orderDeposit
 			}
 			const [err, res] = await paymentPrecreate(params)
-			if (err) return
+			if (err) {
+				this.paymentAliPayThawMoney()
+				return
+			}
 			this.pay(res.data.wapPayRequest)
 		},
-		// 微信-支付
+		// 租金-支付
 		async pay(wapPayRequest) {
-			const [err, res] = await uni.requestPayment({
+			const params = {
+				// #ifdef MP-WEIXIN
 				provider: 'wxpay',
+				// #endif
+				// #ifdef MP-ALIPAY
+				provider: 'alipay',
+				// #endif
 				...wapPayRequest
-			})
-			if (err) return
+			}
+			const [err, res] = await uni.requestPayment(params)
+			if (err || (res && res.resultCode === '6001')) {
+				this.$toast('用户取消支付')
+				this.paymentAliPayThawMoney()
+				return
+			}
 			this.$toast('租车成功！')
 			this.init()
 			this.getorderList()
 		},
-		// 支付宝-发起冻结
-		paymentAliPayFrozenMoney: throttle(async function(index) {
+		// 支付宝-发起免押冻结
+		paymentAliPayFrozenMoney: throttle(async function() {
 			const params = {
-				orderSn: this.list[index].orderSn,
-				amount: this.list[index].orderDeposit
+				orderSn: this.list[this.touchIndex].orderSn,
+				amount: this.list[this.touchIndex].rentalDeposit
 			}
 			const [err, res] = await paymentAliPayFrozenMoney(params)
 			if (err || !res.data.orderStr) return
-			this.aliTradePay(res.data.orderStr, index)
+			this.aliTradePay(res.data.orderStr)
 		}),
-		// 支付宝-冻结支付
-		aliTradePay(orderStr, index) {
+		// 支付宝-免押冻结支付
+		aliTradePay(orderStr) {
 			my.tradePay({
 				orderStr,
 				success: res => {
 					if (res.resultCode === '6001') {
-						this.paymentAliPayFrozenCancel(index)
+						this.paymentAliPayFrozenCancel()
 						return
 					}
 					this.paymentAliPayCallback(JSON.parse(res.result))
 				},
 				fail: err => {
-					this.paymentAliPayFrozenCancel(index)
+					this.paymentAliPayFrozenCancel()
 					console.log(err)
 				}
 			})
 		},
-		// 资金授权撤销
-		async paymentAliPayFrozenCancel(index) {
+		// 支付宝-免押资金授权撤销
+		async paymentAliPayFrozenCancel() {
 			const params = {
-				orderSn: this.list[index].orderSn
+				orderSn: this.list[this.touchIndex].orderSn
 			}
 			const [err, res] = await paymentAliPayFrozenCancel(params)
 			if (err) return
+			this.$toast('撤销免押成功！')
 		},
-		// 支付宝-冻结回调
+		//  支付宝-免押资金解冻
+		async paymentAliPayThawMoney() {
+			const params = {
+				orderSn: this.list[this.touchIndex].orderSn,
+				amount: Number(this.list[this.touchIndex].rentalDeposit)
+			}
+			const [err, res] = await paymentAliPayThawMoney(params)
+			if (err) return
+			this.$toast('支付失败！')
+		},
+		// 支付宝-免押冻结回调
 		async paymentAliPayCallback(info) {
 			const params = {
 				amount: info.alipay_fund_auth_order_app_freeze_response.amount,
@@ -322,11 +381,8 @@ export default {
 			}
 			const [err, res] = await paymentAliPayCallback(params)
 			if (err) return
-			this.$toast('租车成功！')
-			uni.$emit('orderRefresh')
-			setTimeout(() => {
-				this.$open('/pages/order/order', 3)
-			}, 500)
+			this.$toast('押金免押成功！')
+			this.paymentPrecreate()
 		},
 		// 联系门店
 		contactStore(index) {
@@ -380,6 +436,7 @@ export default {
 .order {
 	.header {
 		position: fixed;
+		z-index: 9999;
 		@include box(100%, 118rpx, #fff);
 		@include flex-row();
 

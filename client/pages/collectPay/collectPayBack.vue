@@ -6,8 +6,8 @@
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">平台</view>
-			<view v-show="info.platform==0" class="titleRight">追风租车</view>
-			<view v-show="info.platform==1" class="titleRight">其他租车OTA</view>
+			<view v-if="info.platform==0" class="titleRight">追风租车</view>
+			<view v-if="info.platform==1" class="titleRight">其他租车OTA</view>
 		</view>
 		<view class="flexbox">
 			<view class="titleLeft">项目</view>
@@ -33,6 +33,13 @@
 			<view class="titleLeft">备注</view>
 			<view class="titleRight">{{info.remarks}}</view>
 		</view>
+		
+		<view class="upimgbox">
+			<view class="imglistbox" v-for="(item,index) in info.image" :key='index'>
+				<image style="width:160rpx;height:160rpx;" :src="item" mode="aspectFill"></image>
+			</view>
+		</view>
+		
 		<view class="garyLine"></view>
 		<view class="flexbox" style="border-bottom: 0rpx;">
 			<view class="titleLeft">提交时间</view>
@@ -46,7 +53,7 @@
 		<view v-if="money==true" class="box1">
 			<view style="width: 90%;margin: auto;font-size:32rpx;padding: 20rpx 0rpx;">修改金额</view>
 			<view style="width: 90%;margin: auto;">
-				<input v-model="price" style="background-color:#EFF0F3;padding-left: 20rpx;height: 74rpx;border-radius: 10rpx;"
+				<input v-model="price" style="background-color:#EFF0F3;padding-left: 20rpx;height: 74rpx;border-radius: 10rpx;width:100%"
 					placeholder="请输入修改金额" />
 			</view>
 			<view style="width: 90%;margin: auto;">
@@ -59,7 +66,7 @@
 			</view>
 		</view>
 		
-		<button v-show="infotype.type==0" style="color: white;width: 80%;
+		<button v-if="infotype.type==0" style="color: white;width: 80%;
 					margin: auto;
 					margin-top: 50rpx;
 				    background-color: #5A7EFF;
@@ -68,7 +75,7 @@
 					line-height: 96rpx;
 				    height: 96rpx;" type="default" @click="getMoney">确认收款</button>
 
-		<view class="btn-box" v-show="infotype.type==1||roles[0].id==4 ">
+		<view class="btn-box" v-if="infotype.type==1||roles[0].id==4 ">
 			<view class="btn reject"  @click="changegetMoney(1)">拒绝</view>
 			<view class="btn confirm" @click="changegetMoney(2)">通过</view>
 		</view>
@@ -109,6 +116,7 @@
 				if (err) return
 				this.info = res.data
 				this.info.image = JSON.parse(res.data.image)
+
 			},
 			setMoney(){
 				this.money=true
@@ -275,5 +283,18 @@
 				color: #FC3736;
 			}
 		}
+	}
+	
+	.upimgbox {
+		width: 90%;
+		margin: auto;
+		padding: 20rpx 0rpx;
+	}
+	
+	.imglistbox {
+		display: inline-block;
+		width: 22%;
+		margin: 20rpx 1%;
+		position: relative;
 	}
 </style>

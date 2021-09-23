@@ -1,6 +1,6 @@
 <template>
-	<view class="">
-		<view style="margin: auto;width: 220rpx;height: 220rpx;margin-top: 30vh;">
+	<view style="padding-top: 30vh;">
+		<view style="margin: auto;width: 220rpx;height: 220rpx;">
 			<image style="width: 100%;height: 100%;" :src="img" mode="aspectFill"></image>
 		</view>
 		<view style="width: 100%;text-align: center;font-size: 44rpx;margin-top: 30rpx;">¥{{setprice}}</view>
@@ -60,7 +60,7 @@
 			async precreate(e) {
 				let data = {
 					orderId: this.info.orderId,
-					payway: 3,
+					payway: 2,
 					reflect: this.info,
 					subPayway: 2,
 					subject: '收款',
@@ -93,6 +93,10 @@
 </script>
 
 <style>
+	page{
+		background-color: white;
+		height: 100vh;
+	}
 	.title {
 		background-color: #EFF0F3;
 		padding: 20rpx 40rpx;

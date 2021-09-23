@@ -1,7 +1,7 @@
 <template>
 	<view class="add">
 
-		<view class="flexBoxContent" v-show="roles[0].id==1">
+		<view class="flexBoxContent" v-if="roles[0].id==1">
 			<view class="title">门店</view>
 			<view class="selectBox" @click="">
 				<view style="width: 85%;">
@@ -86,8 +86,8 @@
 			<view class="item">
 				<view class="caption">门数</view>
 					<picker  :value="doorIndex" :range="doorList" :range-key="'name'" @change="changedoor"
-						class="pickerBox" style="width: 520rpx;">	
-						<view  class="pickerText">{{doorIndex!=''?doorList[doorIndex].name:'请选择'}}</view>
+						class="pickerBox">
+						<view  class="pickerText">{{doorIndex!==''?doorList[doorIndex].name:'请选择'}}</view>
 					</picker>
 			</view>
 			<view class="item">
@@ -269,7 +269,7 @@
 			<view style="width:500rpx;margin: auto;background-color: white;border-radius: 20rpx;padding:30rpx 0rpx;">
 				<view style="text-align: center;margin: 20rpx 0rpx;">添加标签</view>
 				<input type="text" value="" v-model="labelText" placeholder="请输入标签"
-					style="border: 2rpx solid #5A7EFF;border-radius: 10rpx;width: 90%;margin: auto;height: 80rpx;line-height: 80rpx;padding-left: 20rpx;" />
+					style="border: 2rpx solid #5A7EFF;border-radius: 10rpx;width: 90%;margin-left: 5%;height: 80rpx;line-height: 80rpx;padding-left: 20rpx;" />
 				<view style="display: flex;justify-content:center;align-items: center;margin: 20rpx 0rpx;">
 					<view
 						style="background-color: #5A7EFF;color: white;font-size: 28rpx;text-align: center;height: 60rpx;line-height: 40rpx;padding: 10rpx 20rpx;width: 150rpx;border-radius: 15rpx;margin-right: 20rpx;"
@@ -280,6 +280,7 @@
 				</view>
 			</view>
 		</uni-popup>
+		
 	</view>
 </template>
 
@@ -317,7 +318,7 @@
 			return {
 				date: currentDate,
 				doorList:[{name:'2门'},{name:'3门'},{name:'4门'}],
-				doorIndex:2,
+				doorIndex:0,
 				speedList:[{name:'自动'},{name:'手动'}],
 				speedIndex:0,
 				powerList:[{name:'燃油'},{name:'纯电动'},{name:'混合电动'}],
@@ -419,6 +420,12 @@
 
 			}
 		},
+		mounted() {
+		            let inputEle = document.querySelector('.input input')    
+		            inputEle.addEventListener('blur',function(){    
+		                document.body.scrollIntoView()    
+		            })    
+		        },
 		methods: {
 			//获取时间
 			 getDate(type) {
@@ -684,6 +691,7 @@
 			},
 			//选择门数
 			changedoor(e){
+				console.log(e)
 				this.doorIndex=e.detail.value
 			},
 			//选择变速箱类型
@@ -861,6 +869,7 @@
 
 				.caption {
 					@include font-set(28rpx, #000, 700);
+					
 				}
 
 				.info {
@@ -1062,6 +1071,7 @@
 		font-size: 24rpx;
 		height: 74rpx;
 		border-radius: 10rpx;
+		width: 520rpx;
 	}
 
 	.pickerText {
@@ -1069,5 +1079,8 @@
 		line-height: 74rpx;
 		padding-left: 20rpx;
 		color: #999999;
+		width: 520rpx;
+		background-color: #EFF0F3;
+		border-radius: 10rpx;
 	}
 </style>
