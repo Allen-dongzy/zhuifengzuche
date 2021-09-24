@@ -550,7 +550,7 @@ export default {
 @import '@/static/scss/_mixin.scss';
 
 page {
-	background-color: #eff0f3;
+	background-color: #eff0f3 !important;
 }
 
 .confirm-order {

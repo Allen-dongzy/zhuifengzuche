@@ -388,7 +388,7 @@ export default {
 @import '@/static/scss/_mixin.scss';
 
 page {
-	background-color: #fff;
+	background-color: #fff !important;
 }
 
 .home {
