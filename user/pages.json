@@ -25,8 +25,8 @@
 			"navigationBarTitleText": "",
 			"mp-alipay": {
 				"allowsBounceVertical": "YES",
-				"transparentTitle": "always", //支付宝
-				"titlePenetrate": "YES" //支付宝
+				"transparentTitle": "always",
+				"titlePenetrate": "YES"
 			}
 		}
 	}, {
@@ -329,7 +329,11 @@
 	}, {
 		"path": "pages/mine/vip",
 		"style": {
-			"navigationStyle":"custom"
+			"navigationStyle":"custom",
+			"mp-alipay": {
+				"transparentTitle": "always",
+				"titlePenetrate": "YES"
+			}
 		}
 	}],
 	"globalStyle": {
@@ -337,9 +341,7 @@
 		"navigationBarBackgroundColor": "#FFFFFF",
 		"backgroundColor": "#F8F8F8",
 		"mp-alipay": {
-			"allowsBounceVertical": "NO",
-			"transparentTitle": "always", //支付宝
-			"titlePenetrate": "YES" //支付宝
+			"allowsBounceVertical": "NO"
 		}
 	},
 	"tabBar": {

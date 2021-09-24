@@ -3,7 +3,11 @@
 		<view class="head-bg">
 			<view class="bg">
 				<view class="header" :style="{ paddingTop: `${statusBarHeight}px` }">
-					<view class="back" @click="back"><view class="arrow"></view></view>
+					<view class="back" @click="back">
+						<!-- #ifdef MP-WEIXIN -->
+						<view class="arrow"></view>
+						<!-- #endif -->
+					</view>
 					<view class="title">会员说明</view>
 					<view class="empty"></view>
 				</view>
