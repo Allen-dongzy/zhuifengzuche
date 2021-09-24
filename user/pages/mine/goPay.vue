@@ -318,6 +318,7 @@ export default {
 		}),
 		// 授权
 		getCodeByWxCode: throttle(async function(info) {
+			this.$showLoading('支付中')
 			// #ifdef MP-WEIXIN
 			const provider = 'weixin'
 			// #endif

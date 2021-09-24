@@ -119,6 +119,7 @@
 </template>
 
 <script>
+import storage from '@/utils/storage'
 import LoadMore from '@/components/load-more/load-more'
 import { rentalOrderPageQuery, rentalOrderRenewCarRentalPriceCheck } from '@/apis/rentalOrder'
 import { listManager, showModal } from '@/utils/uni-tools'
@@ -133,7 +134,7 @@ export default {
 			acTab: 0, // 活跃的tab
 			page: 1,
 			size: 10,
-			dataStatus: '', // more laoding noMore noData
+			dataStatus: 'noData', // more laoding noMore noData
 			reqeuestKey: true,
 			list: [],
 			touchIndex: null,
@@ -174,14 +175,17 @@ export default {
 		}
 	},
 	onLoad() {
-		this.getorderList()
 		this.eventListener()
+		if (!storage.get('token')) return
+		this.getorderList()
 	},
 	onPullDownRefresh() {
+		if (!storage.get('token')) return
 		this.init()
 		this.getorderList('refresh')
 	},
 	onReachBottom() {
+		if (!storage.get('token')) return
 		if (!this.reqeuestKey) return
 		this.page++
 		this.getorderList()
@@ -189,6 +193,7 @@ export default {
 	methods: {
 		// 初始化
 		init() {
+			if (!storage.get('token')) return
 			this.reqeuestKey = true
 			this.page = 1
 			this.list = []
@@ -241,6 +246,7 @@ export default {
 		 */
 		// 微信/支付宝-授权
 		getCodeByWxCode: throttle(async function(index) {
+			this.$showLoading('支付中')
 			// #ifdef MP-WEIXIN
 			const provider = 'weixin'
 			// #endif

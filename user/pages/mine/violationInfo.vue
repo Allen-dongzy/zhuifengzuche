@@ -106,6 +106,7 @@
 			},
 			// 授权
 			getCodeByWxCode: throttle(async function() {
+				this.$showLoading('支付中')
 				// #ifdef MP-WEIXIN
 				const provider = 'weixin'
 				// #endif

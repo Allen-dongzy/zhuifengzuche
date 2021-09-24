@@ -142,6 +142,7 @@ export default {
 				this.returnVehicleReimburse()
 				return
 			}
+			this.$showLoading('支付中')
 			// #ifdef MP-WEIXIN
 			const provider = 'weixin'
 			// #endif

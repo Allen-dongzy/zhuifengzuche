@@ -124,7 +124,7 @@ export default {
 <style lang="scss">
 .hand-canvas__writing {
 	width: 100%;
-	height: 100vh;
+	height: 85vh;
 	display: block;
 	box-sizing: border-box;
 	background-color: #fff;

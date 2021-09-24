@@ -28,7 +28,7 @@
 			<view v-if="info.bankCardVO" class="flexright">{{ info.bankCardVO.bankName }} {{ info.bankCardVO.cardNumber }}</view>
 		</view>
 		<view style="width: 90%;margin: auto;margin-top: 30rpx;font-size: 28rpx;">备注</view>
-		<view style="width: 90%;margin: auto;margin-top: 30rpx;color: #999999;font-size: 24rpx;">{{ info.remarks }}</view>
+		<view v-show="info.remarks" style="width: 90%;margin: auto;margin-top: 30rpx;color: #999999;font-size: 24rpx;">{{ info.remarks }}</view>
 		<view style="width: 90%;margin: auto;">
 			<view v-for="(item, index) in images" :key="index" style="display: inline-block;margin: 40rpx 20rpx 40rpx 0;" @click="previewPics(images, index)">
 				<image style="width:160rpx;height:160rpx;" :src="item" mode="aspectFill"></image>

@@ -7,7 +7,7 @@
 经过追风人孜孜不倦的努力，目前追风租车已构建起先进的技术研发团队、健全的风险控制体系、智能的车队运营体系、高效的产品开发体系、稳定的组织架构体系，并通过直营、加盟、联营、异业合作等方式构建追风租车行业生态圈，打造汽车租赁服务行业标杆企业。
 在未来你追风租车将通过更加灵活的运营模式，迎合汽车租赁市场的巨大需求，为消费者提供全方位的汽车租赁服务。</view>
 		<view class="contact">合作垂询请联系：13320299077</view>
-		<image class="qr" :src="`${ossUrl}/common/qr-code.png`" mode="aspectFill"></image>
+		<!-- <image class="qr" :src="`${ossUrl}/common/qr-code.png`" mode="aspectFill"></image> -->
 	</view>
 </template>
 

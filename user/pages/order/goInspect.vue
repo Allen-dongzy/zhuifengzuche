@@ -87,6 +87,7 @@
 				    border-radius: 50px;
 				    font-size: 32rpx;
 				    height: 96rpx;line-height: 96rpx;" type="default" @click="vehicleAddRemarks">完成</button>
+		<view style="color: red;text-align: center;font-size:28rpx;">车辆未送达时，请不要点击完成</view>
 	</view>
 </template>
 

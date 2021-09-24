@@ -357,7 +357,7 @@
 			"path": "pages/order/order"
 		}, {
 			"name": "dzy", // dzy
-			"path": "pages/order/goInspect"
+			"path": "pages/common/signIng"
 		}]
 	}
 }
