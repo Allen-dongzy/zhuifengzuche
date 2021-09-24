@@ -62,7 +62,6 @@
 			</view>
 			<view class="btn" @click="carRental">立即租车</view>
 		</view>
-		<!-- go.png -->
 		<view v-if="couponNum > 0" class="notice-box" @click="$open('/pages/mine/coupon', { selectType: 'home' })">
 			<image class="notice-bg" :src="`${ossUrl}/home/notice.png`" mode="aspectFill"></image>
 			<view class="mask">
@@ -70,7 +69,22 @@
 				<image class="go" :src="`${ossUrl}/home/go.png`" mode="aspectFill"></image>
 			</view>
 		</view>
-		<view v-if="false" class="bottom-mat"></view>
+		<view class="discounts-box">
+			<view class="title">
+				<view class="label"></view>
+				特惠租车
+			</view>
+			<view class="list">
+				<view class="good-card" v-for="(item, index) in 4" :key="index" @click="$open('/pages/order/flash-sale')">
+					<image class="picture" src="https://zdkj-oss-bucket.oss-cn-hangzhou.aliyuncs.com/car-rental-user/common/res-success.png" mode="aspectFill"></image>
+					<view class="caption">大众丨凌度丨1.4L</view>
+					<view class="price-box">
+						<view class="price">￥60/天</view>
+						<view class="origin-price">￥78/天</view>
+					</view>
+				</view>
+			</view>
+		</view>
 		<view class="bottom">
 			<view class="item" @click="$open('/pages/common/joinInvestment')">
 				<image class="icon" :src="`${ossUrl}/home/join.png`" mode="aspectFill"></image>
@@ -109,7 +123,7 @@
 				<view class="btn-box"><view class="btn" @click="closeProcessPopup">知道了</view></view>
 			</view>
 		</uni-popup>
-		<newbee-coupon-modal ref='newbeeCoupon' />
+		<newbee-coupon-modal ref="newbeeCoupon" />
 	</view>
 </template>
 
@@ -547,7 +561,7 @@ page {
 	.notice-box {
 		position: relative;
 		@include box-b(670rpx, 160rpx);
-		margin: 5rpx auto 40rpx;
+		margin: 5rpx auto 0;
 
 		.notice-bg {
 			@include square();
@@ -572,8 +586,54 @@ page {
 		}
 	}
 
-	.bottom-mat {
-		height: 106rpx;
+	.discounts-box {
+		@include box-w();
+		padding: 40rpx;
+		.title {
+			@include flex-row();
+			@include font-set(32rpx, #000, 700);
+			line-height: 44rpx;
+			.label {
+				@include box(8rpx, 24rpx, #5a7eff);
+				border-radius: 20rpx;
+				margin-right: 20rpx;
+			}
+		}
+		.list {
+			padding: 0 20rpx;
+			@include flex-wrap;
+			.good-card {
+				@include box-w(300rpx);
+				margin-top: 40rpx;
+				&:nth-of-type(2n) {
+					margin-left: 30rpx;
+				}
+				.picture {
+					@include box(100%, 156rpx);
+					box-shadow: 0 0 4rpx 0 rgba(114, 141, 244, 0.25);
+				}
+				.caption {
+					@include font-set(28rpx, #000, 700);
+					@include text-one;
+					line-height: 40rpx;
+					margin-top: 10rpx;
+				}
+				.price-box {
+					@include flex-row();
+					margin-top: 10rpx;
+					.price {
+						@include font-set(28rpx, #fc3736, 700);
+						line-height: 40rpx;
+					}
+					.origin-price {
+						@include font-set(20rpx, #999);
+						text-decoration: line-through;
+						line-height: 28rpx;
+						margin-left: 10rpx;
+					}
+				}
+			}
+		}
 	}
 
 	.bottom {

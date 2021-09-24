@@ -321,6 +321,16 @@
 		"style": {
 			"navigationBarTitleText": "免押解冻(测试)"
 		}
+	}, {
+		"path": "pages/order/flash-sale",
+		"style": {
+			"navigationBarTitleText": "限时优惠"
+		}
+	}, {
+		"path": "pages/mine/vip",
+		"style": {
+			"navigationStyle":"custom"
+		}
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -357,7 +367,7 @@
 			"path": "pages/order/order"
 		}, {
 			"name": "dzy", // dzy
-			"path": "pages/common/signIng"
+			"path": "pages/mine/vip"
 		}]
 	}
 }

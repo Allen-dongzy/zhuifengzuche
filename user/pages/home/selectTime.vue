@@ -23,9 +23,11 @@
 				<view v-if="!carAlsoDay && !carAlsoTime" class="sub-caption" @click="$toast('请选择还车时间')">选择时间</view>
 			</view>
 		</view>
-		<uni-calendar :insert="true" :range="true" :showMonth="false" :date='date' :customRange="customRange"
-			@change="calendarChange">
-		</uni-calendar>
+		<view class="calendar">
+			<uni-calendar :insert="true" :range="true" :showMonth="false" :date='date' :customRange="customRange"
+				@change="calendarChange">
+			</uni-calendar>
+		</view>
 		<view class="date"></view>
 		<view class="picker-box">
 			<view class="picker-item">
@@ -47,7 +49,6 @@
 				</picker-view>
 			</view>
 		</view>
-
 		<view class="bottom-mat"></view>
 		<view class="bottom">
 			<view class="btn clear" @click="clear">清空</view>
@@ -265,6 +266,15 @@
 	@import '@/static/scss/_mixin.scss';
 
 	.lease-time-selection {
+		background-color: #EFF0F3;
+		
+		.calendar {
+			@include box-w(100%, #EFF0F3);
+		}
+		
+		/deep/ .uni-calendar__content {
+			background-color: #EFF0F3;
+		}
 
 		/deep/ .uni-calendar {
 			width: 700rpx;
@@ -314,6 +324,7 @@
 		.header {
 			@include flex-row(space-between);
 			padding: 20rpx 32rpx;
+			background-color: #fff;
 
 			.left,
 			.right {
@@ -364,14 +375,11 @@
 			}
 		}
 
-		.date {
-			margin-top: 30rpx;
-		}
-
 		.picker-box {
-			@include box-w();
-			padding: 40rpx 160rpx;
+			@include box-w(100%, #fff);
+			padding: 40rpx 160rpx 0;
 			@include flex-row(space-between);
+			border-radius: 32rpx 32rpx 0px 0px;
 
 			.caption {
 				@include font-set(28rpx, #000, 700);
@@ -394,6 +402,7 @@
 
 		.bottom-mat {
 			height: 194rpx;
+			background-color: #fff;
 		}
 
 		.bottom {
