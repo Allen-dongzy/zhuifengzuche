@@ -337,7 +337,9 @@
 		"navigationBarBackgroundColor": "#FFFFFF",
 		"backgroundColor": "#F8F8F8",
 		"mp-alipay": {
-			"allowsBounceVertical": "NO"
+			"allowsBounceVertical": "NO",
+			"transparentTitle": "always", //支付宝
+			"titlePenetrate": "YES" //支付宝
 		}
 	},
 	"tabBar": {

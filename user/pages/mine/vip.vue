@@ -75,18 +75,7 @@ export default {
 		},
 		// 底部面板高度
 		bottomMenuHeight() {
-			let height = null
-			/**
-			 * 微信：页面高度为导航栏以下，所以滑动区域高度为 -> 页面高度 - 搜索栏高度
-			 * 支付宝：页面高度为手机状态栏以下，所以滑动区域高度为 -> 屏幕高度 - 手机状态高度 - 页面导航栏高度 - 搜索栏高度
-			 */
-			// #ifdef MP-WEIXIN
-			height = this.windowHeight - this.headBgHeight
-			// #endif
-			// #ifdef MP-ALIPAY
-			height = this.screenHeight - this.statusBarHeight - this.titleBarHeight - this.headBgHeight
-			// #endif
-			return height
+			return this.windowHeight - this.headBgHeight
 		}
 	},
 	filters: {
@@ -128,7 +117,7 @@ export default {
 @import '@/static/scss/_mixin.scss';
 
 page {
-	background-color: #5a7eff;
+	background-color: #5a7eff !important;
 }
 
 .vip {
