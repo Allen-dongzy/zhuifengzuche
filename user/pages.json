@@ -42,7 +42,7 @@
 	}, {
 		"path": "pages/home/selectCity",
 		"style": {
-			"navigationBarTitleText": "选择城市"
+			"nav igationBarTitleText": "选择城市"
 		}
 	}, {
 		"path": "pages/home/couponCenter",
@@ -322,7 +322,7 @@
 			"navigationBarTitleText": "免押解冻(测试)"
 		}
 	}, {
-		"path": "pages/order/flash-sale",
+		"path": "pages/home/flash-sale",
 		"style": {
 			"navigationBarTitleText": "限时优惠"
 		}
