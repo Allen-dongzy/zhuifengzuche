@@ -156,6 +156,16 @@ const throttle = (callback, delay = 1000) => {
 	}
 }
 
+// 对象字典排序
+const objKeySort = (obj) => {
+	const objKeys = Object.keys(obj).sort()
+	const newObj = {}
+	for (let i=0; i<objKeys.length; i++) {
+		newObj[objKeys[i]] = obj[objKeys[i]]
+	}
+	return newObj
+}
+
 export {
 	toDate, // 时间戳转成日期
 	getDifference, // 现在到指定时间的时间差
@@ -167,4 +177,5 @@ export {
 	setClipboard, // 写入文本到粘贴板
 	debounce, // 防抖
 	throttle, // 节流
+	objKeySort // 对象字典排序
 }
