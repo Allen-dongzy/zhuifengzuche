@@ -8,61 +8,7 @@
 			</swiper>
 			<view v-else class="banner-empty"></view>
 		</uni-swiper-dot>
-		<view class="card">
-			<view class="title-bar">
-				<view class="caption">
-					<view class="circle blue"></view>
-					<text>{{ remoteSwitch ? '取车地点' : '取还地点' }}</text>
-				</view>
-				<text>异地还车</text>
-			</view>
-			<view class="block">
-				<view class="city" @click="$open('/pages/home/selectCity', { cityMode: 'takeCar' })">{{ takeCarCity.shortName || '选择城市' }}</view>
-				<image class="dot" :src="`${ossUrl}/home/dot.png`" mode="aspectFill"></image>
-				<view class="address" @click="goTakeCarAddress">{{ takeCarAddress.name || '选择地点' }}</view>
-				<evan-switch v-model="remoteSwitch" active-color="#5A7EFF"></evan-switch>
-			</view>
-			<view v-if="remoteSwitch" class="title-bar">
-				<view class="caption">
-					<view class="circle orange"></view>
-					<text>还车地点</text>
-				</view>
-			</view>
-			<view v-if="remoteSwitch" class="block">
-				<view class="city text-1" @click="$open('/pages/home/selectCity', { cityMode: 'carAlso' })">{{ carAlsoCity.shortName || '选择城市' }}</view>
-				<image class="dot" :src="`${ossUrl}/home/dot.png`" mode="aspectFill"></image>
-				<view class="address text-1" @click="goCarAlsoAddress">{{ carAlsoAddress.name || '选择地点' }}</view>
-			</view>
-			<view class="time-bar" @click="selectTime">
-				<view class="time-box start-time">
-					<view class="date">{{ takeCarDateShow }}</view>
-					<view class="time" v-if="takeCarTimeShow || takeCarDayShow">
-						<text v-if="takeCarDayShow">{{ takeCarDayShow }}</text>
-						<text v-if="takeCarTimeShow">{{ takeCarTimeShow }}</text>
-					</view>
-				</view>
-				<view class="line-bar">
-					<view class="date">{{ totalDate || 0 }}天</view>
-					<image class="interval" :src="`${ossUrl}/home/interval.png`" mode="aspectFill"></image>
-				</view>
-				<view class="time-box end-time">
-					<view class="date">{{ carAlsoDateShow }}</view>
-					<view class="time" v-if="carAlsoTimeShow || carAlsoDayShow">
-						<text v-if="carAlsoDayShow">{{ carAlsoDayShow }}</text>
-						<text v-if="carAlsoTimeShow">{{ carAlsoTimeShow }}</text>
-					</view>
-				</view>
-			</view>
-			<view v-if="remoteSwitch" class="info">*异地还车调度费3元/公里；22:00-07:00取还车，将收取￥50/次夜间服务费</view>
-			<view class="toast" @click="openProcessPopup">
-				<image class="sesame" :src="`${ossUrl}/home/sesame.png`" mode="aspectFill"></image>
-				芝麻分达
-				<text>550</text>
-				即可享受押金双免租车 >
-			</view>
-			<view class="btn" @click="carRental">立即租车</view>
-		</view>
-		<!-- go.png -->
+		<car-rental-card class="card" @confirm="carRental"/>
 		<view v-if="couponNum > 0" class="notice-box" @click="$open('/pages/mine/coupon', { selectType: 'home' })">
 			<image class="notice-bg" :src="`${ossUrl}/home/notice.png`" mode="aspectFill"></image>
 			<view class="mask">
@@ -70,7 +16,22 @@
 				<image class="go" :src="`${ossUrl}/home/go.png`" mode="aspectFill"></image>
 			</view>
 		</view>
-		<view v-if="false" class="bottom-mat"></view>
+		<view class="discounts-box">
+			<view class="title">
+				<view class="label"></view>
+				特惠租车
+			</view>
+			<view class="list">
+				<view class="good-card" v-for="(item, index) in 4" :key="index" @click="$open('/pages/home/flash-sale')">
+					<image class="picture" src="https://zdkj-oss-bucket.oss-cn-hangzhou.aliyuncs.com/car-rental-user/common/res-success.png" mode="aspectFill"></image>
+					<view class="caption">大众丨凌度丨1.4L</view>
+					<view class="price-box">
+						<view class="price">￥60/天</view>
+						<view class="origin-price">￥78/天</view>
+					</view>
+				</view>
+			</view>
+		</view>
 		<view class="bottom">
 			<view class="item" @click="$open('/pages/common/joinInvestment')">
 				<image class="icon" :src="`${ossUrl}/home/join.png`" mode="aspectFill"></image>
@@ -109,16 +70,15 @@
 				<view class="btn-box"><view class="btn" @click="closeProcessPopup">知道了</view></view>
 			</view>
 		</uni-popup>
-		<newbee-coupon-modal ref='newbeeCoupon' />
+		<newbee-coupon-modal ref="newbeeCoupon" />
 	</view>
 </template>
 
 <script>
-import EvanSwitch from '@/components/evan-switch/evan-switch'
+import CarRentalCard from '@/components/car-rental-card/car-rental-card'
 import NewbeeCouponModal from '@/components/newbee-coupon-modal/newbee-coupon-modal'
 import { customerHomeBannerGetSpread } from '@/apis/customerHomeBanner'
-import { toDate } from '@/utils/tools'
-import validator from 'crazy-validator'
+
 
 export default {
 	data() {
@@ -135,38 +95,16 @@ export default {
 			}, // 轮播样式
 			isRequestNewbeeCoupon: false, // 是否请求新人优惠券
 			current: 0, // 轮播当前索引
-			remoteSwitch: false, // 是否开启异地还车
 			couponList: [], // 新人优惠券列表
 			couponNum: 0, // 可使用优惠券数量
-			takeCarCity: {}, // 取车城市
-			takeCarAddress: {}, // 取车地址
-			carAlsoCity: {}, // 还车城市
-			carAlsoAddress: {}, // 还车地址
-			takeCarDateShow: '', // 取车日期显示
-			takeCarDayShow: '', // 取车日是周几显示
-			takeCarTimeShow: '', // 取车时间显示
-			takeCarTime: '', // 取车时间
-			carAlsoDateShow: '', // 还车日期显示
-			carAlsoDayShow: '', // 还车日是周几显示
-			carAlsoTimeShow: '', // 还车时间显示
-			carAlsoTime: '', // 还车时间
-			totalDate: '' // 总天数
 		}
 	},
 	components: {
-		EvanSwitch,
+		CarRentalCard,
 		NewbeeCouponModal
-	},
-	watch: {
-		// 监听异地取车开关
-		remoteSwitch(newVal) {
-			this.carAlsoCity = this.takeCarCity
-			this.carAlsoAddress = this.takeCarAddress
-		}
 	},
 	onLoad() {
 		this.customerHomeBannerGetSpread()
-		this.showTime()
 		if (this.$storage.get('token')) this.loginAfterRequest()
 		this.eventListener()
 	},
@@ -181,22 +119,6 @@ export default {
 		init() {
 			this.customerHomeBannerGetSpread()
 			if (this.$storage.get('token')) this.loginAfterRequest()
-		},
-		// 显示默认时间
-		showTime() {
-			const startTimestamp = Date.now() + 86400000
-			const startTimeArr = toDate(startTimestamp)
-			const endTimestamp = startTimestamp + 4 * 86400000
-			const endTimeArr = toDate(endTimestamp)
-			this.takeCarDateShow = `${startTimeArr[1]}月${startTimeArr[2]}日`
-			this.takeCarDayShow = this.weekShow[new Date(startTimestamp).getDay()]
-			this.takeCarTimeShow = '10:00'
-			this.takeCarTime = `${startTimeArr[0]}-${startTimeArr[1]}-${startTimeArr[2]} 10:00:00`
-			this.carAlsoDateShow = `${endTimeArr[1]}月${endTimeArr[2]}日`
-			this.carAlsoDayShow = this.weekShow[new Date(endTimestamp).getDay()]
-			this.carAlsoTimeShow = '10:00'
-			this.carAlsoTime = `${endTimeArr[0]}-${endTimeArr[1]}-${endTimeArr[2]} 10:00:00`
-			this.totalDate = 4
 		},
 		// 登录之后的请求
 		loginAfterRequest() {
@@ -215,151 +137,14 @@ export default {
 			this.current = e.detail.current
 		},
 		// 立即租车
-		carRental() {
-			const checkList = [
-				{
-					value: this.takeCarAddress,
-					rules: [
-						{
-							type: 'required',
-							msg: '请选择取车点'
-						}
-					]
-				},
-				{
-					value: this.carAlsoAddress,
-					rules: [
-						{
-							type: 'required',
-							msg: '请选择还车点'
-						}
-					]
-				},
-				{
-					value: this.totalDate,
-					rules: [
-						{
-							type: 'required',
-							msg: '请选择租车日期与时间'
-						}
-					]
-				}
-			]
-			const checkRes = validator(checkList, this.$toast)
-			if (checkRes.status !== 1000) return
-			const currentTimeStamp = Date.now()
-			const takeCarTimeStamp = new Date(this.takeCarTime).getTime()
-			if (takeCarTimeStamp < currentTimeStamp) {
-				this.$toast('送车时间小于当前时间！')
-				return
-			}
-			if (!this.$storage.get('token')) {
-				this.$toast('请前往登录！')
-				setTimeout(() => {
-					this.$open('/pages/common/login')
-				}, 500)
-				return
-			}
-			const params = {
-				takeCarDateShow: this.takeCarDateShow,
-				takeCarDayShow: this.takeCarDayShow,
-				takeCarTimeShow: this.takeCarTimeShow,
-				takeCarTime: this.takeCarTime,
-				carAlsoDateShow: this.carAlsoDateShow,
-				carAlsoDayShow: this.carAlsoDayShow,
-				carAlsoTimeShow: this.carAlsoTimeShow,
-				carAlsoTime: this.carAlsoTime,
-				totalDate: this.totalDate,
-				takeCarAddressId: this.takeCarAddress.id,
-				carAlsoAddressId: this.carAlsoAddress.id
-			}
+		carRental(params) {
 			this.$open('/pages/home/selectCar', {
-				takeCarAddress: JSON.stringify(this.takeCarAddress),
-				params: JSON.stringify(params)
+				takeCarAddress: JSON.stringify(params.takeCarAddress),
+				params: JSON.stringify(params.info)
 			})
-		},
-		// 选取取车地点
-		goTakeCarAddress() {
-			if (!this.takeCarCity || Object.keys(this.takeCarCity).length === 0) {
-				this.$toast('请先选择取车城市')
-				return
-			}
-			this.$open('/pages/home/selectAddress', {
-				city: JSON.stringify(this.takeCarCity),
-				addressMode: 'takeCar'
-			})
-		},
-		// 选取还车地点
-		goCarAlsoAddress() {
-			if (!this.carAlsoCity || Object.keys(this.carAlsoCity).length === 0) {
-				this.$toast('请先选择还车城市')
-				return
-			}
-			this.$open('/pages/home/selectAddress', {
-				city: JSON.stringify(this.carAlsoCity),
-				addressMode: 'carAlso'
-			})
-		},
-		// 选择时间
-		selectTime() {
-			this.$open('/pages/home/selectTime', {
-				takeCarDayShow: this.takeCarDayShow,
-				takeCarTimeShow: this.takeCarTimeShow,
-				takeCarTime: this.takeCarTime,
-				carAlsoDayShow: this.carAlsoDayShow,
-				carAlsoTimeShow: this.carAlsoTimeShow,
-				carAlsoTime: this.carAlsoTime,
-				totalDate: this.totalDate
-			})
-		},
-		// 打开流程弹窗
-		openProcessPopup() {
-			this.$refs.processPopup.open()
-		},
-		// 关闭流程弹窗
-		closeProcessPopup() {
-			this.$refs.processPopup.close()
 		},
 		// 事件监听
 		eventListener() {
-			// 选择城市
-			uni.$on('checkCity', e => {
-				switch (e.cityMode) {
-					case 'takeCar':
-						this.takeCarCity = JSON.parse(e.city)
-						this.takeCarAddress = ''
-						break
-					case 'carAlso':
-						this.carAlsoCity = JSON.parse(e.city)
-						this.carAlsoAddress = ''
-						break
-				}
-				if (!this.remoteSwitch) this.carAlsoCity = this.takeCarCity
-			})
-			// 选择地点
-			uni.$on('checkAddress', e => {
-				switch (e.addressMode) {
-					case 'takeCar':
-						this.takeCarAddress = JSON.parse(e.address)
-						break
-					case 'carAlso':
-						this.carAlsoAddress = JSON.parse(e.address)
-						break
-				}
-				if (!this.remoteSwitch) this.carAlsoAddress = this.takeCarAddress
-			})
-			// 选择时间
-			uni.$on('checkTime', e => {
-				this.takeCarDateShow = e.takeCarDateShow
-				this.takeCarDayShow = e.takeCarDayShow
-				this.takeCarTimeShow = e.takeCarTimeShow
-				this.takeCarTime = e.takeCarTime
-				this.carAlsoDateShow = e.carAlsoDateShow
-				this.carAlsoDayShow = e.carAlsoDayShow
-				this.carAlsoTimeShow = e.carAlsoTimeShow
-				this.carAlsoTime = e.carAlsoTime
-				this.totalDate = e.totalDate
-			})
 			// app刷新
 			uni.$on('appRefresh', () => {
 				this.customerHomeBannerGetSpread()
@@ -374,7 +159,7 @@ export default {
 @import '@/static/scss/_mixin.scss';
 
 page {
-	background-color: #fff;
+	background-color: #fff !important;
 }
 
 .home {
@@ -396,158 +181,12 @@ page {
 		position: relative;
 		top: -35rpx;
 		z-index: 9;
-		@include box-w(670rpx, #fff);
-		border-radius: 20rpx;
-		box-shadow: 0 0 8rpx 0 rgba(114, 141, 244, 0.25);
-		margin: 0 auto;
-		padding: 30rpx;
-
-		.title-bar {
-			@include flex-row(space-between);
-
-			text {
-				@include font-set(24rpx, #999, 700);
-			}
-
-			.caption {
-				@include flex-row();
-
-				.circle {
-					@include circle(16rpx);
-					margin-right: 10rpx;
-
-					&.blue {
-						background-color: #5a7eff;
-					}
-
-					&.orange {
-						background-color: #ffa05b;
-					}
-				}
-			}
-		}
-
-		.block {
-			@include flex-row(flex-start, flex-start);
-			margin-top: 40rpx;
-			margin-bottom: 40rpx;
-
-			.city,
-			.address {
-				@include text-hide();
-				@include font-set(32rpx, #000, 700);
-
-				&.text-1 {
-					@include text-one;
-				}
-			}
-
-			.city {
-				@include box-w(130rpx);
-			}
-
-			.dot {
-				@include square(24rpx);
-				margin: 10rpx 25rpx 0;
-			}
-
-			.address {
-				@include box-w(286rpx);
-
-				&.text-1 {
-					width: 395rpx;
-				}
-			}
-
-			.evan-switch {
-				transform: scaleX(0.8) scaleY(0.8) translateX(15rpx) translateY(-15rpx);
-			}
-		}
-
-		.time-bar {
-			@include flex-row(space-between);
-
-			.time-box {
-				@include flex-col() .date {
-					@include font-set(36rpx, #000, 700);
-					line-height: 48rpx;
-				}
-
-				.time {
-					@include box-w();
-					padding: 6rpx 0;
-					@include flex-row();
-					@include font-set(24rpx, #999);
-					line-height: 34rpx;
-					margin-top: 6rpx;
-
-					text ~ text {
-						margin-left: 12rpx;
-					}
-				}
-
-				&.start-time {
-					.time {
-						@include flex-row(flex-start);
-					}
-				}
-
-				&.end-time {
-					.time {
-						@include flex-row(flex-end);
-					}
-				}
-			}
-
-			.line-bar {
-				@include flex-col();
-
-				.date {
-					@include font-set(36rpx, #5a7eff, 500);
-					line-height: 52rpx;
-				}
-
-				.interval {
-					@include box-b(200rpx, 16rpx);
-				}
-			}
-		}
-
-		.info {
-			@include font-set(24rpx, #999);
-			line-height: 34rpx;
-			margin-top: 40rpx;
-		}
-
-		.toast {
-			.sesame {
-				@include box(36rpx, 40rpx);
-				margin-right: 10rpx;
-			}
-
-			@include flex-center;
-			@include font-set(24rpx, #999);
-			margin-top: 64rpx;
-
-			& > text {
-				color: #5a7eff;
-			}
-		}
-
-		.btn {
-			@include box(560rpx, 100rpx, #5a7eff);
-			@include flex-center;
-			@include font-set(28rpx, #fff, 700);
-			border-radius: 52rpx;
-			box-shadow: 0 2rpx 8rpx 0 rgba(36, 44, 74, 0.25);
-			margin: 22rpx auto 10rpx;
-		}
 	}
 
 	.notice-box {
 		position: relative;
 		@include box-b(670rpx, 160rpx);
-		margin: 5rpx auto 40rpx;
+		margin: 5rpx auto 0;
 
 		.notice-bg {
 			@include square();
@@ -572,8 +211,54 @@ page {
 		}
 	}
 
-	.bottom-mat {
-		height: 106rpx;
+	.discounts-box {
+		@include box-w();
+		padding: 40rpx;
+		.title {
+			@include flex-row();
+			@include font-set(32rpx, #000, 700);
+			line-height: 44rpx;
+			.label {
+				@include box(8rpx, 24rpx, #5a7eff);
+				border-radius: 20rpx;
+				margin-right: 20rpx;
+			}
+		}
+		.list {
+			padding: 0 20rpx;
+			@include flex-wrap;
+			.good-card {
+				@include box-w(300rpx);
+				margin-top: 40rpx;
+				&:nth-of-type(2n) {
+					margin-left: 30rpx;
+				}
+				.picture {
+					@include box(100%, 156rpx);
+					box-shadow: 0 0 4rpx 0 rgba(114, 141, 244, 0.25);
+				}
+				.caption {
+					@include font-set(28rpx, #000, 700);
+					@include text-one;
+					line-height: 40rpx;
+					margin-top: 10rpx;
+				}
+				.price-box {
+					@include flex-row();
+					margin-top: 10rpx;
+					.price {
+						@include font-set(28rpx, #fc3736, 700);
+						line-height: 40rpx;
+					}
+					.origin-price {
+						@include font-set(20rpx, #999);
+						text-decoration: line-through;
+						line-height: 28rpx;
+						margin-left: 10rpx;
+					}
+				}
+			}
+		}
 	}
 
 	.bottom {

@@ -8,6 +8,7 @@
 		<view class="info-card">
 			<view class="name-box">
 				<view class="name">{{ info.clientVehicleVo.brandName }}</view>
+				<view class="given">租7送2</view>
 				<view class="label-box">
 					<view v-for="(item, index) in info.clientVehicleVo.labels" :key="index" class="label">{{ item }}</view>
 				</view>
@@ -357,11 +358,11 @@ export default {
 		this.backtime = e.carAlsoTimeShow
 		this.totalDate = e.totalDate
 		this.invoiceQueryByUser()
-		this.rentalOrderGenerateOrder(e)
+		this.rentalOrderGenerateOrder()
 		this.eventListener()
 	},
 	methods: {
-		async rentalOrderGenerateOrder(e) {
+		async rentalOrderGenerateOrder() {
 			let data = {
 				vehicleModelId: this.yudingInfo.carModelId,
 				rentEndTime: this.yudingInfo.carAlsoTime,
@@ -549,7 +550,7 @@ export default {
 @import '@/static/scss/_mixin.scss';
 
 page {
-	background-color: #eff0f3;
+	background-color: #eff0f3 !important;
 }
 
 .confirm-order {
@@ -570,6 +571,16 @@ page {
 			@include flex-row();
 			@include font-set(32rpx, #000, 700);
 			line-height: 44rpx;
+			
+			.given {
+				@include box-h(40rpx, #FFA05B);
+				display: inline-block;
+				@include font-set(24rpx, #fff, 500);
+				line-height: 40rpx;
+				border-radius: 10rpx;
+				padding:0 24rpx;
+				margin-left: 12rpx;
+			}
 
 			.label-box {
 				@include flex-row();
@@ -662,6 +673,7 @@ page {
 				.address {
 					@include font-set(28rpx, #000);
 					line-height: 40rpx;
+					padding-right: 10rpx;
 					margin-left: 23rpx;
 				}
 			}

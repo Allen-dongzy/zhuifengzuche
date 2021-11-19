@@ -425,7 +425,9 @@ export default {
 			}
 			const [err, res] = await paymentPrecreate(params)
 			if (err) {
+				// #ifdef MP-ALIPAY
 				this.paymentCancelPay()
+				// #endif
 				return
 			}
 			this.pay(res.data.wapPayRequest)
@@ -444,7 +446,9 @@ export default {
 			const [err, res] = await uni.requestPayment(params)
 			if (err || (res && res.resultCode === '6001')) {
 				this.$toast('用户取消支付')
+				// #ifdef MP-ALIPAY
 				this.paymentCancelPay()
+				// #endif
 				return
 			}
 			this.$toast('租车成功！')
@@ -583,7 +587,7 @@ export default {
 @import '@/static/scss/_mixin.scss';
 
 page {
-	background-color: #eff0f3;
+	background-color: #eff0f3 !important;
 }
 
 .order-detail {

@@ -4,6 +4,10 @@
 			<image class="avatar" :src="icon || `${ossUrl}/mine/touxiang.png`" mode="aspectFill" @click="headTap"></image>
 			<view class="nickname" @click="headTap">
 				{{ nickname || username || '点击登录' }}
+				<view class="level-label" @click.stop="$open('/pages/mine/vip')">
+					<image :src="`${ossUrl}/mine/v${level + 1}.png`" mode="aspectFill"></image>
+					{{ level | levelFormat }}
+				</view>
 				<view class="arrow"></view>
 			</view>
 		</view>
@@ -56,8 +60,7 @@
 		</view>
 		<view v-if="$storage.get('token')" class="flex-box-left" @click="logout">
 			<image class="icon" :src="`${ossUrl}/mine/out.png`" mode="widthFix"></image>
-			<view class="text">退出登录</view>
-			<image class="arrow" :src="`${ossUrl}/mine/huiyou.png`" mode="aspectFill"></image>
+			<view class="text red">退出登录</view>
 		</view>
 		<newbee-coupon-modal ref="newbeeCoupon" />
 	</view>
@@ -72,6 +75,7 @@ export default {
 	data() {
 		return {
 			ossUrl: this.$ossUrl, // oss
+			level: 1,
 			list: [
 				{
 					name: '发票抬头',
@@ -108,6 +112,12 @@ export default {
 	},
 	components: {
 		NewbeeCouponModal
+	},
+	filters: {
+		levelFormat(level) {
+			const levels = ['青铜', '白银', '黄金', '铂金', '钻石']
+			return levels[level]
+		}
 	},
 	computed: {
 		// user 头像，用户昵称，用户名，优惠券数量
@@ -197,13 +207,27 @@ export default {
 		color: #fff;
 		margin-left: 30rpx;
 
+		.level-label {
+			@include box(120rpx, 40rpx, #525252);
+			@include flex-center;
+			border-radius: 32rpx;
+			@include font-set(20rpx, #fff, 700);
+			margin-left: 16rpx;
+
+			& > image {
+				@include square(26rpx);
+				display: block;
+				margin-right: 15rpx;
+			}
+		}
+
 		.arrow {
 			@include square(16rpx);
 			border: 1px solid #fff;
 			border-left: 0;
 			border-bottom: 0;
-			transform: rotate(45deg) translateY(4rpx);
-			margin-left: 10rpx;
+			transform: rotate(45deg);
+			margin-left: 8rpx;
 		}
 	}
 }
@@ -280,6 +304,9 @@ export default {
 		color: black;
 		width: 90%;
 		margin-left: 20rpx;
+		&.red {
+			color: #fc3736;
+		}
 	}
 
 	.icon {

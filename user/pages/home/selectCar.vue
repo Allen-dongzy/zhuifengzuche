@@ -31,13 +31,14 @@
 							<view class="title-bar">
 								<view class="caption">{{ item.brandName }}</view>
 								<!-- <view class="status">
-									{{item.isFull===1 ? '已租满': item.rentableNum ? `还剩${item.rentableNum}辆`: ''}}
+									{{item.isFull===1 ? '满租': item.rentableNum ? `还剩${item.rentableNum}辆`: ''}}
 								</view> -->
 							</view>
 							<view class="parameter">{{ item.vehicleModelName }}丨{{ item.gears }} {{ item.capacity }}座 {{ item.outputVolumeName }}</view>
 							<view class="label-box">
 								<view class="label" v-for="(inner, sub) in item.labels.slice(0, 3)" :key="sub">{{ inner }}</view>
 							</view>
+							<view class="given">租7送2</view>
 						</view>
 					</view>
 					<view class="price-bar">
@@ -509,7 +510,7 @@ export default {
 				}
 
 				.card {
-					@include flex-row();
+					@include flex-row(flex-start, flex-start);
 
 					.pic {
 						@include box(244rpx, 128rpx, #eee);
@@ -555,6 +556,16 @@ export default {
 									margin-left: 8rpx;
 								}
 							}
+						}
+						
+						.given {
+							@include box-h(40rpx, #FFA05B);
+							display: inline-block;
+							@include font-set(24rpx, #fff, 500);
+							line-height: 40rpx;
+							border-radius: 10rpx;
+							padding:0 24rpx;
+							margin-top: 12rpx;
 						}
 					}
 				}

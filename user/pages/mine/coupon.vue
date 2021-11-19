@@ -138,7 +138,7 @@
 
 <style lang="scss">
 	page {
-		background-color: #EFF0F3;
+		background-color: #EFF0F3 !important;
 	}
 
 	.box {

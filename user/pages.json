@@ -25,8 +25,8 @@
 			"navigationBarTitleText": "",
 			"mp-alipay": {
 				"allowsBounceVertical": "YES",
-				"transparentTitle": "always", //支付宝
-				"titlePenetrate": "YES" //支付宝
+				"transparentTitle": "always",
+				"titlePenetrate": "YES"
 			}
 		}
 	}, {
@@ -42,7 +42,7 @@
 	}, {
 		"path": "pages/home/selectCity",
 		"style": {
-			"navigationBarTitleText": "选择城市"
+			"nav igationBarTitleText": "选择城市"
 		}
 	}, {
 		"path": "pages/home/couponCenter",
@@ -321,6 +321,20 @@
 		"style": {
 			"navigationBarTitleText": "免押解冻(测试)"
 		}
+	}, {
+		"path": "pages/home/flash-sale",
+		"style": {
+			"navigationBarTitleText": "限时优惠"
+		}
+	}, {
+		"path": "pages/mine/vip",
+		"style": {
+			"navigationStyle":"custom",
+			"mp-alipay": {
+				"transparentTitle": "always",
+				"titlePenetrate": "YES"
+			}
+		}
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -357,7 +371,7 @@
 			"path": "pages/order/order"
 		}, {
 			"name": "dzy", // dzy
-			"path": "pages/common/signIng"
+			"path": "pages/mine/vip"
 		}]
 	}
 }

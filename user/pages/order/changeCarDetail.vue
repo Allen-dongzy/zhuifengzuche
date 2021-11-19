@@ -47,7 +47,7 @@
 	@import '@/static/scss/_mixin.scss';
 
 	page {
-		background-color: #EFF0F3;
+		background-color: #EFF0F3 !important;
 	}
 
 	.change-car-detail {
