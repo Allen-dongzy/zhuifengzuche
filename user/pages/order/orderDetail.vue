@@ -158,7 +158,7 @@
 			</view>
 			<view class="order-item">
 				<view class="left">押金免押状态</view>
-				<view class="right">{{ info.depositType === 0 ? '全部免押' : '未免押' }}</view>
+				<view class="right">{{ info.depositType === 0 || info.orderSource === 3 ? '全额免押' : '未免押' }}</view>
 			</view>
 			<view class="order-item">
 				<view class="left">支付方式</view>
@@ -184,7 +184,7 @@
 			<view class="order-item">
 				<view class="left">
 					<view class="top">订单备注</view>
-					<view class="bottom margin">{{ info.remark }}</view>
+					<view class="bottom margin">{{ info.remark || '' }}</view>
 				</view>
 				<view class="right"></view>
 			</view>
@@ -251,7 +251,7 @@ export default {
 		return {
 			ossUrl: this.$ossUrl, // oss
 			id: '',
-			info: {}, // 订单信息
+			info: {}, // 订单信息 info.orderSource 0=支付宝小程序 1=微信小程序 2=凹凸 3=飞猪
 			week: ['', '周一', '周二', '周三', '周四', '周五', '周六', '周日'],
 			payerUid: '' // 平台
 		}
