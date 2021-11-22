@@ -11,8 +11,8 @@
 						<p>{{ item.text }}</p>
 					</view>
 				</swiper-item>
-				<!-- 				<swiper-item class="flex flex-wrap swiperItem">
-					<view v-for="(item,index) in swiperIcon" :key="index" class="flex-center flex-direction iconPanel">
+<!-- 				<swiper-item class="flex-wrap swiperItem">
+					<view v-for="(item,index) in swiperIcon2" :key="index" class="flex-center flex-direction iconPanel" @click="toHomeLevel(item.url)">
 						<image mode="aspectFill" :src="$util.fileUrl(item.path)" lazy-load></image>
 						<p>{{ item.text }}</p>
 					</view>
@@ -50,6 +50,9 @@
 							<image mode="aspectFill" :src="$util.fileUrl('/paid_label@2x.png')"></image>
 							<p>已支付</p>
 						</view>
+						<image v-if="item.orderSource==2" mode="aspectFill" style="width: 40rpx;height: 40rpx;margin-left: 20rpx;" src="../../static/img/aotu.png"></image>
+						<image v-if="item.orderSource==3" mode="aspectFill" style="width: 40rpx;height: 40rpx;margin-left: 20rpx;" src="../../static/img/feizhu.png"></image>
+						<image v-if="item.orderSource==4" mode="aspectFill" style="width: 40rpx;height: 40rpx;margin-left: 20rpx;" src="../../static/img/zuzuche.png"></image>
 					</view>
 					<p class="name">{{item.memberRealName}}</p>
 					<view class="flex price">
@@ -95,11 +98,14 @@
 							<image mode="aspectFill" :src="$util.fileUrl('/phone@2x.png')"></image>
 							<p>联系客户</p>
 						</view>
+						
+						
+						
+						<!-- //操作按钮 -->
 						<view class="flex">
 							<button :disabled="item.isCarTest==false" type="default" v-if="tabCheck==0"
 								class="flex-center btn"
 								@tap.stop="toHomeLevel1('/pages/home/goInspect?obj=',item)">出车检验</button>
-
 							<button type="default" :disabled="item.isVehicleCertificates==true" v-if="tabCheck==0"
 								class="flex-center btn" style="margin-left: 20rpx;"
 								@tap.stop="toHomeLevel2(item)">交付车辆</button>
@@ -171,6 +177,12 @@
 					path: '/risk_control_query@2x.png',
 					text: '风控查询',
 					url: '../risk/risk'
+				}],
+				
+				swiperIcon2: [{
+					path: '/dingwei.png',
+					text: '车辆定位',
+					url: '../location/location'
 				}],
 				tabCheck: 0,
 				tabList: [],

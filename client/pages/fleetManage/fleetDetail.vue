@@ -160,7 +160,7 @@
 				    height: 96rpx;line-height: 96rpx;margin-top: 40rpx;margin-bottom: 20rpx;" type="default"
 			@click="next">编辑</button>
 
-		<!-- 租凭计划弹框 -->
+		<!-- 租赁计划弹框 -->
 		<view class="mask" v-if="planShow==true" @click="lookinfo()"></view>
 		<view class="frame" v-if="planShow==true">
 			<view class="carName">
@@ -199,7 +199,7 @@
 						<view class="colorBox" style="background-color: #FFA05B;"></view>
 						<view class="colorText">已预定</view>
 						<view class="colorBox" style="background-color: #5A7EFF;"></view>
-						<view class="colorText">租凭中</view>
+						<view class="colorText">租赁中</view>
 						<view class="colorBox" style="background-color: #EC80E1;"></view>
 						<view class="colorText">预留</view>
 						<view class="colorBox" style="background-color: #C4C4C4;"></view>
@@ -294,7 +294,7 @@
 				indicatorActiveColor: '#DADADA',
 				carInfo: {},
 				list: [{
-					name: '租凭中',
+					name: '租赁中',
 					time: '6月3日 12:00-6月4日 16:00'
 				}, {
 					name: '已预订',

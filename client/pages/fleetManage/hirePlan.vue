@@ -41,7 +41,7 @@
 				<view class="colorBox" style="background-color: #FFA05B;"></view>
 				<view class="colorText">已预定</view>
 				<view class="colorBox" style="background-color: #5A7EFF;"></view>
-				<view class="colorText">租凭中</view>
+				<view class="colorText">租赁中</view>
 				<view class="colorBox" style="background-color: #EC80E1;"></view>
 				<view class="colorText">预留</view>
 				<view class="colorBox" style="background-color: #C4C4C4;"></view>

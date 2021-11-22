@@ -1,11 +1,80 @@
 {
-	"pages": [	{
+	"pages": [
+		
+		{
 			"path": "pages/home/home",
 			"style": {
 				"navigationBarTitleText": "首页",
 				"enablePullDownRefresh":true
+			} 
+		},
+		{
+			"path": "pages/vehicleManage/add",
+			"style": {
+				"navigationBarTitleText": "车型设置"
+			}
+		},
+
+		
+		
+	
+		{
+			"path": "pages/location/locationInfo",
+			"style": {
+				"navigationBarTitleText": "车辆定位详情",
+				"enablePullDownRefresh":true
 			}
 		},{
+			"path": "pages/location/location",
+			"style": {
+				"navigationBarTitleText": "车辆定位",
+				"enablePullDownRefresh":true
+			}
+		},{
+			"path": "pages/Marketing/setDiscount",
+			"style": {
+				"navigationBarTitleText": "限时优惠管理",
+				"enablePullDownRefresh":true
+			}
+		},{
+			"path": "pages/Marketing/discount",
+			"style": {
+				"navigationBarTitleText": "限时优惠管理",
+				"enablePullDownRefresh":true
+			}
+		},{
+			"path": "pages/Marketing/give",
+			"style": {
+				"navigationBarTitleText": "租几送几",
+				"enablePullDownRefresh":true
+			}
+		},{
+			"path": "pages/Marketing/addCoupon",
+			"style": {
+				"navigationBarTitleText": "增加优惠券",
+				"enablePullDownRefresh":true
+			}
+		},{
+			"path": "pages/Marketing/coupon",
+			"style": {
+				"navigationBarTitleText": "优惠券",
+				"enablePullDownRefresh":true
+			}
+		},{
+			"path": "pages/Marketing/giveEdit",
+			"style": {
+				"navigationBarTitleText": "租几送几修改",
+				"enablePullDownRefresh":true
+			}
+		},
+		
+		
+		
+		
+		
+		
+
+		{
 			"path": "pages/home/goInspect",
 			"style": {
 				"navigationBarTitleText": "出车检验"
@@ -342,12 +411,7 @@
 				"navigationBarTitleText": "车型详情"
 			}
 		},
-		{
-			"path": "pages/vehicleManage/add",
-			"style": {
-				"navigationBarTitleText": "车型设置"
-			}
-		},
+
 		{
 			"path": "pages/advanceFreeze/advanceFreeze",
 			"style": {

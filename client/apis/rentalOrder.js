@@ -77,5 +77,16 @@ export const getCertificates = (data, loading = '等待中') => {
 	})
 }
 
+//取消订单
+export const cancelOrder = (data, loading = '等待中') => {
+	return request({
+		url: `rentalOrder/cancelOrder/${data}`,
+		contentType:'application/x-www-form-urlencoded',
+		method: 'get',  
+		data:{},
+		loading
+	})
+}
+
 
 

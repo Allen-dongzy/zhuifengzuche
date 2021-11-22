@@ -194,9 +194,16 @@
 				<view class="moreContent">{{info.orderSn}}</view>
 			</view>
 			<view class="flexBox">
-				<view class="moreTitle">订单来源</view>
-				<view v-if="info.orderSource==0" class="moreContent">微信小程序</view>
-				<view v-if="info.orderSource==1" class="moreContent">支付宝小程序</view>
+				<view class="moreTitle" style="width: 65%;">订单来源</view>
+				
+				<image v-if="info.orderSource==2" mode="aspectFill" style="width: 5%;height: 40rpx;margin-left: 20rpx;" src="../../static/img/aotu.png"></image>
+				<image v-if="info.orderSource==3" mode="aspectFill" style="width: 5%;height: 40rpx;margin-left: 20rpx;" src="../../static/img/feizhu.png"></image>
+				<image v-if="info.orderSource==4" mode="aspectFill" style="width: 5%;height: 40rpx;margin-left: 20rpx;" src="../../static/img/zuzuche.png"></image>
+				<view v-if="info.orderSource==0" style="width: 30%;" class="moreContent">微信小程序</view>
+				<view v-if="info.orderSource==1" style="width: 30%;" class="moreContent">支付宝小程序</view>
+				<view v-if="info.orderSource==2" style="width: 30%;" class="moreContent">凹凸租车</view>
+				<view v-if="info.orderSource==3" style="width: 30%;" class="moreContent">飞猪</view>
+				<view v-if="info.orderSource==4" style="width: 30%;" class="moreContent">租租车</view>
 			</view>
 			<view class="flexBox">
 				<view class="moreTitle">下单时间</view>
@@ -229,18 +236,21 @@
 			<image style="width: 32rpx;height: 32rpx;" mode="aspectFill" :src="$util.fileUrl('/phone@2x.png')"
 				@click="phone(info.userPhone)"></image>
 			<view style="color: #FFA05B;font-size: 24rpx;margin-left: 10rpx;">联系客户</view>
+			
+			<!-- //操作按钮 -->
 			<view style="width: 75%;display: flex;align-items: center;justify-content: flex-end;">
 
-				<view v-if="type==5" class="lanbox" @click="deliverCar(2)">交车情况</view>
-				<view v-if="type==100" class="lanbox" @click="shoucheInfo">收车情况</view>
-				<!-- <view v-if="type==100" class="lanbox">结算佣金</view> -->
-			<view v-if="type==1" class="lanbox" @click="goInspect()">出车检验</view>
-			<view v-if="type==5 && info.orderStatus==5" class="lanbox" @click="jianyanshouche" :disabled="info.isPaymentIllegalDeposit==1">
-				检验收车</view>
-			<view :disabled="info.isVehicleCertificates==true" v-if="type==1" @click="deliverCar(1)" class="lanbox">交付车辆
+						<view v-if="type==5" class="lanbox" @click="deliverCar(2)">交车情况</view>
+						<view v-if="type==100" class="lanbox" @click="shoucheInfo">收车情况</view>
+						<!-- <view v-if="type==100" class="lanbox">结算佣金</view> -->
+					<view v-if="type==1" class="lanbox" @click="cancelOrder()">取消订单</view>
+					<view v-if="type==1" class="lanbox" @click="goInspect()">出车检验</view>
+					<view v-if="type==5 && info.orderStatus==5" class="lanbox" @click="jianyanshouche" :disabled="info.isPaymentIllegalDeposit==1">
+						检验收车</view>
+					<view :disabled="info.isVehicleCertificates==true" v-if="type==1" @click="deliverCar(1)" class="lanbox">交付车辆
+					</view>
+					<view v-if="type==100" class="lanbox1" @click="backMoney">退还押金</view>
 			</view>
-			<view v-if="type==100" class="lanbox1" @click="backMoney">退还押金</view>
-	</view>
 	<!-- 待支付 按钮都不要    已取消 按钮都不要    已完成  100 结算 收车 退还      待收车 5 交车 检验       待送车 1 出车 交付-->
 	</view>
 	</view>
@@ -248,7 +258,8 @@
 
 <script>
 	import {
-		orderInfo
+		orderInfo,
+		cancelOrder
 	} from '@/apis/rentalOrder'
 	import {
 		refundOfIllegalDeposit
@@ -336,6 +347,23 @@
 					url: './goInspect?obj=' + JSON.stringify(data)
 				})
 			},
+			 cancelOrder(e) {
+				uni.showModal({
+				    title: '提示',
+				    content: '是否要取消订单',
+				   success: async res => {
+				        if (res.confirm) {
+				           let data = {
+				           	orderId: this.info.id
+				           }
+				           const [err, ress] = await cancelOrder(data)
+				           if (err) return
+				           console.log(ress)
+						   this.$toast('取消成功')
+				        }
+				    }
+				})
+			},
 			//交车情况
 			// deliverCar(e) {
 			// 	let data = {
@@ -356,7 +384,6 @@
 						carnum: this.info.vehicleNumber,
 						vehicleId: this.info.vehicleId
 					}
-			
 					uni.navigateTo({
 						url: './deliverCar?type=' + e + '&obj=' + JSON.stringify(data)
 					})

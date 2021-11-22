@@ -2,7 +2,7 @@ let config = {
 	mode: 'production', // 项目模式 production release develop
 	secretKey: '', // md5通信秘钥
 	productionHost: 'https://zuche.zdkj1.cn', // 正式域名
-	releaseHost: 'https://zctest.zdkj1.cn', // 测试域名
+	releaseHost: 'https://zctest.zdkj1.cn', // 测试域名 
 	developHost: 'https://zctest.zdkj1.cn', // 开发域名
 	apiKeyword: 'lots-admin', // 接口代理关键字
 	// http://test.frp.hechieh.com

@@ -70,6 +70,12 @@
 				</view>
 			</view>
 		</view>
+		<!-- /需要的功能 -->
+<!-- 		<view class="flexBoxContent">
+			<view class="">GPS系列</view>
+			<input class="inpBox" style="width: 70%;" type="text"  placeholder="请输入GPS系列" />
+		</view> -->
+		
 		<view class="lineBox"></view>
 		<view class="title">行驶证照片</view>
 		<view class="idCard">

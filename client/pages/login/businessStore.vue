@@ -88,7 +88,7 @@
 
 
 			<view class="fromTitel">车辆整备费</view>
-			<input class="inpBox" type="text" v-model="price" placeholder="请填写车辆整备费" />
+			<input class="inpBox" type="number" v-model="price" placeholder="请填写车辆整备费" />
 
 
 
