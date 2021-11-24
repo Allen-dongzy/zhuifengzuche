@@ -140,7 +140,7 @@ export default {
 		},
 		// 授权
 		getCodeByWxCode: throttle(async function() {
-			if (this.info.totalAmount <= 0 || this.info.orderSource === 3) {
+			if (this.info.totalAmount <= 0) {
 				this.returnVehicleReimburse()
 				return
 			}
