@@ -564,6 +564,7 @@ export default {
 			}
 			this.$open('/pages/order/returnCar', {
 				from: 'orderDetail',
+				orderSn: this.info.orderSn,
 				orderStatus: this.info.orderStatus,
 				orderId: this.info.id,
 				vehicleId: this.info.vehicleId
