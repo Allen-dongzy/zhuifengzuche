@@ -59,7 +59,7 @@
 					<view class="btn-box">
 						<view class="btn white" @click="contactStore">联系门店</view>
 						<view v-if="info.orderStatus === 3 && !info.isLeaseRenewal" class="btn white" @click="rentalOrderRenewCarRentalPriceCheck">续租用车</view>
-						<view class="btn blue" @click="returnCar">前往还车</view>
+						<view v-if="isShowReturnCarBtn" class="btn blue" @click="returnCar">前往还车</view>
 					</view>
 				</view>
 			</view>
@@ -291,6 +291,12 @@ export default {
 					break
 			}
 			return info
+		},
+		// 是否显示还车按钮
+		isShowReturnCarBtn() {
+			let res = true
+			if (this.info.orderSource === 3 && Date.now() < new Date(transCommonTime(this.info.rentEndTime)).getTime()) res = false
+			return res
 		}
 	},
 	filters: {
