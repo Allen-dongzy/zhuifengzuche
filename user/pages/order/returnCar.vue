@@ -90,6 +90,7 @@ export default {
 	data() {
 		return {
 			ossUrl: this.$ossUrl, // oss
+			orderSn: '', // 订单编号
 			orderId: '', // 订单id
 			vehicleId: '', // 车辆id
 			from: '', // 从哪里来 order orderDetail
@@ -100,8 +101,9 @@ export default {
 	onLoad(e) {
 		if (e && e.orderId) this.orderId = Number(e.orderId)
 		if (e && e.vehicleId) this.vehicleId = Number(e.vehicleId)
-		if (e && e.from) this.from = e.from
 		if (e && e.orderStatus) this.orderStatus = Number(e.orderStatus)
+		if (e && e.orderSn) this.orderSn = e.orderSn
+		if (e && e.from) this.from = e.from
 		this.returnVehicle()
 	},
 	methods: {
@@ -178,7 +180,7 @@ export default {
 			if (err) return
 			this.$toast('结算成功！')
 			uni.$emit('orderRefresh')
-			uni.$emit('orderDetailRefresh') 
+			uni.$emit('orderDetailRefresh')
 			setTimeout(() => {
 				this.$close()
 			}, 500)
