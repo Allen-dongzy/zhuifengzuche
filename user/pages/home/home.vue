@@ -8,7 +8,7 @@
 			</swiper>
 			<view v-else class="banner-empty"></view>
 		</uni-swiper-dot>
-		<car-rental-card class="card" @confirm="carRental"/>
+		<car-rental-card from="home" class="card" @confirm="carRental"/>
 		<view v-if="couponNum > 0" class="notice-box" @click="$open('/pages/mine/coupon', { selectType: 'home' })">
 			<image class="notice-bg" :src="`${ossUrl}/home/notice.png`" mode="aspectFill"></image>
 			<view class="mask">
@@ -16,18 +16,18 @@
 				<image class="go" :src="`${ossUrl}/home/go.png`" mode="aspectFill"></image>
 			</view>
 		</view>
-		<view class="discounts-box">
+		<view v-if="list.length>0" class="discounts-box">
 			<view class="title">
 				<view class="label"></view>
 				特惠租车
 			</view>
 			<view class="list">
-				<view class="good-card" v-for="(item, index) in 4" :key="index" @click="$open('/pages/home/flash-sale')">
-					<image class="picture" src="https://zdkj-oss-bucket.oss-cn-hangzhou.aliyuncs.com/car-rental-user/common/res-success.png" mode="aspectFill"></image>
-					<view class="caption">大众丨凌度丨1.4L</view>
+				<view class="good-card" v-for="(item, index) in list" :key="index" @click="goFlashSale(index)">
+					<image class="picture" :src="JSON.parse(item.vehicleModelImg)[0]" mode="aspectFill"></image>
+					<view class="caption">{{ item.vehicleModelBrandName }}丨{{ item.vehicleModelName }}丨{{ item.vehicleOutputVolume }}</view>
 					<view class="price-box">
-						<view class="price">￥60/天</view>
-						<view class="origin-price">￥78/天</view>
+						<view class="price">￥{{ item.discountedPrice }}/天</view>
+						<view class="origin-price">￥{{ item.originalPrice }}/天</view>
 					</view>
 				</view>
 			</view>
@@ -70,7 +70,7 @@
 				<view class="btn-box"><view class="btn" @click="closeProcessPopup">知道了</view></view>
 			</view>
 		</uni-popup>
-		<newbee-coupon-modal ref="newbeeCoupon" />
+		<newbee-coupon-modal :type="1" ref="newbeeCoupon" />
 	</view>
 </template>
 
@@ -78,7 +78,8 @@
 import CarRentalCard from '@/components/car-rental-card/car-rental-card'
 import NewbeeCouponModal from '@/components/newbee-coupon-modal/newbee-coupon-modal'
 import { customerHomeBannerGetSpread } from '@/apis/customerHomeBanner'
-
+import { limitedTimeOffer } from '@/apis/vehicle'
+import { getLocation } from '@/utils/uni-tools'
 
 export default {
 	data() {
@@ -97,6 +98,9 @@ export default {
 			current: 0, // 轮播当前索引
 			couponList: [], // 新人优惠券列表
 			couponNum: 0, // 可使用优惠券数量
+			lng: 0, // 经度
+			lat: 0, // 纬度
+			list: [], // 特惠列表
 		}
 	},
 	components: {
@@ -104,8 +108,7 @@ export default {
 		NewbeeCouponModal
 	},
 	onLoad() {
-		this.customerHomeBannerGetSpread()
-		if (this.$storage.get('token')) this.loginAfterRequest()
+		this.init('refresh')
 		this.eventListener()
 	},
 	onPullDownRefresh() {
@@ -116,9 +119,29 @@ export default {
 	},
 	methods: {
 		// 初始化
-		init() {
+		init(key) {
 			this.customerHomeBannerGetSpread()
+			this.limitedTimeOffer(key)
 			if (this.$storage.get('token')) this.loginAfterRequest()
+		},
+		// 根据经纬度获取特惠租车
+		async limitedTimeOffer(key) {
+			let locationErr, locationRes
+			// 获取位置
+			if (key === 'refresh') {
+				[locationErr, locationRes] = await getLocation()
+				if (locationErr) return
+				this.lng = locationRes.lng
+				this.lat = locationRes.lat
+			} else {
+				locationRes = {
+					lng: this.lng,
+					lat: this.lat
+				}
+			}
+			const [err, res] = await limitedTimeOffer(locationRes.lng, locationRes.lat)
+			if (err) return
+			this.list = res.data
 		},
 		// 登录之后的请求
 		loginAfterRequest() {
@@ -136,6 +159,13 @@ export default {
 		swiperChange(e) {
 			this.current = e.detail.current
 		},
+		// 前往特惠租车详情
+		goFlashSale(index) {
+			this.$open('/pages/home/flashSale', {
+				deliveryId: this.list[index].deliveryId,
+				vehicleModelId: this.list[index].vehicleModelId
+			})
+		},
 		// 立即租车
 		carRental(params) {
 			this.$open('/pages/home/selectCar', {
@@ -147,8 +177,7 @@ export default {
 		eventListener() {
 			// app刷新
 			uni.$on('appRefresh', () => {
-				this.customerHomeBannerGetSpread()
-				if (this.$storage.get('token')) this.loginAfterRequest()
+				this.init('refresh')
 			})
 		}
 	}
@@ -223,7 +252,7 @@ page {
 				border-radius: 20rpx;
 				margin-right: 20rpx;
 			}
-		}
+		} 
 		.list {
 			padding: 0 20rpx;
 			@include flex-wrap;
@@ -235,6 +264,7 @@ page {
 				}
 				.picture {
 					@include box(100%, 156rpx);
+					border-radius: 6rpx;
 					box-shadow: 0 0 4rpx 0 rgba(114, 141, 244, 0.25);
 				}
 				.caption {

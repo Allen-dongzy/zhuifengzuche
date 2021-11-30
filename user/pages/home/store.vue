@@ -83,7 +83,8 @@ export default {
 			requestKey: true,
 			dataStatus: '', // more loading noMore noData
 			cacheAddressMode: '',
-			cacheAddress: ''
+			cacheAddress: '',
+			from: ''
 		}
 	},
 	onLoad(e) {
@@ -94,6 +95,7 @@ export default {
 		if (e && e.lon) this.lon = e.lon
 		if (e && e.cacheAddressMode) this.cacheAddressMode = e.cacheAddressMode
 		if (e && e.cacheAddress) this.cacheAddress = e.cacheAddress
+		if (e && e.from) this.from = e.from
 		this.deliveryFindShop()
 	},
 	onReachBottom() {
@@ -154,7 +156,8 @@ export default {
 		selAddress() {
 			uni.$emit('checkAddress', {
 				addressMode: this.cacheAddressMode,
-				address: this.cacheAddress
+				address: this.cacheAddress,
+				from: this.from
 			})
 			this.$close(2)
 		}

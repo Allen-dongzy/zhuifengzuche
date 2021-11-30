@@ -1,24 +1,24 @@
 <template>
 	<view class="flash-sale">
-		<uni-swiper-dot :info="info.clientVehicleVo.vehicleModelFiles" :current="current" field="content" mode="round" :dotsStyles="dotsStyles">
+		<uni-swiper-dot :info="info.vehicleModelImg" :current="current" field="content" mode="round" :dotsStyles="dotsStyles">
 			<swiper class="swiper" :autoplay="true" :interval="3000" :circular="true" @change="swiperChange">
-				<swiper-item v-for="(item, index) in info.clientVehicleVo.vehicleModelFiles" :key="index"><image class="banner" :src="item" mode="aspectFill"></image></swiper-item>
+				<swiper-item v-for="(item, index) in info.vehicleModelImg" :key="index"><image class="banner" :src="item" mode="aspectFill"></image></swiper-item>
 			</swiper>
 		</uni-swiper-dot>
 		<view class="info-card">
 			<view class="title-box">
 				<view class="name-box">
-					<text class="name">{{ info.clientVehicleVo.brandName }}</text>
-					<text class="price">￥{{ info.clientVehicleVo.price }}/天</text>
-					<text class="origin-price">￥{{ info.clientVehicleVo.originPrice }}/天</text>
+					<text class="name">{{ info.vehicleModelBrandName }}{{ info.vehicleModelName }}</text>
+					<text class="price">￥{{ info.discountedPrice }}/天</text>
+					<text class="origin-price">￥{{ info.originalPrice }}/天</text>
 				</view>
 				<view class="label-box">
-					<view v-for="(item, index) in info.clientVehicleVo.labels" :key="index" class="label">{{ item }}</view>
+					<view v-for="(item, index) in info.labels.slice(0, 3)" :key="index" class="label">{{ item }}</view>
 				</view>
 			</view>
-			<view v-if="info.clientVehicleVo" class="params-box">
-				<view class="params">{{ info.clientVehicleVo.gears }} | {{ info.clientVehicleVo.capacity }}座 | {{ info.clientVehicleVo.outputVolumeName }}</view>
-				<view v-if="true" class="num">仅剩{{ info.clientVehicleVo.num }}辆</view>
+			<view class="params-box">
+				<view class="params">{{ info.gears }} | {{ info.capacity }}座 | {{ info.vehicleOutputVolume }}</view>
+				<view v-if="true" class="num">仅剩{{ info.remainingQuantity }}辆</view>
 				<view v-else class="num">满租</view>
 			</view>
 			<view class="look-price-candar" @click="goPriceCalendar">
@@ -27,36 +27,18 @@
 			</view>
 		</view>
 		<view class="bar"></view>
-		<view class="cart-card">
-			<car-rental-card @confirm="carRental"/>
-		</view>
+		<view v-if="carKey" class="cart-card"><car-rental-card from="flashSale" :city="city" :address="address" @changeTime="timeHandler" @confirm="carRental" /></view>
 	</view>
 </template>
 
 <script>
 import CarRentalCard from '@/components/car-rental-card/car-rental-card'
+import { limitedTimeOfferInfo } from '@/apis/vehicle'
 
 export default {
 	data() {
 		return {
 			ossUrl: this.$ossUrl, // oss
-			info: {
-				clientVehicleVo: {
-					vehicleModelFiles: [
-						'https://zdkj-oss-bucket.oss-cn-hangzhou.aliyuncs.com/car-rental-user/common/res-success.png',
-						'https://zdkj-oss-bucket.oss-cn-hangzhou.aliyuncs.com/car-rental-user/common/res-success.png',
-						'https://zdkj-oss-bucket.oss-cn-hangzhou.aliyuncs.com/car-rental-user/common/res-success.png'
-					],
-					brandName: '奔驰',
-					price: 60,
-					originPrice: 78,
-					labels: [],
-					gears: '自动',
-					capacity: 5,
-					outputVolumeName: '3.0L以上',
-					num: 1
-				}
-			},
 			dotsStyles: {
 				bottom: 40,
 				backgroundColor: '#dadada',
@@ -64,17 +46,41 @@ export default {
 				selectedBackgroundColor: 'rgba(218,218,218,0.40)',
 				selectedBorder: 'rgba(218,218,218,0.40)'
 			}, // 轮播样式
-			current: 0 // 轮播当前索引
+			info: {}, // 信息
+			current: 0, // 轮播当前索引
+			carKey: false, // 控制选车卡片
+			deliveryId: null, // 送车点id
+			vehicleModelId: null, // 车型id
+			takeCarTime: null, // 送车时间
+			carAlsoTime: null, // 还车时间
+			city: {}, // 对应城市
+			address: {} // 对应送车点
 		}
 	},
 	components: {
 		CarRentalCard
 	},
+	onLoad(e) {
+		if (e && e.deliveryId) this.deliveryId = e.deliveryId
+		if (e && e.vehicleModelId) this.vehicleModelId = e.vehicleModelId
+		this.carKey = true
+	},
 	methods: {
 		// 前往价格日历
 		goPriceCalendar() {
+			const info = {
+				vehicleModelId: this.info.vehicleModelId,
+				vehicleModelFiles: JSON.stringify(this.info.vehicleModelImg),
+				brandName: this.info.vehicleModelBrandName,
+				vehicleModelName: this.info.vehicleModelName,
+				gears: this.info.gears,
+				capacity: this.info.capacity,
+				outputVolumeName: this.info.vehicleOutputVolume,
+				toDayPrice: this.info.discountedPrice,
+				labels: this.info.labels
+			}
 			this.$open('/pages/home/priceCalendar', {
-				info: JSON.stringify(this.info),
+				info: JSON.stringify(info),
 				takeCarTime: this.takeCarTime,
 				carAlsoTime: this.carAlsoTime
 			})
@@ -83,11 +89,38 @@ export default {
 		swiperChange(e) {
 			this.current = e.detail.current
 		},
+		// 租车时间处理
+		timeHandler(e) {
+			this.takeCarTime = e.takeCarTime
+			this.carAlsoTime = e.carAlsoTime
+			this.limitedTimeOfferInfo()
+		},
+		// 获取信息
+		async limitedTimeOfferInfo() {
+			const params = {
+				deliveryId: this.deliveryId,
+				vehicleModelId: this.vehicleModelId,
+				beginTime: this.takeCarTime,
+				endTime: this.carAlsoTime
+			}
+			const [err, res] = await limitedTimeOfferInfo(params)
+			if (err) return
+			this.info = res.data
+			this.info.vehicleModelImg = JSON.parse(res.data.vehicleModelImg)
+			this.info.labels = JSON.parse(res.data.labels)
+			this.city = {
+				shortName: this.info.deliveryVo.cityName
+			}
+			this.address = {
+				id: this.deliveryId,
+				name: this.info.deliveryVo.name
+			}
+		},
 		// 立即租车
 		carRental(params) {
-			this.$open('/pages/home/selectCar', {
-				takeCarAddress: JSON.stringify(params.takeCarAddress),
-				params: JSON.stringify(params.info)
+			this.$open('/pages/order/confirmOrder', {
+				...params.info,
+				carModelId: this.vehicleModelId
 			})
 		}
 	}

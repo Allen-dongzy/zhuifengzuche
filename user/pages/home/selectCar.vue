@@ -35,10 +35,10 @@
 								</view> -->
 							</view>
 							<view class="parameter">{{ item.vehicleModelName }}丨{{ item.gears }} {{ item.capacity }}座 {{ item.outputVolumeName }}</view>
-							<view class="label-box">
+							<view v-if="item.labels && item.labels.length>0" class="label-box">
 								<view class="label" v-for="(inner, sub) in item.labels.slice(0, 3)" :key="sub">{{ inner }}</view>
 							</view>
-							<view class="given">租7送2</view>
+							<view v-if="item.rentNumber && item.giveNumber" class="given">租{{ item.rentNumber }}送{{ item.giveNumber }}</view>
 						</view>
 					</view>
 					<view class="price-bar">
@@ -277,7 +277,6 @@ export default {
 				return
 			}
 			const { requestKey, dataStatus, isRender } = listManager(res.data.list, this.page, this.size)
-			console.log(dataStatus)
 			this.requestKey = requestKey
 			this.dataStatus = dataStatus
 			if (!isRender) return

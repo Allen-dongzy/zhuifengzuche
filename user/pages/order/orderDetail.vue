@@ -236,10 +236,12 @@
 				<view class="btn" @click="closeTimePopup">关闭</view>
 			</view>
 		</uni-popup>
+		<newbee-coupon-modal :type="type" ref="newbeeCoupon" />
 	</view>
 </template>
 
 <script>
+import NewbeeCouponModal from '@/components/newbee-coupon-modal/newbee-coupon-modal'
 import { rentalOrderOrderInfo, rentalOrderCancelOrderByUser, rentalOrderCancelOrderByUserGet, rentalOrderRenewCarRentalPriceCheck } from '@/apis/rentalOrder'
 import { getCodeByWxCode } from '@/apis/sso'
 import { paymentPrecreate, paymentAliPayFrozenMoney, paymentAliPayCallback, paymentAliPayFrozenCancel, paymentCancelPay } from '@/apis/payment'
@@ -253,8 +255,12 @@ export default {
 			id: '',
 			info: {}, // 订单信息 info.orderSource 0=支付宝小程序 1=微信小程序 2=凹凸 3=飞猪
 			week: ['', '周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-			payerUid: '' // 平台
+			payerUid: '', // 平台openid
+			type: null // 优惠券类型
 		}
+	},
+	components: {
+		NewbeeCouponModal
 	},
 	computed: {
 		// 总天数
@@ -582,7 +588,11 @@ export default {
 		},
 		// 监听函数
 		eventListener() {
-			uni.$on('orderDetailRefresh', () => {
+			uni.$on('orderDetailRefresh', e => {
+				if (e.mode === 'modal') {
+					this.type = e.type
+					this.$refs.newbeeCoupon.findNewCoupon()
+				}
 				uni.$emit('orderRefresh')
 			})
 		}

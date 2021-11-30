@@ -13,29 +13,29 @@
 				</view>
 				<view class="header-mat" :style="{ paddingTop: `${statusBarHeight}px` }"></view>
 				<view class="level-box">
-					<image :src="`${ossUrl}/mine/v${level + 1}-big.png`" mode="aspectFill"></image>
+					<image :src="grade.bigIcon" mode="aspectFill"></image>
 					下一等级
-					<image :src="`${ossUrl}/mine/v${level + 2}-big.png`" mode="aspectFill"></image>
+					<image :src="nextGrade.bigIcon" mode="aspectFill"></image>
 				</view>
 				<view class="level-text">
-					<view class="level">{{ level | levelFormat }}</view>
-					<view class="level">{{ (level + 1) | levelFormat }}</view>
+					<view class="level">{{ grade.name }}</view>
+					<view class="level">{{ nextGrade.name }}</view>
 				</view>
 				<view class="level-num-box">
 					<view class="level-bar"><view class="current" :style="{ width: `${percent}%` }"></view></view>
 					<view class="current-text">
 						<view class="current">
 							当前成长值
-							<view class="num">{{ current }}</view>
+							<view class="num">{{ currentAmount }}</view>
 						</view>
 						<view class="next">
 							升级
-							<view class="num">{{ next }}</view>
+							<view class="num">{{ needNum }}</view>
 						</view>
 					</view>
 					<view class="hint">
 						<view class="arrow"></view>
-						您还差965升级，充值￥299立享9.8折优惠
+						您还差{{ needNum }}升级，充值￥{{ needNum }}立享{{ nextGrade.discount * 10 }}折优惠
 					</view>
 				</view>
 			</view>
@@ -45,52 +45,78 @@
 				<view class="line"></view>
 				充值
 			</view>
-			<input type="text" v-model="price" placeholder="请填写充值金额" placeholder-class="placeholder-class" />
+			<input :disabled="true" type="text" v-model="price" @click="openPriceModal" placeholder="请填写充值金额" placeholder-class="placeholder-class" />
 			<view class="title">
 				<view class="line"></view>
 				推荐人手机号
 			</view>
-			<input type="text" v-model="price" placeholder="请填写推荐人（没有可不填）" placeholder-class="placeholder-class" />
-			<view class="pay">立即充值</view>
+			<input type="number" maxlength="11" v-model="phone" placeholder="请填写推荐人手机号（没有可不填）" placeholder-class="placeholder-class" />
+			<view class="pay" @click="recharge">立即充值</view>
 		</view>
+		<newbee-coupon-modal :type="4" ref="newbeeCoupon" />
+		<lb-picker ref="picker" v-model="price" :list="priceList" />
 	</view>
 </template>
 
 <script>
+import NewbeeCouponModal from '@/components/newbee-coupon-modal/newbee-coupon-modal'
+import LbPicker from '@/components/lb-picker'
+import validator from 'crazy-validator'
 import { mapState, mapActions } from 'vuex'
+import { throttle } from '@/utils/tools'
+import { recharge, getCodeByWxCode } from '@/apis/sso'
+import { paymentPrecreate } from '@/apis/payment'
 
 export default {
 	data() {
 		return {
 			ossUrl: this.$ossUrl, // oss
-			level: 1, // 等级
-			current: 0, // 当前值
-			next: 0, // 下一等级得值
 			headBgHeight: 0, // 头部背景高度
-			price: null
+			payerUid: null, // 平台openid
+			phone: '', // 手机号码
+			price: null, // 金额
+			priceList: [{
+				label: '299',
+				value: 299
+			},{
+				label: '899',
+				value: 899
+			},{
+				label: '1699',
+				value: 1699
+			},{
+				label: '3899',
+				value: 3899
+			},{
+				label: '7899',
+				value: 7899
+			}]
 		}
+	},
+	components: {
+		NewbeeCouponModal,
+		LbPicker
 	},
 	computed: {
 		// app 页面高度, 屏幕高度, 手机状态高度, 页面导航栏高度
 		...mapState('app', ['windowHeight', 'screenHeight', 'statusBarHeight', 'titleBarHeight']),
+		// user 当前会员等级信息, 下一级会员等级信息, 当前成长值
+		...mapState('user', ['grade', 'nextGrade', 'currentAmount']),
+		// 升级所需成长值
+		needNum() {
+			return this.nextGrade.price - this.currentAmount
+		},
 		// 进度条百分比
 		percent() {
-			return Number(this.current / this.next) * 100
+			// 当前成长值-当前等级初始值 / 下一等级初始值-当前等级初始值
+			return Number((this.currentAmount - this.grade.price) / (this.nextGrade.price - this.grade.price)) * 100
 		},
 		// 底部面板高度
 		bottomMenuHeight() {
 			return this.windowHeight - this.headBgHeight
 		}
 	},
-	filters: {
-		levelFormat(level) {
-			const levels = ['青铜', '白银', '黄金', '铂金', '钻石']
-			return levels[level]
-		}
-	},
 	onLoad() {
-		this.next = 965
-		this.current = 230
 		this.setSystemInfo()
 	},
 	mounted() {
@@ -103,6 +129,9 @@ export default {
 		back() {
 			this.$close()
 		},
+		openPriceModal() {
+			this.$refs.picker.show()
+		},
 		// 获取头部背景高度
 		getHeadBgHeight() {
 			const query = uni.createSelectorQuery()
@@ -112,7 +141,108 @@ export default {
 					this.headBgHeight = data.height
 				})
 				.exec()
-		}
+		},
+		// 充值
+		recharge: throttle(async function() {
+			const checkList = [{
+				value: this.price,
+				rules: [{
+					type: 'required',
+					msg: '请输入充值金额'
+				}]
+			}]
+			if (this.phone) {
+				checkList.push({
+					value: this.phone,
+					rules: [{
+						type: 'phone',
+						msg: '请输入正确的手机号'
+					}]
+				})
+			}
+			const checkRes = validator(checkList, this.$toast)
+			if (checkRes.status !== 1000) return
+			const params = {
+				phone: this.phone,
+				price: this.price
+			}
+			const [err, res] = await recharge(params)
+			if (err) return
+			this.getCodeByWxCode(res.data)
+		}, 1000),
+		// 微信/支付宝-授权
+		async getCodeByWxCode(reflect) {
+			this.$showLoading('支付中')
+			// #ifdef MP-WEIXIN
+			const provider = 'weixin'
+			// #endif
+
+			// #ifdef MP-ALIPAY
+			const provider = 'alipay'
+			// #endif
+
+			const [loginErr, loginRes] = await uni.login({
+				provider
+			})
+			if (loginErr) return
+			const params = {
+				code: loginRes.code,
+				// #ifdef MP-WEIXIN
+				loginType: 1
+				// #endif
+				// #ifdef MP-ALIPAY
+				loginType: 2
+				// #endif
+			}
+			const [err, res] = await getCodeByWxCode(params)
+			if (err) return
+			// #ifdef MP-WEIXIN
+			this.payerUid = res.data.openid
+			// #endif
+			// #ifdef MP-ALIPAY
+			this.payerUid = res.data.user_id
+			// #endif
+			this.paymentPrecreate(reflect)
+		},
+		// 发起支付
+		async paymentPrecreate(reflect) {
+			const params = {
+				reflect,
+				payerUid: this.payerUid,
+				// #ifdef MP-WEIXIN
+				payway: '3',
+				// #endif
+				// #ifdef MP-ALIPAY
+				payway: '2',
+				// #endif
+				subPayway: '4',
+				subject: '充值',
+				totalAmount: this.price
+			}
+			const [err, res] = await paymentPrecreate(params)
+			if (err) return
+			this.pay(res.data.wapPayRequest)
+		},
+		// 支付
+		async pay(wapPayRequest) {
+			const params = {
+				// #ifdef MP-WEIXIN
+				provider: 'wxpay',
+				// #endif
+				// #ifdef MP-ALIPAY
+				provider: 'alipay',
+				// #endif
+				...wapPayRequest
+			}
+			const [err, res] = await uni.requestPayment(params)
+			if (err || (res && res.resultCode === '6001')) {
+				this.$toast('用户取消支付')
+				return
+			}
+			this.$toast('充值成功！')
+			this.price = null
+			this.$refs.newbeeCoupon.findNewCoupon()
+		},
 	}
 }
 </script>

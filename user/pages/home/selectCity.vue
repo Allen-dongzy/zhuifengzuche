@@ -117,7 +117,8 @@ export default {
 			letterDetails: [],
 			currentLetter: 'area', //默认选择hot
 			cityInfo: {}, // 传来的城市信息对象
-			cityMode: '' // 选择城市的模式
+			cityMode: '', // 选择城市的模式
+			from: '', // 来自哪个页面
 		}
 	},
 	computed: {
@@ -161,6 +162,7 @@ export default {
 	},
 	onLoad(e) {
 		if (e && e.cityMode) this.cityMode = e.cityMode
+		if (e && e.from) this.from = e.from
 		// 城市
 		this.getHotCity()
 		this.getAllCity()
@@ -215,7 +217,8 @@ export default {
 		selectCity(item) {
 			uni.$emit('checkCity', {
 				cityMode: this.cityMode,
-				city: JSON.stringify(item)
+				city: JSON.stringify(item),
+				from: this.from
 			})
 			this.$close()
 		},

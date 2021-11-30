@@ -322,7 +322,7 @@
 			"navigationBarTitleText": "免押解冻(测试)"
 		}
 	}, {
-		"path": "pages/home/flash-sale",
+		"path": "pages/home/flashSale",
 		"style": {
 			"navigationBarTitleText": "限时优惠"
 		}

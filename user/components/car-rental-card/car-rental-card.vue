@@ -8,7 +8,7 @@
 			<text>异地还车</text>
 		</view>
 		<view class="block">
-			<view class="city" @click="$open('/pages/home/selectCity', { cityMode: 'takeCar' })">{{ takeCarCity.shortName || '选择城市' }}</view>
+			<view class="city" @click="goSelectCity('takeCar')">{{ takeCarCity.shortName || '选择城市' }}</view>
 			<image class="dot" :src="`${ossUrl}/home/dot.png`" mode="aspectFill"></image>
 			<view class="address" @click="goTakeCarAddress">{{ takeCarAddress.name || '选择地点' }}</view>
 			<evan-switch v-model="remoteSwitch" active-color="#5A7EFF"></evan-switch>
@@ -20,7 +20,7 @@
 			</view>
 		</view>
 		<view v-if="remoteSwitch" class="block">
-			<view class="city text-1" @click="$open('/pages/home/selectCity', { cityMode: 'carAlso' })">{{ carAlsoCity.shortName || '选择城市' }}</view>
+			<view class="city text-1" @click="$open('/pages/home/selectCity', { cityMode: 'carAlso', from })">{{ carAlsoCity.shortName || '选择城市' }}</view>
 			<image class="dot" :src="`${ossUrl}/home/dot.png`" mode="aspectFill"></image>
 			<view class="address text-1" @click="goCarAlsoAddress">{{ carAlsoAddress.name || '选择地点' }}</view>
 		</view>
@@ -109,20 +109,59 @@ export default {
 			totalDate: '' // 总天数
 		}
 	},
+	props: {
+		// 来自哪个页面
+		from: {
+			type: String,
+			default: 'home'
+		},
+		// 城市信息
+		city: {
+			type: Object,
+			default: {}
+		},
+		// 地点信息
+		address: {
+			type: Object,
+			default: {}
+		}
+	},
 	watch: {
 		// 监听异地取车开关
 		remoteSwitch(newVal) {
 			this.carAlsoCity = this.takeCarCity
 			this.carAlsoAddress = this.takeCarAddress
+		},
+		// 监听城市
+		city(newVal) {
+			if (Object.keys(newVal).length > 0) {
+				this.takeCarCity = {
+					...this.city
+				}
+				if (!this.remoteSwitch) {
+					this.carAlsoCity = this.takeCarCity
+				}
+			}
+		},
+		// 监听送车点
+		address(newVal) {
+			if (Object.keys(newVal).length > 0) {
+				this.takeCarAddress = {
+					...this.address
+				}
+				if (!this.remoteSwitch) {
+					this.carAlsoAddress = this.takeCarAddress
+				}
+			}
 		}
 	},
-	created(e) {
+	created() {
 		this.showTime()
 		this.eventListener()
 	},
 	methods: {
-		// 显示默认时间
-		showTime() {
+		// 初始化
+		init() {
 			const startTimestamp = Date.now() + 86400000
 			const startTimeArr = toDate(startTimestamp)
 			const endTimestamp = startTimestamp + 4 * 86400000
@@ -137,15 +176,36 @@ export default {
 			this.carAlsoTime = `${endTimeArr[0]}-${endTimeArr[1]}-${endTimeArr[2]} 10:00:00`
 			this.totalDate = 4
 		},
+		// 显示默认时间
+		showTime() {
+			this.init()
+			this.$emit('changeTime', {
+				takeCarTime: this.takeCarTime,
+				carAlsoTime: this.carAlsoTime
+			})
+		},
+		// 选取城市
+		goSelectCity(cityMode) {
+			if (Object.keys(this.city).length > 0 && Object.keys(this.address).length > 0) {
+				this.$toast('取车城市已经固定')
+				return
+			}
+			this.$open('/pages/home/selectCity', { cityMode, from: this.from })
+		},
 		// 选取取车地点
 		goTakeCarAddress() {
+			if (Object.keys(this.city).length > 0 && Object.keys(this.address).length > 0) {
+				this.$toast('取车地点已经固定')
+				return
+			}
 			if (!this.takeCarCity || Object.keys(this.takeCarCity).length === 0) {
 				this.$toast('请先选择取车城市')
 				return
 			}
 			this.$open('/pages/home/selectAddress', {
 				city: JSON.stringify(this.takeCarCity),
-				addressMode: 'takeCar'
+				addressMode: 'takeCar',
+				from: this.from
 			})
 		},
 		// 选取还车地点
@@ -156,7 +216,8 @@ export default {
 			}
 			this.$open('/pages/home/selectAddress', {
 				city: JSON.stringify(this.carAlsoCity),
-				addressMode: 'carAlso'
+				addressMode: 'carAlso',
+				from: this.from
 			})
 		},
 		// 选择时间
@@ -168,7 +229,8 @@ export default {
 				carAlsoDayShow: this.carAlsoDayShow,
 				carAlsoTimeShow: this.carAlsoTimeShow,
 				carAlsoTime: this.carAlsoTime,
-				totalDate: this.totalDate
+				totalDate: this.totalDate,
+				from: this.from
 			})
 		},
 		// 打开流程弹窗
@@ -236,8 +298,8 @@ export default {
 					carAlsoTimeShow: this.carAlsoTimeShow,
 					carAlsoTime: this.carAlsoTime,
 					totalDate: this.totalDate,
-					takeCarAddressId: this.takeCarAddress.id,
-					carAlsoAddressId: this.carAlsoAddress.id
+					takeCarAddressId: Number(this.takeCarAddress.id),
+					carAlsoAddressId: Number(this.carAlsoAddress.id)
 				},
 				takeCarAddress: this.takeCarAddress
 			})
@@ -246,6 +308,7 @@ export default {
 		eventListener() {
 			// 选择城市
 			uni.$on('checkCity', e => {
+				if (this.from !== e.from) return
 				switch (e.cityMode) {
 					case 'takeCar':
 						this.takeCarCity = JSON.parse(e.city)
@@ -260,6 +323,7 @@ export default {
 			})
 			// 选择地点
 			uni.$on('checkAddress', e => {
+				if (this.from !== e.from) return
 				switch (e.addressMode) {
 					case 'takeCar':
 						this.takeCarAddress = JSON.parse(e.address)
@@ -272,6 +336,7 @@ export default {
 			})
 			// 选择时间
 			uni.$on('checkTime', e => {
+				if (this.from !== e.from) return
 				this.takeCarDateShow = e.takeCarDateShow
 				this.takeCarDayShow = e.takeCarDayShow
 				this.takeCarTimeShow = e.takeCarTimeShow
@@ -281,6 +346,10 @@ export default {
 				this.carAlsoTimeShow = e.carAlsoTimeShow
 				this.carAlsoTime = e.carAlsoTime
 				this.totalDate = e.totalDate
+				this.$emit('changeTime', {
+					takeCarTime: this.takeCarTime,
+					carAlsoTime: this.carAlsoTime
+				})
 			})
 		}
 	}

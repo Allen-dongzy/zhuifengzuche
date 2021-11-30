@@ -8,7 +8,7 @@
 		<view class="info-card">
 			<view class="name-box">
 				<view class="name">{{ info.clientVehicleVo.brandName }}</view>
-				<view class="given">租7送2</view>
+				<view v-if="info.clientVehicleVo.rentNumber && info.clientVehicleVo.giveNumber" class="given">租{{ info.clientVehicleVo.rentNumber }}送{{ info.clientVehicleVo.giveNumber }}</view>
 				<view class="label-box">
 					<view v-for="(item, index) in info.clientVehicleVo.labels" :key="index" class="label">{{ item }}</view>
 				</view>

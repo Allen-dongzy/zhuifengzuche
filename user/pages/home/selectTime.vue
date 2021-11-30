@@ -84,7 +84,8 @@
 				carAlsoTime: '', // 还车时间显示
 				totalDate: 0, // 总天数
 				totalKey: true, // 是否能计算总天数
-				date: ''
+				date: '', // 日期
+				from: '' // 来自哪个页面
 			}
 		},
 		watch: {
@@ -139,6 +140,7 @@
 			if (e && e.totalDate) this.totalDate = e.totalDate
 			if (e && e.takeCarTime && e.carAlsoTime) this.customRange.push(e.takeCarTime.split(' ')[0], e.carAlsoTime
 				.split(' ')[0])
+			if (e && e.from) this.from = e.from
 		},
 		methods: {
 			// 获取总天数
@@ -254,7 +256,8 @@
 					carAlsoDayShow: this.carAlsoDay,
 					carAlsoTimeShow: this.carAlsoTime,
 					carAlsoTime,
-					totalDate: this.totalDate
+					totalDate: this.totalDate,
+					from: this.from
 				})
 				this.$close()
 			}

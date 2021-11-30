@@ -116,3 +116,23 @@ export const vehicleVehiclePreview = (vehicleId, orderId, loading = '') => { // 
 		loading
 	})
 }
+
+// 特惠租车-根据经纬度查询最近的一个送车点
+export const limitedTimeOffer = (longitude, latitude, loading = '') => { // 对接
+	return request({
+		url: `vehicle/limitedTimeOffer/${longitude}/${latitude}`,
+		method: 'GET',
+		data: {},
+		loading
+	})
+}
+
+// 特惠租车-详情页
+export const limitedTimeOfferInfo = (data, loading = '') => { // 对接
+	return request({
+		url: `vehicle/limitedTimeOffer/info`,
+		method: 'GET',
+		data,
+		loading
+	})
+}

@@ -340,6 +340,28 @@ const getPlatform = () => {
 	return platform
 }
 
+// 获取经纬度
+const getLocation = async () => {
+	// 获取位置
+	const [locationErr, locationRes] = await uni.getLocation()
+	if (locationErr) {
+		const [err, res] = await uni.getSetting()
+		if (res.authSetting['scope.userLocation'] === false) {
+			const [btnErr, btnRes] = await showModal({
+				content: '位置权限未打开，是否打开位置权限？'
+			})
+			if (btnRes === 'confirm') uni.openSetting()
+		} else {
+			toast(locationErr.errMsg)
+		}
+		return [locationErr]
+	}
+	return [null, {
+		lat: locationRes.latitude,
+		lng: locationRes.longitude
+	}]
+}
+
 // 挂载uni小工具
 Vue.prototype.$open = open
 Vue.prototype.$close = close
@@ -361,5 +383,6 @@ export {
 	listManager, // 列表公共处理
 	getVersion, // 获取app版本号
 	clearCache, // 清除缓存
-	getPlatform // 获取具体的平台
+	getPlatform, // 获取具体的平台
+	getLocation // 获取经纬度
 }

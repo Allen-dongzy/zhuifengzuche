@@ -222,8 +222,8 @@ export default {
 				return
 			}
 			this.$toast('结算成功！')
-			uni.$emit('orderRefresh')
-			uni.$emit('orderDetailRefresh')
+			uni.$emit('orderRefresh', {mode: 'modal', type: 2})
+			uni.$emit('orderDetailRefresh', {mode: 'modal', type: 2})
 			setTimeout(() => {
 				this.$close()
 			}, 500)

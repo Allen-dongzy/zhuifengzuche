@@ -115,12 +115,14 @@
 			</view>
 		</view>
 		<load-more :status="dataStatus" info="暂无订单" />
+		<newbee-coupon-modal :type="type" ref="newbeeCoupon" />
 	</view>
 </template>
 
 <script>
 import storage from '@/utils/storage'
 import LoadMore from '@/components/load-more/load-more'
+import NewbeeCouponModal from '@/components/newbee-coupon-modal/newbee-coupon-modal'
 import { rentalOrderPageQuery, rentalOrderRenewCarRentalPriceCheck } from '@/apis/rentalOrder'
 import { listManager, showModal } from '@/utils/uni-tools'
 import { throttle } from '@/utils/tools'
@@ -138,11 +140,13 @@ export default {
 			reqeuestKey: true,
 			list: [],
 			touchIndex: null,
-			payerUid: '' // 平台
+			payerUid: '', // 平台
+			type: null // 优惠券类型
 		}
 	},
 	components: {
-		LoadMore
+		LoadMore,
+		NewbeeCouponModal
 	},
 	filters: {
 		// 车状态显示
@@ -426,9 +430,13 @@ export default {
 		// 监听事件
 		eventListener() {
 			// 订单刷新
-			uni.$on('orderRefresh', () => {
+			uni.$on('orderRefresh', e => {
 				this.init()
 				this.getorderList()
+				if (e.mode === 'modal') {
+					this.type = e.type
+					this.$refs.newbeeCoupon.findNewCoupon()
+				}
 			})
 			// app刷新
 			uni.$on('appRefresh', () => {

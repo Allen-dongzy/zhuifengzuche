@@ -61,3 +61,24 @@ export const synchronizeUserInfo = (data, loading = '更新中') => {
 		loading
 	})
 }
+
+// 获取用户会员等级信息
+export const getUserVipLevelInfo = (data, loading = '') => {
+	return request({
+		url: 'sso/getUserVipLevelInfo',
+		method: 'GET',
+		data,
+		loading
+	})
+}
+
+// 充值
+export const recharge = (data, loading = '') => {
+	return request({
+		url: 'sso/recharge',
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'POST',
+		data,
+		loading
+	})
+}

@@ -4,9 +4,9 @@
 			<image class="avatar" :src="icon || `${ossUrl}/mine/touxiang.png`" mode="aspectFill" @click="headTap"></image>
 			<view class="nickname" @click="headTap">
 				{{ nickname || username || '点击登录' }}
-				<view class="level-label" @click.stop="$open('/pages/mine/vip')">
-					<image :src="`${ossUrl}/mine/v${level + 1}.png`" mode="aspectFill"></image>
-					{{ level | levelFormat }}
+				<view v-if="grade && Object.keys(grade).length>0" class="level-label" @click.stop="$open('/pages/mine/vip')">
+					<image :src="grade.smallIcon" mode="aspectFill"></image>
+					{{ grade.name }}
 				</view>
 				<view class="arrow"></view>
 			</view>
@@ -62,7 +62,7 @@
 			<image class="icon" :src="`${ossUrl}/mine/out.png`" mode="widthFix"></image>
 			<view class="text red">退出登录</view>
 		</view>
-		<newbee-coupon-modal ref="newbeeCoupon" />
+		<newbee-coupon-modal :type="1"  ref="newbeeCoupon" />
 	</view>
 </template>
 
@@ -75,7 +75,7 @@ export default {
 	data() {
 		return {
 			ossUrl: this.$ossUrl, // oss
-			level: 1,
+			level: 0,
 			list: [
 				{
 					name: '发票抬头',
@@ -113,15 +113,9 @@ export default {
 	components: {
 		NewbeeCouponModal
 	},
-	filters: {
-		levelFormat(level) {
-			const levels = ['青铜', '白银', '黄金', '铂金', '钻石']
-			return levels[level]
-		}
-	},
 	computed: {
-		// user 头像，用户昵称，用户名，优惠券数量
-		...mapState('user', ['icon', 'nickname', 'username', 'couponCount'])
+		// user 头像，用户昵称，用户名，优惠券数量 当前会员等级信息
+		...mapState('user', ['icon', 'nickname', 'username', 'couponCount', 'grade'])
 	},
 	onPullDownRefresh() {
 		this.init()
