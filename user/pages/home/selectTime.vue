@@ -261,12 +261,16 @@ export default {
 				this.takeCarDate = `${chineseNewYeatStartTime[0]}-${chineseNewYeatStartTime[1]}-${chineseNewYeatStartTime[2]}`
 				this.carAlsoDate = `${chineseNewYeatEndTime[0]}-${chineseNewYeatEndTime[1]}-${chineseNewYeatEndTime[2]}`
 				this.$showModal({content: '租车日期不能在春节期间，租车日期最晚应在1月31日，还车日期最早应在2月16日！'})
-			} else if (carAlsoDateTimestamp >= this.chineseNewYeatStartTimestamp && carAlsoDateTimestamp < this.dutyTimestamp) {
+				return
+			}
+			if (takeCarDateTimestamp < this.chineseNewYeatStartTimestamp && carAlsoDateTimestamp >= this.chineseNewYeatStartTimestamp && carAlsoDateTimestamp < this.dutyTimestamp) {
 				const selDate = (this.dutyTimestamp - takeCarDateTimestamp) / 86400000 + 1
 				const diffDate = 15 - selDate
 				let newCarAlsoDate
 				if (diffDate > 0) {
 					newCarAlsoDate = toDate(this.dutyTimestamp + diffDate * 86400000)
+				} else {
+					newCarAlsoDate = toDate(this.dutyTimestamp)
 				}
 				this.customRange = { start: takeCarDate, end: `${newCarAlsoDate[0]}-${newCarAlsoDate[1]}-${newCarAlsoDate[2]}` }
 				this.$refs.calendar.customRangeInit()
