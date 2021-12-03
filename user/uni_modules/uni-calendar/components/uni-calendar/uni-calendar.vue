@@ -119,8 +119,10 @@
 				default: false
 			},
 			customRange: {
-				type: Array,
-				default: null
+				type: Object,
+				default: () => {
+					return {}
+				}
 			},
 			insert: {
 				type: Boolean,
@@ -164,7 +166,9 @@
 				this.weeks = this.cale.weeks
 			},
 			customRange(newVal) {
-				if (this.customRange && this.customRange.length === 2) this.customRangeInit()
+				if (Object.keys(this.customRange).length === 2) {
+					this.customRangeInit()
+				}
 			}
 		},
 		created() {
@@ -183,8 +187,8 @@
 			// 自定义取值
 			customRangeInit() {
 				this.calendar.fullDate = ''
-				this.cale.setMultiple(this.customRange[0])
-				this.cale.setMultiple(this.customRange[1])
+				this.cale.setMultiple(this.customRange.start)
+				this.cale.setMultiple(this.customRange.end)
 				this.weeks = this.cale.weeks
 				this.next()
 				this.pre()
