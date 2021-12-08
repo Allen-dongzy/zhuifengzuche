@@ -23,15 +23,15 @@
 		<view class="header-mat"></view>
 		
 		<view class="manage-list">
-			<view class="manage-item" v-for="(item, index) in list" :key="index" @tap="goDetail(item.id)">
+			<view class="manage-item" v-for="(item, index) in list" :key="index" @tap="goDetail(item)">
 				<view style="display: flex;margin:30rpx 0rpx 15rpx;">
-					<view class="">{{item.brandName}}  {{item.name}}  {{item.categoryName}}</view>
-					<view style="background-color: #FFA05B;margin-left: 20rpx;" class="iconBox">租7送2</view>
-					<!-- <view style="background-color: #FFA05B;" class=iconBox>暂未设置</view> -->
+					<view class="">{{item.brandName}}  {{item.modelName}}  {{item.vehicleYear}} 型</view>
+					<view v-if="item.isRentStatus!=0" style="background-color: #FFA05B;margin-left: 20rpx;" class="iconBox">租{{item.rentNumber}}送{{item.giveNumber}}</view>
+					<view v-else style="background-color: #cdcdcd;margin-left: 20rpx;"  class="iconBox">暂未设置</view>
 				</view>
+				 
 				
-				
-				<view style="margin:30rpx 0rpx 15rpx">郑家院子追风1店</view>
+				<view style="margin:30rpx 0rpx 15rpx;color:#b2b2b2">郑家院子追风1店</view>
 			</view>
 			
 		</view>
@@ -100,13 +100,13 @@
 	} from '@/utils/uni-tools.js'
 	import config from '@/common/js/config'
 
-	import {
-		vehicleModelPageQuery
-	} from '@/apis/vehicleModel'
 
 	import {
 		vehicleBrandQueryAll
 	} from '@/apis/vehicleBrand'
+	import {
+		rentActivity
+	} from '@/apis/marketing'
 
 	import {
 		debounce
@@ -121,7 +121,7 @@
 				modalName: '', // 模态框名称
 				list: [], //数据列表
 				page: 1, //页码
-				size: 10, //数量
+				size: 20, //数量
 				brandId: '', //品牌Id
 				seatId: '', //座位Id
 				stallId: '', //排挡Id
@@ -161,6 +161,7 @@
 		},
 		onShow() {
 			this.list=[]
+			this.page=1
 			this.getlist()
 			this.getBrand()
 		},
@@ -171,7 +172,7 @@
 					size: this.size,
 					name: this.searchVal
 				}
-				const [err, res] = await vehicleModelPageQuery(data)
+				const [err, res] = await rentActivity(data)
 				if (err) return
 				console.log(res)
 				this.list = res.data.list
@@ -195,7 +196,7 @@
 					page: this.page,
 					size: this.size
 				}
-				const [err, res] = await vehicleModelPageQuery(data)
+				const [err, res] = await rentActivity(data)
 				if (err) return
 				console.log(res)
 				// this.list = res.data.list
@@ -204,20 +205,21 @@
 				} else {
 					for (let i = 0; i < res.data.list.length; i++) {
 						this.list.push(res.data.list[i])
+					
 					}
 				}
 
 			},
 			//下拉刷新
-			// onPullDownRefresh() {
-			// 	this.page = 1
-			// 	this.size = 10
-			// 	this.list = []
-			// 	this.getlist()
-			// 	setTimeout(function() {
-			// 		uni.stopPullDownRefresh();
-			// 	}, 1000);
-			// }, 
+			onPullDownRefresh() {
+				this.page = 1
+				this.size = 10
+				this.list = []
+				this.getlist()
+				setTimeout(function() {
+					uni.stopPullDownRefresh();
+				}, 1000);
+			}, 
 			// 上拉加载
 			onReachBottom(e) {
 				this.page = this.page + 1;
@@ -231,8 +233,10 @@
 	
 			// 前往详情
 			goDetail(index) {
-				console.log(index)
-				open('/pages/vehicleManage/detail?id=' + index)
+				
+			
+					open('/pages/Marketing/giveEdit?obj=' + JSON.stringify(index))
+				
 			},
 			// 显示筛选框
 			showModal(e) {
@@ -304,7 +308,7 @@
 					capacity: this.seatId,
 					gears: this.stallId,
 				}
-				const [err, res] = await vehicleModelPageQuery(data)
+				const [err, res] = await rentActivity(data)
 				if (err) return
 				console.log(res)
 				this.$toast('查询成功')
@@ -331,6 +335,7 @@
 			.function-box {
 				@include flex-row(flex-end);
 				@include box-h();
+				background: white;
 
 				&>view {
 					margin-left: 30rpx;

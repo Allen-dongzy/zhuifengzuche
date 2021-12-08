@@ -96,7 +96,7 @@
 				areaList: [],
 				list: [],
 				page: 1,
-				size: 10,
+				size: 20,
 				cityId: '', //城市id
 				areaId: '', //区域id
 				searchVal: '', //输入内容
@@ -141,6 +141,22 @@
 				this.areaList[0].status = true
 				this.areaId = this.areaList[0].areaCode
 			},
+			//下拉刷新
+			onPullDownRefresh() {
+				this.page = 1
+				this.size = 10
+				this.list = []
+				this.deliveryPageQuery()
+				setTimeout(function() {
+					uni.stopPullDownRefresh();
+				}, 1000);
+			}, 
+			// 上拉加载
+			onReachBottom(e) {
+				this.page = this.page + 1;
+				this.deliveryPageQuery()
+			},
+			
 			//获取列表
 			async deliveryPageQuery() {
 				let data = {
@@ -150,7 +166,15 @@
 				const [err, res] = await deliveryPageQuery(data)
 				if (err) return
 				console.log(res)
-				this.list = res.data.list
+				
+				if (res.data.list.length == 0) {
+				
+				} else {
+					for (let i = 0; i < res.data.list.length; i++) {
+						this.list.push(res.data.list[i])
+					}
+				}
+				
 			},
 			//筛选
 			select() {
@@ -185,6 +209,7 @@
 				this.list = res.data.list
 
 			}),
+			
 			add() {
 				uni.navigateTo({
 					url: './addPoint',
@@ -231,8 +256,9 @@
 				this.cityId = ""
 			},
 			async sure() {
+				
 				let data = {
-					page: this.page,
+					page: 1,
 					size: this.size,
 					areaCode: this.areaId,
 					cityCode: this.cityId

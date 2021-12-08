@@ -141,6 +141,8 @@
 
 		},
 		onShow() {
+			this.page=1
+			this.size=20
 			this.list=[]
 			this.getlist()
 			this.getBrand()

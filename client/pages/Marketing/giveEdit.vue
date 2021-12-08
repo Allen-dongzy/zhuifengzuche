@@ -3,49 +3,51 @@
 
 		<view class="title">租用天数</view>
 		<view class="idCard">
-			<input class="inpBox" v-model="plateNumber" type="number" value="" placeholder="请填写租用天数" />
+			<input class="inpBox" v-model="dayNum" type="number" value="" placeholder="请填写租用天数" />
 		</view>
 
 		<view class="title">赠送天数</view>
 		<view class="idCard">
-			<input class="inpBox" v-model="plateNumber" type="number" value="" placeholder="请填写赠送天数" />
+			<input class="inpBox" v-model="songNum" type="number" value="" placeholder="请填写赠送天数" />
 		</view>
-		
+
 		<view class="title">赠送天数</view>
 		<view class="flexBoxContent">
 			<view style="width: 40%;">
-				<picker mode="date" @change="selectTime()" :value="startTime" :start="startDate"
-					:end="currentdate" class="pickerBox">
-				
+				<picker mode="date" @change="selectTime" :value="startTime" :start="startDate" :end="currentdate"
+					class="pickerBox">
+
 					<view class="pickerText">{{startTime==""?'请选择':startTime}}</view>
 				</picker>
 			</view>
 
 			<view style="width: 40%;margin-left: 10%;">
-				<picker mode="date" @change="selectendTime()" :value="endTime" :start="startDate"
-					:end="currentdate" class="pickerBox">
-			
-					<view  class="pickerText">{{endTime==""?'请选择':endTime}}</view>
+				<picker mode="date" @change="selectendTime" :value="endTime" :start="startDate" :end="currentdate"
+					class="pickerBox">
+
+					<view class="pickerText">{{endTime==""?'请选择':endTime}}</view>
 				</picker>
 			</view>
 		</view>
-		
+		<view class="youhuibox">
+			<view class="title" style="margin-top: 0px;">状态:</view>
+			<switch style="margin-left: 10%;" :checked="status" @change="switch1Change" />
+		</view>
+
 		<view style="display: flex;justify-content:center;align-items: center;margin: 180rpx 0rpx;">
+
 			<view
-				style="border: 2rpx solid #5A7EFF;color: #5A7EFF;font-size: 28rpx;text-align: center;height: 90rpx;line-height:70rpx;padding: 10rpx 20rpx;width: 40%;border-radius: 50rpx;"
-				@click="close(2)">取消</view>
-			<view 
 				style="background-color: #5A7EFF;color: white;font-size: 28rpx;text-align: center;height: 90rpx;line-height: 70rpx;padding: 10rpx 20rpx;width:40%;border-radius:50rpx;margin-left: 5%;"
 				@click="close(1)">确定</view>
 		</view>
-		
+
 	</view>
 </template>
 
 <script>
 	import {
-		queryAll
-	} from '@/apis/vehicleModel'
+		rentSet
+	} from '@/apis/marketing.js'
 	import {
 		uploadFiles
 	} from '@/apis/oss';
@@ -61,6 +63,10 @@
 				startTime: '', //开始时间
 				endTime: '', //结束时间
 				plateNumber: '', //号牌号码
+				status: '', //状态
+				vid: '', //车型id
+				songNum: '', //租用天数
+				dayNum: '', //赠送天数
 
 			}
 		},
@@ -73,18 +79,49 @@
 			}
 		},
 		onLoad(e) {
+			console.log(JSON.parse(e.obj).rentStartTime)
+			this.vid = JSON.parse(e.obj).id
+			if (JSON.parse(e.obj).rentNumber != null) {
+				this.songNum = JSON.parse(e.obj).giveNumber
+				this.status = JSON.parse(e.obj).isRentStatus
+				if (this.status == 0) {
+					this.status = false
+				} else {
+					this.status = true
+				}
+				this.endTime = JSON.parse(e.obj).rentEndTime.substring(0,10)
+				this.dayNum = JSON.parse(e.obj).rentNumber
+				this.startTime = JSON.parse(e.obj).rentStartTime.substring(0,10)
+				
 
+			} else {
+				console.log('ppppp')
+				this.songNum = ''
+				this.status = false
+				this.endTime = ""
+				this.dayNum = ''
+				this.startTime = ""
+			
+
+			}
 
 		},
 		mounted() {
-			let inputEle = document.querySelector('.input input')
-			inputEle.addEventListener('blur', function() {
-				document.body.scrollIntoView()
-			})
+
 		},
 		methods: {
+			//限时优惠
+			switch1Change: function(e) {
+
+				console.log('switch1 发生 change 事件，携带值为', e.target.value)
+				if (e.target.value) {
+					this.status = 1
+				} else {
+					this.status = 0
+				}
+			},
 			//获取时间
-			getNowFormatDate() {
+			getDate() {
 				var date = new Date();
 				var seperator1 = "-";
 				var year = date.getFullYear();
@@ -109,7 +146,7 @@
 					this.startTime = e.target.value
 				}
 			},
-			selectendTime(e){
+			selectendTime(e) {
 				console.log(e.target.value)
 				if (e.target.value.indexOf("/") != -1) {
 					e.target.value = e.target.value.replace(/\//g, '-');
@@ -118,6 +155,39 @@
 					this.endTime = e.target.value
 				}
 			},
+			async close() {
+				if (this.dayNum == "") {
+					this.$toast("请填写租用天数")
+					return false;
+				} else if (this.songNum == "") {
+					this.$toast("请填写赠送天数")
+					return false;
+				} else if (this.endTime == "") {
+					this.$toast("请填写结束时间")
+					return false;
+				} else if (this.startTime == "") {
+					this.$toast("请填写开始时间")
+					return false;
+				}
+				if (this.status == true) {
+					this.status =1
+				} else {
+					this.status = 0
+				}
+				let data = {
+					giveNumber: this.songNum,
+					isRentStatus: this.status,
+					rentEndTime: this.endTime + ' 00:00:00',
+					rentNumber: this.dayNum,
+					rentStartTime: this.startTime + ' 00:00:00',
+					vehicleModelId: this.vid
+				}
+				const [err, res] = await rentSet(data)
+				if (err) return
+				console.log(res)
+				this.$toast('设置成功')
+			}
+
 
 		}
 	}
@@ -154,6 +224,7 @@
 		height: 74rpx;
 		line-height: 74rpx;
 		padding-left: 20rpx;
+		background-color: #EFF0F3;
 	}
 
 	.inpBox {
@@ -180,5 +251,12 @@
 		width: 90%;
 		margin: auto;
 		padding-top: 20rpx;
+	}
+
+	.youhuibox {
+		height: auto;
+		display: flex;
+		align-items: center;
+		margin: 40rpx 0rpx;
 	}
 </style>

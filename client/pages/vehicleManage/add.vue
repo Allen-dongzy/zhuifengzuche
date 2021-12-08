@@ -1,18 +1,19 @@
 <template>
 	<view class="add">
-
-		<view class="flexBoxContent" v-if="roles[0].id==1">
-			<view class="title">门店</view>
-			<view class="selectBox" @click="">
-				<view style="width: 85%;">
-					<picker @change="selectStore" :value="indexStore" :range="list" :range-key="'name'"
-						class="pickerBox">
-						<label class="pickerText">{{storeName!=''?storeName:'请选择'}}</label>
-					</picker>
-				</view>
-				<view style="width:10%;">
-					<image style="width:40rpx;height: 20rpx;transform: rotate(-90deg);"
-						:src="`${filePath}/vehicleManage/down-mini.png`"></image>
+		<view v-if="carId==''" >
+			<view  class="flexBoxContent" v-if="roles[0].id==1">
+				<view class="title">门店</view>
+				<view class="selectBox" @click="">
+					<view style="width: 85%;">
+						<picker @change="selectStore" :value="indexStore" :range="list" :range-key="'name'"
+							class="pickerBox">
+							<view class="pickerText">{{storeName!=''?storeName:'请选择'}}</view>
+						</picker>
+					</view>
+					<view style="width:10%;">
+						<image style="width:40rpx;height: 20rpx;transform: rotate(-90deg);"
+							:src="`${filePath}/vehicleManage/down-mini.png`"></image>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -26,10 +27,10 @@
 		<view class="vehicle-information">
 			<view class="item">
 				<view class="caption">选择品牌</view>
-				<tui-dropdown-list :show="brandKey" :top="80" height="200">
+				<tui-dropdown-list :show="brandKey" :top="80"  :height="(76*brandList.length)+(40*2)">
 					<template v-slot:selectionbox>
 						<view class="info" @tap="brandKey ? closeSelBox('brand') :openSelBox('brand')">
-							<text>{{ brand ? brand :'请选择品牌'}}</text>
+							<view>{{ brand ? brand :'请选择品牌'}}</view>
 							<image class="icon" :src="`${filePath}/vehicleManage/down-mini.png`"></image>
 						</view>
 					</template>
@@ -47,7 +48,7 @@
 
 			<view class="item">
 				<view class="caption">选择类别</view>
-				<tui-dropdown-list :show="classesKey" :top="80" height="200">
+				<tui-dropdown-list :show="classesKey" :top="80"  :height="(76*classesList.length)+(40*2)">
 					<template v-slot:selectionbox>
 						<view class="info" @tap="classesKey ? closeSelBox('classes') :openSelBox('classes')">
 							<text>{{ classes ? classes :'请选择类别'}}</text>
@@ -154,7 +155,7 @@
 			</view>
 			<view class="item">
 				<view class="caption">排量</view>
-				<tui-dropdown-list :show="displacementKey" :top="80" height="200">
+				<tui-dropdown-list :show="displacementKey" :top="80"  :height="(76*displacementList.length)+(40*2)">
 					<template v-slot:selectionbox>
 						<view class="info"
 							@tap="displacementKey ? closeSelBox('displacement') : openSelBox('displacement')">
@@ -187,12 +188,15 @@
 					</view>
 				</view>
 			</view>
-	<!-- 		<view style="display: flex;align-items: center;">
-				<view class="">允许设置限时优惠:</view>
-				<switch style="margin-left: 40%;" :checked="item.thirdStatus==1"/> 
-			</view> -->
+			
+			<view class="item" style="height: auto;">
+				<view class="caption">允许设置限时优惠:</view>
+				<switch style="margin-left: 10%;"  @change="switch1Change" /> 
+			</view>
+			
+	
 			<view class="picture-group">
-				<div class="color-bar"></div>
+				<div class="color-bar"></div> 
 				<view class="caption">车型图片</view>
 				<view class="picture-box">
 					<view class="image-card" v-for="(item,index) in cartypeImg">
@@ -267,7 +271,7 @@
 				<view class="square" @click="add(2)">+10%</view>
 			</view>
 			<view v-if="carId==''" class="btn" @click="sure(1)">添加</view>
-			<view v-else class="btn" @click="sure(2)">编辑</view>
+			<view v-else class="btn" @click="sure(2)">确定</view>
 		</view>
 
 		<uni-popup ref="popup" type="center">
@@ -412,6 +416,7 @@
 				weekExternal: "", //周末价格
 				weekWithin: "", //周内价格
 				carId: '', //车型id
+				isLimited:'',//限时优惠1开 0关
 			}
 		},
 		computed: {
@@ -437,27 +442,31 @@
 			}
 		},
 		onLoad(e) {
-			// this.getBrand()
-			// this.getType()
-			// this.outputVolume()
-			// this.getStore()
-			this.storeId = this.shopId
-			console.log(this.roles)
-
+			this.getBrand()
+			this.getType() 
+			this.outputVolume()
+			this.getStore()
+			console.log(e)
+			
 			if (e.id != undefined) {
 				this.searchCarid(e.id)
-				this.carId = e.id
+				this.carId =e.id
+				this.storeId = e.memberShopId
 			} else {
-
+				this.storeId = this.shopId
 			}
 		},
-		mounted() {
-			let inputEle = document.querySelector('.input input')
-			inputEle.addEventListener('blur', function() {
-				document.body.scrollIntoView()
-			})
-		},
+
 		methods: {
+			//限时优惠
+			     switch1Change: function (e) {
+			            console.log('switch1 发生 change 事件，携带值为', e.target.value)
+						if(e.target.value){
+							this.isLimited=1 
+						}else{
+							this.isLimited=0
+						}  
+			        },
 			//获取时间
 			getDate(type) {
 				const date = new Date();
@@ -508,6 +517,7 @@
 			},
 			//详情
 			async searchCarid(e) {
+				console.log(e)
 				const [err, res] = await searchCarid(e)
 				if (err) true
 				console.log(res)
@@ -612,12 +622,6 @@
 
 						}
 
-					},
-					fail() {
-						uni.showToast({
-							title: "拍照或引用相册失败",
-							duration: 2000
-						})
 					}
 				})
 			},
@@ -824,7 +828,8 @@
 						doorsCount: this.doorList[this.doorIndex].name,
 						gearboxType: this.speedList[this.speedIndex].name,
 						powerType: this.powerList[this.powerIndex].name,
-						fuelType: this.fuelList[this.fuelIndex].name
+						fuelType: this.fuelList[this.fuelIndex].name,
+						isLimited:this.isLimited
 					}
 					const [err, res] = await insertVehicleModel(data)
 					if (err) return
@@ -855,7 +860,8 @@
 						doorsCount: this.doorList[this.doorIndex].name,
 						gearboxType: this.speedList[this.speedIndex].name,
 						powerType: this.powerList[this.powerIndex].name,
-						fuelType: this.fuelList[this.fuelIndex].name
+						fuelType: this.fuelList[this.fuelIndex].name,
+						isLimited:this.isLimited
 					}
 					const [err, res] = await vehicleModelUpdate(data)
 					if (err) return

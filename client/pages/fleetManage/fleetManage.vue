@@ -100,6 +100,9 @@
 	import {
 		vehicleCategoryQueryAll
 	} from '@/apis/vehicleCategory'
+	import {
+		authority
+	} from '@/apis/admin';
 	export default {
 		data() {
 			return {
@@ -274,14 +277,25 @@
 					animationType: 'pop-in'
 				})
 			},
-			add() {
+			async add() {
+			let data={
+				parameter:8
+			}
+			const [err,res] = await authority(data)
+			if (err) return
 				uni.navigateTo({
 					url: './addCar',
 					animationDuration: 200,
 					animationType: 'pop-in'
 				})
 			},
-			plan() {
+			async plan(){
+				let data={
+					parameter:10
+				}
+				const [err,res] = await authority(data)
+				if (err) return
+				
 				uni.navigateTo({
 					url: './hirePlan',
 					animationDuration: 200,

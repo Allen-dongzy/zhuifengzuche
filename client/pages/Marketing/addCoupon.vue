@@ -1,19 +1,19 @@
 <template>
 	<view>
 
-		<view class="title">租用天数</view>
+		<view class="title">优惠券名称</view>
 		<view class="idCard">
-			<picker class="pickerBox" @change="selectName" :value="nameIndex" :range="nameList" range-key="name">
+			<picker class="pickerBox" @change="selectName" :value="couponTitle" :range="nameList" range-key="name">
 
-				<view class="pickerText">{{nameIndex==""?'请选择':nameIndex}}</view>
+				<view class="pickerText">{{couponTitle==""?'请选择':couponTitle}}</view>
 			</picker>
-		</view>
+		</view> 
 
 
-		<view class="title">赠送天数</view>
+		<view class="title">使用时间</view>
 		<view class="flexBoxContent">
 			<view style="width: 40%;">
-				<picker mode="date" @change="selectTime()" :value="startTime" :start="startDate" :end="currentdate"
+				<picker mode="date" @change="selectTime" :value="startTime" :start="startDate" :end="currentdate"
 					class="pickerBox">
 
 					<view class="pickerText">{{startTime==""?'请选择':startTime}}</view>
@@ -21,7 +21,7 @@
 			</view>
 
 			<view style="width: 40%;margin-left: 10%;">
-				<picker mode="date" @change="selectendTime()" :value="endTime" :start="startDate" :end="currentdate"
+				<picker mode="date" @change="selectendTime" :value="endTime" :start="startDate" :end="currentdate"
 					class="pickerBox">
 
 					<view class="pickerText">{{endTime==""?'请选择':endTime}}</view>
@@ -36,7 +36,7 @@
 				<view style="margin: 0rpx 20rpx;">满</view>
 				<view class="flexBoxContent"
 					style="width: 45%;background-color:#EFF0F3;margin-top: 0rpx;height: 74rpx;border-radius: 10rpx;padding: 0rpx 10rpx;">
-					<input type="text" value="" />
+					<input type="text" v-model="maxNum" />
 					<view style="color: #999999;">元</view>
 				</view>
 			</view>
@@ -45,7 +45,7 @@
 				<view style="margin: 0rpx 20rpx;">减</view>
 				<view class="flexBoxContent"
 					style="width: 45%;background-color:#EFF0F3;margin-top: 0rpx;height: 74rpx;border-radius: 10rpx;padding: 0rpx 10rpx;">
-					<input type="text" value="" />
+					<input type="text" v-model="minNum" />
 					<view style="color: #999999;">元</view>
 				</view>
 			</view>
@@ -53,31 +53,28 @@
 
 		<view class="title">使用对象</view>
 		<view class="idCard">
-			<picker class="pickerBox" @change="selectName" :value="nameIndex" :range="nameList" range-key="name">
+			<picker class="pickerBox" @change="selectObj" :value="userName" :range="useObject" range-key="name">
 
-				<view class="pickerText">{{nameIndex==""?'请选择':nameIndex}}</view>
+				<view class="pickerText">{{userName==""?'请选择':userName}}</view>
 			</picker>
 		</view>
 
 		<view class="title">赠送节点</view>
 		<view class="idCard">
-			<picker class="pickerBox" @change="selectName" :value="nameIndex" :range="nameList" range-key="name">
+			<picker class="pickerBox" @change="selectNode" :value="couponNode" :range="nodeList" range-key="name">
 
-				<view class="pickerText">{{nameIndex==""?'请选择':nameIndex}}</view>
+				<view class="pickerText">{{couponNode==""?'请选择':couponNode}}</view>
 			</picker>
-		</view>
+		</view> 
 
 		<view class="flexBoxContent">
 			<view style="margin-right: 70%;">状态</view>
-			<switch class="switch" :checked="list[index].status===1" @change="deliveryOnOrOffButton($event, index)" />
+			<switch class="switch" :checked="status===1" @change="deliveryOnOrOffButton" />
 		</view>
 		
-		<view class="delText">删除优惠券</view>
 
 
-
-
-		<view class="sure" @click="close(1)">确定</view>
+		<view class="sure" @click="sure()">确定</view>
 
 
 	</view>
@@ -91,7 +88,12 @@
 		uploadFiles
 	} from '@/apis/oss';
 
-
+	import {
+		couponAdd,
+		couponinfo,
+		couponNodeList,
+		userVip
+	} from '@/apis/marketing'
 
 
 
@@ -108,9 +110,20 @@
 					name: '节日优惠',
 					id: 2
 				}],
-				nameIndex: '',
+				useObject: [],
+				nodeList: [],
+				couponTitle: '',//优惠券名称
+				userName:'',//使用对象
+				userNameid:'',//使用对象id
+				couponNode:'',//数据节点
+				couponNodeid:'',//数据节点id
 				startTime: '',
-				endTime: ''
+				endTime: '',
+				maxNum:'',//满多少
+				minNum:'',//减多少
+				status:'',//状态
+				type:"",//1是新增 2是编辑
+				id:'',//数据id
 
 			}
 		},
@@ -123,16 +136,57 @@
 			}
 		},
 		onLoad(e) {
-
-
+			console.log(e)
+			this.getnodelist()
+			this.getuserlist()
+			this.type=e.type
+			if(e.type==1){
+				
+			}else{
+				this.type=e.type
+				this.id=e.id
+				this.getInfo(e.id)
+			}
 		},
 		mounted() {
-			let inputEle = document.querySelector('.input input')
-			inputEle.addEventListener('blur', function() {
-				document.body.scrollIntoView()
-			})
+
 		},
 		methods: {
+			//获取详情
+			async getInfo(e) {
+				const [err, res] = await couponinfo(e)
+				if (err) return
+				console.log(res)
+				
+				 this.couponNodeid=res.data.couponNodeId
+				 this.couponTitle=res.data.couponTitle
+				 this.startTime=res.data.openTime.substring(0,10)
+				 this.endTime=res.data.closeTime.substring(0,10)
+				 this.maxNum=res.data.minPoint
+				 this.minNum=res.data.discountAmount
+				 this.userName=res.data.userObject
+				 this.couponNode=res.data.couponNode
+				 this.status=res.data.isEnable
+				 this.userNameid=res.data.userObjectId
+					
+			},
+			//获取节点
+			async getnodelist(e) {
+				const [err, res] = await couponNodeList()
+				if (err) return
+				console.log(res) 
+				this.nodeList=res.data
+					
+			},
+			//获取使用对象
+			async getuserlist(e) {
+				const [err, res] = await userVip()
+				if (err) return
+				console.log(res) 
+				this.useObject=res.data
+					
+			},
+			
 			//获取时间
 			getDate() {
 				var date = new Date();
@@ -152,8 +206,20 @@
 
 			selectName(e) {
 				console.log(e.target.value)
-				this.nameIndex = this.nameList[e.target.value].name
+				this.couponTitle = this.nameList[e.target.value].name
 
+			},
+			selectObj(e) {
+				console.log(e.target.value)
+				this.userName = this.useObject[e.target.value].name
+				this.userNameid=this.useObject[e.target.value].id
+			
+			},
+			selectNode(e) {
+				console.log(e.target.value)
+				this.couponNode = this.nodeList[e.target.value].name
+				this.couponNodeid = this.nodeList[e.target.value].id
+				
 			},
 			selectTime(e) {
 				console.log(e.target.value)
@@ -174,8 +240,53 @@
 				}
 			},
 			// 开启/关闭送车点
-			async deliveryOnOrOffButton(event, index) {
+			 deliveryOnOrOffButton(e) {
+			
+				this.status = e.target.value
+		
 
+			
+			},
+			//确定
+			async sure() {
+			if(this.type==1){
+			if(this.status){
+				this.status=1
+			}else{
+				this.status=0
+			}
+				var data = {
+					couponTitle: this.couponTitle,
+					openTime: this.startTime+" 00:00:00",
+					closeTime: this.endTime+" 00:00:00",
+					minPoint:this.maxNum,
+					discountAmount:this.minNum,	
+					userObject: this.userName,
+					userObjectId:this.userNameid,
+					couponNode:this.couponNode,
+					couponNodeId:this.couponNodeid,
+					isEnable:this.status
+				}
+			}else{
+				var data = {
+					id:this.id,
+					couponTitle: this.couponTitle,
+					openTime: this.startTime+" 00:00:00",
+					closeTime: this.endTime+" 00:00:00",
+					minPoint:this.maxNum,
+					discountAmount:this.minNum,	
+					userObject: this.userName,
+					userObjectId:this.userNameid,
+					couponNode:this.couponNode,
+					couponNodeId:this.couponNodeid,
+					isEnable:this.status
+				}
+			}
+				const [err, res] = await couponAdd(data)
+				if (err) return
+				console.log(res)
+				this.$toast('添加成功')
+		
 			}
 		}
 	}
@@ -212,6 +323,7 @@
 		height: 74rpx;
 		line-height: 74rpx;
 		padding-left: 20rpx;
+		background-color: #EFF0F3;
 	}
 
 	.inpBox {

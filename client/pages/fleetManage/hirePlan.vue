@@ -5,13 +5,13 @@
 			<image style="width: 48rpx;height: 48rpx;" :src="$util.fileUrl('/time.png')" mode="aspectFill"></image>
 			<view style="margin-left: 2%;">
 				<picker mode="date" :value="staredate" :start="startDate" :end="endDate" @change="starTime">
-					<view class="uni-input" v-if="staredate==''">请选择</view>
+					<view class="uni-input" v-if="staredate==''">开始时间</view>
 					<view class="uni-input" v-else>{{staredate.substring(0,10)}}</view>
 				</picker>
 			</view>
 			<view style="margin-left: 2%;">
 				<picker mode="date" :value="enddate" :start="startDate" :end="endDate" @change="endTime">
-					<view class="uni-input" v-if="enddate==''">请选择</view>
+					<view class="uni-input" v-if="enddate==''">结束时间</view>
 					<view class="uni-input" v-else>{{enddate.substring(0,10)}}</view>
 				</picker>
 			</view>
@@ -28,7 +28,7 @@
 		</view>
 
 		<view class="topNav" style="color: #8E8E93;font-size: 30rpx" v-if="search==true">
-			<input type="text" @input="onInput" v-model="searchField"
+			<input type="text" @input="vehiclePageLeaseQuery" v-model="searchField"
 				style="background-color:#EFF0F3;height: 70rpx;width: 500rpx;border-radius: 50rpx;padding-left: 20rpx;"
 				value="" />
 			<view style="margin-left: 20rpx;" @click="showSearch">取消</view>
@@ -208,8 +208,8 @@
 			async vehiclePageLeaseQuery() {
 	
 				let data = {
-					page: this.page,
-					size: this.size,
+					// page: this.page,
+					// size: this.size,
 					planStatus: this.statuseId,
 					searchField: this.searchField, 
 					planBeginTime: this.staredate,
@@ -229,8 +229,8 @@
 				}
 				this.showStatus = false
 				let data = {
-					page: this.page,
-					size: this.size,
+					// page: this.page,
+					// size: this.size,
 					planStatus: this.statuseId,
 					searchField: this.searchField, 
 					planBeginTime: this.staredate,
@@ -248,8 +248,8 @@
 					return false;
 				} else {
 					var data = {
-						page: this.page,
-						size: this.size,
+						// page: this.page,
+						// size: this.size,
 						planBeginTime: this.staredate + ' 00:00:00',
 						planEndTime: this.enddate + ' 00:00:00',
 						planStatus: this.statuseId,
@@ -271,8 +271,8 @@
 					return false;
 				} else {
 					var data = {
-						page: this.page,
-						size: this.size,
+						// page: this.page,
+						// size: this.size,
 						planBeginTime: this.staredate + ' 00:00:00',
 						planEndTime: this.enddate + ' 00:00:00',
 						planStatus: this.statuseId,

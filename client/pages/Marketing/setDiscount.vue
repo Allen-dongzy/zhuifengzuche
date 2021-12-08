@@ -3,7 +3,7 @@
 
 		<view class="title">优惠价</view>
 		<view class="idCard">
-			<input class="inpBox" v-model="plateNumber" type="number" value="" placeholder="请填写优惠价" />
+			<input class="inpBox" v-model="price" type="number" value="" placeholder="请填写优惠价" />
 			<view style="width: 8%;text-align: center;	height: 74rpx;line-height: 74rpx;">元</view>
 		</view>
 
@@ -11,7 +11,7 @@
 		<view class="title">优惠时间</view>
 		<view class="flexBoxContent">
 			<view style="width: 40%;">
-				<picker mode="date" @change="selectTime()" :value="startTime" :start="startDate"
+				<picker mode="date" @change="selectTime" :value="startTime" :start="startDate"
 					:end="currentdate" class="pickerBox">
 				
 					<view class="pickerText">{{startTime==""?'请选择':startTime}}</view>
@@ -19,21 +19,22 @@
 			</view>
 
 			<view style="width: 40%;margin-left: 10%;">
-				<picker mode="date" @change="selectendTime()" :value="endTime" :start="startDate"
+				<picker mode="date" @change="selectendTime" :value="endTime" :start="startDate"
 					:end="currentdate" class="pickerBox">
 			
 					<view  class="pickerText">{{endTime==""?'请选择':endTime}}</view>
 				</picker>
 			</view>
 		</view>
-		
+		<view class="youhuibox">
+			<view class="title" style="margin-top: 0px;">状态:</view>
+			<switch style="margin-left: 10%;"  :checked="status" @change="switch1Change" /> 
+		</view>
 		<view style="display: flex;justify-content:center;align-items: center;margin: 180rpx 0rpx;">
 			<view
-				style="border: 2rpx solid #5A7EFF;color: #5A7EFF;font-size: 28rpx;text-align: center;height: 90rpx;line-height:70rpx;padding: 10rpx 20rpx;width: 40%;border-radius: 50rpx;"
-				@click="close(2)">取消</view>
-			<view 
 				style="background-color: #5A7EFF;color: white;font-size: 28rpx;text-align: center;height: 90rpx;line-height: 70rpx;padding: 10rpx 20rpx;width:40%;border-radius:50rpx;margin-left: 5%;"
-				@click="close(1)">确定</view>
+				@click="sure()">确定</view>
+
 		</view>
 		
 	</view>
@@ -47,7 +48,9 @@
 		uploadFiles
 	} from '@/apis/oss';
 
-
+	import {
+	listOfLimitedTimeOffers
+	} from '@/apis/marketing'
 
 
 
@@ -57,8 +60,10 @@
 
 				startTime: '', //开始时间
 				endTime: '', //结束时间
-				plateNumber: '', //号牌号码
-
+				price: '', //价格
+				vid:'',//车型id
+				id:'',//
+				status:''
 			}
 		},
 		computed: {
@@ -69,19 +74,69 @@
 				return this.getDate('end');
 			}
 		},
-		onLoad(e) {
+	onLoad(e) {
+		console.log(JSON.parse(e.obj).isLimited)
+		this.vid = JSON.parse(e.obj).id
+		if (JSON.parse(e.obj).limitedTimeOfferActivity != null) {
+			this.price = JSON.parse(e.obj).limitedTimeOfferActivity.amount
+			this.status = JSON.parse(e.obj).isLimited
+			if (this.status == 0) {
+				this.status = false
+			} else {
+				this.status = true
+			}
+			this.endTime = JSON.parse(e.obj).limitedTimeOfferActivity.endTime.substring(0,10)
+			
+			this.startTime = JSON.parse(e.obj).limitedTimeOfferActivity.beginTime.substring(0,10)
+			
+	
+		} else {
+	
+			this.price = ''
+			this.status = false
+			this.endTime = ""
+			this.startTime = ""
+	
+		}
+	
+	},
 
-
-		},
-		mounted() {
-			let inputEle = document.querySelector('.input input')
-			inputEle.addEventListener('blur', function() {
-				document.body.scrollIntoView()
-			})
-		},
 		methods: {
+			async sure() {
+				// if (this.dayNum == "") {
+				// 	this.$toast("请填写租用天数")
+				// 	return false;
+				// } else if (this.songNum == "") {
+				// 	this.$toast("请填写赠送天数")
+				// 	return false;
+				// } else if (this.endTime == "") {
+				// 	this.$toast("请填写结束时间")
+				// 	return false;
+				// } else if (this.startTime == "") {
+				// 	this.$toast("请填写开始时间")
+				// 	return false;
+				// }
+				if (this.status == true) {
+					this.status = 1
+				} else {
+					this.status = 0
+				}
+				let data = {
+			
+					isLimited:this.status,
+					amount:this.price,
+					beginTime:this.startTime+ ' 00:00:00',
+					endTime:this.endTime+ ' 00:00:00',
+					vehicleModelId:this.vid
+					
+				}
+				const [err, res] = await listOfLimitedTimeOffers(data)
+				if (err) return
+				console.log(res)
+				this.$toast('设置成功')
+			},
 			//获取时间
-			getNowFormatDate() {
+			getDate() {
 				var date = new Date();
 				var seperator1 = "-";
 				var year = date.getFullYear();
@@ -113,6 +168,16 @@
 					this.endTime = e.target.value
 				} else {
 					this.endTime = e.target.value
+				}
+			},
+			//状态
+			switch1Change: function(e) {
+			
+				console.log('switch1 发生 change 事件，携带值为', e.target.value)
+				if (e.target.value) {
+					this.status = 1
+				} else {
+					this.status = 0
 				}
 			},
 
@@ -151,6 +216,7 @@
 		height: 74rpx;
 		line-height: 74rpx;
 		padding-left: 20rpx;
+		background-color: #EFF0F3;
 	}
 
 	.inpBox {
@@ -160,6 +226,7 @@
 		line-height: 74rpx;
 		font-size: 24rpx;
 		padding-left: 20rpx;
+		background-color: #EFF0F3;
 	}
 
 
@@ -177,5 +244,8 @@
 		margin: auto;
 		background-color: #EFF0F3;
 		display: flex;
+	}
+	.youhuibox{
+		height: auto;display: flex;align-items: center;margin: 40rpx 0rpx;
 	}
 </style>

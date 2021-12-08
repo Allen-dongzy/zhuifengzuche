@@ -51,13 +51,19 @@
 		},{
 			"path": "pages/Marketing/addCoupon",
 			"style": {
-				"navigationBarTitleText": "增加优惠券",
+				"navigationBarTitleText": "优惠券设置",
 				"enablePullDownRefresh":true
 			}
 		},{
 			"path": "pages/Marketing/coupon",
 			"style": {
 				"navigationBarTitleText": "优惠券",
+				"enablePullDownRefresh":true
+			}
+		},{
+			"path": "pages/Marketing/couponInfo",
+			"style": {
+				"navigationBarTitleText": "优惠券详情",
 				"enablePullDownRefresh":true
 			}
 		},{
@@ -290,8 +296,10 @@
 		{
 			"path": "pages/Delivery/carPoint",
 			"style": {
-				"navigationBarTitleText": "送车点管理"
+				"navigationBarTitleText": "送车点管理",
+				"enablePullDownRefresh":true
 			}
+			
 		},
 		{
 			"path": "pages/user/user",

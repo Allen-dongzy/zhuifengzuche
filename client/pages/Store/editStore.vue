@@ -440,7 +440,7 @@
 		border-radius: 10rpx;
 		padding-left: 20rpx;
 		color: #999999;
-		margin-top: 20rpx;
+
 	}
 	.uni-input1{
 		width: 39%;

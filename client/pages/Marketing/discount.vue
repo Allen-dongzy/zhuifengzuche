@@ -23,15 +23,15 @@
 		<view class="header-mat"></view>
 		
 		<view class="manage-list">
-			<view class="manage-item" v-for="(item, index) in list" :key="index" @tap="goDetail(item.id)">
+			<view class="manage-item" v-for="(item, index) in list" :key="index" @tap="goDetail(item)">
 				<view style="display: flex;margin:30rpx 0rpx 15rpx;">
 					<view class="">{{item.brandName}}  {{item.name}}  {{item.categoryName}}</view>
-					<view style="background-color: #FFA05B;margin-left: 20rpx;" class="iconBox">租7送2</view>
-					<!-- <view style="background-color: #FFA05B;" class=iconBox>暂未设置</view> -->
+					<view v-if="item.limitedTimeOfferActivity!=null" style="background-color: #FFA05B;margin-left: 20rpx;" class="iconBox">优惠价：{{item.limitedTimeOfferActivity.amount}}</view>
+					<view v-else style="background-color: #cdcdcd;"  class=iconBox>暂未设置</view>
 				</view>
 				
 				
-				<view style="margin:30rpx 0rpx 15rpx">郑家院子追风1店</view>
+				<view style="margin:30rpx 0rpx 15rpx;color:#b2b2b2">郑家院子追风1店</view>
 			</view>
 			
 		</view>
@@ -52,7 +52,7 @@
 				
 				<view class="flex status">
 					<i></i>
-					<p>优惠价</p>
+					<p>租几送几</p>
 				</view>
 				<view class="flex flex-wrap statusList">
 					<view v-for="(item,index) in giveList" @click="selectGive(index)">
@@ -101,8 +101,8 @@
 	import config from '@/common/js/config'
 
 	import {
-		vehicleModelPageQuery
-	} from '@/apis/vehicleModel'
+		limited
+	} from '@/apis/marketing'
 
 	import {
 		vehicleBrandQueryAll
@@ -121,12 +121,12 @@
 				modalName: '', // 模态框名称
 				list: [], //数据列表
 				page: 1, //页码
-				size: 10, //数量
+				size: 20, //数量
 				brandId: '', //品牌Id
 				seatId: '', //座位Id
 				stallId: '', //排挡Id
 				brandList: [], //品牌数组
-				giveList:[{text:'全部',status:false},{text:'已设置',status:false},{text:'未设置',status:false}],//优惠价数组
+				giveList:[{text:'全部',status:false},{text:'已设置',status:false},{text:'未设置',status:false}],//租几送几数组
 				seatList: [{
 					text: '2',
 					status: false
@@ -161,6 +161,8 @@
 		},
 		onShow() {
 			this.list=[]
+			this.page=1
+			this.size=20
 			this.getlist()
 			this.getBrand()
 		},
@@ -171,7 +173,7 @@
 					size: this.size,
 					name: this.searchVal
 				}
-				const [err, res] = await vehicleModelPageQuery(data)
+				const [err, res] = await limited(data)
 				if (err) return
 				console.log(res)
 				this.list = res.data.list
@@ -195,7 +197,7 @@
 					page: this.page,
 					size: this.size
 				}
-				const [err, res] = await vehicleModelPageQuery(data)
+				const [err, res] = await limited(data)
 				if (err) return
 				console.log(res)
 				// this.list = res.data.list
@@ -204,6 +206,7 @@
 				} else {
 					for (let i = 0; i < res.data.list.length; i++) {
 						this.list.push(res.data.list[i])
+					
 					}
 				}
 
@@ -231,8 +234,10 @@
 	
 			// 前往详情
 			goDetail(index) {
-				console.log(index)
-				open('/pages/vehicleManage/detail?id=' + index)
+		
+			
+					open('/pages/Marketing/setDiscount?obj=' + JSON.stringify(index))
+			
 			},
 			// 显示筛选框
 			showModal(e) {
@@ -251,7 +256,7 @@
 				this.stallId = this.stallList[e].text
 				this.stallList[e].status = true
 			},
-			//选择优惠价
+			//选择租几送几
 			selectGive(e) {
 				console.log(e)
 				for (let i = 0; i < this.giveList.length; i++) {
@@ -304,7 +309,7 @@
 					capacity: this.seatId,
 					gears: this.stallId,
 				}
-				const [err, res] = await vehicleModelPageQuery(data)
+				const [err, res] = await limited(data)
 				if (err) return
 				console.log(res)
 				this.$toast('查询成功')
@@ -502,12 +507,12 @@
 		}
 	}
 	.iconBox{
-		width: 100rpx;
 		height:40rpx;
 		line-height: 40rpx;
 		border-radius: 10rpx;
 		text-align: center;
 		color: white;
 		font-size: 22rpx;
+		padding: 0rpx 10rpx;
 	}
 </style>

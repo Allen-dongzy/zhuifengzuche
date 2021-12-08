@@ -5,7 +5,7 @@
 				:indicator-active-color="indicatorActiveColor">
 				<swiper-item class="flex flex-wrap swiperItem">
 					<view v-for="(item,index) in swiperIcon" :key="index" class="flex-center flex-direction iconPanel"
-						@click="toHomeLevel(item.url)">
+						@click="toHomeLevel(item.url,item.id)">
 						<image mode="aspectFill" style="height: 100rpx;width: 100rpx;" :src="$util.fileUrl(item.path)"
 							lazy-load></image>
 						<p>{{ item.text }}</p>
@@ -137,6 +137,10 @@
 		getOrderPageList
 	} from '@/apis/rentalOrder';
 	import {
+		authority
+	} from '@/apis/admin';
+	
+	import {
 		refundOfIllegalDeposit
 	} from '@/apis/pay'
 
@@ -148,35 +152,44 @@
 				swiperIcon: [{
 					path: '/vehicle_management@2x.png',
 					text: '车辆管理',
-					url: '../fleetManage/fleetManage'
+					url: '../fleetManage/fleetManage',
+					id:6
 				}, {
 					path: '/model_set@2x.png',
 					text: '车型设置',
-					url: '../vehicleManage/manage'
+					url: '../vehicleManage/manage',
+					id:12
 				}, {
 					path: '/delivery_point_management@2x.png',
 					text: '送车点管理',
-					url: '../Delivery/carPoint'
+					url: '../Delivery/carPoint',
+					id:17
+					
 				}, {
 					path: '/store_management@2x.png',
 					text: '门店管理',
-					url: '../Store/store'
+					url: '../Store/store',
+					id:22
 				}, {
 					path: '/collection_payment_management@2x.png',
 					text: '收付款管理',
-					url: '../collectPay/collectPay'
+					url: '../collectPay/collectPay',
+					id:28
 				}, {
 					path: '/marketing_management@2x.png',
 					text: '营销管理',
-					url: '../Marketing/Marketing'
+					url: '../Marketing/Marketing',
+					id:32
 				}, {
 					path: '/customer_records@2x.png',
 					text: '客户记录',
-					url: '../customerRecords/customerRecords'
+					url: '../customerRecords/customerRecords',
+					id:35
 				}, {
 					path: '/risk_control_query@2x.png',
 					text: '风控查询',
-					url: '../risk/risk'
+					url: '../risk/risk',
+					id:''
 				}],
 				
 				swiperIcon2: [{
@@ -292,13 +305,26 @@
 			radioChange(e) {
 				this.radio = e.detail.value
 			},
-			toHomeLevel(e, q) {
+			async toHomeLevel(e, q) {
 				console.log(e)
-				uni.navigateTo({
-					url: e,
-					animationType: 'pop-in',
-					animationDuration: 200
-				})
+				if(q==""){
+					uni.navigateTo({
+						url: e,
+						animationType: 'pop-in',
+						animationDuration: 200
+					})
+				}else{
+					let data={
+						parameter:q
+					}
+					const [err, res] = await authority(data)
+					if (err) return
+					uni.navigateTo({
+						url: e,
+						animationType: 'pop-in',
+						animationDuration: 200
+					})
+				}
 			},
 			toHomeLevel1(e, q) {
 				console.log(JSON.stringify(q))

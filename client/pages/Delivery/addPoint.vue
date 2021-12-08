@@ -1,10 +1,33 @@
 <template>
 	<view class="">
+		
+
 		<view class="flexBox" style="background-color: #EFF0F3;height: 140rpx;width: 100%;">
 			<view class="buleLine"></view>
 			<view class="title" style="margin-top: 0rpx;">填写送车点信息</view>
 		</view>
+		
 
+		
+		
+		<view class="flexBoxContent" v-if="roles[0].id==1">
+			<view style="width: 22%;text-align: left;">门店</view>
+			<view class="selectBox">
+				<view style="width: 90%;">
+					<picker @change="selectStore" :value="indexStore" :range="list" :range-key="'name'"
+						class="pickerBox">
+						<view class="pickerText">{{storeName!=''?storeName:'请选择'}}</view>
+					</picker>
+				</view>
+				<view style="width:10%;">
+					<image style="width:40rpx;height: 20rpx;" :src="$util.fileUrl('/xiangxiahui.png')" mode="aspectFill"></image>
+				</view>
+			</view>
+		</view>
+		
+		
+		
+		
 		<view class="flexBoxContent">
 			<view style="width: 22%;text-align: left;">省份</view>
 			<view class="selectBox">
@@ -114,19 +137,22 @@
 
 <script>
 	import {
+		mapState
+	} from 'vuex'
+	import {
 		deliverySave,
 		deliveryUpdate
 	} from '@/apis/delivery'
-
+	import {
+		memberShopPageQuery
+	} from '../../apis/memberShop'
 	import {
 		allFindCityList,
 		allFindProvincesList,
 		allFindAreasList
 	} from '@/apis/regionProvince';
 
-	import {
-		mapState
-	} from 'vuex'
+
 
 	export default {
 		data() {
@@ -163,7 +189,10 @@
 				latitudeInp: '',
 				longitudeInp: '',
 
-
+			list: [], //门店列表
+			storeName: '', //门店值
+			indexStore: '', //门店角标
+			storeId: '', //门店id
 
 				//地图
 				id: 0, // 使用 marker点击事件 需要填写id
@@ -193,8 +222,14 @@
 
 			}
 		},
+		onShow() {
+			
+		},
 		onLoad(e) {
-
+		this.getSystemInfo()
+		this.getlocation();
+		this.allFindProvincesList()
+		this.getStore()
 			console.log(e.obj == undefined)
 
 			if (e.obj == undefined) {
@@ -212,20 +247,20 @@
 				this.longitudeInp = JSON.parse(e.obj).lon
 				this.latitudeInp = JSON.parse(e.obj).lat
 				this.price = JSON.parse(e.obj).commission
-				this.selectTransportation = JSON.parse(e.obj).isTraffic
-				if(this.obj.isTraffic==1){
+				this.this.selectTransportation = JSON.parse(e.obj).isTraffic
+				if(this.selectTransportation==1){
 					this.indexName="是"
 				}else{
 					this.indexName="否"
 				}
 			}
-			this.getSystemInfo()
-			this.getlocation();
-			this.allFindProvincesList()
+		
 		},
+
 		computed: {
-			//  user模式 门店id
-			...mapState('user', ['shopId'])
+			// 门店id
+			...mapState('user', ['shopId']),
+			...mapState('user', ['roles']),
 		},
 
 		methods: {
@@ -303,21 +338,40 @@
 			},
 			async sure() {
 				if(this.obj==""){
-					var data = {
-						provinceCode: this.selectProvince,
-						provinceName: this.selectProvinceName,
-						cityCode: this.selectCity,
-						cityName: this.selectCityName,
-						areaCode: this.selectArea,
-						areaName: this.selectAreaName,
-						name: this.carPoint,
-						address: this.address,
-						lon: this.longitudeInp,
-						lat: this.latitudeInp,
-						commission: this.price,
-						isTraffic: this.selectTransportation,
-						shopId: this.shopId,
+					if(this.roles[0].id==1){
+						var data = {
+							provinceCode: this.selectProvince,
+							provinceName: this.selectProvinceName,
+							cityCode: this.selectCity,
+							cityName: this.selectCityName,
+							areaCode: this.selectArea,
+							areaName: this.selectAreaName,
+							name: this.carPoint,
+							address: this.address,
+							lon: this.longitudeInp,
+							lat: this.latitudeInp,
+							commission: this.price,
+							isTraffic: this.selectTransportation,
+							shopId: this.storeId,
+						}
+					}else{
+						var data = {
+							provinceCode: this.selectProvince,
+							provinceName: this.selectProvinceName,
+							cityCode: this.selectCity,
+							cityName: this.selectCityName,
+							areaCode: this.selectArea,
+							areaName: this.selectAreaName,
+							name: this.carPoint,
+							address: this.address,
+							lon: this.longitudeInp,
+							lat: this.latitudeInp,
+							commission: this.price,
+							isTraffic: this.selectTransportation,
+							shopId: this.shopId,
+						}
 					}
+					
 					
 					const [err, res] = await deliverySave(data)
 					if (err) return
@@ -326,23 +380,42 @@
 						delta: 1
 					})
 				}else{
-					var data = {
-						id:this.obj.id,
-						provinceCode: this.selectProvince,
-						provinceName: this.selectProvinceName,
-						cityCode: this.selectCity,  
-						cityName: this.selectCityName,
-						areaCode: this.selectArea,
-						areaName: this.selectAreaName,
-						name: this.carPoint,
-						address: this.address,
-						lon: this.longitudeInp,
-						lat: this.latitudeInp,
-						commission: this.price,
-						isTraffic: this.selectTransportation,
-						shopId: this.shopId,
-					
+					if(this.roles[0].id==1){
+						var data = {
+							id:this.obj.id,
+							provinceCode: this.selectProvince,
+							provinceName: this.selectProvinceName,
+							cityCode: this.selectCity,
+							cityName: this.selectCityName,
+							areaCode: this.selectArea,
+							areaName: this.selectAreaName,
+							name: this.carPoint,
+							address: this.address,
+							lon: this.longitudeInp,
+							lat: this.latitudeInp,
+							commission: this.price,
+							isTraffic: this.selectTransportation,
+							shopId: this.storeId,
+						}
+					}else{
+						var data = {
+							id:this.obj.id,
+							provinceCode: this.selectProvince,
+							provinceName: this.selectProvinceName,
+							cityCode: this.selectCity,
+							cityName: this.selectCityName,
+							areaCode: this.selectArea,
+							areaName: this.selectAreaName,
+							name: this.carPoint,
+							address: this.address,
+							lon: this.longitudeInp,
+							lat: this.latitudeInp,
+							commission: this.price,
+							isTraffic: this.selectTransportation,
+							shopId: this.shopId,
+						}
 					}
+					
 					
 					const [err, res] = await deliveryUpdate(data)
 					if (err) return
@@ -353,8 +426,18 @@
 				}
 			},
 
-
-
+		//获取门店
+			async getStore() {
+				const [err, res] = await memberShopPageQuery()
+				if (err) return
+				this.list = res.data.list
+			},
+		//选择门店
+			selectStore(e) {
+				this.indexStore = e.target.value //取其下标
+				this.storeName = this.list[this.indexStore].name
+				this.storeId = this.list[this.indexStore].id
+			},
 
 
 			updatedmap: function() {},
@@ -510,5 +593,54 @@
 		height: 74rpx;
 		padding-left: 20rpx;
 
+	}
+	
+	
+	
+	.flexBoxContentmendian {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-top: 30rpx;
+		width: 90%;
+		margin: auto;
+		margin-bottom: 30rpx;
+	}
+	
+	.titlemendian {
+		color: black;
+		font-size: 28rpx;
+		width: 25%;
+		font-weight: 700;
+	}
+	
+	.selectBoxmendian {
+		background-color: #EFF0F3;
+		width: 75%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		border-radius: 10rpx;
+		color: #999999;
+		font-size: 24rpx;
+	}
+	
+	.pickerBoxmendian{
+		background-color: #EFF0F3;
+		color: #999999;
+		font-size: 24rpx;
+		height: 74rpx;
+		border-radius: 10rpx;
+		width: 520rpx;
+	}
+	
+	.mendian {
+		height: 74rpx;
+		line-height: 74rpx;
+		padding-left: 20rpx;
+		color: #999999;
+		width: 520rpx;
+		background-color: #EFF0F3;
+		border-radius: 10rpx;
 	}
 </style>

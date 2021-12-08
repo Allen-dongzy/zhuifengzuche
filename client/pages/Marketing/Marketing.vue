@@ -5,7 +5,7 @@
 				<view class="textbox">OTA管理</view>
 				<image :src="$util.fileUrl('/heiyou.png')" style="height: 36rpx;width: 25rpx;"></image>
 			</view>
-<!-- 			<view class="itembox" @click="next(2)">
+			<view class="itembox" @click="next(2)">
 				<view class="textbox">租几送几</view>
 				<image :src="$util.fileUrl('/heiyou.png')" style="height: 36rpx;width: 25rpx;"></image>
 			</view>
@@ -16,7 +16,7 @@
 			<view class="itembox1" @click="next(4)">
 				<view class="textbox">限时优惠</view>
 				<image :src="$util.fileUrl('/heiyou.png')" style="height: 36rpx;width: 25rpx;"></image>
-			</view> -->
+			</view>
 		</view>
 		
 	</view>
@@ -51,7 +51,7 @@
 					})
 				}else{
 					uni.navigateTo({
-						url:'./give',
+						url:'./discount',
 						animationType:'pop-in',
 						animationDuration:200
 					})
