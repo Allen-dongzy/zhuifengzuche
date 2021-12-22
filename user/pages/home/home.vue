@@ -126,7 +126,7 @@ export default {
 		},
 		// 根据经纬度获取特惠租车
 		async limitedTimeOffer(key) {
-			let locationErr, locationRes
+			let locationErr = 0, locationRes = 0
 			// 获取位置
 			if (key === 'refresh') {
 				[locationErr, locationRes] = await getLocation()

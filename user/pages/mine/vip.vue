@@ -125,6 +125,8 @@ export default {
 	methods: {
 		// app 获取并设置系统信息
 		...mapActions('app', ['setSystemInfo']),
+		// user 获取用户vip信息
+		...mapActions('user', ['getUserVipLevelInfo']),
 		// 返回
 		back() {
 			this.$close()
@@ -241,8 +243,9 @@ export default {
 			}
 			this.$toast('充值成功！')
 			this.price = null
+			this.getUserVipLevelInfo()
 			this.$refs.newbeeCoupon.findNewCoupon()
-		},
+		}
 	}
 }
 </script>
@@ -352,10 +355,10 @@ page {
 
 				.hint {
 					position: relative;
-					@include box-h(72rpx, #ffffff);
+					background-color: #fff;
 					border-radius: 16rpx;
 					margin-top: 30rpx;
-					padding: 0 30rpx;
+					padding: 16rpx 26rpx;
 					@include flex-row();
 					@include font-set(28rpx, #ffa05b);
 					line-height: 40rpx;

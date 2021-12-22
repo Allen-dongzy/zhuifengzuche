@@ -109,7 +109,8 @@ const user = {
 	actions: {
 		// 获取用户信息
 		async getUserInfo({
-			commit
+			commit,
+			dispatch
 		}, action = '') {
 			if (!storage.get('token')) return
 			const userinfo = storage.get('userinfo')
@@ -117,11 +118,21 @@ const user = {
 				commit('setUserInfo', userinfo)
 				return
 			}
-			// 身份信息
-			const [infoErr, infoRes] = await ssoInfo()
-			if (infoErr) return
-			commit('setUserInfo', infoRes.data)
-			// 会员信息
+			dispatch('getSsoInfo')
+			dispatch('getUserVipLevelInfo')
+		},
+		// 获取身份信息
+		async getSsoInfo({
+			commit
+		}, action = '') {
+			const [err, res] = await ssoInfo()
+			if (err) return
+			commit('setUserInfo', res.data)
+		},
+		// 获取会员信息
+		async getUserVipLevelInfo({
+			commit
+		}, action = '') {
 			const [vipErr, vipRes] = await getUserVipLevelInfo()
 			if (vipErr) return
 			commit('setUserInfo', vipRes.data)

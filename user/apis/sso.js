@@ -53,7 +53,7 @@ export const sendLoginCode = (data, loading = '发送中') => { // 对接
 }
 
 // 同步支付宝或微信用户数据
-export const synchronizeUserInfo = (data, loading = '更新中') => {
+export const synchronizeUserInfo = (data, loading = '更新中') => { // 对戒
 	return request({
 		url: 'sso/synchronizeUserInfo',
 		method: 'POST',
@@ -63,7 +63,7 @@ export const synchronizeUserInfo = (data, loading = '更新中') => {
 }
 
 // 获取用户会员等级信息
-export const getUserVipLevelInfo = (data, loading = '') => {
+export const getUserVipLevelInfo = (data, loading = '') => { // 对戒
 	return request({
 		url: 'sso/getUserVipLevelInfo',
 		method: 'GET',
@@ -73,9 +73,31 @@ export const getUserVipLevelInfo = (data, loading = '') => {
 }
 
 // 充值
-export const recharge = (data, loading = '') => {
+export const recharge = (data, loading = '') => { // 对戒
 	return request({
 		url: 'sso/recharge',
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'POST',
+		data,
+		loading
+	})
+}
+
+// 微信登录
+export const wxLogin = (data, loading = '登陆中') => { // 对接
+	return request({
+		url: 'sso/wxLogin',
+		contentType: 'application/x-www-form-urlencoded',
+		method: 'POST',
+		data,
+		loading
+	})
+}
+
+// 支付宝登录
+export const aliLogin = (data, loading = '登陆中') => { // 对接
+	return request({
+		url: 'sso/aliLogin',
 		contentType: 'application/x-www-form-urlencoded',
 		method: 'POST',
 		data,

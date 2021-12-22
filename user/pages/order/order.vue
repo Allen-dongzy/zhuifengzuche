@@ -17,6 +17,7 @@
 				已取消
 				<view :class="['underline', { ac: acTab === 3 }]"></view>
 			</view>
+			<!-- <view :class="['action-line', { ac: acTab === 1 }, { acc: key === 2}, { accc: key === 3}]"></view> -->
 		</view>
 		<view class="header-mat"></view>
 		<view class="list">
@@ -141,7 +142,8 @@ export default {
 			list: [],
 			touchIndex: null,
 			payerUid: '', // 平台
-			type: null // 优惠券类型
+			type: null ,// 优惠券类型
+			key: 1
 		}
 	},
 	components: {
@@ -228,6 +230,14 @@ export default {
 		taptab(index) {
 			if (this.acTab === index) return
 			this.acTab = index
+			// setTimeout(() => {
+			// 	this.key = 2
+			// }, 500)
+			// setTimeout(() => {
+			// 	this.key = 3
+			// }, 501)
+			
+			if (!storage.get('token')) return
 			this.init()
 			this.getorderList()
 		},
@@ -452,6 +462,23 @@ export default {
 @import '@/static/scss/_mixin.scss';
 
 .order {
+	@keyframes mymove
+	{
+		0% {
+			width: 40rpx;
+		}
+		49% {
+			width: 228rpx;
+		}
+		50% {
+			right: 262rpx;
+			width: 228rpx;
+		}
+		100% {
+			left: 262rpx;
+			width: 40rpx;
+		}
+	}
 	.header {
 		position: fixed;
 		z-index: 9999;
@@ -459,7 +486,7 @@ export default {
 		@include flex-row();
 
 		.item {
-			@include box(25%, 100%);
+			@include box(188rpx, 100%);
 			@include flex-col();
 			@include font-set(28rpx, #999);
 			line-height: 40rpx;
@@ -477,6 +504,17 @@ export default {
 
 			&.ac {
 				color: #5a7eff;
+			}
+		}
+		
+		.action-line {
+			position: absolute;
+			left: 74rpx;
+			top: 80rpx;
+			@include box(40rpx, 8rpx, #5a7eff);
+			
+			&.ac {
+				animation: mymove 1s;
 			}
 		}
 	}
