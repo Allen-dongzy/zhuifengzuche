@@ -79,6 +79,7 @@
 				if (err) return
 				setTimeout(() => {
 					this.$storage.remove('token')
+				
 					this.clearInfo()
 					uni.hideLoading()
 				}, 500)

@@ -74,6 +74,17 @@
 				inpType:'password'
 			}
 		},
+		onLoad() {
+			if(this.$storage.get('phone')==undefined){
+				
+			}else{
+				this.selectType=true
+				this.phone=this.$storage.get('phone')
+				this.password=this.$storage.get('password')
+			
+			}
+			
+		},
 		methods: {
 			// user模块 获取用户信息
 			...mapActions('user', ['getInfo']),
@@ -135,6 +146,12 @@
 					if (err) return
 					this.$storage.set('token', res.data.token)
 					this.$toast('登录成功')
+					
+					this.$storage.set('token', res.data.token)
+					
+					this.$storage.set('phone', that.phone)
+					this.$storage.set('password', that.password)
+					
 					this.getInfo()
 					uni.reLaunch({
 						url: '../home/home',

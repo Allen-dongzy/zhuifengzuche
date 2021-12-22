@@ -76,3 +76,13 @@ export const update = (data, loading = '') => { // 对接
 	})
 }
 
+//新增门店
+export const shopOwnerRegister = (data, loading = '') => { // 对接
+	return request({
+		url: "admin/shopOwnerRegister",
+		contentType: 'application/json',
+		method: 'POST',
+		data,
+		loading
+	})
+}

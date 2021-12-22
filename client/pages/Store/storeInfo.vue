@@ -69,12 +69,14 @@
 				</view>
 
 				<view class="allFlex" style="margin-top: 40rpx;" v-if="roles[0].id==1 || id==shopId">
-					<view class="point" style="margin-left: 30%;" @click="$open('/pages/Store/editStore?id='+info.id)">
+					<view class="point" style="margin-left: 3%;" @click="$open('/pages/Store/editStore?id='+info.id)">
 						编辑门店</view>
 					<view class="point" style="margin-left: 20rpx;" @click="$open('/pages/Store/storePoint?shopId='+info.id+'&areaCode='+info.areaCode)">
 						送车点管理</view>
 					<view class="point" style="margin-left: 20rpx;" @click="$open('/pages/Store/staff?id='+info.id)">
 						员工管理</view>
+					<view class="point" style="margin-left: 20rpx;" @click="$open('/pages/Store/addmenmian?id='+info.id)">
+						新增门面</view>
 				</view>
 			</view>
 		</view>
