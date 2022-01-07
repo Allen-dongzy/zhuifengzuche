@@ -282,6 +282,7 @@
 				this.obj.inStorePicture = this.idCard2
 				this.obj.outdoorPictures = this.idCard3
 				this.obj.accountOpeningPermit = this.idCard4
+				this.obj.registerType = 0
 				
 				const [err, res] = await shopOwnerRegister(this.obj)
 				if (err) return
