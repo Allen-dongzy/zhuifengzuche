@@ -242,7 +242,7 @@ export default {
 				this.totalKey = true
 				selTotal = 2
 			}
-			this.dateJudge({ takeCarDate: this.takeCarDate, carAlsoDate: this.carAlsoDate, selTotal })
+			// this.dateJudge({ takeCarDate: this.takeCarDate, carAlsoDate: this.carAlsoDate, selTotal })
 		},
 		// 判断日期
 		dateJudge({ takeCarDate, carAlsoDate, selTotal }) {
