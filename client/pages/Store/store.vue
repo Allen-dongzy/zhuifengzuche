@@ -78,10 +78,12 @@
 			// 切换头部
 			tapHeader() {
 				this.searchMode = !this.searchMode
+
 				this.list=[]
 				this.page=1
 				this.size=10
 				this.keyword=""
+
 				this.memberShopPageQuery()
 			},
 			// input变化

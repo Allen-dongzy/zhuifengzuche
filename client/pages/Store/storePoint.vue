@@ -58,8 +58,9 @@
 				dataStatus: '', // more loading noMore noData
 			}
 		},
-		onLoad(e) {
-			if (e && e.shopId) this.shopId = e.shopId
+		onLoad(e) { 
+			if (e && e.shopId) this.shopId = e.shopId 
+			 this.areaCode=e.areaCode
 			this.deliveryPageQuery()
 			this.deliveryFindByShopId()
 		},

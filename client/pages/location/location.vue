@@ -1,21 +1,8 @@
 <template>
 	<view class="fleetManage">
-		<view class="flex sticky header">
-			<view class="flex">
-				<button type="default" class="flex-center btn" @click="add">新增+</button>
-				<button type="default" class="flex-center btn rentBtn" @click="plan">租赁计划</button>
-			</view>
-			<view class="flex">
-				<view class="flex screen" @click="showModal" data-target="DrawerModalR">
-					<p>筛选</p>
-					<image style="width:28rpx;height:28rpx;" :src="$util.fileUrl('/loudou.png')" mode="aspectFill"></image>
-				</view>
-				<view class="flex search" @click="search">
-					<p>搜索</p>
-					<image style="width:28rpx;height:28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode="aspectFill"></image> 
-				</view>
-			</view>
-		</view>
+
+		
+		
 		<view class="flex-center flex-wrap content">
 			<view v-for="(item, index) in list" :key="index" class="panel" @click="carInfo(item.id)">
 				<view class="flex titlePanel">
@@ -100,9 +87,6 @@
 	import {
 		vehicleCategoryQueryAll
 	} from '@/apis/vehicleCategory'
-	import {
-		authority
-	} from '@/apis/admin';
 	export default {
 		data() {
 			return {
@@ -277,25 +261,14 @@
 					animationType: 'pop-in'
 				})
 			},
-			async add() {
-			let data={
-				parameter:8
-			}
-			const [err,res] = await authority(data)
-			if (err) return
+			add() {
 				uni.navigateTo({
 					url: './addCar',
 					animationDuration: 200,
 					animationType: 'pop-in'
 				})
 			},
-			async plan(){
-				let data={
-					parameter:10
-				}
-				const [err,res] = await authority(data)
-				if (err) return
-				
+			plan() {
 				uni.navigateTo({
 					url: './hirePlan',
 					animationDuration: 200,
@@ -333,49 +306,6 @@
 			overflow: auto;
 		}
 
-		.header {
-			padding-top: 22rpx;
-			padding-left: 40rpx;
-			padding-right: 40rpx;
-			padding-bottom: 40rpx;
-			justify-content: space-between;
-			background-color: #FFFFFF;
-
-			.btn {
-				width: 172rpx;
-				height: 48rpx;
-				border: 2rpx solid #5a7eff;
-				border-radius: 12rpx;
-				font-size: 24rpx;
-				font-weight: 500;
-				color: #5a7eff;
-				background: none;
-			}
-
-			.rentBtn {
-				margin-left: 10rpx;
-			}
-
-			.screen,
-			.search {
-
-				p {
-					font-size: 28rpx;
-					font-weight: 400;
-					color: #000000;
-				}
-
-				text {
-					font-size: 28rpx;
-					margin-left: 10rpx;
-					margin-top: 6rpx;
-				}
-			}
-
-			.search {
-				margin-left: 32rpx;
-			}
-		}
 
 		.content {
 

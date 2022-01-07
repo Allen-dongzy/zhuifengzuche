@@ -134,7 +134,11 @@
 	}
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
+	page{
+		background-color: white;
+		height: 100vh;
+	}
 	@import '@/static/scss/_mixin.scss';
 
 	.free-and-apply {

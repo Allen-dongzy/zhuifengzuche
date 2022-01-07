@@ -36,18 +36,18 @@
 
 			<view class="flexBox">
 				<image style="width: 26rpx;height: 26rpx;" :src="$util.fileUrl('/time.png')" mode="aspectFill"></image>
-				<view class="">{{info.rentBeginTime.slice(0,10)}}至{{info.rentEndTime.slice(0,10)}}</view>
+				<view class="">{{info.rentBeginTime}}至{{info.rentEndTime}}</view>
 			</view>
 
 			<view class="flexBox" v-if="info.endDeliveryName==info.startDeliveryName">
 				<view class="getset">取还</view>
-				<view class="address">郑家院子追风1店</view>
+				<view class="address">{{info.memberShopName}}</view>
 				<view class="otherBack">异地还车</view>
 				<switch disabled="true" class="switch" :class="(radio?'checked':'')" :checked="(radio?true:false)">
 				</switch>
 			</view>
 
-			<view v-else>
+			<view v-else> 
 				<view class="flexBox">
 					<view class="getset">取</view>
 					<view class="address">{{info.startDeliveryName}}</view>
@@ -57,7 +57,6 @@
 					<view class="address">{{info.endDeliveryName}}</view>
 				</view>
 			</view>
-
 		</view>
 		<!-- 关于人 -->
 		<view class="box">
@@ -69,8 +68,8 @@
 					:src="$util.fileUrl('/xiangshang.png')" @click="getpeopleInfo" mode="aspectFill"></image>
 			</view>
 			<view class="flexBox">
-				<view class="moreContent" style="text-align: left;" @click="phone(info.userPhone)">联系电话</view>
-				<view class="moreContent" style="color:#5A7EFF ;" @click="phone">{{info.userPhone}}</view>
+				<view class="moreContent" style="text-align: left;" @click="phone">联系电话</view>
+				<view class="moreContent" style="color:#5A7EFF ;" @click="phone(info.userPhone)">{{info.userPhone}}</view>
 			</view>
 			<view v-if="peopleShow==true">
 				<view class="flexBox">
@@ -194,9 +193,16 @@
 				<view class="moreContent">{{info.orderSn}}</view>
 			</view>
 			<view class="flexBox">
-				<view class="moreTitle">订单来源</view>
-				<view v-if="info.orderSource==0" class="moreContent">微信小程序</view>
-				<view v-if="info.orderSource==1" class="moreContent">支付宝小程序</view>
+				<view class="moreTitle" style="width: 65%;">订单来源</view>
+				
+				<image v-if="info.orderSource==2" mode="aspectFill" style="width: 5%;height: 40rpx;margin-left: 20rpx;" src="../../static/img/aotu.png"></image>
+				<image v-if="info.orderSource==3" mode="aspectFill" style="width: 5%;height: 40rpx;margin-left: 20rpx;" src="../../static/img/feizhu.png"></image>
+				<image v-if="info.orderSource==4" mode="aspectFill" style="width: 5%;height: 40rpx;margin-left: 20rpx;" src="../../static/img/zuzuche.png"></image>
+				<view v-if="info.orderSource==0" style="width: 30%;" class="moreContent">微信小程序</view>
+				<view v-if="info.orderSource==1" style="width: 30%;" class="moreContent">支付宝小程序</view>
+				<view v-if="info.orderSource==2" style="width: 30%;" class="moreContent">凹凸租车</view>
+				<view v-if="info.orderSource==3" style="width: 30%;" class="moreContent">飞猪</view>
+				<view v-if="info.orderSource==4" style="width: 30%;" class="moreContent">租租车</view>
 			</view>
 			<view class="flexBox">
 				<view class="moreTitle">下单时间</view>
@@ -212,7 +218,7 @@
 		<!-- 备注-->
 		<view class="box">
 			<view class="moreTitle">备注：</view>
-			<textarea style="border-radius: 10rpx;height: 200rpx;padding-bottom: 20rpx;" :value="info.orderRemark"
+			<textarea style="border-radius: 10rpx;height: 200rpx;padding-bottom: 20rpx;" :value="info.orderRemark ||  ''"
 				placeholder="请输入备注信息" disabled="true" />
 		</view>
 		<!-- 换车 -->
@@ -221,25 +227,29 @@
 			<view class="moreContent" style="width: 10%;color: #5A7EFF;" @click="changeCar(info)">换车</view>
 		</view> -->
 		<view class="flexBox" v-if="type==100">
-		<view class="moreContent" style="width: 20%;color: #5A7EFF;margin-left: 55%;" @click="violation(1)">查看违章</view>
-		<view class="moreContent" style="width: 20%;color: #5A7EFF;" @click="violation(2)">添加违章</view>
-	</view>
+			<view class="moreContent" style="width: 20%;color: #5A7EFF;margin-left: 55%;" @click="violation(1)">查看违章</view>
+			<view class="moreContent" style="width: 20%;color: #5A7EFF;" @click="violation(2)">添加违章</view>
+		</view>
 	<!-- 联系客户和出车检验 -->
-	<view class="flexBox" style="width: 90%;margin: 60rpx auto 30rpx auto;">
+	<view class="flexBox" style="width: 90%;margin: 60rpx auto 90rpx auto;padding-bottom: 90rpx;">
 			<image style="width: 32rpx;height: 32rpx;" mode="aspectFill" :src="$util.fileUrl('/phone@2x.png')"
 				@click="phone(info.userPhone)"></image>
 			<view style="color: #FFA05B;font-size: 24rpx;margin-left: 10rpx;">联系客户</view>
+			
+			<!-- //操作按钮 -->
 			<view style="width: 75%;display: flex;align-items: center;justify-content: flex-end;">
-				<view v-if="type==5" class="lanbox" @click="deliverCar(2)">交车情况</view>
-				<view v-if="type==100" class="lanbox" @click="shoucheInfo">收车情况</view>
-				<!-- <view v-if="type==100" class="lanbox">结算佣金</view> -->
-			<view v-if="type==1" class="lanbox" @click="goInspect()">出车检验</view>
-			<view v-if="type==5 " class="lanbox" @click="jianyanshouche" :disabled="info.isPaymentIllegalDeposit==1">
-				检验收车</view>
-			<view :disabled="info.isVehicleCertificates==true" v-if="type==1" @click="deliverCar(1)" class="lanbox">交付车辆
+
+						<view v-if="type==5" class="lanbox" @click="deliverCar(2)">交车情况</view>
+						<view v-if="type==100" class="lanbox" @click="shoucheInfo">收车情况</view>
+						<!-- <view v-if="type==100" class="lanbox">结算佣金</view> -->
+					<view v-if="type==1" class="lanbox" @click="cancelOrder()">取消订单</view>
+					<view v-if="type==1" class="lanbox" @click="goInspect()">出车检验</view>
+					<view v-if="type==5 && info.orderStatus==5" class="lanbox" @click="jianyanshouche" :disabled="info.isPaymentIllegalDeposit==1">
+						检验收车</view>
+					<view :disabled="info.isVehicleCertificates==true" v-if="type==1" @click="deliverCar(1)" class="lanbox">交付车辆
+					</view>
+					<view v-if="type==100" class="lanbox1" @click="backMoney">退还押金</view>
 			</view>
-			<view v-if="type==100" class="lanbox1" @click="backMoney">退还押金</view>
-	</view>
 	<!-- 待支付 按钮都不要    已取消 按钮都不要    已完成  100 结算 收车 退还      待收车 5 交车 检验       待送车 1 出车 交付-->
 	</view>
 	</view>
@@ -247,7 +257,8 @@
 
 <script>
 	import {
-		orderInfo
+		orderInfo,
+		cancelOrder
 	} from '@/apis/rentalOrder'
 	import {
 		refundOfIllegalDeposit
@@ -308,6 +319,7 @@
 				}
 			},
 			phone(e) {
+				console.log(e)
 				uni.makePhoneCall({
 					phoneNumber: e //仅为示例
 				});
@@ -335,17 +347,51 @@
 					url: './goInspect?obj=' + JSON.stringify(data)
 				})
 			},
-			//交车情况
-			deliverCar(e) {
-				let data = {
-					order: this.info.id,
-					carnum: this.info.vehicleNumber,
-					vehicleId: this.info.vehicleId
-				}
-
-				uni.navigateTo({
-					url: './deliverCar?type=' + e + '&obj=' + JSON.stringify(data)
+			 cancelOrder(e) {
+				uni.showModal({
+				    title: '提示',
+				    content: '是否要取消订单',
+				   success: async res => {
+				        if (res.confirm) {
+				           let data = {
+				           	orderId: this.info.id
+				           }
+				           const [err, ress] = await cancelOrder(data)
+				           if (err) return
+				           console.log(ress)
+						   this.$toast('取消成功')
+				        }
+				    }
 				})
+			},
+			//交车情况
+			// deliverCar(e) {
+			// 	let data = {
+			// 		order: this.info.id,
+			// 		carnum: this.info.vehicleNumber,
+			// 		vehicleId: this.info.vehicleId
+			// 	}
+
+			// 	uni.navigateTo({
+			// 		url: './deliverCar?type=' + e + '&obj=' + JSON.stringify(data)
+			// 	})
+			// },
+			
+			deliverCar(e) {
+				if(this.info.isCarTest==false){
+					let data = {
+						order: this.info.id,
+						carnum: this.info.vehicleNumber,
+						vehicleId: this.info.vehicleId
+					}
+					uni.navigateTo({
+						url: './deliverCar?type=' + e + '&obj=' + JSON.stringify(data)
+					})
+				}else{
+					this.$toast('请先出车检验')
+				}
+				
+				
 			},
 			//检验收车
 			jianyanshouche() {
@@ -363,19 +409,29 @@
 				let data = {
 					order: this.info.id,
 				}
-
+				
 				uni.navigateTo({
 					url: './inspectionCollectInfo?obj=' + JSON.stringify(data)
 				})
 			},
 			violation(e) {
-				if (e == 1) {
+				var URI=""
+				if(JSON.stringify(this.info).indexOf('%') > -1) {
+					  console.log(URI)
+					  
+				    URI =  JSON.stringify(this.info).replace(/%/g,'%25')
+					   console.log(URI)
+				  }else{
+					  URI =  JSON.stringify(this.info)
+				  }
+				  
+				if (e == 1) {				  
 					uni.navigateTo({
-						url: './violation?obj=' + JSON.stringify(this.info)
+						url: './violation?obj=' + URI
 					})
 				} else {
 					uni.navigateTo({
-						url: './violationAdd?type=1&obj=' + JSON.stringify(this.info)
+						url: './violationAdd?type=1&obj=' + URI
 					})
 				}
 			},

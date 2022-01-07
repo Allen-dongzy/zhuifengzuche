@@ -20,8 +20,8 @@
 		<view class="flexbox">
 			<view class="titleLeft">店员</view>
 			<view class="titleRight">{{info.staffName}}</view>
+
 		</view>
-		
 		<view class="flexbox" v-if="info.examineStatus==2">
 			<view class="titleLeft">金额(元)</view>
 			<view class="titleRight" @click="setMoney">¥{{info.money}}</view>
@@ -95,9 +95,6 @@
 			<!-- 审核未通过 -->
 			<view class="reTitle" v-if="info.examineStatus==3">拒绝原因：{{info.reason}}</view>
 		</view>
-		
-		
-		
 <view v-if="infotype.type==0">
 	<!-- 待审核 -->
 	<button class="sure" type="default" @click="take(1)" v-if="info.examineStatus==0" >提交审核</button>
@@ -150,7 +147,9 @@
 		<view v-if="money==true" class="box1">
 			<view style="width: 90%;margin: auto;font-size:32rpx;padding: 20rpx 0rpx;">修改金额</view>
 			<view style="width: 90%;margin: auto;">
-				<input v-model="info.money" style="background-color:#EFF0F3;padding-left: 20rpx;height: 74rpx;border-radius: 10rpx;;width:100%"
+
+				<input v-model="info.money" style="background-color:#EFF0F3;padding-left: 20rpx;height: 74rpx;border-radius: 10rpx;width:100%"
+
 					placeholder="请输入修改金额" />
 			</view>
 			<view style="width: 90%;margin: auto;">
@@ -368,7 +367,7 @@
 		border-top: 1px solid #FFFFFF;
 		border-bottom: 1px solid #FFFFFF;
 		background-color: white;
-		top: 30vh;
+		top: 20vh;
 		left: 5%;
 		border-radius: 20rpx;
 	}

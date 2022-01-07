@@ -6,7 +6,7 @@
 					<view class="flex searchInput">
 						<input v-model="carNum" placeholder="请输入车牌号" type="text" class="search" />
 						<image style="width:28rpx;height:28rpx;" :src="$util.fileUrl('/fangdajing.png')" mode="aspectFill"></image> 
-						<i class="cuIcon-roundclosefill"></i>
+						<!-- <i class="cuIcon-roundclosefill"></i> -->
 					</view>
 				</view>
 			</view>

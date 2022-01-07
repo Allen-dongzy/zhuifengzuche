@@ -121,11 +121,23 @@
 			},
 			async sure() {
 				// addBuyHistory
+
+				// #ifdef MP-WEIXIN
 				let data = {
 					buyCount: this.list[this.selectNum].num,
 					buyMoney: this.list[this.selectNum].price,
 					payType: 0
 				}
+				// #endif
+
+				// #ifdef MP-ALIPAY
+				let data = {
+					buyCount: this.list[this.selectNum].num,
+					buyMoney: this.list[this.selectNum].price,
+					payType: 1
+				}
+				// #endif
+
 				const [err, res] = await addBuyHistory(data)
 				console.log(res)
 				this.buyinfo = res.data
@@ -177,6 +189,19 @@
 			}),
 
 			async precreate(e) {
+
+				// #ifdef MP-WEIXIN
+				let data = {
+					payerUid: e,
+					payway: 3,
+					reflect: this.buyinfo,
+					subPayway: 4,
+					subject: '风控',
+					totalAmount: this.list[this.selectNum].price,
+				}
+				// #endif
+
+				// #ifdef MP-ALIPAY
 				let data = {
 					payerUid: e,
 					payway: 2,
@@ -185,6 +210,10 @@
 					subject: '风控',
 					totalAmount: this.list[this.selectNum].price,
 				}
+				// #endif
+
+
+
 				const [err, res] = await precreate(data)
 				if (err) return
 				this.pay(res.data.wapPayRequest)
@@ -197,19 +226,19 @@
 			async pay(wapPayRequest) {
 				const [err, res] = await uni.requestPayment({
 					// #ifdef MP-WEIXIN
-						provider: 'wxpay',
+					provider: 'wxpay',
 					// #endif
-					
+
 					// #ifdef MP-ALIPAY
-						provider: 'alipay',
+					provider: 'alipay',
 					// #endif
 					...wapPayRequest
 				})
 				if (err) return
-				
+
 				this.findQueryNum()
 			},
-			
+
 
 
 		}

@@ -1,18 +1,19 @@
 <template>
 	<view class="add">
-
-		<view class="flexBoxContent" v-if="roles[0].id==1">
-			<view class="title">门店</view>
-			<view class="selectBox" @click="">
-				<view style="width: 85%;">
-					<picker @change="selectStore" :value="indexStore" :range="list" :range-key="'name'"
-						class="pickerBox">
-						<label class="pickerText">{{storeName!=''?storeName:'请选择'}}</label>
-					</picker>
-				</view>
-				<view style="width:10%;">
-					<image style="width:40rpx;height: 20rpx;transform: rotate(-90deg);"
-						:src="`${filePath}/vehicleManage/down-mini.png`"></image>
+		<view v-if="carId==''" >
+			<view  class="flexBoxContent" v-if="roles[0].id==1">
+				<view class="title">门店</view>
+				<view class="selectBox" @click="">
+					<view style="width: 85%;">
+						<picker @change="selectStore" :value="indexStore" :range="list" :range-key="'name'"
+							class="pickerBox">
+							<view class="pickerText">{{storeName!=''?storeName:'请选择'}}</view>
+						</picker>
+					</view>
+					<view style="width:10%;">
+						<image style="width:40rpx;height: 20rpx;transform: rotate(-90deg);"
+							:src="`${filePath}/vehicleManage/down-mini.png`"></image>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -26,10 +27,10 @@
 		<view class="vehicle-information">
 			<view class="item">
 				<view class="caption">选择品牌</view>
-				<tui-dropdown-list :show="brandKey" :top="80" height="200">
+				<tui-dropdown-list :show="brandKey" :top="80"  :height="(76*brandList.length)+(40*2)">
 					<template v-slot:selectionbox>
 						<view class="info" @tap="brandKey ? closeSelBox('brand') :openSelBox('brand')">
-							<text>{{ brand ? brand :'请选择品牌'}}</text>
+							<view>{{ brand ? brand :'请选择品牌'}}</view>
 							<image class="icon" :src="`${filePath}/vehicleManage/down-mini.png`"></image>
 						</view>
 					</template>
@@ -47,7 +48,7 @@
 
 			<view class="item">
 				<view class="caption">选择类别</view>
-				<tui-dropdown-list :show="classesKey" :top="80" height="200">
+				<tui-dropdown-list :show="classesKey" :top="80"  :height="(76*classesList.length)+(40*2)">
 					<template v-slot:selectionbox>
 						<view class="info" @tap="classesKey ? closeSelBox('classes') :openSelBox('classes')">
 							<text>{{ classes ? classes :'请选择类别'}}</text>
@@ -69,55 +70,55 @@
 				<input class="info" v-model="vehicleModel" type="text" placeholder="请填写车型"
 					placeholder-style="color:#999;" maxlength="80">
 			</view>
-			
-			
-			
-			
-			
-			
+
+
+
+
+
+
 			<view class="item">
 				<view class="caption">年款</view>
 
-				  <picker mode="date"  fields='year' :value="date" :start="startDate" :end="endDate" @change="bindDateChange" class="pickerBox" style="width: 520rpx;">	
-				                        <view class="pickerText">{{date}}年</view>
-				               </picker>
+				<picker mode="date" fields='year' :value="date" :start="startDate" :end="endDate"
+					@change="bindDateChange" class="pickerBox" style="width: 520rpx;">
+					<view class="pickerText">{{date}}年</view>
+				</picker>
 			</view>
-			
+
 			<view class="item">
 				<view class="caption">门数</view>
-					<picker  :value="doorIndex" :range="doorList" :range-key="'name'" @change="changedoor"
-						class="pickerBox">
-						<view  class="pickerText">{{doorIndex!==''?doorList[doorIndex].name:'请选择'}}</view>
-					</picker>
+				<picker :value="doorIndex" :range="doorList" :range-key="'name'" @change="changedoor" class="pickerBox">
+					<view class="pickerText">{{doorIndex!==''?doorList[doorIndex].name:'请选择'}}</view>
+				</picker>
 			</view>
 			<view class="item">
 				<view class="caption">变速箱类型</view>
-					<picker  :value="speedIndex" :range="speedList" :range-key="'name'" @change="changespeed"
-						class="pickerBox" style="width: 520rpx;">	
-						<view  class="pickerText">{{speedIndex!==''?speedList[speedIndex].name:'请选择'}}</view>
-					</picker>
+				<picker :value="speedIndex" :range="speedList" :range-key="'name'" @change="changespeed"
+					class="pickerBox" style="width: 520rpx;">
+					<view class="pickerText">{{speedIndex!==''?speedList[speedIndex].name:'请选择'}}</view>
+				</picker>
 			</view>
 			<view class="item">
 				<view class="caption">动力类型</view>
-					<picker  :value="powerIndex" :range="powerList" :range-key="'name'" @change="changepower"
-						class="pickerBox" style="width: 520rpx;">	
-						<view  class="pickerText">{{powerIndex!==''?powerList[powerIndex].name:'请选择'}}</view>
-					</picker>
+				<picker :value="powerIndex" :range="powerList" :range-key="'name'" @change="changepower"
+					class="pickerBox" style="width: 520rpx;">
+					<view class="pickerText">{{powerIndex!==''?powerList[powerIndex].name:'请选择'}}</view>
+				</picker>
 			</view>
-		<view class="item">
+			<view class="item">
 				<view class="caption">燃油类型</view>
-					<picker  :value="fuelIndex" :range="fuelList" :range-key="'name'"  @change="changefuel"
-						class="pickerBox" style="width: 520rpx;">	
-						<view  class="pickerText">{{fuelIndex!==''?fuelList[fuelIndex].name:'请选择'}}</view>
-					</picker>
+				<picker :value="fuelIndex" :range="fuelList" :range-key="'name'" @change="changefuel" class="pickerBox"
+					style="width: 520rpx;">
+					<view class="pickerText">{{fuelIndex!==''?fuelList[fuelIndex].name:'请选择'}}</view>
+				</picker>
 			</view>
 
-	
 
-			
-			
-			
-			
+
+
+
+
+
 			<view class="item">
 				<view class="caption">排档</view>
 				<tui-dropdown-list :show="stallKey" :top="80" :height="(76*stallList.length)+(40*2)">
@@ -154,7 +155,7 @@
 			</view>
 			<view class="item">
 				<view class="caption">排量</view>
-				<tui-dropdown-list :show="displacementKey" :top="80" height="200">
+				<tui-dropdown-list :show="displacementKey" :top="80"  :height="(76*displacementList.length)+(40*2)">
 					<template v-slot:selectionbox>
 						<view class="info"
 							@tap="displacementKey ? closeSelBox('displacement') : openSelBox('displacement')">
@@ -181,13 +182,21 @@
 					<view class="label add" @click="addlabel">+新增</view>
 					<view class="label" style="position: relative;" v-for="(item,index) in labelList">
 						<image style="width:30rpx;height: 30rpx;position: absolute;top:-3rpx;right:-3rpx"
-							:src="`${filePath}/vehicleManage/delete.png`" @click="delLabel(index)" mode="aspectFill"></image>
+							:src="`${filePath}/vehicleManage/delete.png`" @click="delLabel(index)" mode="aspectFill">
+						</image>
 						{{item}}
 					</view>
 				</view>
 			</view>
+			
+			<view class="item" style="height: auto;">
+				<view class="caption">允许设置限时优惠:</view>
+				<switch style="margin-left: 10%;"  @change="switch1Change" /> 
+			</view>
+			
+	
 			<view class="picture-group">
-				<div class="color-bar"></div>
+				<div class="color-bar"></div> 
 				<view class="caption">车型图片</view>
 				<view class="picture-box">
 					<view class="image-card" v-for="(item,index) in cartypeImg">
@@ -245,7 +254,7 @@
 		<view class="set-up-the-rent">
 			<view class="tab-header" v-if="weekType==1">
 				<view class="tab" @click="select(2)">周内价格</view>
-				<view class="tab ac" >周末价格</view>
+				<view class="tab ac">周末价格</view>
 			</view>
 			<view class="tab-header" v-else>
 				<view class="tab ac">周内价格</view>
@@ -262,7 +271,7 @@
 				<view class="square" @click="add(2)">+10%</view>
 			</view>
 			<view v-if="carId==''" class="btn" @click="sure(1)">添加</view>
-			<view v-else class="btn" @click="sure(2)">编辑</view>
+			<view v-else class="btn" @click="sure(2)">确定</view>
 		</view>
 
 		<uni-popup ref="popup" type="center">
@@ -280,7 +289,7 @@
 				</view>
 			</view>
 		</uni-popup>
-		
+
 	</view>
 </template>
 
@@ -312,22 +321,48 @@
 	} from '../../apis/memberShop'
 	export default {
 		data() {
-			    const currentDate = this.getDate({
-			            format: true
-			        })
+			const currentDate = this.getDate({
+				format: true
+			})
 			return {
 				date: currentDate,
-				doorList:[{name:'2门'},{name:'3门'},{name:'4门'}],
-				doorIndex:0,
-				speedList:[{name:'自动'},{name:'手动'}],
-				speedIndex:0,
-				powerList:[{name:'燃油'},{name:'纯电动'},{name:'混合电动'}],
-				powerIndex:0,
-				fuelList:[{name:'汽油'},{name:'柴油'},{name:'电油混合'},{name:'电动'},{name:'其他类型'}],
-				fuelIndex:0,
-				
+				doorList: [{
+					name: '2门'
+				}, {
+					name: '3门'
+				}, {
+					name: '4门'
+				}],
+				doorIndex: 0,
+				speedList: [{
+					name: '自动'
+				}, {
+					name: '手动'
+				}],
+				speedIndex: 0,
+				powerList: [{
+					name: '燃油'
+				}, {
+					name: '纯电动'
+				}, {
+					name: '混合电动'
+				}],
+				powerIndex: 0,
+				fuelList: [{
+					name: '汽油'
+				}, {
+					name: '柴油'
+				}, {
+					name: '电油混合'
+				}, {
+					name: '电动'
+				}, {
+					name: '其他类型'
+				}],
+				fuelIndex: 0,
+
 				// -----
-				
+
 				storeShow: false, //门店显示或者隐藏
 				list: [], //门店列表
 				storeName: '', //门店值
@@ -381,18 +416,19 @@
 				weekExternal: "", //周末价格
 				weekWithin: "", //周内价格
 				carId: '', //车型id
+				isLimited:'',//限时优惠1开 0关
 			}
 		},
 		computed: {
 			// 门店id
 			...mapState('user', ['shopId']),
 			...mapState('user', ['roles']),
-			        startDate() {
-			            return this.getDate('start');
-			        },
-			        endDate() {
-			            return this.getDate('end');
-			        }
+			startDate() {
+				return this.getDate('start');
+			},
+			endDate() {
+				return this.getDate('end');
+			}
 		},
 		watch: {
 			price(newVal) {
@@ -407,46 +443,50 @@
 		},
 		onLoad(e) {
 			this.getBrand()
-			this.getType()
+			this.getType() 
 			this.outputVolume()
 			this.getStore()
-			this.storeId = this.shopId
-			console.log(this.roles)
-
+			console.log(e)
+			
 			if (e.id != undefined) {
 				this.searchCarid(e.id)
-				this.carId = e.id
+				this.carId =e.id
+				this.storeId = e.memberShopId
 			} else {
-
+				this.storeId = this.shopId
 			}
 		},
-		mounted() {
-		            let inputEle = document.querySelector('.input input')    
-		            inputEle.addEventListener('blur',function(){    
-		                document.body.scrollIntoView()    
-		            })    
-		        },
+
 		methods: {
-			//获取时间
-			 getDate(type) {
-			            const date = new Date();
-			            let year = date.getFullYear();
-			            let month = date.getMonth() + 1;
-			            let day = date.getDate();
-			
-			            if (type === 'start') {
-			                year = year - 60;
-			            } else if (type === 'end') {
-			                year = year + 2;
-			            }
-			            month = month > 9 ? month : '0' + month;
-			            day = day > 9 ? day : '0' + day;
-			            // return `${year}-${month}-${day}`;
-						  return `${year}`;
+			//限时优惠
+			     switch1Change: function (e) {
+			            console.log('switch1 发生 change 事件，携带值为', e.target.value)
+						if(e.target.value){
+							this.isLimited=1 
+						}else{
+							this.isLimited=0
+						}  
 			        },
-					     bindDateChange: function(e) {
-					            this.date = e.target.value
-					        },
+			//获取时间
+			getDate(type) {
+				const date = new Date();
+				let year = date.getFullYear();
+				let month = date.getMonth() + 1;
+				let day = date.getDate();
+
+				if (type === 'start') {
+					year = year - 60;
+				} else if (type === 'end') {
+					year = year + 2;
+				}
+				month = month > 9 ? month : '0' + month;
+				day = day > 9 ? day : '0' + day;
+				// return `${year}-${month}-${day}`;
+				return `${year}`;
+			},
+			bindDateChange: function(e) {
+				this.date = e.target.value
+			},
 			//获取门店
 			async getStore() {
 				const [err, res] = await memberShopPageQuery()
@@ -477,6 +517,7 @@
 			},
 			//详情
 			async searchCarid(e) {
+				console.log(e)
 				const [err, res] = await searchCarid(e)
 				if (err) true
 				console.log(res)
@@ -493,6 +534,7 @@
 				this.seat = res.data.capacity
 				this.vehicleModel = res.data.name
 				this.model = res.data.model
+				
 				this.labelList = JSON.parse(res.data.labels)
 				this.cartypeImg = JSON.parse(res.data.vehicleModelFiles)
 				this.actualImg = JSON.parse(res.data.realPicturesFiles)
@@ -502,36 +544,36 @@
 				this.weekExternal = res.data.weekExternal
 				this.weekWithin = res.data.weekWithin
 				this.price = res.data.weekWithin
-				
-				
-	
-				
-				for(let i=0;i<this.doorList.length;i++){
-					if(this.doorList[i].name==res.data.doorsCount){
-						this.doorIndex=i
+
+
+
+
+				for (let i = 0; i < this.doorList.length; i++) {
+					if (this.doorList[i].name == res.data.doorsCount) {
+						this.doorIndex = i
 					}
 				}
-				
-				for(let q=0;q<this.speedList.length;q++){
-					if(this.speedList[q].name==res.data.gearboxType){
-						this.speedIndex=q
+
+				for (let q = 0; q < this.speedList.length; q++) {
+					if (this.speedList[q].name == res.data.gearboxType) {
+						this.speedIndex = q
 					}
 				}
-				
-				for(let w=0;w<this.powerList.length;w++){
-					if(this.powerList[w].name==res.data.powerType){
-						this.powerIndex=w
+
+				for (let w = 0; w < this.powerList.length; w++) {
+					if (this.powerList[w].name == res.data.powerType) {
+						this.powerIndex = w
 					}
 				}
-				
-				for(let r=0;r<this.fuelList.length;r++){
-					if(this.fuelList[r].name==res.data.fuelType){
-						this.fuelIndex=r
+
+				for (let r = 0; r < this.fuelList.length; r++) {
+					if (this.fuelList[r].name == res.data.fuelType) {
+						this.fuelIndex = r
 					}
 				}
-				
-				
-				
+
+
+
 			},
 			//品牌
 			async getBrand() {
@@ -566,7 +608,9 @@
 						if (err) return
 						console.log(rese)
 						if (e == 1) {
+							console.log(('pppp====='))
 							for (let i = 0; i < rese.length; i++) {
+								console.log(rese[i])
 								this.cartypeImg.push(rese[i])
 							}
 
@@ -578,12 +622,6 @@
 
 						}
 
-					},
-					fail() {
-						uni.showToast({
-							title: "拍照或引用相册失败",
-							duration: 2000
-						})
 					}
 				})
 			},
@@ -690,25 +728,25 @@
 				this.closeSelBox('displacement')
 			},
 			//选择门数
-			changedoor(e){
+			changedoor(e) {
 				console.log(e)
-				this.doorIndex=e.detail.value
+				this.doorIndex = e.detail.value
 			},
 			//选择变速箱类型
-			changespeed(e){
-				this.speedIndex=e.detail.value
+			changespeed(e) {
+				this.speedIndex = e.detail.value
 			},
-			
+
 			//选择动力类型
-			changepower(e){
-				this.powerIndex=e.detail.value
+			changepower(e) {
+				this.powerIndex = e.detail.value
 			},
-			
+
 			//选择燃油类型
-			changefuel(e){
-				this.fuelIndex=e.detail.value
+			changefuel(e) {
+				this.fuelIndex = e.detail.value
 			},
-			
+
 
 			// 添加标签弹窗关
 			close(e) {
@@ -725,46 +763,46 @@
 			},
 
 			async sure(e) {
-				if(this.brandId==""){
+				if (this.brandId == "") {
 					this.$toast("请选择品牌")
 					return false;
-				}else if(this.classesId==""){
+				} else if (this.classesId == "") {
 					this.$toast("请选择类别")
 					return false;
-				}else if(this.vehicleModel==""){
+				} else if (this.vehicleModel == "") {
 					this.$toast("请填写车型")
 					return false;
-				}else if(this.stall==""){
+				} else if (this.stall == "") {
 					this.$toast("请选择排挡")
 					return false;
-				}else if(this.seat==""){
+				} else if (this.seat == "") {
 					this.$toast("请选择座位数")
 					return false;
-				}else if(this.displacementId==""){
+				} else if (this.displacementId == "") {
 					this.$toast("请选择排量")
 					return false;
-				}else if(this.model==""){
+				} else if (this.model == "") {
 					this.$toast("请填写燃油型号")
 					return false;
-				}else if(this.cartypeImg==""){
+				} else if (this.cartypeImg == "") {
 					this.$toast("请上传车型图片")
 					return false;
-				}else if(this.actualImg==""){
+				} else if (this.actualImg == "") {
 					this.$toast("请上传实拍图片")
 					return false;
-				}else if(this.rentalMoney==""){
+				} else if (this.rentalMoney == "") {
 					this.$toast("请填写租车押金")
 					return false;
-				}else if(this.protectionMoney==""){
+				} else if (this.protectionMoney == "") {
 					this.$toast("请填写基本保障费")
 					return false;
-				}else if(this.breakRulesMoney==""){
+				} else if (this.breakRulesMoney == "") {
 					this.$toast("请填写违章押金")
 					return false;
-				}else if(this.weekExternal==""){
+				} else if (this.weekExternal == "") {
 					this.$toast("请填写周末价格")
 					return false;
-				}else if(this.weekWithin==""){
+				} else if (this.weekWithin == "") {
 					this.$toast("请填周内价格")
 					return false;
 				}
@@ -786,11 +824,12 @@
 						weekExternal: this.weekExternal,
 						weekWithin: this.weekWithin,
 						memberShopId: this.storeId,
-						vehicleYear:this.date,
-					doorsCount:this.doorList[this.doorIndex].name,
-					gearboxType:this.speedList[this.speedIndex].name,
-					powerType:this.powerList[this.powerIndex].name,
-					fuelType:this.fuelList[this.fuelIndex].name 
+						vehicleYear: this.date,
+						doorsCount: this.doorList[this.doorIndex].name,
+						gearboxType: this.speedList[this.speedIndex].name,
+						powerType: this.powerList[this.powerIndex].name,
+						fuelType: this.fuelList[this.fuelIndex].name,
+						isLimited:this.isLimited
 					}
 					const [err, res] = await insertVehicleModel(data)
 					if (err) return
@@ -817,11 +856,12 @@
 						weekExternal: this.weekExternal,
 						weekWithin: this.weekWithin,
 						memberShopId: this.storeId,
-						vehicleYear:this.date,
-						doorsCount:this.doorList[this.doorIndex].name,
-						gearboxType:this.speedList[this.speedIndex].name,
-						powerType:this.powerList[this.powerIndex].name,
-						fuelType:this.fuelList[this.fuelIndex].name 
+						vehicleYear: this.date,
+						doorsCount: this.doorList[this.doorIndex].name,
+						gearboxType: this.speedList[this.speedIndex].name,
+						powerType: this.powerList[this.powerIndex].name,
+						fuelType: this.fuelList[this.fuelIndex].name,
+						isLimited:this.isLimited
 					}
 					const [err, res] = await vehicleModelUpdate(data)
 					if (err) return
@@ -869,7 +909,7 @@
 
 				.caption {
 					@include font-set(28rpx, #000, 700);
-					
+
 				}
 
 				.info {

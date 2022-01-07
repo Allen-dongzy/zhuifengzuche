@@ -195,7 +195,7 @@
 			},
 			eidt() {
 				uni.navigateTo({
-					url: "./add?id=" + this.id
+					url: "./add?id=" + this.obj.id+'&memberShopId='+this.obj.memberShopId
 				})
 			},
 			lookMore() {

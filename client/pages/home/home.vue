@@ -5,14 +5,14 @@
 				:indicator-active-color="indicatorActiveColor">
 				<swiper-item class="flex flex-wrap swiperItem">
 					<view v-for="(item,index) in swiperIcon" :key="index" class="flex-center flex-direction iconPanel"
-						@click="toHomeLevel(item.url)">
+						@click="toHomeLevel(item.url,item.id)">
 						<image mode="aspectFill" style="height: 100rpx;width: 100rpx;" :src="$util.fileUrl(item.path)"
 							lazy-load></image>
 						<p>{{ item.text }}</p>
 					</view>
 				</swiper-item>
-				<!-- 				<swiper-item class="flex flex-wrap swiperItem">
-					<view v-for="(item,index) in swiperIcon" :key="index" class="flex-center flex-direction iconPanel">
+<!-- 				<swiper-item class="flex-wrap swiperItem">
+					<view v-for="(item,index) in swiperIcon2" :key="index" class="flex-center flex-direction iconPanel" @click="toHomeLevel(item.url)">
 						<image mode="aspectFill" :src="$util.fileUrl(item.path)" lazy-load></image>
 						<p>{{ item.text }}</p>
 					</view>
@@ -50,6 +50,9 @@
 							<image mode="aspectFill" :src="$util.fileUrl('/paid_label@2x.png')"></image>
 							<p>已支付</p>
 						</view>
+						<image v-if="item.orderSource==2" mode="aspectFill" style="width: 40rpx;height: 40rpx;margin-left: 20rpx;" src="../../static/img/aotu.png"></image>
+						<image v-if="item.orderSource==3" mode="aspectFill" style="width: 40rpx;height: 40rpx;margin-left: 20rpx;" src="../../static/img/feizhu.png"></image>
+						<image v-if="item.orderSource==4" mode="aspectFill" style="width: 40rpx;height: 40rpx;margin-left: 20rpx;" src="../../static/img/zuzuche.png"></image>
 					</view>
 					<p class="name">{{item.memberRealName}}</p>
 					<view class="flex price">
@@ -95,16 +98,20 @@
 							<image mode="aspectFill" :src="$util.fileUrl('/phone@2x.png')"></image>
 							<p>联系客户</p>
 						</view>
+						
+						
+						
+						<!-- //操作按钮 -->
 						<view class="flex">
 							<button :disabled="item.isCarTest==false" type="default" v-if="tabCheck==0"
 								class="flex-center btn"
 								@tap.stop="toHomeLevel1('/pages/home/goInspect?obj=',item)">出车检验</button>
 							<button type="default" :disabled="item.isVehicleCertificates==true" v-if="tabCheck==0"
 								class="flex-center btn" style="margin-left: 20rpx;"
-								@tap.stop="toHomeLevel1('/pages/home/deliverCar?type=1&obj=',item)">交付车辆</button>
+								@tap.stop="toHomeLevel2(item)">交付车辆</button>
 							<button type="default" v-if="tabCheck==1" class="flex-center btn"
 								@tap.stop="toHomeLevel1('/pages/home/deliverCar?type=2&obj=',item)">交车情况</button>
-							<button type="default" v-if="tabCheck==1" class="flex-center btn"
+							<button type="default" v-if="tabCheck==1 && item.orderStatus==5" class="flex-center btn"
 								style="margin-left: 20rpx;"
 								@tap.stop="toHomeLevel1('/pages/home/inspectionCollect?obj=',item)"
 								:disabled="item.isPaymentIllegalDeposit==1">检验收车</button>
@@ -130,6 +137,10 @@
 		getOrderPageList
 	} from '@/apis/rentalOrder';
 	import {
+		authority
+	} from '@/apis/admin';
+	
+	import {
 		refundOfIllegalDeposit
 	} from '@/apis/pay'
 
@@ -141,35 +152,50 @@
 				swiperIcon: [{
 					path: '/vehicle_management@2x.png',
 					text: '车辆管理',
-					url: '../fleetManage/fleetManage'
+					url: '../fleetManage/fleetManage',
+					id:6
 				}, {
 					path: '/model_set@2x.png',
 					text: '车型设置',
-					url: '../vehicleManage/manage'
+					url: '../vehicleManage/manage',
+					id:12
 				}, {
 					path: '/delivery_point_management@2x.png',
 					text: '送车点管理',
-					url: '../Delivery/carPoint'
+					url: '../Delivery/carPoint',
+					id:17
+					
 				}, {
 					path: '/store_management@2x.png',
 					text: '门店管理',
-					url: '../Store/store'
+					url: '../Store/store',
+					id:22
 				}, {
 					path: '/collection_payment_management@2x.png',
 					text: '收付款管理',
-					url: '../collectPay/collectPay'
+					url: '../collectPay/collectPay',
+					id:28
 				}, {
 					path: '/marketing_management@2x.png',
 					text: '营销管理',
-					url: '../Marketing/Marketing'
+					url: '../Marketing/Marketing',
+					id:32
 				}, {
 					path: '/customer_records@2x.png',
 					text: '客户记录',
-					url: '../customerRecords/customerRecords'
+					url: '../customerRecords/customerRecords',
+					id:35
 				}, {
 					path: '/risk_control_query@2x.png',
 					text: '风控查询',
-					url: '../risk/risk'
+					url: '../risk/risk',
+					id:''
+				}],
+				
+				swiperIcon2: [{
+					path: '/dingwei.png',
+					text: '车辆定位',
+					url: '../location/location'
 				}],
 				tabCheck: 0,
 				tabList: [],
@@ -279,13 +305,26 @@
 			radioChange(e) {
 				this.radio = e.detail.value
 			},
-			toHomeLevel(e, q) {
+			async toHomeLevel(e, q) {
 				console.log(e)
-				uni.navigateTo({
-					url: e,
-					animationType: 'pop-in',
-					animationDuration: 200
-				})
+				if(q==""){
+					uni.navigateTo({
+						url: e,
+						animationType: 'pop-in',
+						animationDuration: 200
+					})
+				}else{
+					let data={
+						parameter:q
+					}
+					const [err, res] = await authority(data)
+					if (err) return
+					uni.navigateTo({
+						url: e,
+						animationType: 'pop-in',
+						animationDuration: 200
+					})
+				}
 			},
 			toHomeLevel1(e, q) {
 				console.log(JSON.stringify(q))
@@ -302,7 +341,25 @@
 					animationDuration: 200
 				})
 			},
+			
+			toHomeLevel2(q){
+			
+				if(q.isCarTest==false){
+					let data = {
+						order: q.id,
+						carnum: q.vehicleNumber,
+						vehicleId: q.vehicleId
+					}
+					uni.navigateTo({
+						url: '/pages/home/deliverCar?type=1&obj='+ JSON.stringify(data),
+					})
+				}else{
+					this.$toast('请先出车检验')
+				}
+
+			},
 			lookinfo(e) {
+
 				uni.navigateTo({
 					url: './orderInfo?id=' + this.orderList[e].id + '&type=' + this.status,
 					animationDuration: 200,

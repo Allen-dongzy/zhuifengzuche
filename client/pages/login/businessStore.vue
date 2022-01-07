@@ -30,7 +30,7 @@
 			<view class="fromTitel">城市</view>
 			<picker class="pickerBox" @change="selectShi" :value="shiindex" :range="selectorObj" range-key="name">
 				<view  class="uni-input">{{shiindex!=-1?selectorObj[shiindex].name:'请选择城市'}}</view>
-			</picker>
+			</picker> 
 		
 			<view class="fromTitel">区域</view>
 			<picker class="pickerBox" @change="selectQu" :value="quindex" :range="selectorquObj" range-key="name">
@@ -88,7 +88,7 @@
 
 
 			<view class="fromTitel">车辆整备费</view>
-			<input class="inpBox" type="text" v-model="price" placeholder="请填写车辆整备费" />
+			<input class="inpBox" type="number" v-model="price" placeholder="请填写车辆整备费" />
 
 
 

@@ -35,9 +35,7 @@
 			<view class="flexBox" style="padding: 10rpx 0rpx 30rpx 0rpx;">
 				<view class="blackText" style="width: 79%;">{{item.name}}</view>
 				<view v-if="item.condition==0" class="ok">确认完好</view>
-
 				<view  v-else class="no" @click="okSome(index)">确认完好</view>
-				
 				<image style="width: 32rpx;height: 16rpx;margin-left: 10rpx;" :src="$util.fileUrl('/xiangshang.png')"
 					mode="aspectFill"></image>
 			</view>
@@ -70,7 +68,7 @@
 			<view class="blackText" style="width: 10%;">备注</view>
 			<view class="garyText">请添加备注&上传车辆其他的照片</view>
 		</view>
-		<textarea v-model="mark" placeholder="请输入备注信息"
+		<textarea :adjust-position="true" v-model="mark" placeholder="请输入备注信息"
 			style="padding: 20rpx;width: 90%;margin: auto;background-color: #EFF0F3;height:220rpx;border-radius: 20rpx;margin-top: 30rpx;" />
 
 		<view style="width: 90%;margin: auto;padding-bottom: 20rpx;border-bottom: 2rpx solid #EFF0F3;">
@@ -96,10 +94,10 @@
 				    height: 96rpx;line-height: 96rpx;" type="default" @click="sure()">完成</button>
 
 		<!-- 里程弹窗 -->
-		<view class="Mask" v-if="mileage==true"></view>
-		<view class="box1" v-if="mileage==true">
+		<view class="Mask" v-show="mileage==true"></view>
+		<view class="box1" v-show="mileage==true">
 			<view class="blackText">当前里程数</view>
-			<input  v-model="mileageNum" type="number" placeholder="请输入里程数"
+			<input type="number" v-model="mileageNum" placeholder="请输入里程数"
 				style="background-color: #EFF0F3;height:74rpx;width: 100%;border-radius: 10rpx;padding-left: 20rpx;margin-top: 20rpx;" />
 			<view class="flexBox" style="width: 100%;">
 				<view class="lanbox" @click="mileage=false">取消</view>
@@ -107,8 +105,8 @@
 			</view>
 		</view>
 		<!-- 油量弹窗 -->
-		<view class="Mask" v-if="Oil==true"></view>
-		<view class="box1" v-if="Oil==true">
+		<view class="Mask" v-show="Oil==true"></view>
+		<view class="box1" v-show="Oil==true">
 			<view class="blackText">当前油量</view>
 			<slider value="0" @change="sliderChange" backgroundColor="#EFF0F3" block-size="16"
 				:activeColor="sliderColor" step="0.5" min="0" max="10" show-value />
@@ -119,8 +117,8 @@
 		</view>
 
 		<!-- 损坏图片上传-->
-		<view class="Mask" v-if="imgshow==true"></view>
-		<view class="box1" v-if="imgshow==true">
+		<view class="Mask" v-show="imgshow==true"></view>
+		<view class="box1" v-show="imgshow==true">
 			<view class="blackText">请上传图片</view>
 			<image style="width:80%;height:350rpx;margin-left: 10%;margin-top: 30rpx;"
 				:src="$util.fileUrl('/guanxi.png')" mode="aspectFill" @click="updataImg(0)"></image>
@@ -132,8 +130,8 @@
 		</view>
 
 		<!--  查看损坏图片-->
-		<view class="Mask" v-if="imgshow1==true"></view>
-		<view class="box1" v-if="imgshow1==true">
+		<view class="Mask" v-show="imgshow1==true"></view>
+		<view class="box1" v-show="imgshow1==true">
 			<view class="blackText">查看图片</view>
 			<image style="width:80%;height:350rpx;margin-left: 10%;margin-top: 30rpx;" :src="badimgUrl" mode="aspectFill"></image>
 			<view class="flexBox" style="width: 100%;">
@@ -178,6 +176,12 @@
 			this.info = JSON.parse(e.obj)
 			this.getInfo()
 		},
+		mounted() {
+		            let inputEle = document.querySelector('.textarea textarea')    
+		            inputEle.addEventListener('blur',function(){    
+		                document.body.scrollIntoView()    
+		            })    
+		        },
 		methods: {
 			okSome(e){
 				this.goInspectInfo.goodsList[e].condition=0
@@ -282,7 +286,7 @@
 					},
 					fail() {
 						uni.showToast({
-							title: "",
+							title: "拍照或引用相册失败",
 							duration: 2000
 						})
 					}
@@ -310,9 +314,16 @@
 						if (this.goInspectInfo.goodsList[i].children[q].condition==null) {
 							this.$toast("请勾选车辆设备")
 							return false;
+						}else if(this.goInspectInfo.goodsList[i].children[q].condition==1){
+							if(this.goInspectInfo.goodsList[i].children[q].image==null){
+								this.$toast("损坏部位请上传图片")
+								return false;
+							}
 						}
 					}
 				}
+				
+		
 				
 				let mark = {
 					image: JSON.stringify(this.imgList),
@@ -464,6 +475,7 @@
 		height: 100vh;
 		width: 100%;
 		top: 0px;
+		z-index: 99;
 	}
 
 	.box1 {
@@ -473,6 +485,7 @@
 		background-color: white;
 		top: 30vh;
 		left: 10%;
+		z-index: 99;
 	}
 
 	.lanbox {
