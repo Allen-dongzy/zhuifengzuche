@@ -92,7 +92,7 @@ export default {
 		this.setSystemInfo()
 	},
 	methods: {
-		// app 设置用户信息
+		// app 设置系统信息
 		...mapActions('app', ['setSystemInfo']),
 		// user 获取用户信息
 		...mapActions('user', ['getUserInfo']),

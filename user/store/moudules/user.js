@@ -138,7 +138,7 @@ const user = {
 			commit('setUserInfo', vipRes.data)
 		}
 	},
-	getter: {
+	getters: {
 		// 获取用户信息
 		getUserInfo: (state) => {
 			return state
