@@ -506,11 +506,11 @@
 	"condition": { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式（list 的索引项）
 		"list": [{
-			"name": "wcy", // wcy
-			"path": "pages/login/businessStore" //启动页面，必选
+			"name": "商家注册",
+			"path": "pages/login/business" //启动页面，必选
 		}, {
-			"name": "dzy", // dzy
-			"path": "pages/Store/store" //启动页面，必选
+			"name": "商家编辑",
+			"path": "pages/Store/editStore" //启动页面，必选
 		}]
 	}
 }
