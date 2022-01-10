@@ -42,7 +42,7 @@
 	}, {
 		"path": "pages/home/selectCity",
 		"style": {
-			"nav igationBarTitleText": "选择城市"
+			"navigationBarTitleText": "选择城市"
 		}
 	}, {
 		"path": "pages/home/couponCenter",
@@ -329,7 +329,7 @@
 	}, {
 		"path": "pages/mine/vip",
 		"style": {
-			"navigationStyle":"custom",
+			"navigationStyle": "custom",
 			"mp-alipay": {
 				"transparentTitle": "always",
 				"titlePenetrate": "YES"
