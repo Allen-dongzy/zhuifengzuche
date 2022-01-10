@@ -61,7 +61,7 @@ export default {
 			areaList: [], // 区域列表
 			carAddressList: [], // 送/还车点列表
 			page: 1,
-			size: 10,
+			size: 20,
 			requestKey: true,
 			dataStatus: '', // more loading noMore noData
 			addressMode: '', // 地址模式

@@ -9,22 +9,24 @@
 					使用手机号注册登录
 					<view class="arrow right"></view>
 				</view>
-				<!-- #ifdef MP-WEIXIN -->
 				<view class="logo-box">
-					<view class="icon icon-bg"><image :src="`${ossUrl}/order/logo-label.png`" mode="aspectFill"></image></view>
-					<image class="small" :src="`${ossUrl}/common/associated.png`" mode="aspectFill"></image>
-					<image class="icon" :src="`${ossUrl}/common/wechat.png`" mode="aspectFill"></image>
+					<view class="icon icon-bg"><image src="/static/imgs/common/logo.png" mode="aspectFill"></image></view>
+					<view class="text">追风租车</view>
 				</view>
+				<!-- #ifdef MP-WEIXIN -->
 				<button class="platform-login-btn green" open-type="getPhoneNumber" @getphonenumber="wechatLogin">微信一键登录/注册</button>
 				<!-- #endif -->
 				<!-- #ifdef MP-ALIPAY -->
-				<view class="logo-box">
-					<view class="icon icon-bg"><image :src="`${ossUrl}/order/logo-label.png`" mode="aspectFill"></image></view>
-					<image class="small" :src="`${ossUrl}/common/associated.png`" mode="aspectFill"></image>
-					<image class="icon" :src="`${ossUrl}/common/alipay.png`" mode="aspectFill"></image>
-				</view>
 				<button class="platform-login-btn blue" open-type="getPhoneNumber" @getphonenumber="alipayLogin">支付宝一键登录/注册</button>
 				<!-- #endif -->
+				<view class="select-bar">
+					<image v-if="agreementType" class="select-btn" :src="`${ossUrl}/mine/quanxian1.png`" mode="aspectFill" @click="lookAgreement"></image>
+					<image v-else class="select-btn" :src="`${ossUrl}/mine/quanxian2.png`" mode="aspectFill" @click="lookAgreement"></image>
+					<view>
+						已阅读并同意追风租车的
+						<text style="color: #5A7EFF;" @click="$open('/pages/common/userAgreement')">《用户协议》</text>
+					</view>
+				</view>
 			</view>
 			<view v-if="cacheCode" :class="['phone-box', { ac: isPhoneLogin }]">
 				<view class="tip-text left" @click="isPhoneLogin = !isPhoneLogin">
@@ -143,6 +145,10 @@ export default {
 		}),
 		// 微信登录
 		wechatLogin: throttle(async function(e) {
+			if (!this.agreementType) {
+				this.$toast('请阅读并同意用户协议')
+				return
+			}
 			const params = {
 				encryptedData: e.detail.encryptedData,
 				iv: e.detail.iv,
@@ -154,6 +160,10 @@ export default {
 		}),
 		// 支付宝登录
 		alipayLogin: throttle(async function(e) {
+			if (!this.agreementType) {
+				this.$toast('请阅读并同意用户协议')
+				return
+			}
 			const [phoneErr, phoneRes] = await uni.getPhoneNumber()
 			if (phoneErr) return this.$toast(phoneErr)
 			const params = {
@@ -351,8 +361,8 @@ export default {
 			}
 
 			.logo-box {
-				@include flex-center;
-				margin: 80rpx auto;
+				@include flex-col();
+				margin: 20rpx auto 50rpx;
 				transform: translateY(20rpx);
 				opacity: 0;
 				transition: all 0.9s;
@@ -369,6 +379,12 @@ export default {
 							@include circle(110rpx);
 						}
 					}
+				}
+
+				.text {
+					@include flex-center;
+					@include font-set(36rpx, #666, 700);
+					margin-top: 10rpx;
 				}
 
 				.small {
@@ -423,8 +439,6 @@ export default {
 				border: 1px solid #5a7eff;
 				border-radius: 10px;
 				@include font-set(32rpx, #5a7eff, 700);
-
-				margin-top: 40rpx;
 				opacity: 0;
 				transition: all 0.9s;
 
@@ -442,7 +456,7 @@ export default {
 
 			.select-bar {
 				@include box-w();
-				@include flex-row();
+				@include flex-center;
 				font-size: 26rpx;
 				margin-top: 40rpx;
 				transform: translateY(-20rpx);
