@@ -121,7 +121,8 @@ const city = {
 		},
 		// 获取当前城市
 		async getCurrentCity({
-			commit
+			commit,
+			rootState 
 		}) {
 			const currentCity = storage.get('currentCity')
 			if (currentCity && Object.keys(currentCity).length > 0) {
@@ -129,7 +130,7 @@ const city = {
 				return
 			}
 			// 获取位置
-			const [locationErr, locationRes] = await getLocation()
+			const [locationErr, locationRes] = await getLocation(rootState.app.locationKey)
 			// 获取城市信息
 			const params = {
 				lat: locationRes.lat,

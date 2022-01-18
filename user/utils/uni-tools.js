@@ -341,18 +341,46 @@ const getPlatform = () => {
 }
 
 // 获取经纬度
-const getLocation = async () => {
+const getLocation = async (locationKey) => {
+	if (!locationKey) return
 	// 获取位置
 	const [locationErr, locationRes] = await uni.getLocation()
 	if (locationErr) {
+		// #ifdef MP-WEIXIN
+		if (locationErr.errMsg === 'getLocation:fail auth deny') {
+			toast('定位权限为关闭状态。')
+		} else if (locationErr.errMsg === 'getLocation:fail system permission denied') {
+			toast('请确认手机以及支付宝定位相关权限已开启。')
+			return [locationErr]
+		}
+		// #endif
+		// #ifdef MP-ALIPAY
+		if (locationErr.errMsg === 'getLocation:fail 用户不允许授权') {
+			toast('定位权限为关闭状态。')
+		} else if (locationErr.extErrorCode === 105) {
+			toast('请确认手机以及支付宝定位相关权限已开启。')
+			return [locationErr]
+		}
+		// #endif
 		const [err, res] = await uni.getSetting()
-		if (res.authSetting['scope.userLocation'] === false) {
+		let ifKey = null
+		// #ifdef MP-WEIXIN
+		ifKey = res.authSetting['scope.userLocation'] === false
+		// #endif
+		// #ifdef MP-ALIPAY
+		ifKey = res.authSetting['location'] === false
+		// #endif
+		if (ifKey) {
 			const [btnErr, btnRes] = await showModal({
 				content: '位置权限未打开，是否打开位置权限？'
 			})
-			if (btnRes === 'confirm') uni.openSetting()
-		} else {
-			toast(locationErr.errMsg)
+			if (btnRes === 'confirm') {
+				uni.openSetting()
+			} else {
+				showModal({
+					content: '若要使用定位服务，请点击右上方三个点进入设置，并允许使用位置信息。'
+				})
+			}
 		}
 		return [locationErr]
 	}

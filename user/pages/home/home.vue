@@ -8,7 +8,7 @@
 			</swiper>
 			<view v-else class="banner-empty"></view>
 		</uni-swiper-dot>
-		<car-rental-card from="home" class="card" @confirm="carRental"/>
+		<car-rental-card from="home" class="card" @confirm="carRental" />
 		<view v-if="couponNum > 0" class="notice-box" @click="$open('/pages/mine/coupon', { selectType: 'home' })">
 			<image class="notice-bg" :src="`${ossUrl}/home/notice.png`" mode="aspectFill"></image>
 			<view class="mask">
@@ -16,7 +16,7 @@
 				<image class="go" :src="`${ossUrl}/home/go.png`" mode="aspectFill"></image>
 			</view>
 		</view>
-		<view v-if="list.length>0" class="discounts-box">
+		<view v-if="list.length > 0" class="discounts-box">
 			<view class="title">
 				<view class="label"></view>
 				特惠租车
@@ -80,6 +80,7 @@ import NewbeeCouponModal from '@/components/newbee-coupon-modal/newbee-coupon-mo
 import { customerHomeBannerGetSpread } from '@/apis/customerHomeBanner'
 import { limitedTimeOffer } from '@/apis/vehicle'
 import { getLocation } from '@/utils/uni-tools'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
 	data() {
@@ -101,15 +102,29 @@ export default {
 			lng: 0, // 经度
 			lat: 0, // 纬度
 			list: [], // 特惠列表
+			firstLocationKey: true
 		}
+	},
+	computed: {
+		// app 请求定位开关
+		...mapState('app', ['locationKey'])
 	},
 	components: {
 		CarRentalCard,
 		NewbeeCouponModal
 	},
 	onLoad() {
+		this.firstLocationKey = false
+		setTimeout(() => {
+			this.firstLocationKey = true
+		}, 3000)
 		this.init('refresh')
 		this.eventListener()
+	},
+	async onShow() {
+		if (this.lng || this.lat || !this.firstLocationKey) return
+		await this.getSettingLocation()
+		this.limitedTimeOffer('refresh')
 	},
 	onPullDownRefresh() {
 		this.init()
@@ -118,19 +133,39 @@ export default {
 		}, 500)
 	},
 	methods: {
+		// app 设置请求定位开关
+		...mapMutations('app', ['setLocationKey']),
 		// 初始化
 		init(key) {
 			this.customerHomeBannerGetSpread()
 			this.limitedTimeOffer(key)
 			if (this.$storage.get('token')) this.loginAfterRequest()
 		},
+		// 获取设置
+		async getSettingLocation() {
+			const [err, res] = await uni.getSetting()
+			if (err) return
+			let locationSetting = null
+			// #ifdef MP-WEIXIN
+			locationSetting = res.authSetting['scope.userLocation']
+			// #endif
+			// #ifdef MP-ALIPAY
+			locationSetting = res.authSetting['location']
+			// #endif
+			this.setLocationKey(locationSetting)
+		},
 		// 根据经纬度获取特惠租车
 		async limitedTimeOffer(key) {
-			let locationErr = 0, locationRes = 0
+			let locationErr = 0,
+				locationRes = 0
 			// 获取位置
 			if (key === 'refresh') {
-				[locationErr, locationRes] = await getLocation()
-				if (locationErr) return
+				;[locationErr, locationRes] = await getLocation(this.locationKey)
+				if (locationErr) {
+					this.setLocationKey(false)
+					return
+				}
+				this.setLocationKey(true)
 				this.lng = locationRes.lng
 				this.lat = locationRes.lat
 			} else {
@@ -252,7 +287,7 @@ page {
 				border-radius: 20rpx;
 				margin-right: 20rpx;
 			}
-		} 
+		}
 		.list {
 			padding: 0 20rpx;
 			@include flex-wrap;
