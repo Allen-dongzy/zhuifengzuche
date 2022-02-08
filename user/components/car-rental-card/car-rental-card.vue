@@ -156,8 +156,8 @@ export default {
 		}
 	},
 	created() {
-		this.showTime()
 		this.eventListener()
+		this.showTime()
 	},
 	methods: {
 		// 初始化
@@ -179,10 +179,16 @@ export default {
 		// 显示默认时间
 		showTime() {
 			this.init()
-			this.$emit('changeTime', {
+			const params = {
 				takeCarTime: this.takeCarTime,
 				carAlsoTime: this.carAlsoTime
-			})
+			}
+			// #ifdef MP-WEIXIN
+			this.$emit('changeTime', params)
+			// #endif
+			// #ifdef MP-ALIPAY
+			uni.$emit('changeTime', params)
+			// #endif
 		},
 		// 选取城市
 		goSelectCity(cityMode) {
@@ -287,7 +293,7 @@ export default {
 				}, 500)
 				return
 			}
-			this.$emit('confirm', {
+			const params = {
 				info: {
 					takeCarDateShow: this.takeCarDateShow,
 					takeCarDayShow: this.takeCarDayShow,
@@ -302,7 +308,13 @@ export default {
 					carAlsoAddressId: Number(this.carAlsoAddress.id)
 				},
 				takeCarAddress: this.takeCarAddress
-			})
+			}
+			// #ifdef MP-WEIXIN
+			this.$emit('confirm', params)
+			// #endif
+			// #ifdef MP-ALIPAY
+			uni.$emit('confirm', params)
+			// #endif
 		},
 		// 事件监听
 		eventListener() {

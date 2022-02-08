@@ -64,6 +64,7 @@ export default {
 		if (e && e.deliveryId) this.deliveryId = e.deliveryId
 		if (e && e.vehicleModelId) this.vehicleModelId = e.vehicleModelId
 		this.carKey = true
+		this.eventListener()
 	},
 	methods: {
 		// 前往价格日历
@@ -121,6 +122,16 @@ export default {
 			this.$open('/pages/order/confirmOrder', {
 				...params.info,
 				carModelId: this.vehicleModelId
+			})
+		},
+		eventListener() {
+			// 立即租车
+			uni.$on('confirm', params => {
+				this.carRental(params)
+			})
+			// 立即租车
+			uni.$on('changeTime', params => {
+				this.timeHandler(params)
 			})
 		}
 	}

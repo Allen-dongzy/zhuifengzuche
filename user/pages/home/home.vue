@@ -214,6 +214,10 @@ export default {
 			uni.$on('appRefresh', () => {
 				this.init('refresh')
 			})
+			// 立即租车
+			uni.$on('confirm', params => {
+				this.carRental(params)
+			})
 		}
 	}
 }
