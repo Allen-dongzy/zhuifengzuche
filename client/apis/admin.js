@@ -211,4 +211,15 @@ export const employeelist = (data, loading = '等待中') => { //对接
 		loading
 	})
 }
+// 验证权限
+export const authority = (data, loading = '等待中') => { //对接
+	return request({
+		url: `admin/employee/authority`,
+		contentType: 'application/json',
+		method: 'POST',
+		data,
+		loading
+	})
+}
+
 

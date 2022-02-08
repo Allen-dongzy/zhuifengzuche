@@ -33,6 +33,9 @@
 			<view class="titleLeft">备注</view>
 			<view class="titleRight">{{info.remarks}}</view>
 		</view>
+		<view style="width: 90%;margin: auto;border-bottom: 2rpx solid #EFF0F3;">
+			<image v-for="(item,index) in info.image" style="width: 160rpx;height: 160rpx;display: inline-block;margin: 10rpx;" :src="item" mode="aspectFill"></image> 
+		</view>
 		<view class="garyLine"></view>
 		<view class="flexbox">
 			<view class="titleLeft">提交时间</view>

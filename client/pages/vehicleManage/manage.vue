@@ -103,9 +103,9 @@
 				modalName: '', // 模态框名称
 				list: [], //数据列表
 				page: 1, //页码
-				size: 10, //数量
+				size: 20, //数量
 				brandId: '', //品牌Id
-				seatId: '', //座位Id
+				seatId: '', //座位Id 
 				stallId: '', //排挡Id
 				brandList: [], //品牌数组
 				seatList: [{
@@ -141,6 +141,8 @@
 
 		},
 		onShow() {
+			this.page=1
+			this.size=20
 			this.list=[]
 			this.getlist()
 			this.getBrand()
@@ -190,15 +192,15 @@
 
 			},
 			//下拉刷新
-			// onPullDownRefresh() {
-			// 	this.page = 1
-			// 	this.size = 10
-			// 	this.list = []
-			// 	this.getlist()
-			// 	setTimeout(function() {
-			// 		uni.stopPullDownRefresh();
-			// 	}, 1000);
-			// }, 
+			onPullDownRefresh() {
+				this.page = 1
+				this.size = 10
+				this.list = []
+				this.getlist()
+				setTimeout(function() {
+					uni.stopPullDownRefresh();
+				}, 1000);
+			}, 
 			// 上拉加载
 			onReachBottom(e) {
 				this.page = this.page + 1;
@@ -297,7 +299,7 @@
 		.home-bar,
 		.search-bar {
 			position: fixed;
-			@include box(100%, 90rpx);
+			@include box(100%, 90rpx, #fff);
 			@include flex-row(space-between);
 			padding: 0 32rpx;
 

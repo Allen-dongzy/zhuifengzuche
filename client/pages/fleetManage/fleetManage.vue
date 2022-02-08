@@ -27,7 +27,7 @@
 				</view>
 				<p class="text">{{item.brandName}}丨{{item.gears}} {{item.capacity}}座 {{item.outputVolumeName}}</p>
 				<view class="flex detail">
-					<p class="oil" v-if="item.oil!=null">油量：62%</p>
+					<p class="oil" v-if="item.oil!=null">油量：{{item.oil*10}}%</p>
 					<p class="car">车龄：{{item.carAge}}</p>
 				</view>
 				<view v-if="item.vehicleStatus==3" class="flex-center line">
@@ -100,6 +100,9 @@
 	import {
 		vehicleCategoryQueryAll
 	} from '@/apis/vehicleCategory'
+	import {
+		authority
+	} from '@/apis/admin';
 	export default {
 		data() {
 			return {
@@ -274,14 +277,25 @@
 					animationType: 'pop-in'
 				})
 			},
-			add() {
+			async add() {
+			let data={
+				parameter:8
+			}
+			const [err,res] = await authority(data)
+			if (err) return
 				uni.navigateTo({
 					url: './addCar',
 					animationDuration: 200,
 					animationType: 'pop-in'
 				})
 			},
-			plan() {
+			async plan(){
+				let data={
+					parameter:10
+				}
+				const [err,res] = await authority(data)
+				if (err) return
+				
 				uni.navigateTo({
 					url: './hirePlan',
 					animationDuration: 200,

@@ -61,14 +61,15 @@ export default {
 			areaList: [], // 区域列表
 			carAddressList: [], // 送/还车点列表
 			page: 1,
-			size: 10,
+			size: 20,
 			requestKey: true,
 			dataStatus: '', // more loading noMore noData
 			addressMode: '', // 地址模式
 			acIndex: 0, // 活动项
 			searchKey: false, // 搜索开关
 			searchHeight: 0, // 搜索框高度
-			keyword: '' // 关键字
+			keyword: '' ,// 关键字
+			from: '' // 来自哪个页面
 		}
 	},
 	components: {
@@ -96,8 +97,9 @@ export default {
 		}
 	},
 	onLoad(e) {
-		this.addressMode = e.addressMode
-		this.city = JSON.parse(e.city)
+		if (e && e.addressMode) this.addressMode = e.addressMode
+		if (e && e.from) this.from = e.from
+		if (e && e.city) this.city = JSON.parse(e.city)
 		this.regionCityFindDeliveryArea()
 	},
 	mounted() {
@@ -202,7 +204,8 @@ export default {
 				lat: this.carAddressList[index].lat,
 				lon: this.carAddressList[index].lon,
 				cacheAddressMode: this.addressMode,
-				cacheAddress: JSON.stringify(this.carAddressList[index])
+				cacheAddress: JSON.stringify(this.carAddressList[index]),
+				from: this.from
 			})
 		}
 	}

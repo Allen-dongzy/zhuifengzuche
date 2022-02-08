@@ -38,14 +38,14 @@
 			<view class="contentFlex">
 				<view class="blueLine"></view>
 				<view class="title" style="width: 72%;">{{item.title}}</view>
-				<image style="height: 32rpx;width: 32rpx;" v-if="item.stuse==1" :src="$util.fileUrl('/quanxian1.png')"
-					@click="setlook1" mode="aspectFill"></image>
+				<image style="height: 32rpx;width: 32rpx;" v-if="item.hasAuthorize==1" :src="$util.fileUrl('/quanxian1.png')"
+					@click="setlook1(item.id)" mode="aspectFill"></image>
 				<image style="height: 32rpx;width: 32rpx;" v-else :src="$util.fileUrl('/quanxian2.png')"
-					@click="setlook1" mode="aspectFill"></image>
+					@click="setlook1(item.id)" mode="aspectFill"></image>
 				<view class="title" style="width: 10%;">查看</view>
 			</view>
 			<view style="width: 100%;padding: 30rpx 0rpx">
-				<view v-for="(itemy,indexy) in item.children" :key="indexy"
+				<view v-for="(itemy,indexy) in item.childrenList" :key="indexy"
 					style="display: inline-block;width: 33%;text-align: center;padding: 5rpx 0rpx;">
 					<view style="display: flex;align-items: center;">
 						<image style="height: 32rpx;width: 32rpx;" v-if="itemy.hasAuthorize==true"
@@ -120,8 +120,8 @@
 			},
 			clear(){
 				for (let i = 0; i < this.list.length; i++) {
-					for (let q = 0; q < this.list[i].children.length; q++) {
-						this.list[i].children[q].hasAuthorize=false
+					for (let q = 0; q < this.list[i].childrenList.length; q++) {
+						this.list[i].childrenList[q].hasAuthorize=false
 					}
 				}
 				this.name=""
@@ -129,25 +129,43 @@
 			},
 			selectIndex(e) {
 				for (let i = 0; i < this.list.length; i++) {
-					for (let q = 0; q < this.list[i].children.length; q++) {
-						if (e == this.list[i].children[q].id) {
-							if (this.list[i].children[q].hasAuthorize == false) {
-								this.list[i].children[q].hasAuthorize = true
+					for (let q = 0; q < this.list[i].childrenList.length; q++) {
+						if (e == this.list[i].childrenList[q].id) {
+							if (this.list[i].childrenList[q].hasAuthorize == false) {
+								this.list[i].childrenList[q].hasAuthorize = true
 							} else {
-								this.list[i].children[q].hasAuthorize = false
+								this.list[i].childrenList[q].hasAuthorize = false
 							}
 						} else {
 			
 						}
 					}
 				}
-			
+			},
+			setlook1(e){
+				console.log(e)
+				for (let i = 0; i < this.list.length; i++) {
+					console.log(this.list[i].id)
+						if (e == this.list[i].id) {
+							if (this.list[i].hasAuthorize == false) {
+								this.list[i].hasAuthorize = true
+							} else {
+								this.list[i].hasAuthorize = false
+							}
+						} else {
+							
+						}
+					
+				}
 			},
 			async	sure() {
 					for (let i = 0; i < this.list.length; i++) {
-						for (let q = 0; q < this.list[i].children.length; q++) {
-							if (this.list[i].children[q].hasAuthorize == true) {
-								this.selectId.push(this.list[i].children[q].id)
+						if (this.list[i].hasAuthorize == true) {
+							this.selectId.push(this.list[i].id)
+						}
+						for (let q = 0; q < this.list[i].childrenList.length; q++) {
+							if (this.list[i].childrenList[q].hasAuthorize == true) {
+								this.selectId.push(this.list[i].childrenList[q].id)
 							}
 						}
 					}

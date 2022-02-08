@@ -87,7 +87,7 @@ const setRquestHeader = params => {
 
 // 设置请求体信息
 const setRquestData = params => {
-	// 空参数处理
+	// 请求值对象非空判断
 	if (params.data === '' || params.data === null || params.data === undefined) params.data = {}
 	return params
 }

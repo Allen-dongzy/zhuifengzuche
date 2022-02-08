@@ -125,7 +125,8 @@
 			},
 			endTime: function(e) {
 				this.log1=true
-				this.enddate = e.target.value+' 00:00:00'
+				console.log(e)
+				this.enddate = e.target.value.replace(/\//g,'-')+' 00:00:00'
 			},
 			getDate(type) {
 				const date = new Date();

@@ -93,7 +93,7 @@
 					name: '预定',
 					stuse: 1
 				}, {
-					name: '租凭中',
+					name: '租赁中',
 					stuse: 2
 				}, {
 					name: '预留中',

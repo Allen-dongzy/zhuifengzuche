@@ -10,7 +10,7 @@
 						<text>搜索</text>
 						<image :src="`${filePath}/vehicleManage/search.png`"></image>
 					</view>
-				</view>
+				</view> 
 			</view>
 			<view class="search-bar" v-if="searchMode">
 				<view class="serach-box">

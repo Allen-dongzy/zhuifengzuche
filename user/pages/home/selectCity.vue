@@ -44,12 +44,13 @@
 						<view class="title-wrapp">
 							<view class="title"><text class="l">当前城市</text></view>
 						</view>
-						<view class="ul">
+						<view class="ul" v-if="Object.keys(currentCity).length > 0">
 							<view class="li current" @click="selectCity(currentCity)">
 								<image class="icon" :src="`${ossUrl}/common/location.png`"></image>
 								{{ currentCity.name || '' }}
 							</view>
 						</view>
+						<view class="tip" v-else>未获取到定位信息，请先打开定位</view>
 					</view>
 
 					<!-- 热门城市 -->
@@ -117,7 +118,8 @@ export default {
 			letterDetails: [],
 			currentLetter: 'area', //默认选择hot
 			cityInfo: {}, // 传来的城市信息对象
-			cityMode: '' // 选择城市的模式
+			cityMode: '', // 选择城市的模式
+			from: '' // 来自哪个页面
 		}
 	},
 	computed: {
@@ -161,6 +163,7 @@ export default {
 	},
 	onLoad(e) {
 		if (e && e.cityMode) this.cityMode = e.cityMode
+		if (e && e.from) this.from = e.from
 		// 城市
 		this.getHotCity()
 		this.getAllCity()
@@ -215,7 +218,8 @@ export default {
 		selectCity(item) {
 			uni.$emit('checkCity', {
 				cityMode: this.cityMode,
-				city: JSON.stringify(item)
+				city: JSON.stringify(item),
+				from: this.from
 			})
 			this.$close()
 		},
@@ -416,6 +420,12 @@ export default {
 		top: 0;
 		left: 0;
 		background: #fff;
+	}
+	
+	.tip {
+		font-size: 24rpx;
+		color: #666;
+		line-height: 40rpx;
 	}
 
 	.title {

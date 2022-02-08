@@ -68,12 +68,12 @@ export default {
 			}
 			const [err, res] = await getCodeByWxCode(params)
 			if (err) return
-			
+
 			// #ifdef MP-WEIXIN
 			this.payerUid = res.data.openid
 			this.paymentPrecreate()
 			// #endif
-			
+
 			// #ifdef MP-ALIPAY
 			this.payerUid = res.data.user_id
 			this.paymentAliPayFrozenMoney()
@@ -97,7 +97,9 @@ export default {
 			}
 			const [err, res] = await paymentPrecreate(params)
 			if (err) {
+				// #ifdef MP-ALIPAY
 				this.paymentCancelPay()
+				// #endif
 				return
 			}
 			this.pay(res.data.wapPayRequest)
@@ -115,8 +117,15 @@ export default {
 			}
 			const [err, res] = await uni.requestPayment(params)
 			if (err || (res && res.resultCode === '6001')) {
+				// #ifdef MP-WEIXIN
 				this.$toast('用户取消支付')
+				setTimeout(() => {
+					this.$open('/pages/order/order', 3)
+				}, 500)
+				// #endif
+				// #ifdef MP-ALIPAY
 				this.paymentCancelPay()
+				// #endif
 				return
 			}
 			this.$toast('租车成功！')
@@ -170,6 +179,9 @@ export default {
 			const [err, res] = await paymentCancelPay(params)
 			if (err) return
 			this.$toast('支付失败！')
+			setTimeout(() => {
+				this.$open('/pages/order/order', 3)
+			}, 500)
 		},
 		// 支付宝-免押冻结回调
 		async paymentAliPayCallback(info) {
@@ -186,7 +198,11 @@ export default {
 			const [err, res] = await paymentAliPayCallback(params)
 			if (err) return
 			this.$toast('押金免押成功！')
-			this.paymentPrecreate()
+			// this.paymentPrecreate()
+			uni.$emit('orderRefresh')
+			setTimeout(() => {
+				this.$open('/pages/order/order', 3)
+			}, 500)
 		}
 	}
 }

@@ -50,10 +50,26 @@ export default {
 			couponList: []
 		}
 	},
+	props: {
+		// 类型
+		type: {
+			type: Number,
+			default: 1
+		},
+		// 金额
+		price: {
+			type: Number,
+			default: null
+		}
+	},
 	methods: {
 		// 获取新人优惠券
 		async findNewCoupon() {
-			const [err, res] = await findNewCoupon()
+			const params = {
+				type: this.type
+			}
+			if (this.price) params.price = this.price
+			const [err, res] = await findNewCoupon(params)
 			if (err) return
 			this.couponList = res.data.list
 			if (res.data.count > 0) this.openCouponPopup()

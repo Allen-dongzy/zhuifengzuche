@@ -156,12 +156,22 @@ const throttle = (callback, delay = 1000) => {
 	}
 }
 
-// 对象字典排序
+// 对象键字典排序
 const objKeySort = (obj) => {
 	const objKeys = Object.keys(obj).sort()
 	const newObj = {}
-	for (let i=0; i<objKeys.length; i++) {
+	for (let i = 0; i < objKeys.length; i++) {
 		newObj[objKeys[i]] = obj[objKeys[i]]
+	}
+	return newObj
+}
+
+// 对象属性值去空
+const objValueRemoveEmpty = (obj) => {
+	const objKeys = Object.keys(obj)
+	const newObj = {}
+	for (let i = 0; i < objKeys.length; i++) {
+		if (obj[objKeys[i]] || obj[objKeys[i]] === 0) newObj[objKeys[i]] = obj[objKeys[i]]
 	}
 	return newObj
 }
@@ -177,5 +187,6 @@ export {
 	setClipboard, // 写入文本到粘贴板
 	debounce, // 防抖
 	throttle, // 节流
-	objKeySort // 对象字典排序
+	objKeySort, // 对象字典排序
+	objValueRemoveEmpty // 对象属性值去空
 }

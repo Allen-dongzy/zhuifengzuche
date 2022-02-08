@@ -80,7 +80,7 @@
 				const [err, res] = await shopEvaluateAdd(params)
 				if (err) return
 				this.$toast('评价成功')
-				uni.$emit(`${this.from}Refresh`)
+				uni.$emit(`${this.from}Refresh`, {mode: 'modal', type: 3})
 				setTimeout(() => {
 					this.$close()
 				}, 500)

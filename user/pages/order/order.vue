@@ -17,6 +17,7 @@
 				已取消
 				<view :class="['underline', { ac: acTab === 3 }]"></view>
 			</view>
+			<!-- <view :class="['action-line', { ac: acTab === 1 }, { acc: key === 2}, { accc: key === 3}]"></view> -->
 		</view>
 		<view class="header-mat"></view>
 		<view class="list">
@@ -115,12 +116,14 @@
 			</view>
 		</view>
 		<load-more :status="dataStatus" info="暂无订单" />
+		<newbee-coupon-modal :type="type" ref="newbeeCoupon" />
 	</view>
 </template>
 
 <script>
 import storage from '@/utils/storage'
 import LoadMore from '@/components/load-more/load-more'
+import NewbeeCouponModal from '@/components/newbee-coupon-modal/newbee-coupon-modal'
 import { rentalOrderPageQuery, rentalOrderRenewCarRentalPriceCheck } from '@/apis/rentalOrder'
 import { listManager, showModal } from '@/utils/uni-tools'
 import { throttle } from '@/utils/tools'
@@ -138,11 +141,14 @@ export default {
 			reqeuestKey: true,
 			list: [],
 			touchIndex: null,
-			payerUid: '' // 平台
+			payerUid: '', // 平台
+			type: null ,// 优惠券类型
+			key: 1
 		}
 	},
 	components: {
-		LoadMore
+		LoadMore,
+		NewbeeCouponModal
 	},
 	filters: {
 		// 车状态显示
@@ -224,6 +230,14 @@ export default {
 		taptab(index) {
 			if (this.acTab === index) return
 			this.acTab = index
+			// setTimeout(() => {
+			// 	this.key = 2
+			// }, 500)
+			// setTimeout(() => {
+			// 	this.key = 3
+			// }, 501)
+			
+			if (!storage.get('token')) return
 			this.init()
 			this.getorderList()
 		},
@@ -301,7 +315,9 @@ export default {
 			}
 			const [err, res] = await paymentPrecreate(params)
 			if (err) {
+				// #ifdef MP-ALIPAY
 				this.paymentCancelPay()
+				// #endif
 				return
 			}
 			this.pay(res.data.wapPayRequest)
@@ -320,7 +336,9 @@ export default {
 			const [err, res] = await uni.requestPayment(params)
 			if (err || (res && res.resultCode === '6001')) {
 				this.$toast('用户取消支付')
+				// #ifdef MP-ALIPAY
 				this.paymentCancelPay()
+				// #endif
 				return
 			}
 			this.$toast('租车成功！')
@@ -422,9 +440,13 @@ export default {
 		// 监听事件
 		eventListener() {
 			// 订单刷新
-			uni.$on('orderRefresh', () => {
+			uni.$on('orderRefresh', e => {
 				this.init()
 				this.getorderList()
+				if (e.mode === 'modal') {
+					this.type = e.type
+					this.$refs.newbeeCoupon.findNewCoupon()
+				}
 			})
 			// app刷新
 			uni.$on('appRefresh', () => {
@@ -440,6 +462,23 @@ export default {
 @import '@/static/scss/_mixin.scss';
 
 .order {
+	@keyframes mymove
+	{
+		0% {
+			width: 40rpx;
+		}
+		49% {
+			width: 228rpx;
+		}
+		50% {
+			right: 262rpx;
+			width: 228rpx;
+		}
+		100% {
+			left: 262rpx;
+			width: 40rpx;
+		}
+	}
 	.header {
 		position: fixed;
 		z-index: 9999;
@@ -447,7 +486,7 @@ export default {
 		@include flex-row();
 
 		.item {
-			@include box(25%, 100%);
+			@include box(188rpx, 100%);
 			@include flex-col();
 			@include font-set(28rpx, #999);
 			line-height: 40rpx;
@@ -465,6 +504,17 @@ export default {
 
 			&.ac {
 				color: #5a7eff;
+			}
+		}
+		
+		.action-line {
+			position: absolute;
+			left: 74rpx;
+			top: 80rpx;
+			@include box(40rpx, 8rpx, #5a7eff);
+			
+			&.ac {
+				animation: mymove 1s;
 			}
 		}
 	}

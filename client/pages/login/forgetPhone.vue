@@ -32,7 +32,7 @@
 				</view>
 				
 				<view style="width: 90%;" v-if="showpass==true">
-					<input type="tetx" v-model="password1" placeholder="请输入密码" class="inpBox" style="width: 95%;" />
+					<input type="text" v-model="password1" placeholder="请输入密码" class="inpBox" style="width: 95%;" />
 				</view>
 
 				<image v-if="showpass==true" style="height: 40rpx;width: 40rpx;" :src="$util.fileUrl('/guan.png')"
@@ -52,7 +52,7 @@
 				</view>
 				
 				<view style="width: 90%;" v-if="showpass1==true">
-					<input type="tetx" v-model="password2" placeholder="请确认密码" class="inpBox" style="width: 95%;" />
+					<input type="text" v-model="password2" placeholder="请确认密码" class="inpBox" style="width: 95%;" />
 				</view>
 				
 				

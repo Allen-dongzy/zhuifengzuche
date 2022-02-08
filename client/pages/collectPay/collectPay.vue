@@ -119,6 +119,7 @@
 			}
 		},
 		onLoad() {
+
 			// this.receiptPaymentPageQuery()
 		},
 		onShow() {

@@ -1,6 +1,7 @@
 import storage from '@/utils/storage'
 import {
-	ssoInfo
+	ssoInfo,
+	getUserVipLevelInfo
 } from '@/apis/sso'
 
 const user = {
@@ -23,6 +24,10 @@ const user = {
 		phone: '', // 手机号
 		realName: '', // 真实姓名
 		username: '', // 用户名
+		currentAmount: 0, // 当前成长值
+		grade: {}, // 当前等级信息
+		nextGrade: {}, // 下一等级信息
+		userId: 0 // 用户id
 	},
 	mutations: {
 		// 设置用户信息
@@ -44,7 +49,11 @@ const user = {
 				nickname,
 				phone,
 				realName,
-				username
+				username,
+				currentAmount,
+				grade,
+				nextGrade,
+				userId
 			} = info
 			if (aliId) state.aliId = aliId
 			if (birthday) state.birthday = birthday
@@ -63,6 +72,10 @@ const user = {
 			if (phone) state.phone = phone
 			if (realName) state.realName = realName
 			if (username) state.username = username
+			if (currentAmount) state.currentAmount = currentAmount
+			if (grade) state.grade = grade
+			if (nextGrade) state.nextGrade = nextGrade
+			if (userId) state.userId = userId
 			Object.keys(info).forEach(key => {
 				storage.set(key, info[key], 'userinfo')
 			})
@@ -86,13 +99,18 @@ const user = {
 			state.phone = ''
 			state.realName = ''
 			state.username = ''
+			state.currentAmount = 0
+			state.grade = {}
+			state.nextGrade = {}
+			state.userId = 0
 			storage.remove('userinfo')
 		}
 	},
 	actions: {
 		// 获取用户信息
 		async getUserInfo({
-			commit
+			commit,
+			dispatch
 		}, action = '') {
 			if (!storage.get('token')) return
 			const userinfo = storage.get('userinfo')
@@ -100,12 +118,27 @@ const user = {
 				commit('setUserInfo', userinfo)
 				return
 			}
+			dispatch('getSsoInfo')
+			dispatch('getUserVipLevelInfo')
+		},
+		// 获取身份信息
+		async getSsoInfo({
+			commit
+		}, action = '') {
 			const [err, res] = await ssoInfo()
 			if (err) return
 			commit('setUserInfo', res.data)
+		},
+		// 获取会员信息
+		async getUserVipLevelInfo({
+			commit
+		}, action = '') {
+			const [vipErr, vipRes] = await getUserVipLevelInfo()
+			if (vipErr) return
+			commit('setUserInfo', vipRes.data)
 		}
 	},
-	getter: {
+	getters: {
 		// 获取用户信息
 		getUserInfo: (state) => {
 			return state

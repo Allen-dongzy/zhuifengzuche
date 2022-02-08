@@ -44,7 +44,8 @@
 							title: '更新',
 							content: '新版本已经准备好，是否重启应用？'
 						})
-						if (res === 0) updateManager.applyUpdate()
+						if (err) return 
+						updateManager.applyUpdate()
 					})
 					// 下载失败
 					updateManager.onUpdateFailed(() => {

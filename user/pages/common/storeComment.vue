@@ -75,7 +75,7 @@
 			init() {
 				this.page = 1
 				this.requestKey = true
-				this.lsit = []
+				this.list = []
 			},
 			// 请求列表
 			async shopEvaluatePageQueryById(refresh) {

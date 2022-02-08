@@ -11,6 +11,7 @@ const app = {
 		windowHeight: 0, // 页面窗口高度
 		screenHeight: 0, // 手机屏幕高度
 		platform: null, // 平台
+		locationKey: true // 请求定位开关
 	},
 	mutations: {
 		// 设置系统信息
@@ -30,6 +31,10 @@ const app = {
 		// 设置平台
 		setPlatform(state) {
 			state.platform = getPlatform()
+		},
+		// 设置请求定位开关 
+		setLocationKey(state, isLocationKey) {
+			state.locationKey = isLocationKey
 		}
 	},
 	actions: {
