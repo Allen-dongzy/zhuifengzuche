@@ -5,7 +5,6 @@ let config = {
 	releaseHost: 'https://zctest.zdkj1.cn', // 测试域名 
 	developHost: 'http://192.168.2.124:8201', // 开发域名
 	apiKeyword: 'lots-admin', // 接口代理关键字
-	// http://test.frp.hechieh.com
 }
 
 // 设置域名
