@@ -345,6 +345,7 @@ export default {
 						const [err, ress] = await cancelOrder(this.info.id)
 						if (err) return
 						this.$toast('取消成功')
+						this.$close()
 					}
 				}
 			})

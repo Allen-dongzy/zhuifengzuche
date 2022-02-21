@@ -1,17 +1,17 @@
 {
 	"pages": [
-		
+
 		{
 			"path": "pages/home/home",
 			"style": {
 				"navigationBarTitleText": "首页",
-				"enablePullDownRefresh":true
-			} 
-		},{
+				"enablePullDownRefresh": true
+			}
+		}, {
 			"path": "pages/Store/addmenmian",
 			"style": {
 				"navigationBarTitleText": "新增门面"
-			} 
+			}
 		},
 		{
 			"path": "pages/vehicleManage/add",
@@ -19,72 +19,61 @@
 				"navigationBarTitleText": "车型设置"
 			}
 		},
-
-		
-		
-	
 		{
 			"path": "pages/location/locationInfo",
 			"style": {
 				"navigationBarTitleText": "车辆定位详情",
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
-		},{
+		}, {
 			"path": "pages/location/location",
 			"style": {
 				"navigationBarTitleText": "车辆定位",
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
-		},{
+		}, {
 			"path": "pages/Marketing/setDiscount",
 			"style": {
 				"navigationBarTitleText": "限时优惠管理",
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
-		},{
+		}, {
 			"path": "pages/Marketing/discount",
 			"style": {
 				"navigationBarTitleText": "限时优惠管理",
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
-		},{
+		}, {
 			"path": "pages/Marketing/give",
 			"style": {
 				"navigationBarTitleText": "租几送几",
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
-		},{
+		}, {
 			"path": "pages/Marketing/addCoupon",
 			"style": {
 				"navigationBarTitleText": "优惠券设置",
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
-		},{
+		}, {
 			"path": "pages/Marketing/coupon",
 			"style": {
 				"navigationBarTitleText": "优惠券",
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
-		},{
+		}, {
 			"path": "pages/Marketing/couponInfo",
 			"style": {
 				"navigationBarTitleText": "优惠券详情",
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
-		},{
+		}, {
 			"path": "pages/Marketing/giveEdit",
 			"style": {
 				"navigationBarTitleText": "租几送几修改",
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
-		
-		
-		
-		
-		
-		
-
 		{
 			"path": "pages/home/goInspect",
 			"style": {
@@ -95,7 +84,7 @@
 			"style": {
 				"navigationBarTitleText": "商家注册-证件"
 			}
-		},{
+		}, {
 			"path": "pages/customerRecords/addCustomer",
 			"style": {
 				"navigationBarTitleText": "客户记录"
@@ -159,7 +148,7 @@
 				"navigationBarTitleText": "交付车辆"
 			}
 		},
-		
+
 		{
 			"path": "pages/home/changeCar",
 			"style": {
@@ -253,7 +242,7 @@
 		{
 			"path": "pages/Store/addstaff",
 			"style": {
-				"navigationBarTitleText": "员工详情管理" 
+				"navigationBarTitleText": "员工详情管理"
 			}
 		},
 		{
@@ -302,9 +291,9 @@
 			"path": "pages/Delivery/carPoint",
 			"style": {
 				"navigationBarTitleText": "送车点管理",
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
-			
+
 		},
 		{
 			"path": "pages/user/user",
@@ -353,7 +342,7 @@
 			"path": "pages/fleetManage/fleetManage",
 			"style": {
 				"navigationBarTitleText": "车辆管理",
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -374,7 +363,7 @@
 				"navigationBarTitleText": "登录注册-门店信息"
 			}
 		},
-	
+
 		{
 			"path": "pages/login/business",
 			"style": {
@@ -415,7 +404,7 @@
 			"path": "pages/vehicleManage/manage",
 			"style": {
 				"navigationBarTitleText": "车型管理",
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -441,7 +430,7 @@
 			"style": {
 				"navigationBarTitleText": "收车详情"
 			}
-		},{
+		}, {
 			"path": "pages/home/contract",
 			"style": {
 				"navigationBarTitleText": "租车合同"
@@ -471,6 +460,24 @@
 			"style": {
 				"navigationBarTitleText": "差价明细"
 			}
+		}, {
+			"path": "pages/home/offlineOrder",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+
+		}, {
+			"path": "pages/home/freeManage",
+			"style": {
+				"navigationBarTitleText": "免押管理"
+			}
+
+		}, {
+			"path": "pages/home/charge",
+			"style": {
+				"navigationBarTitleText": "扣款"
+			}
+
 		}
 	],
 	"globalStyle": {
@@ -506,8 +513,8 @@
 	"condition": { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式（list 的索引项）
 		"list": [{
-			"name": "商家注册",
-			"path": "pages/login/business" //启动页面，必选
+			"name": "1",
+			"path": "pages/home/offlineOrder" //启动页面，必选
 		}, {
 			"name": "商家编辑",
 			"path": "pages/Store/editStore" //启动页面，必选
