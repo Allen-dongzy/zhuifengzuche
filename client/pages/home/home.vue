@@ -15,7 +15,7 @@
 				<i></i>
 				<p>订单管理</p>
 			</view>
-			<view class="text" @click="addOfflineOrder">添加线下订单</view>
+			<!-- <view class="text" @click="addOfflineOrder">添加线下订单</view> -->
 		</view>
 		<view class="orderTab">
 			<scroll-view class="content" scroll-x>
