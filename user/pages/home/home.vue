@@ -132,6 +132,12 @@ export default {
 			uni.stopPullDownRefresh()
 		}, 500)
 	},
+	onShareAppMessage(e) {
+		return {
+			title: '追风租车',
+			path: '/pages/home/home'
+		}
+	},
 	methods: {
 		// app 设置请求定位开关
 		...mapMutations('app', ['setLocationKey']),
