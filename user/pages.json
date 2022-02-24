@@ -367,10 +367,7 @@
 	"condition": {
 		"current": 0,
 		"list": [{
-			"name": "wcy", // wcy
-			"path": "pages/order/order"
-		}, {
-			"name": "dzy", // dzy
+			"name": "default",
 			"path": "pages/order/order"
 		}]
 	}
