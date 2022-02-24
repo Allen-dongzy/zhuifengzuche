@@ -84,7 +84,7 @@
 
 <script>
 import EvanSwitch from '@/components/evan-switch/evan-switch'
-import { toDate } from '@/utils/tools'
+import { toDate, add0 } from '@/utils/tools'
 import validator from 'crazy-validator'
 
 export default {
@@ -162,19 +162,48 @@ export default {
 	methods: {
 		// 初始化
 		init() {
-			const startTimestamp = Date.now() + 86400000
+			const startTimestamp = this.timePostpone()
 			const startTimeArr = toDate(startTimestamp)
+			const startTime = new Date(startTimestamp)
 			const endTimestamp = startTimestamp + 4 * 86400000
 			const endTimeArr = toDate(endTimestamp)
+			const endTime = new Date(endTimestamp)
 			this.takeCarDateShow = `${startTimeArr[1]}月${startTimeArr[2]}日`
-			this.takeCarDayShow = this.weekShow[new Date(startTimestamp).getDay()]
-			this.takeCarTimeShow = '10:00'
-			this.takeCarTime = `${startTimeArr[0]}-${startTimeArr[1]}-${startTimeArr[2]} 10:00:00`
+			this.takeCarDayShow = this.weekShow[startTime.getDay()]
+			this.takeCarTimeShow = `${startTimeArr[3]}:${startTimeArr[4]}`
+			this.takeCarTime = `${startTimeArr[0]}-${startTimeArr[1]}-${startTimeArr[2]} ${startTimeArr[3]}:${startTimeArr[4]}:00`
 			this.carAlsoDateShow = `${endTimeArr[1]}月${endTimeArr[2]}日`
-			this.carAlsoDayShow = this.weekShow[new Date(endTimestamp).getDay()]
-			this.carAlsoTimeShow = '10:00'
-			this.carAlsoTime = `${endTimeArr[0]}-${endTimeArr[1]}-${endTimeArr[2]} 10:00:00`
+			this.carAlsoDayShow = this.weekShow[endTime.getDay()]
+			this.carAlsoTimeShow = `${endTimeArr[3]}:${endTimeArr[4]}`
+			this.carAlsoTime = `${endTimeArr[0]}-${endTimeArr[1]}-${endTimeArr[2]} ${endTimeArr[3]}:${endTimeArr[4]}:00`
 			this.totalDate = 4
+		},
+		// 时间推迟两小时后，若小于30分则补全30，大于30分则四舍五入到下一个整点
+		timePostpone() {
+			let postponeTimestamp = Date.now() + 7200000
+			let postponeTime = new Date(postponeTimestamp)
+			let postponeYear = postponeTime.getFullYear()
+			let postponeMonth = add0(postponeTime.getMonth() + 1)
+			let postponeDate = add0(postponeTime.getDate())
+			let postponeHour = add0(postponeTime.getHours())
+			let postponeMin = add0(postponeTime.getMinutes())
+			if (postponeMin <= 30) {
+				postponeMin = '30'
+			} else {
+				postponeMin = '00'
+				if (postponeHour < 23) {
+					postponeHour = add0(++postponeHour)
+				} else {
+					postponeHour = '00'
+					postponeTime = new Date(postponeTimestamp + 86400000)
+					postponeYear = postponeTime.getFullYear()
+					postponeMonth = add0(postponeTime.getMonth() + 1)
+					postponeDate = add0(postponeTime.getDate())
+				}
+			}
+			postponeTime = new Date(`${postponeYear}/${postponeMonth}/${postponeDate} ${postponeHour}:${postponeMin}`)
+			postponeTimestamp = postponeTime.getTime()
+			return postponeTimestamp
 		},
 		// 显示默认时间
 		showTime() {
