@@ -127,7 +127,8 @@ export default {
 			from: '', // 来自哪个页面
 			chineseNewYeatStartTimestamp: 1643558400000, // 春节开始时间
 			dutyTimestamp: 1644249600000, // 上班时间
-			chineseNewYeatEndTimestamp: 1644940800000 // 春节结束时间
+			chineseNewYeatEndTimestamp: 1644940800000, // 春节结束时间
+			params: {} // 保存的参数
 		}
 	},
 	watch: {
@@ -165,25 +166,31 @@ export default {
 		}
 	},
 	onLoad(e) {
-		if (e && e.takeCarTime) this.takeCarDate = e.takeCarTime.split(' ')[0]
-		if (e && e.takeCarDayShow) this.takeCarDay = e.takeCarDayShow
-		if (e && e.takeCarTimeShow) {
-			this.takeCarTime = e.takeCarTimeShow
-			const index = this.timeBox.indexOf(this.takeCarTime)
-			this.takeCarTimeIndex = [index >= 0 ? index : 0]
-		}
-		if (e && e.carAlsoTime) this.carAlsoDate = e.carAlsoTime.split(' ')[0]
-		if (e && e.carAlsoDayShow) this.carAlsoDay = e.carAlsoDayShow
-		if (e && e.carAlsoTimeShow) {
-			this.carAlsoTime = e.carAlsoTimeShow
-			const index = this.timeBox.indexOf(this.carAlsoTime)
-			this.carAlsoTimeIndex = [index >= 0 ? index : 0]
-		}
-		if (e && e.totalDate) this.totalDate = e.totalDate
-		if (e && e.takeCarTime && e.carAlsoTime) this.customRange = { start: e.takeCarTime.split(' ')[0], end: e.carAlsoTime.split(' ')[0] }
-		if (e && e.from) this.from = e.from
+		this.params = e
+		this.init()
 	},
 	methods: {
+		// 初始化
+		init() {
+			const e = this.params
+			if (e && e.takeCarTime) this.takeCarDate = e.takeCarTime.split(' ')[0]
+			if (e && e.takeCarDayShow) this.takeCarDay = e.takeCarDayShow
+			if (e && e.takeCarTimeShow) {
+				this.takeCarTime = e.takeCarTimeShow
+				const index = this.timeBox.indexOf(this.takeCarTime)
+				this.takeCarTimeIndex = [index >= 0 ? index : 0]
+			}
+			if (e && e.carAlsoTime) this.carAlsoDate = e.carAlsoTime.split(' ')[0]
+			if (e && e.carAlsoDayShow) this.carAlsoDay = e.carAlsoDayShow
+			if (e && e.carAlsoTimeShow) {
+				this.carAlsoTime = e.carAlsoTimeShow
+				const index = this.timeBox.indexOf(this.carAlsoTime)
+				this.carAlsoTimeIndex = [index >= 0 ? index : 0]
+			}
+			if (e && e.totalDate) this.totalDate = e.totalDate
+			if (e && e.takeCarTime && e.carAlsoTime) this.customRange = { start: e.takeCarTime.split(' ')[0], end: e.carAlsoTime.split(' ')[0] }
+			if (e && e.from) this.from = e.from
+		},
 		// 获取总天数
 		getTotalDate() {
 			if (!this.takeCarDate || !this.carAlsoDate || !this.takeCarTime || !this.carAlsoTime || !this.totalKey) return
@@ -241,6 +248,9 @@ export default {
 				// 都选了
 				this.totalKey = true
 				selTotal = 2
+				// 同步customRange
+				if (this.customRange.start !== this.takeCarDate) this.customRange.start = this.takeCarDate
+				if (this.customRange.end !== this.carAlsoDate) this.customRange.end = this.carAlsoDate
 			}
 			// this.dateJudge({ takeCarDate: this.takeCarDate, carAlsoDate: this.carAlsoDate, selTotal })
 		},
@@ -281,7 +291,7 @@ export default {
 		},
 		// 清空
 		clear() {
-			this.$open('/pages/home/selectTime', 1)
+			this.init()
 		},
 		// 确定
 		confirm() {

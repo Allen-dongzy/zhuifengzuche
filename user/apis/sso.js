@@ -84,7 +84,7 @@ export const recharge = (data, loading = '') => { // 对戒
 }
 
 // 微信登录
-export const wxLogin = (data, loading = '登陆中') => { // 对接
+export const wxLogin = (data, loading = '登录中') => { // 对接
 	return request({
 		url: 'sso/wxLogin',
 		contentType: 'application/x-www-form-urlencoded',
@@ -95,7 +95,7 @@ export const wxLogin = (data, loading = '登陆中') => { // 对接
 }
 
 // 支付宝登录
-export const aliLogin = (data, loading = '登陆中') => { // 对接
+export const aliLogin = (data, loading = '登录中') => { // 对接
 	return request({
 		url: 'sso/aliLogin',
 		contentType: 'application/x-www-form-urlencoded',

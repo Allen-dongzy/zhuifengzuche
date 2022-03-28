@@ -218,7 +218,7 @@ export default {
 			if (err) return
 			this.loginAfter(res.data.token)
 		}),
-		// 登陆后的处理逻辑
+		// 登录后的处理逻辑
 		loginAfter(token) {
 			this.$storage.set('token', token)
 			this.$toast('登录成功')

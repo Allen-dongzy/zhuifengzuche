@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import { perfectInformation } from '@/apis/sso'
 import { throttle } from '@/utils/tools'
 import { isIdentity, isPhone } from 'crazy-validator'
@@ -46,8 +46,8 @@ export default {
 		if (this.emergencyContactPhone) this.localEmergencyContactPhone = this.emergencyContactPhone
 	},
 	methods: {
-		// user 设置用户信息
-		...mapMutations('user', ['setUserInfo']),
+		// user 获取用户信息
+		...mapActions('user', ['getUserInfo']),
 		// 完善信息
 		perfectInformation: throttle(async function() {
 			if (this.localIdCard && !isIdentity(this.localIdCard)) return this.$toast('请输入正确的身份证号')
@@ -61,7 +61,7 @@ export default {
 			const [err, res] = await perfectInformation(params)
 			if (err) return
 			this.$toast('提交成功')
-			this.setUserInfo(params)
+			this.getUserInfo()
 			setTimeout(() => {
 				this.$close()
 			}, 500)
