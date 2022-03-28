@@ -25,7 +25,7 @@
 					<view style="font-size: 28rpx;color:#000000;font-weight: bold;">{{ item.name }}</view>
 					<view style="color: #B2B2B2;font-size: 24rpx;margin-top: 10rpx;">{{ item.address }}</view>
 				</view>
-				<switch class="switch" :checked="list[index].status===1"
+				<switch class="switch" :checked="list[index].storeAss===1"
 					@change="deliveryOnOrOffButton($event, index)" />
 			</view>
 			<uni-load-more :status="dataStatus" />
@@ -106,7 +106,8 @@
 				const params = {
 					page: this.page,
 					size: this.size,
-					areaCode: this.areaCode
+					areaCode: this.areaCode,
+					shopId: this.shopId
 				}
 				const [err, res] = await deliveryPageQuery(params)
 				if (err) return
@@ -123,11 +124,12 @@
 			// 开启/关闭送车点
 			async deliveryOnOrOffButton(event, index) {
 				const params = {
-					id: this.list[index].id
+					id: this.list[index].id,
+					shopId: this.shopId
 				}
 				const [err, res] = await deliveryOnOrOffButton(params)
 				if (err) return
-				this.list[index].isCheck = event.detail.value ? 1 : 0
+				this.list[index].storeAss = event.detail.value ? 1 : 0
 			}
 		}
 	}

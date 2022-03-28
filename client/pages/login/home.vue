@@ -6,7 +6,7 @@
 				<image style="width: 204rpx;height: 204rpx;" :src="$util.fileUrl('/logo2.png')" mode="aspectFill"></image>
 			</view>
 			<view style="width: 70%;">
-				<view class="title">欢迎入驻追风租车</view>
+				<view class="title">欢迎使用追风科技租车系统</view>
 				<view class="contentText">加盟热线：400-62000005</view>
 			</view>
 		</view>
@@ -90,14 +90,14 @@
 	}
 
 	.title {
-		font-size: 40rpx;
+		font-size: 32rpx;
 		color: #FFFFFF;
-		letter-spacing: 15rpx;
+		letter-spacing: 8rpx;
 		padding: 8rpx 0rpx;
 	}
 
 	.contentText {
-		color: white;
+		color: #FFFFFF;
 		font-size: 32rpx;
 		letter-spacing: 5rpx;
 		padding: 8rpx 0rpx;

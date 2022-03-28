@@ -87,7 +87,7 @@ function checkPhone2(phone) {
  */
 function fileUrl(url) {
 	const path = config.filePath;
-	return (path + url);
+	return `${path}${url}?s=251`
 }
 
 /**

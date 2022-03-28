@@ -3,10 +3,8 @@
 	import {
 		mapActions
 	} from 'vuex'
+	
 	export default {
-		globalData: {
-
-		},
 		onLaunch: function() {
 			console.log('App Launch')
 			this.header()

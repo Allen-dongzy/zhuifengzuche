@@ -3,75 +3,56 @@
 		<view class="">
 			<view class="fromTitel">省份</view>
 			<picker class="pickerBox" @change="selectShen" :value="shenindex" :range="selectShenobj" range-key="name">
-				<!-- 	<view v-if="shenindex==-1" class="uni-input">请选择城市</view> -->
-				<view class="uni-input">{{ selectShenobj[shenindex].name }}</view>
+				<view class="uni-input padding-left">{{ selectShenobj[shenindex].name }}</view>
 			</picker>
-
 			<view class="fromTitel">城市</view>
 			<picker class="pickerBox" @change="selectShi" :value="shiindex" :range="selectorObj" range-key="name">
-				<!-- 		<view v-if="shiindex==-1" class="uni-input">请选择城市</view> -->
-				<view class="uni-input">{{ selectorObj[shiindex].name }}</view>
+				<view class="uni-input padding-left">{{ selectorObj[shiindex].name }}</view>
 			</picker>
-
 			<view class="fromTitel">区域</view>
 			<picker class="pickerBox" @change="selectQu" :value="quindex" :range="selectorquObj" range-key="name">
-				<view class="uni-input">{{ selectorquObj[quindex].name }}</view>
+				<view class="uni-input padding-left">{{ selectorquObj[quindex].name }}</view>
 			</picker>
-
 			<view class="fromTitel">门店名称</view>
 			<input class="inpBox" v-model="storeName" type="text" placeholder="请填写门店名字" />
-
 			<view class="fromTitel">门店地址</view>
 			<input class="inpBox" v-model="address" type="text" placeholder="请填写门店地址" />
-
 			<view class="fromTitel">门店电话</view>
 			<input class="inpBox" v-model="storePhone" type="text" placeholder="请填写门店电话" />
-
 			<view class="fromTitel">营业时间</view>
 			<view class="timeBox">
 				<picker mode="time" style="width: 40%;height: 74rpx;" class="pickerBox" @change="pickerStar" :value="indexStar">
 					<view class="uni-input1" style="height: 74rpx;margin-top:0;">{{ indexStar }}</view>
 				</picker>
-
 				<picker mode="time" style="width: 40%;height: 74rpx;" class="pickerBox" @change="pickerEnd" :value="indexEnd">
 					<view class="uni-input1" style="height: 74rpx;margin-top:0;">{{ indexEnd }}</view>
 				</picker>
 			</view>
-
 			<view class="fromTitel">地图经纬度</view>
 			<view class="local">
 				<input style="font-size:24rpx ;" v-model="longitude" class="uni-input1" type="text" placeholder="请输入经度" />
 				<input style="font-size: 24rpx;margin-left: 4%;" v-model="latitude" class="uni-input1" type="text" placeholder="请输入纬度" />
 			</view>
-
 			<view class="fromTitel">门店图片</view>
 			<image class="imgBox" @click="getImg(0)" :src="storeImg || $util.fileUrl('/upload_image@2x.png')" mode="aspectFill"></image>
-
 			<view class="fromTitel">负责人/法人</view>
 			<input class="inpBox" v-model="corporationName" type="text" placeholder="请填写负责人或者法人名称" />
-
 			<view class="fromTitel">负责人/法人 电话</view>
 			<input class="inpBox" type="text" v-model="corporationNamePhone" placeholder="请填写负责人或者法人名称电话" />
-
 			<view class="fromTitel">车辆整备费</view>
 			<input class="inpBox" type="number" v-model="price" placeholder="请填写车辆整备费" />
-
 			<view class="title">门店图片-门头照片</view>
 			<view class="idCard"><image class="imgBox1" :src="idCard1 || $util.fileUrl('/guanxi.png')" mode="aspectFill" @click="getImg(1)"></image></view>
-
 			<view class="title">门店图片-店内照片</view>
 			<view class="idCard"><image class="imgBox1" :src="idCard2 || $util.fileUrl('/guanxi.png')" mode="aspectFill" @click="getImg(2)"></image></view>
-
 			<view class="title">门店图片-店铺室外照片</view>
 			<view class="idCard"><image class="imgBox1" :src="idCard3 || $util.fileUrl('/guanxi.png')" mode="aspectFill" @click="getImg(3)"></image></view>
-
 			<view class="title">对公账户开户许可证</view>
 			<view class="idCard"><image class="imgBox1" :src="idCard4 || $util.fileUrl('/guanxi.png')" mode="aspectFill" @click="getImg(4)"></image></view>
-
 			<button
 				style=" color: white;
-			width: 80%;
-					margin: 20rpx auto;
+					width: 80%;
+					margin: 40rpx auto 60rpx;
 				    background-color: #5A7EFF;
 				    border-radius: 50px;
 				    font-size: 32rpx;
@@ -278,6 +259,7 @@ export default {
 			if (err) return
 			console.log(res)
 			this.$toast('修改成功')
+			this.$close()
 		},
 		selectShen: function(e) {
 			console.log('picker发送选择改变，携带值为', e.target.value)
@@ -379,30 +361,31 @@ export default {
 	margin: auto;
 	background: #eff0f3;
 	border-radius: 10rpx;
-	padding-left: 20rpx;
 	color: #999999;
 	margin-top: 20rpx;
 }
 .uni-input {
-	width: 90%;
+	width: 100%;
 	height: 74rpx;
 	line-height: 74rpx;
 	margin: auto;
 	background: #eff0f3;
 	border-radius: 10rpx;
-	padding-left: 20rpx;
 	color: #999999;
 }
+.uni-input.padding-left {
+	padding-left: 20rpx;
+}
 .uni-input1 {
-	width: 39%;
+	width: 40%;
 	height: 74rpx;
 	line-height: 74rpx;
 	margin: auto;
 	background: #eff0f3;
 	border-radius: 10rpx;
-	padding-left: 20rpx;
 	color: #999999;
 	margin-top: 20rpx;
+	text-align: center;
 }
 .timeBox {
 	display: flex;

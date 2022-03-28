@@ -29,7 +29,7 @@
 
 
 
-		<view v-for="(item,index) in carList" :key="index" class="">
+		<!-- <view v-for="(item,index) in carList" :key="index" class="">
 			<view v-if="item.type==0" style="width: 100%;border-bottom:20rpx solid #EFF0F3;padding: 20rpx 5%;">
 				<view class="statusBox" style="margin: 20rpx 0rpx;">
 					<view class="orderNum">订单号：5665979465659</view>
@@ -47,7 +47,7 @@
 				<view class="orderNum">时间：2021-06-03 13:43</view>
 			</view>
 
-		</view>
+		</view> -->
 
 
 
